@@ -24,7 +24,10 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
-          
+
+      - name: pnpm 설치
+        run: npm install -g pnpm
+        
       - name: 패키지 설치
         run: pnpm install --frozen-lockfile
         
