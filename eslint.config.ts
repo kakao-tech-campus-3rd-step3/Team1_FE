@@ -1,8 +1,9 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
-import { defineConfig } from 'eslint/config';
+// eslint.config.ts
+import js from '@eslint/js'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import { defineConfig } from 'eslint/config'
 
 export default defineConfig([
   {
@@ -10,13 +11,8 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-   {
-    files: ['src/components/ui/**/*.{ts,tsx}'],
-    rules: {
-      'react-refresh/only-export-components': 'off',
-    },
-  },
-]);
+])
