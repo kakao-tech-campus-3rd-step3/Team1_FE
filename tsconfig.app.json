@@ -22,13 +22,14 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  },
-  "include": ["src"],
-  "baseUrl": ".",
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
   "paths": {
     "@/*": [
-      "./src/*"
+      "src/*"
     ]
     }
+  },
+  "include": ["src"]
+  
 }
