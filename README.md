@@ -1,6 +1,20 @@
-## 🙌 프로젝트 소개
+## 🚀 프로젝트 소개
 
-대학생을 위한 팀 프로젝트 매니저 **🚀 Boost**의 **Front-end 프로젝트**입니다!
+<div align="center">
+  <img src="assets/BOO_withTitle.png" width="200" />
+</div>
+<div align="center">
+대학생을 위한 팀 프로젝트 매니저 <strong>🚀 Boost</strong>의 <strong>Front-end 프로젝트</strong>입니다!
+</div>
+
+<br/>
+
+## 👩‍💻 팀 멤버
+
+|                                                                깃허브                                                                 |  이름  | 역할 |
+| :-----------------------------------------------------------------------------------------------------------------------------------: | :----: | :--: |
+| <div align="center">[<img src="https://avatars.githubusercontent.com/u/143688136?v=4" width="60"/>](https://github.com/daaoooy)</div> | 유다연 |  FE  |
+| <div align="center">[<img src="https://avatars.githubusercontent.com/u/129584580?v=4" width="60"/>](https://github.com/hyemomo)</div> | 김혜민 |  FE  |
 
 <br/>
 
