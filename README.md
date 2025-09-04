@@ -1,7 +1,7 @@
 ## 🚀 프로젝트 소개
 
 <div align="center">
-  <img src="assets/BOO_withTitle.png" width="200" />
+  <img src="src\shared\assets\boo-with-title.png" width="200" />
 </div>
 <div align="center">
 대학생을 위한 팀 프로젝트 매니저 <strong>🚀 Boost</strong>의 <strong>Front-end 프로젝트</strong>입니다!
@@ -67,15 +67,15 @@ src/
 
 ## 🛠️ 기술 스택
 
-| 구분                      | 기술                                                                                                                                                                                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **개발 언어**             | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)                                                                                                                     |
-| **UI 라이브러리**         | ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)                                                                                                                                    |
-| **스타일링**              | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=appveyor&logoColor=white) |
-| **클라이언트 상태 관리**  | ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=appveyor&logoColor=white)                                                                                                                             |
-| **서버 상태 관리**        | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)                                                                                                                  |
-| **라우팅**                | ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)                                                                                                               |
-| **애니메이션 라이브러리** | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)                                                                                                                   |
+| 구분                      | 기술                                                                                                                                                                                                                    |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **개발 언어**             | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)                                                                                                       |
+| **UI 라이브러리**         | ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)                                                                                                                      |
+| **스타일링**              | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logoColor=white) |
+| **클라이언트 상태 관리**  | ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logoColor=white)                                                                                                                             |
+| **서버 상태 관리**        | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)                                                                                                    |
+| **라우팅**                | ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)                                                                                                 |
+| **애니메이션 라이브러리** | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)                                                                                                     |
 
 <br/>
 
