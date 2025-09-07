@@ -1,0 +1,65 @@
+@theme {
+  /* Boost Blue */
+  --color-boost-blue-light: #72a1ff;
+  --color-boost-blue-hover: #4a79dd;
+  --color-boost-blue: #1458dd;
+  --color-boost-blue-pressed: #0944c2;
+  --color-boost-blue-dark: #102f6c;
+
+  /* Boost Orange */
+  --color-boost-orange-light: #ffb074;
+  --color-boost-orange-hover: #ff9d51;
+  --color-boost-orange: #ff882e;
+  --color-boost-orange-pressed: #eb802e;
+  --color-boost-orange-dark: #cc6211;
+
+  /* Boost Yellow */
+  --color-boost-yellow-light: #ffde65;
+  --color-boost-yellow-hover: #f0c433;
+  --color-boost-yellow: #fec619;
+  --color-boost-yellow-pressed: #ffaf1b;
+  --color-boost-yellow-dark: #c59502;
+
+  /* Gray Scale */
+  --color-gray-100: #ffffff;
+  --color-gray-200: #f6f8fa;
+  --color-gray-300: #eff1f3;
+  --color-gray-400: #c2cad0;
+  --color-gray-500: #9ba1a9;
+  --color-gray-600: #666c73;
+  --color-gray-700: #434b56;
+  --color-gray-800: #292e37;
+  --color-gray-900: #1f2226;
+  --color-gray-1000: #000000;
+
+  /* Red Scale */
+  --color-red-50: #fff5f5;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+
+  /* Status Colors */
+  --color-status-info: #17a2b8;
+  --color-status-success: #28a745;
+  --color-status-warning: #ffc107;
+  --color-status-error: #dc3545;
+
+  /* Background Colors */
+  --color-background-default: var(--color-gray-100);
+  --color-background-secondary: var(--color-gray-200);
+  --color-background-tertiary: var(--color-gray-300);
+  --color-background-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Text Colors */
+  --color-text-default: var(--color-gray-900);
+  --color-text-sub: var(--color-gray-700);
+  --color-text-disabled: var(--color-gray-500);
+  --color-text-placeholder: var(--color-gray-200);
+
+  /* Outline Colors */
+  --color-outline-default: var(--color-gray-400);
+  --color-outline-disabled: var(--color-gray-300);
+}

@@ -1,0 +1,163 @@
+@theme {
+  /* 제목 (Title) */
+  --title1-bold-font-size: 1.25rem;
+  --title1-bold-line-height: 27px;
+  --title1-bold-font-weight: 700;
+
+  --title1-regular-font-size: 1.25rem;
+  --title1-regular-line-height: 27px;
+  --title1-regular-font-weight: 400;
+
+  --title2-bold-font-size: 1rem;
+  --title2-bold-line-height: 24px;
+  --title2-bold-font-weight: 700;
+
+  --title2-regular-font-size: 1rem;
+  --title2-regular-line-height: 24px;
+  --title2-regular-font-weight: 400;
+
+  /* 부제목 (Subtitle) */
+  --subtitle1-bold-font-size: 1rem;
+  --subtitle1-bold-line-height: 22px;
+  --subtitle1-bold-font-weight: 700;
+
+  --subtitle1-regular-font-size: 1rem;
+  --subtitle1-regular-line-height: 24px;
+  --subtitle1-regular-font-weight: 400;
+
+  --subtitle2-bold-font-size: 0.875rem;
+  --subtitle2-bold-line-height: 19px;
+  --subtitle2-bold-font-weight: 700;
+
+  --subtitle2-regular-font-size: 0.875rem;
+  --subtitle2-regular-line-height: 19px;
+  --subtitle2-regular-font-weight: 400;
+
+  /* 본문 (Body) */
+  --body1-bold-font-size: 1rem;
+  --body1-bold-line-height: 22px;
+  --body1-bold-font-weight: 700;
+
+  --body1-regular-font-size: 1rem;
+  --body1-regular-line-height: 22px;
+  --body1-regular-font-weight: 400;
+
+  --body2-bold-font-size: 0.875rem;
+  --body2-bold-line-height: 19px;
+  --body2-bold-font-weight: 700;
+
+  --body2-regular-font-size: 0.875rem;
+  --body2-regular-line-height: 19px;
+  --body2-regular-font-weight: 400;
+
+  /* 라벨 (Label) */
+  --label1-bold-font-size: 0.875rem;
+  --label1-bold-line-height: 19px;
+  --label1-bold-font-weight: 700;
+
+  --label1-regular-font-size: 0.875rem;
+  --label1-regular-line-height: 19px;
+  --label1-regular-font-weight: 400;
+
+  --label2-bold-font-size: 0.75rem;
+  --label2-bold-line-height: 16px;
+  --label2-bold-font-weight: 700;
+
+  --label2-regular-font-size: 0.75rem;
+  --label2-regular-line-height: 16px;
+  --label2-regular-font-weight: 400;
+}
+
+@layer utilities {
+  /* Title */
+  .title1-bold {
+    font-size: var(--title1-bold-font-size);
+    line-height: var(--title1-bold-line-height);
+    font-weight: var(--title1-bold-font-weight);
+  }
+  .title1-regular {
+    font-size: var(--title1-regular-font-size);
+    line-height: var(--title1-regular-line-height);
+    font-weight: var(--title1-regular-font-weight);
+  }
+
+  .title2-bold {
+    font-size: var(--title2-bold-font-size);
+    line-height: var(--title2-bold-line-height);
+    font-weight: var(--title2-bold-font-weight);
+  }
+  .title2-regular {
+    font-size: var(--title2-regular-font-size);
+    line-height: var(--title2-regular-line-height);
+    font-weight: var(--title2-regular-font-weight);
+  }
+
+  /* Subtitle */
+  .subtitle1-bold {
+    font-size: var(--subtitle1-bold-font-size);
+    line-height: var(--subtitle1-bold-line-height);
+    font-weight: var(--subtitle1-bold-font-weight);
+  }
+  .subtitle1-regular {
+    font-size: var(--subtitle1-regular-font-size);
+    line-height: var(--subtitle1-regular-line-height);
+    font-weight: var(--subtitle1-regular-font-weight);
+  }
+
+  .subtitle2-bold {
+    font-size: var(--subtitle2-bold-font-size);
+    line-height: var(--subtitle2-bold-line-height);
+    font-weight: var(--subtitle2-bold-font-weight);
+  }
+  .subtitle2-regular {
+    font-size: var(--subtitle2-regular-font-size);
+    line-height: var(--subtitle2-regular-line-height);
+    font-weight: var(--subtitle2-regular-font-weight);
+  }
+
+  /* Body */
+  .body1-bold {
+    font-size: var(--body1-bold-font-size);
+    line-height: var(--body1-bold-line-height);
+    font-weight: var(--body1-bold-font-weight);
+  }
+  .body1-regular {
+    font-size: var(--body1-regular-font-size);
+    line-height: var(--body1-regular-line-height);
+    font-weight: var(--body1-regular-font-weight);
+  }
+
+  .body2-bold {
+    font-size: var(--body2-bold-font-size);
+    line-height: var(--body2-bold-line-height);
+    font-weight: var(--body2-bold-font-weight);
+  }
+  .body2-regular {
+    font-size: var(--body2-regular-font-size);
+    line-height: var(--body2-regular-line-height);
+    font-weight: var(--body2-regular-font-weight);
+  }
+
+  /* Label */
+  .label1-bold {
+    font-size: var(--label1-bold-font-size);
+    line-height: var(--label1-bold-line-height);
+    font-weight: var(--label1-bold-font-weight);
+  }
+  .label1-regular {
+    font-size: var(--label1-regular-font-size);
+    line-height: var(--label1-regular-line-height);
+    font-weight: var(--label1-regular-font-weight);
+  }
+
+  .label2-bold {
+    font-size: var(--label2-bold-font-size);
+    line-height: var(--label2-bold-line-height);
+    font-weight: var(--label2-bold-font-weight);
+  }
+  .label2-regular {
+    font-size: var(--label2-regular-font-size);
+    line-height: var(--label2-regular-line-height);
+    font-weight: var(--label2-regular-font-weight);
+  }
+}

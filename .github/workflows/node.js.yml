@@ -1,0 +1,92 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'feature/*'
+      - 'release/*'
+  pull_request:
+    branches:
+      - 'develop'
+      - 'release/*'
+
+jobs:
+  # 1️⃣ 빌드 & 테스트
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+        
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: 패키지 설치
+        run: pnpm install --frozen-lockfile
+        
+      - name: 린트 검사
+        run: pnpm lint
+      
+      - name: 빌드
+        run: pnpm build
+
+  # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
+  deploy-preview:
+    if: "!startsWith(github.ref, 'refs/heads/release/')"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Vercel CLI 설치
+        run: npm install -g vercel@latest
+        
+      - name: Vercel 미리보기 배포
+        id: deploy
+        run: |
+          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          
+      - name: PR에 미리보기 URL 댓글 달기
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployUrl = '${{ steps.deploy.outputs.url }}';
+            const comment = `🚀 **미리보기 배포 완료!**\n\n${deployUrl}`;
+            
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+
+  # 3️⃣ 운영 배포 (release 브랜치)
+  deploy-production:
+    if: startsWith(github.ref, 'refs/heads/release/')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Vercel CLI 설치
+        run: npm install -g vercel@latest
+        
+      - name: Vercel 운영 배포
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
