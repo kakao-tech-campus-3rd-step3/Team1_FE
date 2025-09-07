@@ -75,7 +75,7 @@ function TaskCard({ task }: Props) {
         <span className="title2-bold">{task.title}</span>
       </div>
 
-      {/* 마감일, 디데이  */}
+      {/* 마감일, 디데이 */}
       <div className="flex items-center justify-between m-2 text-sm">
         <div className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5" />

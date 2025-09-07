@@ -32,7 +32,7 @@ export const useCreateTask = () => {
         description: '',
       };
 
-      queryClient.setQueryData(['tasks'], (old: any) => {
+      queryClient.setQueryData(['tasks'], (old: Task[]) => {
         return [...(old || []), newTempTask];
       });
 
