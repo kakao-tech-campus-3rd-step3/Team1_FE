@@ -63,7 +63,7 @@ jobs:
         run: pnpm build
 
       - name: 빌드 아티팩트 업로드
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: .next,.vercel,.output # Vercel 빌드 결과물 위치
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 아티팩트 다운로드
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: .
