@@ -1,5 +1,15 @@
+import ProjectPage from './pages/ProjectPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 function App() {
-  return <div className="App">Hello, World!</div>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ProjectPage />
+    </QueryClientProvider>
+  );
+
 }
 
 export default App;
