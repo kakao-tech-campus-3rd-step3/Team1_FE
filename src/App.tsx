@@ -9,6 +9,7 @@ function App() {
       <ProjectPage />
     </QueryClientProvider>
   );
+
 }
 
 export default App;
