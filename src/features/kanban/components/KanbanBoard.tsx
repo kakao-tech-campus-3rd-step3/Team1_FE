@@ -16,10 +16,10 @@ import { useTasksQuery, useMoveTask } from '../hooks/kanbanQueries';
 
 function KanbanBoard() {
   const columns = [
-    { id: 1, title: '진행 전' },
-    { id: 2, title: '진행 중' },
-    { id: 3, title: '검토 중' },
-    { id: 4, title: '완료' },
+    { status: 'TODO', title: '진행 전' },
+    { status: 'PROGRESS', title: '진행 중' },
+    { status: 'REVIEW', title: '검토 중' },
+    { status: 'DONE', title: '완료' },
   ];
 
   const { data: tasks, isLoading, isError } = useTasksQuery();
@@ -32,23 +32,21 @@ function KanbanBoard() {
   if (isError || !tasks) return <div>할 일을 불러오는 데 실패했습니다.</div>;
 
   return (
-    <div className="m-auto flex min-h-screen w-full items-center justify-center overflow-x-auto overflow-y-hidden px-[40px]">
+    <div className="flex-1 flex flex-col p-4 overflow-hidden">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="m-auto flex gap-4">
-          <div className="flex gap-4">
-            {columns.map((col) => (
-              <KanbanColumn
-                key={col.id}
-                column={col}
-                tasks={tasks.filter((task) => task.columnId === col.id)}
-              />
-            ))}
-          </div>
+        <div className="flex gap-4 flex-grow overflow-x-auto overflow-y-hidden items-stretch">
+          {columns.map((col) => (
+            <KanbanColumn
+              key={col.status}
+              column={col}
+              tasks={tasks.filter((task) => task.status === col.status)}
+            />
+          ))}
         </div>
         {createPortal(
           <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>,
