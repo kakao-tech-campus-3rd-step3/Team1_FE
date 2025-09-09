@@ -13,12 +13,12 @@ on:
 
 jobs:
   # 0️⃣ 린트만 따로
-  lint: 
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
-        
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -32,7 +32,7 @@ jobs:
 
       - name: 패키지 설치
         run: pnpm install --frozen-lockfile
-        
+
       - name: 린트 검사
         run: pnpm lint
 
@@ -67,7 +67,7 @@ jobs:
         with:
           name: build-artifact
           path: .next,.vercel,.output # Vercel 빌드 결과물 위치
-          
+
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
     if: "!startsWith(github.ref, 'refs/heads/release/')"
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 아티팩트 다운로드
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: .
