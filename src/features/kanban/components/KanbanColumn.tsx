@@ -1,7 +1,7 @@
 import { SortableContext } from '@dnd-kit/sortable';
 import type { Column, Task } from '../types/kanbanTypes';
 import { useMemo } from 'react';
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/shadcn/button';
 import { PlusCircle } from 'lucide-react';
 import TaskCard from './TaskCard';
 import { useDroppable } from '@dnd-kit/core';

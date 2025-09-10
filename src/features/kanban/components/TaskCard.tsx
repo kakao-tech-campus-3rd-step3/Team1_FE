@@ -1,10 +1,10 @@
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/shadcn/button';
 import type { Task } from '../types/kanbanTypes';
 import { TrashIcon } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Badge } from '@/shared/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar';
+import { Badge } from '@/shared/components/shadcn/badge';
+import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
 import { Calendar, MessageCircle, Paperclip } from 'lucide-react';
 import { getDDay } from '../utils/dateUtils';
 import { getColorForTag } from '../utils/tagUtils';
