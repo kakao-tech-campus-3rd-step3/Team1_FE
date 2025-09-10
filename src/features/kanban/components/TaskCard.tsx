@@ -1,14 +1,13 @@
 import { Button } from '@/shared/components/shadcn/button';
-import type { Task } from '../types/kanbanTypes';
-import { TrashIcon } from 'lucide-react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Badge } from '@/shared/components/shadcn/badge';
 import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
-import { Calendar, MessageCircle, Paperclip } from 'lucide-react';
-import { getDDay } from '../utils/dateUtils';
-import { getColorForTag } from '../utils/tagUtils';
+import { Calendar, MessageCircle, Paperclip, TrashIcon } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import type { Task } from '../types/kanbanTypes';
 import { useDeleteTask } from '../hooks/kanbanQueries';
+import { getDDay } from '@/shared/utils/dateUtils';
+import { generateTags, getColorForTag } from '../utils/tagUtils';
 
 interface Props {
   task: Task;
@@ -16,6 +15,7 @@ interface Props {
 
 function TaskCard({ task }: Props) {
   const deleteTask = useDeleteTask();
+  const tags = generateTags(task);
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: task.id,
@@ -47,7 +47,7 @@ function TaskCard({ task }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-gray-100 shadow-sm p-4 min-h-[180px] flex flex-col rounded-2xl border border-gray-200 hover:shadow-md transition-shadow cursor-grab relative group"
+      className="bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 hover:shadow-md transition-shadow cursor-grab relative group"
     >
       {/* 할 일 삭제 버튼 (임시) */}
       <Button
@@ -63,7 +63,7 @@ function TaskCard({ task }: Props) {
 
       {/* 태그들 */}
       <div className="flex flex-wrap gap-1 m-1">
-        {task.tags.map((tag) => (
+        {tags.map((tag) => (
           <Badge key={tag} className={`text-xs ${getColorForTag(tag)}`}>
             {tag}
           </Badge>
@@ -76,7 +76,7 @@ function TaskCard({ task }: Props) {
       </div>
 
       {/* 마감일, 디데이 */}
-      <div className="flex items-center justify-between m-2 text-sm">
+      <div className="flex items-center justify-between m-1 text-sm">
         <div className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5" />
           {task.dueDate}
