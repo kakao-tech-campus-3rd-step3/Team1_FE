@@ -14,7 +14,6 @@ on:
 jobs:
   # 0️⃣ 린트만 따로
   lint:
-
     runs-on: ubuntu-latest
     steps:
       - name: 코드 체크아웃
@@ -67,7 +66,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: .next,.vercel,.output # Vercel 빌드 결과물 위치
+          path: |
+            .next,.vercel,.output # Vercel 빌드 결과물 위치
 
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
