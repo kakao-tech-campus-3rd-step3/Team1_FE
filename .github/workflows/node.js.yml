@@ -86,7 +86,7 @@ jobs:
       - name: Vercel 미리보기 배포
         id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          DEPLOY_URL=$(vercel deploy dist --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes)
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -123,7 +123,7 @@ jobs:
         run: npm install -g vercel@latest
 
       - name: Vercel 운영 배포
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        run: vercel deploy dist --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
