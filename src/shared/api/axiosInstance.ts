@@ -10,7 +10,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = useAuthStore();
+  const token = useAuthStore.getState().accessToken;
   if (token) {
     //헤더에 access token 붙여서 보내기
     config.headers.Authorization = `Bearer ${token}`;
@@ -26,7 +26,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // refresh token은 쿠키에 있으니 그냥 요청만 보내면 됨
         const { data } = await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
           {},
@@ -39,11 +38,12 @@ api.interceptors.response.use(
         // 새 access token으로 요청 재시도
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
-      } catch (refreshError) {
-        //엑세스, 리프레시 둘다 만료되었을 때
-        if (refreshError.response?.status === 401) {
+      } catch (refreshError: unknown) {
+        if (
+          axios.isAxiosError(refreshError) &&
+          refreshError.response?.status === 401
+        ) {
           useAuthStore.getState().clearAuth();
-
           window.location.href = '/login';
         }
         return Promise.reject(error);
