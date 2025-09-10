@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
-import { logout } from '../api/authApi';
+import { fetchLogout } from '../api/authApi';
 
 // export const useLoginQuery = () => {
 //     const setAuth = useAuthStore((state) => state.setAuth);
@@ -14,7 +14,7 @@ import { logout } from '../api/authApi';
 export const useLogoutQuery = () => {
   const clearAuth = useAuthStore((state) => state.clearAuth);
   return useMutation({
-    mutationFn: logout,
+    mutationFn: fetchLogout,
     onSuccess: () => {
       clearAuth();
     },

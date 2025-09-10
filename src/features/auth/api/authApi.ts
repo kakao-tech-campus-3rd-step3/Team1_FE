@@ -15,6 +15,6 @@ export const fetchLogout = async () => {
 
 // 토큰 재발급 (특수한 경우에서만 사용되는 API)
 export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
-  const res = await api.post('/auth/reissue', {}, {withCredentials:true});
+  const res = await api.post('/auth/reissue', {}, { withCredentials: true });
   return res.data;
 };

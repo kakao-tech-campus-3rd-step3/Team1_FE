@@ -39,10 +39,7 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError: unknown) {
-        if (
-          axios.isAxiosError(refreshError) &&
-          refreshError.response?.status === 401
-        ) {
+        if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401) {
           useAuthStore.getState().clearAuth();
           window.location.href = '/login';
         }
