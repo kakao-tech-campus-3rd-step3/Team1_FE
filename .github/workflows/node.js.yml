@@ -66,8 +66,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: |
-            .next,.vercel,.output # Vercel 빌드 결과물 위치
+          path: dist # Vercel 빌드 결과물 위치
 
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
