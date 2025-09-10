@@ -60,7 +60,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 빌드
-        run: pnpm exec vite buil
+        run: pnpm exec vite build
 
       - name: 빌드 아티팩트 업로드
         uses: actions/upload-artifact@v4
