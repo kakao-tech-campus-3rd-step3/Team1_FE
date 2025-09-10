@@ -39,8 +39,6 @@ jobs:
   # 1️⃣ 빌드 & 테스트
   build:
     runs-on: ubuntu-latest
-    outputs:
-      artifact-path: ${{ steps.upload-artifact.outputs.artifact-path }}
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -66,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: dist # Vercel 빌드 결과물 위치
+          path: dist
 
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
@@ -78,7 +76,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: .
+          path: . # 현재 폴더로 다운로드
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
@@ -86,7 +84,7 @@ jobs:
       - name: Vercel 미리보기 배포
         id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy dist --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes)
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -114,16 +112,15 @@ jobs:
     steps:
       - name: 아티팩트 다운로드
         uses: actions/download-artifact@v4
-
         with:
           name: build-artifact
-          path: .
+          path: . # 현재 폴더로 다운로드
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
 
       - name: Vercel 운영 배포
-        run: vercel deploy dist --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
