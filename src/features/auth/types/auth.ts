@@ -4,5 +4,10 @@ export interface KakaoLoginRequest {
 
 export interface KakaoLoginResponse {
   accessToken: string;
-  refreshToken: string;
+  
+}
+
+export interface RefreshTokenResponse{
+  accessToken: string;
+
 }

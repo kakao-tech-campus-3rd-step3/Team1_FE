@@ -1,5 +1,6 @@
 const LoginPage = () => {
   const hadleLoginClick = () => {
+    //TODO: 인증 URL 받으면 아래의 주소도 수정할 예정입니다.
     window.location.href = 'https://kauth.kakao.com/oauth/authorize?11';
   };
   return (
