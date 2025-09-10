@@ -13,17 +13,29 @@ import {
 } from '@/shared/components/shadcn/sidebar';
 import { User, Layers, Bell, Settings, LogOut } from 'lucide-react';
 
-import CollapsibleSubMenu from '@/shared/components/ui/CollapsibleSubMenu';
 import { Separator } from '@/shared/components/ui/separator';
 import logo from '@/shared/assets/images/15.png';
+import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
 
-//추후 프로젝트 목록은 api로 받아올 예정
+
+export interface SidebarSubItem {
+  title: string;
+  url: string;
+}
+
+export interface SidebarItem {
+  title: string;
+  url: string;
+  icon: React.ReactNode;
+  subItems?: SidebarSubItem[];
+}
+//TODO: 추후 프로젝트 목록은 api로 받아올 예정
 const sub_items = [
   { title: '프로젝트vmf 1', url: '/projects/1' },
   { title: '프로젝트 2', url: '/projects/2' },
   { title: '프로젝트 3', url: '/projects/3' },
 ];
-const items = [
+const items :SidebarItem[]= [
   { title: '나의 할 일', url: 'mytasks', icon: <User size={16} /> },
   { title: '프로젝트', url: '/projects', icon: <Layers size={16} />, subItems: sub_items },
   { title: '알림', url: '/alarm', icon: <Bell size={16} /> },
@@ -31,7 +43,9 @@ const items = [
 ];
 
 const AppSidebar = () => {
-  const { open, setOpen } = useSidebar();
+  //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
+
+  const { setOpen } = useSidebar();
 
   return (
     <Sidebar
@@ -56,8 +70,8 @@ const AppSidebar = () => {
           <SidebarGroup>
             {items.map((item) => (
               <SidebarMenuItem key={item.title} className="pb-4">
-                {item.subItems ? (
-                  <CollapsibleSubMenu item={item} />
+                {item.title==="프로젝트"? (
+                  < ProjectsMenu item={item} />
                 ) : (
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
