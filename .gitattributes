@@ -1,0 +1,7 @@
+# 모든 텍스트 파일 LF로 통일
+* text=auto
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.css text
