@@ -5,3 +5,4 @@
 *.js text
 *.jsx text
 *.css text
+* text eol=lf
