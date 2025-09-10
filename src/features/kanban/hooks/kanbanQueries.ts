@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { kanbanApi } from '../services/kanbanApi';
-import type { Id, Task } from '../types/kanbanTypes';
-import { generateId } from '../utils/idUtils';
+import type { Task } from '../types/kanbanTypes';
+import type { Id } from '@/shared/types/commonTypes';
+import { generateId } from '@/shared/utils/idUtils';
 
 // 할 일 조회
 export const useTasksQuery = () => {
@@ -16,13 +17,13 @@ export const useCreateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: kanbanApi.createTask,
-    onMutate: async (columnId: Id) => {
+    onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData(['tasks']);
 
       const newTempTask: Task = {
-        id: `temp-${generateId}`,
-        columnId,
+        id: `temp-${generateId()}`,
+        status: 'TODO',
         title: '새로운 할 일',
         tags: ['임시'],
         assignees: ['신규'],
@@ -30,6 +31,8 @@ export const useCreateTask = () => {
         comments: 0,
         files: 0,
         description: '',
+        urgent: false,
+        requiredReviewCount: 2,
       };
 
       queryClient.setQueryData(['tasks'], (old: Task[]) => {

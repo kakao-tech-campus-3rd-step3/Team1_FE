@@ -14,7 +14,7 @@
   "aliases": {
     "components": "@/shared/components",
     "utils": "@/shared/lib/utils",
-    "ui": "@/shared/components/ui",
+    "ui": "@/shared/components/shadcn",
     "lib": "@/shared/lib",
     "hooks": "@/shared/hooks"
   }

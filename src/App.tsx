@@ -1,15 +1,14 @@
-import ProjectPage from './pages/ProjectPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AppRouter } from '@/app/routes/Router';
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ProjectPage />
+      <AppRouter />
     </QueryClientProvider>
   );
-
 }
 
 export default App;

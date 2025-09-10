@@ -126,3 +126,20 @@
   font-weight: 400;
   src: url('src/shared/assets/fonts/Pretendard-Regular.woff2') format('truetype');
 }
+
+/* 스크롤바 디자인 */
+::-webkit-scrollbar {
+  @apply w-1 h-1; /* 4px */
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}

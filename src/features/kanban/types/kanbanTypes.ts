@@ -1,18 +1,20 @@
-export type Id = string | number;
+import type { Id } from '@/shared/types/commonTypes';
 
 export type Column = {
-  id: Id;
+  status: string;
   title: string;
 };
 
 export type Task = {
   id: Id;
-  columnId: Id;
   title: string;
+  description: string;
+  status: string;
   tags: string[];
   assignees: string[];
-  description: string;
   dueDate: string;
-  comments: number;
+  urgent: boolean;
+  requiredReviewCount: number;
   files: number;
+  comments: number;
 };
