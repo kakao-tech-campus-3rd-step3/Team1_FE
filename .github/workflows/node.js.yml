@@ -39,6 +39,8 @@ jobs:
   # 1️⃣ 빌드 & 테스트
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-path: ${{ steps.upload-artifact.outputs.artifact-path }}
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -58,13 +60,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 빌드
-        run: pnpm exec vite build
+        run: pnpm build
 
       - name: 빌드 아티팩트 업로드
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: dist
+          path: .next,.vercel,.output # Vercel 빌드 결과물 위치
 
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
@@ -76,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: . # dist 그대로 위치
+          path: .
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
@@ -84,7 +86,7 @@ jobs:
       - name: Vercel 미리보기 배포
         id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy dist --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --confirm)
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -112,15 +114,16 @@ jobs:
     steps:
       - name: 아티팩트 다운로드
         uses: actions/download-artifact@v4
+
         with:
           name: build-artifact
-          path: . # dist 그대로 위치
+          path: .
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
 
       - name: Vercel 운영 배포
-        run: vercel deploy dist --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
