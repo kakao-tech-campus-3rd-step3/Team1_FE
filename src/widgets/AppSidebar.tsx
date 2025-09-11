@@ -17,7 +17,6 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
 import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
 
-
 export interface SidebarSubItem {
   title: string;
   url: string;
@@ -31,12 +30,12 @@ export interface SidebarItem {
 }
 //TODO: 추후 프로젝트 목록은 api로 받아올 예정
 const sub_items = [
-  { title: '프로젝트 1', url: '/projects/1' },
-  { title: '프로젝트 2', url: '/projects/2' },
-  { title: '프로젝트 3', url: '/projects/3' },
+  { title: '팀플 A', url: '/project/123' },
+  { title: '팀플 B', url: '/project/124' },
+  { title: '팀플 C', url: '/project/125' },
 ];
-const items :SidebarItem[]= [
-  { title: '나의 할 일', url: 'mytasks', icon: <User size={16} /> },
+const items: SidebarItem[] = [
+  { title: '나의 할 일', url: '/my-task', icon: <User size={16} /> },
   { title: '프로젝트', url: '/projects', icon: <Layers size={16} />, subItems: sub_items },
   { title: '알림', url: '/alarm', icon: <Bell size={16} /> },
   { title: '설정', url: '/settings', icon: <Settings size={16} /> },
@@ -49,29 +48,27 @@ const AppSidebar = () => {
 
   return (
     <Sidebar
-    variant="sidebar"
-    className='bg-blue-500'
+      variant="sidebar"
+      className=" border-0 outline-0 border-gray-300"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       collapsible="icon"
-      
     >
-      <SidebarHeader className="flex flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
-          <a className="flex justify-center w-11 h-11  items-center align-middle bg-amber-300 rounded-4xl">
-            <img src={logo} alt="" className="w-9 h-9" />
-          </a>
-         
+      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
+        <a className="flex justify-center align-middle w-11 h-11 bg-amber-300 rounded-4xl">
+          <img src={logo} alt="" className="w-9 h-9" />
+        </a>
       </SidebarHeader>
 
-      <SidebarContent className="pl-3 pr-3 bg-white">
+      <SidebarContent className=" flex-col align-middle pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
         <SidebarMenu>
           <SidebarGroup>
             {items.map((item) => (
               <SidebarMenuItem key={item.title} className="pb-4">
-                {item.title==="프로젝트"? (
-                  < ProjectsMenu item={item} />
+                {item.title === '프로젝트' ? (
+                  <ProjectsMenu item={item} />
                 ) : (
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
@@ -86,9 +83,9 @@ const AppSidebar = () => {
         </SidebarMenu>
         <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter  className='w-full flex justify-center pt-4 pb-4  pl-3 pr-3 bg-white'  >
-               <Separator  />
+      <Separator className=" pl-3 pr-3" />
 
+      <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4  bg-white">
         <LogOut color="#D55F5A" />
       </SidebarFooter>
     </Sidebar>

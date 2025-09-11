@@ -1,4 +1,4 @@
-import { SidebarInset, SidebarProvider } from '@/shared/components/shadcn/sidebar';
+import { SidebarProvider } from '@/shared/components/shadcn/sidebar';
 import AppSidebar from '@/widgets/AppSidebar';
 import React from 'react';
 
