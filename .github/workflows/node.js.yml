@@ -36,11 +36,9 @@ jobs:
       - name: 린트 검사
         run: pnpm lint
 
-  # 1️⃣ 빌드 & 테스트
+  # 1️⃣ 빌드 & 테스트 (CI 검증용)
   build:
     runs-on: ubuntu-latest
-    outputs:
-      artifact-path: ${{ steps.upload-artifact.outputs.artifact-path }}
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -59,26 +57,21 @@ jobs:
       - name: 패키지 설치
         run: pnpm install --frozen-lockfile
 
-      - name: 빌드
+      - name: 빌드 테스트
         run: pnpm run build
 
-      - name: 빌드 아티팩트 업로드
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist # Vercel 빌드 결과물 위치
+      # 테스트가 있다면 여기에 추가
+      # - name: 테스트 실행
+      #   run: pnpm test
 
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
     if: "!startsWith(github.ref, 'refs/heads/release/')"
-    needs: build
+    needs: [lint, build]  # lint와 build가 모두 성공해야 배포
     runs-on: ubuntu-latest
     steps:
-      - name: 아티팩트 다운로드
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: .
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
@@ -86,7 +79,7 @@ jobs:
       - name: Vercel 미리보기 배포
         id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes)
           echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -98,7 +91,8 @@ jobs:
         with:
           script: |
             const deployUrl = '${{ steps.deploy.outputs.url }}';
-            const comment = `🚀 **미리보기 배포 완료!**\n\n${deployUrl}`;
+            const comment = `🚀 **미리보기 배포 완료!**\n\n📝 **배포 URL:** ${deployUrl}\n\n✅ **브랜치:** \`${{ github.head_ref }}\`\n✅ **커밋:** \`${{ github.sha }}\``;
+            
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -109,21 +103,25 @@ jobs:
   # 3️⃣ 운영 배포 (release 브랜치)
   deploy-production:
     if: startsWith(github.ref, 'refs/heads/release/')
-    needs: build
+    needs: [lint, build]  # lint와 build가 모두 성공해야 배포
     runs-on: ubuntu-latest
     steps:
-      - name: 아티팩트 다운로드
-        uses: actions/download-artifact@v4
-
-        with:
-          name: build-artifact
-          path: .
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
 
       - name: Vercel CLI 설치
         run: npm install -g vercel@latest
 
       - name: Vercel 운영 배포
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        id: deploy-prod
+        run: |
+          DEPLOY_URL=$(vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: 운영 배포 완료 알림
+        run: |
+          echo "🎉 운영 환경에 배포가 완료되었습니다!"
+          echo "📝 배포 URL: ${{ steps.deploy-prod.outputs.url }}"
