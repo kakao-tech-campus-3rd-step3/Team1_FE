@@ -1,5 +1,5 @@
-import { useCreateTask } from '@/features/kanban/hooks/kanbanQueries';
-import { useProjectQuery } from '@/features/project/hooks/projectQueries';
+import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
+import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
 import { Button } from '@/shared/components/shadcn/button';
 import type { Id } from '@/shared/types/commonTypes';
 import { PlusCircle, MoreVertical, UserPlus } from 'lucide-react';
@@ -16,7 +16,7 @@ function Header({ projectId }: Props) {
     weekday: 'short',
   });
 
-  const { mutate: createTaskMutation } = useCreateTask();
+  const { mutate: createTaskMutation } = useCreateTaskMutation();
   const { data: project, isLoading, isError } = useProjectQuery(projectId);
 
   if (isLoading) return <div>로딩 중...</div>;

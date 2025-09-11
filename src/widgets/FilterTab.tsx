@@ -1,6 +1,6 @@
-import SearchInput from '@/shared/components/SearchInput';
-import FilterToggle from '@/shared/components/FilterToggle';
-import SortDropDown from '@/shared/components/SortDropDown';
+import SearchInput from '@/shared/components/ui/SearchInput';
+import FilterToggle from '@/shared/components/ui/FilterToggle';
+import SortDropDown from '@/shared/components/ui/SortDropDown';
 
 function FilterTab() {
   return (
