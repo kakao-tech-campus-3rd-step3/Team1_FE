@@ -1,6 +1,6 @@
 import type { Id } from '@/shared/types/commonTypes';
 import { generateId } from '@/shared/utils/idUtils';
-import type { Project } from '../types/projectTypes';
+import type { Project } from '@/features/project/types/projectTypes';
 
 // 임시 mock project 데이터
 let mockProjects: Project[] = [
@@ -50,7 +50,7 @@ export const projectApi = {
   },
 
   // 프로젝트 수정
-  editProject: async (projectId: Id, updatedData: Partial<Project>): Promise<Project> => {
+  updateProject: async (projectId: Id, updatedData: Partial<Project>): Promise<Project> => {
     const index = mockProjects.findIndex((p) => p.projectId === projectId);
     if (index === -1) throw new Error('프로젝트를 찾을 수 없습니다.');
 
