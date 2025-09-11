@@ -1,4 +1,4 @@
-import AppLayout from '@/layout/AppLayout';
+import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
@@ -16,7 +16,7 @@ export const ROUTE_PATH = {
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayout />, 
+    element: <AppLayout />,
     children: [
       { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
       { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
