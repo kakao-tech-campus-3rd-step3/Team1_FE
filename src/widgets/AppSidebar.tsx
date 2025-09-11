@@ -15,7 +15,7 @@ import { User, Layers, Bell, Settings, LogOut } from 'lucide-react';
 
 import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
-import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
+import ProjectsMenu from '@/shared/components/ui/ProjectsMenu';
 import { Link } from 'react-router';
 import { useEffect } from 'react';
 
