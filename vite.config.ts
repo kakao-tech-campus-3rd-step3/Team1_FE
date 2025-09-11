@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     react({
-      exclude: ['src/components/ui/**/*.{ts,tsx,js,jsx}'],
+      exclude: ['src/components/shadcn/**/*.{ts,tsx,js,jsx}'],
     }),
     tailwindcss(),
   ],
