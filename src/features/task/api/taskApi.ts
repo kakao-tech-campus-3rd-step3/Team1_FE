@@ -1,4 +1,4 @@
-import type { Task } from '../types/kanbanTypes';
+import type { Task } from '@/features/task/types/taskTypes';
 import type { Id } from '@/shared/types/commonTypes';
 import { generateId } from '@/shared/utils/idUtils';
 import { arrayMove } from '@dnd-kit/sortable';

@@ -4,17 +4,17 @@ import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
 import { Calendar, MessageCircle, Paperclip, TrashIcon } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { Task } from '../types/kanbanTypes';
-import { useDeleteTask } from '../hooks/kanbanQueries';
+import type { Task } from '@/features/task/types/taskTypes';
+import { useDeleteTaskMutation } from '@/features/task/hooks/useDeleteTaskMutation';
 import { getDDay } from '@/shared/utils/dateUtils';
-import { generateTags, getColorForTag } from '../utils/tagUtils';
+import { generateTags, getColorForTag } from '@/features/kanban/utils/tagUtils';
 
 interface Props {
   task: Task;
 }
 
 function TaskCard({ task }: Props) {
-  const deleteTask = useDeleteTask();
+  const deleteTaskMutation = useDeleteTaskMutation();
   const tags = generateTags(task);
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
@@ -53,7 +53,7 @@ function TaskCard({ task }: Props) {
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          deleteTask.mutate(task.id);
+          deleteTaskMutation.mutate(task.id);
         }}
         className="stroke-gray-100 absolute right-3 top-3 bg-boost-blue p-2 rounded-full opacity-0 group-hover:opacity-80 hover:opacity-100 hover:bg-boost-blue-dark transition-opacity z-10"
         size="icon"

@@ -1,4 +1,4 @@
-import { Input } from './shadcn/input';
+import { Input } from '@/shared/components/shadcn/input';
 import { Search } from 'lucide-react';
 
 function SearchInput() {
