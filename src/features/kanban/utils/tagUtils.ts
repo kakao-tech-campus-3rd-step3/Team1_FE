@@ -1,4 +1,4 @@
-import type { Task } from '../types/kanbanTypes';
+import type { Task } from '@/features/task/types/taskTypes';
 
 const tagColorMap: Record<string, string> = {
   긴급: 'bg-red-100 text-red-800',

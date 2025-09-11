@@ -1,4 +1,3 @@
-import KanbanColumn from './KanbanColumn';
 import {
   DndContext,
   DragOverlay,
@@ -9,10 +8,12 @@ import {
   type DragOverEvent,
 } from '@dnd-kit/core';
 import { useState } from 'react';
-import type { Task } from '../types/kanbanTypes';
+import type { Task } from '@/features/task/types/taskTypes';
 import { createPortal } from 'react-dom';
-import TaskCard from './TaskCard';
-import { useTasksQuery, useMoveTask } from '../hooks/kanbanQueries';
+import TaskCard from '@/features/kanban/components/TaskCard';
+import KanbanColumn from '@/features/kanban/components/KanbanColumn';
+import { useTasksQuery } from '@/features/task/hooks/useTasksQuery';
+import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
 
 function KanbanBoard() {
   const columns = [
@@ -23,7 +24,7 @@ function KanbanBoard() {
   ];
 
   const { data: tasks, isLoading, isError } = useTasksQuery();
-  const { mutate: moveTaskMutation } = useMoveTask();
+  const { mutate: moveTaskMutation } = useMoveTaskMutation();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));

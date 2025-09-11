@@ -1,7 +1,7 @@
 import { SortableContext } from '@dnd-kit/sortable';
-import type { Column, Task } from '../types/kanbanTypes';
+import type { Column, Task } from '@/features/task/types/taskTypes';
 import { useMemo } from 'react';
-import TaskCard from './TaskCard';
+import TaskCard from '@/features/kanban/components/TaskCard';
 import { useDroppable } from '@dnd-kit/core';
 
 interface Props {
