@@ -13,7 +13,7 @@ import {
 } from '@/shared/components/shadcn/sidebar';
 import { User, Layers, Bell, Settings, LogOut } from 'lucide-react';
 
-import { Separator } from '@/shared/components/ui/separator';
+import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
 import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
 
@@ -31,7 +31,7 @@ export interface SidebarItem {
 }
 //TODO: 추후 프로젝트 목록은 api로 받아올 예정
 const sub_items = [
-  { title: '프로젝트vmf 1', url: '/projects/1' },
+  { title: '프로젝트 1', url: '/projects/1' },
   { title: '프로젝트 2', url: '/projects/2' },
   { title: '프로젝트 3', url: '/projects/3' },
 ];

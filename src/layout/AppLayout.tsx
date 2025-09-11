@@ -4,13 +4,11 @@ import React from 'react';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SidebarProvider
-     >
-      <div className="  bg-amber-700">
-    <AppSidebar /> 
-   <main className="flex">{children}</main>
-
-  </div>
+    <SidebarProvider>
+      <div className=" w-screen h-screen ">
+        <AppSidebar />
+        <main className=" w-screen h-screen">{children}</main>
+      </div>
     </SidebarProvider>
   );
 };
