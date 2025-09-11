@@ -16,6 +16,7 @@ import { User, Layers, Bell, Settings, LogOut } from 'lucide-react';
 import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
 import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
+import { Link } from 'react-router';
 
 export interface SidebarSubItem {
   title: string;
@@ -36,7 +37,7 @@ const sub_items = [
 ];
 const items: SidebarItem[] = [
   { title: '나의 할 일', url: '/my-task', icon: <User size={16} /> },
-  { title: '프로젝트', url: '/projects', icon: <Layers size={16} />, subItems: sub_items },
+  { title: '프로젝트', url: '/project', icon: <Layers size={16} />, subItems: sub_items },
   { title: '알림', url: '/alarm', icon: <Bell size={16} /> },
   { title: '설정', url: '/settings', icon: <Settings size={16} /> },
 ];
@@ -70,11 +71,11 @@ const AppSidebar = () => {
                 {item.title === '프로젝트' ? (
                   <ProjectsMenu item={item} />
                 ) : (
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                  <SidebarMenuButton key={item.title} asChild>
+                    <Link to={item.url}>
                       {item.icon}
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 )}
               </SidebarMenuItem>

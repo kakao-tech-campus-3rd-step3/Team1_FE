@@ -2,6 +2,7 @@ import type { SidebarItem } from '@/widgets/AppSidebar';
 import { SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton } from '../shadcn/sidebar';
 import { Plus } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router';
 interface SidebarMenuItemProps {
   item: SidebarItem;
 }
@@ -43,9 +44,9 @@ const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
         {item.subItems?.map((subItem) => {
           return (
             <SidebarMenuSubButton asChild>
-              <a href={subItem.url}>
+              <Link to={subItem.url}>
                 <span className="flex-1 text-left">{subItem.title}</span>
-              </a>
+              </Link>
             </SidebarMenuSubButton>
           );
         })}
