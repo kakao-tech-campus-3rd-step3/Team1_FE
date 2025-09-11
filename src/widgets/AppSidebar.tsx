@@ -17,6 +17,7 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
 import ProjectsMenu from '@/shared/components/ui/ProjectsMenu ';
 import { Link } from 'react-router';
+import { useEffect } from 'react';
 
 export interface SidebarSubItem {
   title: string;
@@ -47,17 +48,21 @@ const AppSidebar = () => {
 
   const { setOpen } = useSidebar();
 
+  useEffect(() => {
+    setOpen(false);
+  }, []);
+
   return (
     <Sidebar
       variant="sidebar"
-      className=" border-0 outline-0 border-gray-300"
+      className=" border-0 border-gray-300"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       collapsible="icon"
     >
       <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
-        <a className="flex justify-center align-middle w-11 h-11 bg-amber-300 rounded-4xl">
-          <img src={logo} alt="" className="w-9 h-9" />
+        <a className="flex justify-center align-middle w-11 h-11 bg-boost-orange rounded-4xl items-center">
+          <img src={logo} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
 
@@ -86,7 +91,7 @@ const AppSidebar = () => {
       </SidebarContent>
       <Separator className=" pl-3 pr-3" />
 
-      <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4  bg-white">
+      <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4 bg-white">
         <LogOut color="#D55F5A" />
       </SidebarFooter>
     </Sidebar>
