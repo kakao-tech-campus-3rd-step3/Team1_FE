@@ -1,7 +1,7 @@
 import { Input } from '@/shared/components/shadcn/input';
 import { Search } from 'lucide-react';
 
-function SearchInput() {
+const SearchInput = () => {
   return (
     <div className="relative w-[300px]">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -11,6 +11,6 @@ function SearchInput() {
       />
     </div>
   );
-}
+};
 
 export default SearchInput;

@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/shadcn/tabs';
 
-function FilterToggle() {
+const FilterToggle = () => {
   return (
     <div className="flex max-w-sm flex-col gap-6">
       <Tabs defaultValue="state">
@@ -11,6 +11,6 @@ function FilterToggle() {
       </Tabs>
     </div>
   );
-}
+};
 
 export default FilterToggle;

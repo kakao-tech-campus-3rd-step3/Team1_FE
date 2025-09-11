@@ -9,7 +9,7 @@ import { useSortStore } from '@/shared/store/sortStore';
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
 import { useState } from 'react';
 
-function SortDropDown() {
+const SortDropDown = () => {
   const { criteria, setCriteria, order, toggleOrder } = useSortStore();
   const [open, setOpen] = useState(false);
 
@@ -60,6 +60,6 @@ function SortDropDown() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
 
 export default SortDropDown;

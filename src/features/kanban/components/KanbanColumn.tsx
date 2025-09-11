@@ -9,7 +9,7 @@ interface Props {
   tasks: Task[];
 }
 
-function KanbanColumn({ column, tasks }: Props) {
+const KanbanColumn = ({ column, tasks }: Props) => {
   const tasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const { setNodeRef } = useDroppable({
@@ -39,6 +39,6 @@ function KanbanColumn({ column, tasks }: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default KanbanColumn;

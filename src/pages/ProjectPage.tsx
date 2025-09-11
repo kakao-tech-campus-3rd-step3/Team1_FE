@@ -5,7 +5,7 @@ import Header from '@/widgets/Header';
 import TobTab from '@/widgets/TobTab';
 import { useParams } from 'react-router';
 
-function ProjectPage() {
+const ProjectPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
 
   return (
@@ -21,6 +21,6 @@ function ProjectPage() {
       </div>
     </div>
   );
-}
+};
 
 export default ProjectPage;

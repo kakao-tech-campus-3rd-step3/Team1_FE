@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
-function LandingPage() {
+const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,6 +14,6 @@ function LandingPage() {
       <Button onClick={() => navigate(ROUTE_PATH.LOGIN)}>로그인 페이지</Button>
     </div>
   );
-}
+};
 
 export default LandingPage;

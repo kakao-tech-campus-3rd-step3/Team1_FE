@@ -8,7 +8,7 @@ interface Props {
   projectId: Id;
 }
 
-function Header({ projectId }: Props) {
+const Header = ({ projectId }: Props) => {
   const today = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -49,6 +49,6 @@ function Header({ projectId }: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default Header;

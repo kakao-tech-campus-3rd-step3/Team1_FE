@@ -9,7 +9,7 @@ const tabs = [
 
 type Tab = (typeof tabs)[number]['label'];
 
-export default function TopTab() {
+const TobTab = () => {
   const [activeTab, setActiveTab] = useState<Tab>('보드');
 
   return (
@@ -36,4 +36,6 @@ export default function TopTab() {
       </ul>
     </nav>
   );
-}
+};
+
+export default TobTab;
