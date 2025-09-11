@@ -1,11 +1,11 @@
-import { Button } from './shadcn/button';
+import { Button } from '@/shared/components/shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './shadcn/dropdown-menu';
-import { useSortStore } from '../stores/sortStore';
+} from '@/shared/components/shadcn/dropdown-menu';
+import { useSortStore } from '@/shared/store/sortStore';
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
 import { useState } from 'react';
 

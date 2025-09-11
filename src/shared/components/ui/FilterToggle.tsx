@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from './shadcn/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/shared/components/shadcn/tabs';
 
 function FilterToggle() {
   return (
