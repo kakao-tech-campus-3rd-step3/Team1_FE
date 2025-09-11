@@ -1,13 +1,15 @@
 import { SidebarProvider } from '@/shared/components/shadcn/sidebar';
 import AppSidebar from '@/widgets/AppSidebar';
-import React from 'react';
+import { Outlet } from 'react-router';
 
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
+const AppLayout = () => {
   return (
     <SidebarProvider>
       <div className=" w-screen h-screen ">
         <AppSidebar />
-        <main className=" w-screen h-screen">{children}</main>
+        <main className=" w-screen h-screen">
+          <Outlet />
+        </main>
       </div>
     </SidebarProvider>
   );
