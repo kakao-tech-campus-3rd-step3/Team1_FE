@@ -16,14 +16,14 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/shared/components/ui/sheet"
-import { Skeleton } from "@/shared/components/ui/skeleton"
+} from '@/shared/components/shadcn/sheet';
+import { Skeleton } from '@/shared/components/shadcn/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/shared/components/ui/tooltip"
+} from '@/shared/components/shadcn/tooltip';
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
