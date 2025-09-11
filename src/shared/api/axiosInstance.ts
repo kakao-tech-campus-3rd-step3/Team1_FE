@@ -21,7 +21,11 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
-
+    const handleLoginRedirect = (msg: string) =>{
+      useAuthStore.getState().clearAuth()
+      alert(msg)
+      window.location.href='/login'
+    }
     // access token 만료 (401) + 재시도 안한 요청이라면
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -38,15 +42,14 @@ api.interceptors.response.use(
         // 새 access token으로 요청 재시도
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
-      } catch (refreshError: unknown) {
-        if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401) {
-          useAuthStore.getState().clearAuth();
-          window.location.href = '/login';
-        }
-        return Promise.reject(error);
-      }
+      } catch {
+        handleLoginRedirect("세션이 만료되었습니다. 다시 로그인 해주세요.")
+      return Promise.reject(error)
+      
+      }  
     }
-    return Promise.reject(error);
+    handleLoginRedirect("로그인에 실피했습니다. 다시 로그인 해주세요.")
+        return Promise.reject(error);
   },
 );
 
