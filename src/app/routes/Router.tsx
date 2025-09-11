@@ -1,3 +1,4 @@
+import AppLayout from '@/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
@@ -12,19 +13,16 @@ export const ROUTE_PATH = {
   MYTASK: '/my-task',
 };
 
-const router = createBrowserRouter([
-  { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
+export const router = createBrowserRouter([
   {
-    path: ROUTE_PATH.LOGIN,
-    element: <LoginPage />,
-  },
-  {
-    path: ROUTE_PATH.PROJECT,
-    element: <ProjectPage />,
-  },
-  {
-    path: ROUTE_PATH.MYTASK,
-    element: <MyTaskPage />,
+    path: '/',
+    element: <AppLayout />, 
+    children: [
+      { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
+      { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+      { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
+      { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
+    ],
   },
 ]);
 export const AppRouter = () => {
