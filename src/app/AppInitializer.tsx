@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
 
-const AppInitializer: React.FC = () => {
+const AppInitializer = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 

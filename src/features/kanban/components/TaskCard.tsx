@@ -13,7 +13,7 @@ interface Props {
   task: Task;
 }
 
-function TaskCard({ task }: Props) {
+const TaskCard = ({ task }: Props) => {
   const deleteTaskMutation = useDeleteTaskMutation();
   const tags = generateTags(task);
 
@@ -104,6 +104,6 @@ function TaskCard({ task }: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default TaskCard;

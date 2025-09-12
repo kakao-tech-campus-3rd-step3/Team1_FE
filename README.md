@@ -35,7 +35,7 @@ pnpm run dev
 src/
 ├─ app/ # 전역 설정, 공통 엔트리
 │ ├─ providers/ # Context Provider, 상태 관련 설정
-│ ├─ store/ # 전역 상태 관리
+│ ├─ routes/ # 라우팅 관련 설정
 │ └─ styles/ # 글로벌 스타일, 테마
 │
 ├─ shared/ # 공통으로 사용하는 요소
@@ -50,7 +50,7 @@ src/
 │ │ ├─ hooks/ # featuresA 전용 커스텀 훅
 │ │ ├─ types/ # featuresA 전용 타입 정의
 │ │ ├─ utils/ # featuresA 전용 유틸 함수
-│ │ └─ services/ # featuresA 전용 API 요청/서비스 로직
+│ │ └─ api/ # featuresA 전용 API 요청/서비스 로직
 │ └─ featureB/ # ex. 회원가입
 │
 ├─ entities/ # 도메인 모델

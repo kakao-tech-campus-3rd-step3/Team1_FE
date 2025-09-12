@@ -1,5 +1,9 @@
 import { api } from '@/shared/api/axiosInstance';
-import type { KakaoLoginRequest, KakaoLoginResponse, RefreshTokenResponse } from '../types/authTypes';
+import type {
+  KakaoLoginRequest,
+  KakaoLoginResponse,
+  RefreshTokenResponse,
+} from '@/features/auth/types/authTypes';
 
 //카카오 로그인 (받아온 인가코드와 함께 BE에 전송)
 export const fetchKaKaoLogin = async ({ code }: KakaoLoginRequest): Promise<KakaoLoginResponse> => {

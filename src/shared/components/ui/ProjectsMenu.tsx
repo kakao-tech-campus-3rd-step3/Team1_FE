@@ -1,5 +1,9 @@
 import type { SidebarItem } from '@/widgets/AppSidebar';
-import { SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton } from '../shadcn/sidebar';
+import {
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+} from '@/shared/components/shadcn/sidebar';
 import { Plus } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router';
@@ -37,7 +41,7 @@ const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
           onClick={() => {
             setOpen(true);
           }}
-          className='ml-auto cursor-pointer'
+          className="ml-auto cursor-pointer"
         />
       </SidebarMenuButton>
       <SidebarMenuSub>
