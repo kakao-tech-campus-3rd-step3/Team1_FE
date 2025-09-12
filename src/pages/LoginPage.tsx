@@ -3,7 +3,7 @@ import kakaoLoginBtnImg from '@/shared/assets/images/kakao_login_large_narrow.pn
 const LoginPage = () => {
   const hadleLoginClick = () => {
     //TODO: 인증 URL 받으면 아래의 주소도 수정할 예정입니다.
-    window.location.href = 'https://kauth.kakao.com/oauth/authorize?11';
+    // window.location.href = '';
   };
   return (
     <div className="flex w-screen h-screen justify-center items-center ">
