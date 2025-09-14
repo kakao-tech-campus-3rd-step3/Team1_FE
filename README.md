@@ -1,7 +1,7 @@
 ## 🚀 프로젝트 소개
 
 <div align="center">
-  <img src="src\shared\assets\boo-with-title.png" width="200" />
+  <img src="src\shared\assets\images/boo-with-title.png" width="200" />
 </div>
 <div align="center">
 대학생을 위한 팀 프로젝트 매니저 <strong>🚀 Boost</strong>의 <strong>Front-end 프로젝트</strong>입니다!
@@ -35,7 +35,7 @@ pnpm run dev
 src/
 ├─ app/ # 전역 설정, 공통 엔트리
 │ ├─ providers/ # Context Provider, 상태 관련 설정
-│ ├─ store/ # 전역 상태 관리
+│ ├─ routes/ # 라우팅 관련 설정
 │ └─ styles/ # 글로벌 스타일, 테마
 │
 ├─ shared/ # 공통으로 사용하는 요소
@@ -46,9 +46,11 @@ src/
 │
 ├─ features/ # 기능 단위 구현
 │ ├─ featureA/ # ex. 로그인
-│ │ ├─ components/ # 기능 전용 컴포넌트
-│ │ ├─ hooks/ # 기능 전용 커스텀 훅
-│ │ └─ api/ # 기능 전용 API
+│ │ ├─ components/ # featuresA 전용 UI 컴포넌트
+│ │ ├─ hooks/ # featuresA 전용 커스텀 훅
+│ │ ├─ types/ # featuresA 전용 타입 정의
+│ │ ├─ utils/ # featuresA 전용 유틸 함수
+│ │ └─ api/ # featuresA 전용 API 요청/서비스 로직
 │ └─ featureB/ # ex. 회원가입
 │
 ├─ entities/ # 도메인 모델
@@ -87,3 +89,4 @@ src/
 | 협업 도구             | ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)                                                                                                             |
 | 패키지 / 빌드         | ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=yellow)                                                                                                                     |
 | 배포                  | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)                                                                                                                                                                                                                |
+| CI/CD                 | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github&logoColor=white)                                                                                                                                                                                                |
