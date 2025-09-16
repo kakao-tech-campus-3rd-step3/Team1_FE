@@ -14,7 +14,6 @@ const AppInitializer = () => {
       } catch (error) {
         console.error('Refresh token expired:', error);
         clearAuth();
-        window.location.href = '/login';
       }
     };
 
