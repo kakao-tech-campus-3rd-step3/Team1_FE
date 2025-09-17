@@ -5,23 +5,39 @@ import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import ServerErrorPage from '@/pages/SeverErrorPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
   LOGIN: '/login',
   PROJECT: '/project/:projectId',
   MYTASK: '/my-task',
+  ERROR:'/error',
 };
+const PUBLIC_ROUTES = [
+  { path: '/', element: <LandingPage /> },
+  { path: '/login', element: <LoginPage /> },
+  {path: '/error', element: <ServerErrorPage/>}
+];
+const PROTECTED_ROUTES = [
+  { path: '/projects', element: <ProjectPage /> },
+  { path: '/my-task', element: <MyTaskPage /> },
+];
+
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
     children: [
-      { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
-      { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
-      { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
-      { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
+      // 공개 라우트
+      ...PUBLIC_ROUTES,
+      // 보호된 라우트
+      ...PROTECTED_ROUTES.map((route) => ({
+        ...route,
+        element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+      })),
     ],
   },
 ]);

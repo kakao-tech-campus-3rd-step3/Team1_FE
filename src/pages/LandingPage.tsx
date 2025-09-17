@@ -12,6 +12,7 @@ const LandingPage = () => {
       <Button onClick={() => navigate('/project/124')}>프로젝트2 페이지</Button>
       <Button onClick={() => navigate(ROUTE_PATH.MYTASK)}>나의 할 일 페이지</Button>
       <Button onClick={() => navigate(ROUTE_PATH.LOGIN)}>로그인 페이지</Button>
+      <Button onClick={()=>{navigate(ROUTE_PATH.ERROR)}}>에러 페이지</Button>
     </div>
   );
 };
