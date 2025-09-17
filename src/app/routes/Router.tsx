@@ -14,17 +14,19 @@ export const ROUTE_PATH = {
 };
 
 export const router = createBrowserRouter([
+  { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
+  { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+
   {
     path: '/',
     element: <AppLayout />,
     children: [
-      { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
-      { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
       { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
       { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
     ],
   },
 ]);
+
 export const AppRouter = () => {
   return <RouterProvider router={router} />;
 };
