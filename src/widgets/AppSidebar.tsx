@@ -50,7 +50,7 @@ const AppSidebar = () => {
 
   useEffect(() => {
     setOpen(false);
-  }, []);
+  }, [setOpen]);
 
   return (
     <Sidebar
