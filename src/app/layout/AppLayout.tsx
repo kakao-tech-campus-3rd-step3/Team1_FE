@@ -4,7 +4,7 @@ import { Outlet } from 'react-router';
 
 const AppLayout = () => {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className=" w-screen h-screen ">
         <AppSidebar />
         <main className=" w-screen h-screen">
