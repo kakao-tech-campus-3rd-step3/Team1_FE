@@ -7,9 +7,9 @@ const AppLayout = () => {
     <SidebarProvider defaultOpen={false}>
       <div className=" w-screen h-screen ">
         <AppSidebar />
-        <main className=" w-screen h-screen">
-          <Outlet />
-        </main>
+       <main className="flex-1 w-screen h-full overflow-auto">
+  <Outlet />
+</main>
       </div>
     </SidebarProvider>
   );
