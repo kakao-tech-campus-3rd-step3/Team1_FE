@@ -1,8 +1,7 @@
 import { Card, CardContent } from '@/shared/components/shadcn/card';
 import { Button } from '@/shared/components/shadcn/button';
 import { Home, RefreshCw } from 'lucide-react';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
-import { AlertDialogFooter, AlertDialogHeader } from '@/shared/components/shadcn/alert-dialog';
+
 
 const ServerErrorPage = () => {
   const handleGoHome = () => {
@@ -36,24 +35,7 @@ const ServerErrorPage = () => {
               </p>
             </div>
 
-            {/* Alert */}
-<AlertDialog>
-  <AlertDialogTrigger>Open</AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction>Continue</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-            {/* Action Buttons */}
+
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button onClick={handleGoHome} className="flex items-center gap-2">
                 <Home size={16} />
