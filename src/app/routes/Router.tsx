@@ -6,25 +6,24 @@ import ProjectPage from '@/pages/ProjectPage';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import ServerErrorPage from '@/pages/SeverErrorPage';
+import ServerErrorPage from '@/pages/ServerErrorPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
   LOGIN: '/login',
   PROJECT: '/project/:projectId',
   MYTASK: '/my-task',
-  ERROR:'/error',
+  ERROR: '/error',
 };
 const PUBLIC_ROUTES = [
   { path: '/', element: <LandingPage /> },
   { path: '/login', element: <LoginPage /> },
-  {path: '/error', element: <ServerErrorPage/>}
+  { path: '/error', element: <ServerErrorPage /> },
 ];
 const PROTECTED_ROUTES = [
-  { path: '/projects', element: <ProjectPage /> },
+  { path: '/project/:projectId', element: <ProjectPage /> },
   { path: '/my-task', element: <MyTaskPage /> },
 ];
-
 
 export const router = createBrowserRouter([
   {
