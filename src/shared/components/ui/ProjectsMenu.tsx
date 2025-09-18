@@ -54,7 +54,7 @@ const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
             </SidebarMenuSubButton>
           );
         })}
-      </SidebarMenuSub>{' '}
+      </SidebarMenuSub>
     </>
   );
 };

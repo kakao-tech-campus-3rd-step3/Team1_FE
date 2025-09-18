@@ -57,11 +57,11 @@ const LoginPage = () => {
           {/* 하단 안내 텍스트 */}
           <div className="text-center space-y-4 pt-6 w-full">
             <p className="text-sm text-gray-500">
-              로그인 시{' '}
+              로그인 시
               <button className="text-blue-600 hover:text-blue-700 underline underline-offset-2 transition-colors">
                 서비스 약관
-              </button>{' '}
-              및{' '}
+              </button>
+              및
               <button className="text-blue-600 hover:text-blue-700 underline underline-offset-2 transition-colors">
                 개인정보처리방침
               </button>
