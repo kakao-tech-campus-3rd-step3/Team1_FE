@@ -5,7 +5,7 @@ import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 
 export const ROUTE_PATH = {
