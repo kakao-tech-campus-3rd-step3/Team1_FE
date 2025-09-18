@@ -26,6 +26,9 @@ const PROTECTED_ROUTES = [
 ];
 
 export const router = createBrowserRouter([
+  { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
+  { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+
   {
     path: '/',
     element: <AppLayout />,
@@ -40,6 +43,7 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
 export const AppRouter = () => {
   return <RouterProvider router={router} />;
 };

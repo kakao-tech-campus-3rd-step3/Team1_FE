@@ -17,7 +17,6 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import logo from '@/shared/assets/images/15.png';
 import ProjectsMenu from '@/shared/components/ui/ProjectsMenu';
 import { Link } from 'react-router';
-import { useEffect } from 'react';
 
 export interface SidebarSubItem {
   title: string;
@@ -45,12 +44,7 @@ const items: SidebarItem[] = [
 
 const AppSidebar = () => {
   //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
-
   const { setOpen } = useSidebar();
-
-  useEffect(() => {
-    setOpen(false);
-  }, []);
 
   return (
     <Sidebar
