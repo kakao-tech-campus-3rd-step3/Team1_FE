@@ -51,7 +51,7 @@ const AvatarsDrawer = ({
                 <div className="relative">
                   {/* 선택된 아바타 배경 글로우 */}
                   {selectedAvatar === avatarUrl && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-boost-blue to-purple-500 rounded-full blur-md opacity-30 scale-110"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-boost-blue to-purple-500 rounded-full blur-md opacity-30 scale-110"/>
                   )}
 
                   <Avatar

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getAvatarListUtils, getRandomAvatar } from '@/features/avatar-picker/utils/avatarUtils';
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
@@ -7,7 +7,7 @@ import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 
 const AvatarSettingsPage = () => {
-  const avatarList = getAvatarListUtils();
+const avatarList = useMemo(() => getAvatarListUtils(), []);
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -15,7 +15,7 @@ const AvatarSettingsPage = () => {
   useEffect(() => {
     const randomAvatar = getRandomAvatar(avatarList);
     setSelectedAvatar(randomAvatar);
-  }, []);
+  }, [avatarList]);
 
   const handleAvatarSelect = (avatarUrl: string) => {
     setSelectedAvatar(avatarUrl);
