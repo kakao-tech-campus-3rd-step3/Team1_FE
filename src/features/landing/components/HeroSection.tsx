@@ -19,6 +19,8 @@ const HeroSection = () => {
     { label: '프로젝트 페이지', click: () => navigate(`/project/${123}`) },
     { label: '에러 페이지', click: () => navigate(ROUTE_PATH.ERROR) },
     { label: '모달 테스트 페이지', click: () => navigate(ROUTE_PATH.MODAL) },
+    { label: '에러 페이지', click: () => navigate('/error') },
+    { label: '아바타 설정 페이지', click: () => navigate('/avatar') },
   ];
 
   return (

@@ -8,6 +8,7 @@ import { RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
+import AvatarPickerPage from '@/pages/AvatarPickerPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -16,6 +17,7 @@ export const ROUTE_PATH = {
   MYTASK: '/my-task',
   ERROR: '/error',
   MODAL: '/modal-test',
+  AVATAR: '/avatar',
 };
 
 const PUBLIC_ROUTES = [
@@ -28,6 +30,7 @@ const PUBLIC_ROUTES = [
 const PROTECTED_ROUTES = [
   { path: '/project/:projectId', element: <ProjectPage /> },
   { path: '/my-task', element: <MyTaskPage /> },
+  { path: '/avatar', element: <AvatarPickerPage /> },
 ];
 
 export const router = createBrowserRouter([
