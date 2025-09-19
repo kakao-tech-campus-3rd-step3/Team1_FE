@@ -17,6 +17,8 @@ const HeroSection = () => {
 
   const options = [
     { label: '프로젝트 페이지', click: () => navigate(`/project/${123}`) },
+    { label: '에러 페이지', click: () => navigate(ROUTE_PATH.ERROR) },
+    { label: '모달 테스트 페이지', click: () => navigate(ROUTE_PATH.MODAL) },
     { label: '에러 페이지', click: () => navigate('/error') },
     { label: '아바타 설정 페이지', click: () => navigate('/avatar') },
   ];
@@ -50,13 +52,13 @@ const HeroSection = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="secondary"
-                  className="bg-gray-300 shadow-sm w-full sm:w-36 h-10 focus:ring-transparent"
+                  className="bg-gray-300 shadow-sm w-full sm:w-40 h-10 focus:ring-transparent"
                 >
                   데모 보기
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="w-full sm:w-36 border-gray-300 mt-1">
+              <DropdownMenuContent className="w-full sm:w-40 border-gray-300 mt-1">
                 {options.map((opt) => (
                   <DropdownMenuItem
                     key={opt.label}

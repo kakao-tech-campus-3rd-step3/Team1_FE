@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppRouter } from '@/app/routes/Router';
 import ServerErrorPage from './pages/ServerErrorPage';
 import { ErrorBoundary } from 'react-error-boundary';
+import ModalProvider from '@/shared/components/ui/ModalContainer';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 // 아래는 에러바운더리 테스트용 코드입니다.
@@ -16,8 +18,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         {/* < AppInitializer/> */}
         {/* <BuggyComponent /> */}
-
+        <ModalProvider />
         <AppRouter />
+        <Toaster position="top-right" reverseOrder={false} />
       </QueryClientProvider>
     </ErrorBoundary>
   );
