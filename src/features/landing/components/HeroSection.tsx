@@ -18,6 +18,7 @@ const HeroSection = () => {
   const options = [
     { label: '프로젝트 페이지', click: () => navigate(`/project/${123}`) },
     { label: '에러 페이지', click: () => navigate('/error') },
+    { label: '아바타 설정 페이지', click: () => navigate('/avatar') },
   ];
 
   return (

@@ -4,13 +4,12 @@ import type { AxiosError } from 'axios';
 interface ApiErrorResponse {
   message: string;
 }
-export const handleUnauthorized = (error?:AxiosError) => {
+export const handleUnauthorized = (error?: AxiosError) => {
   const clearAuth = useAuthStore.getState().clearAuth;
-   clearAuth();
-   alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-    return Promise.reject(error);
-
-}
+  clearAuth();
+  alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+  return Promise.reject(error);
+};
 export const handleGeneralApiError = (error: AxiosError<ApiErrorResponse>) => {
   if (!error.response) {
     alert('네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요');
