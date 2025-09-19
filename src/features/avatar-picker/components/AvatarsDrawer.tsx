@@ -1,5 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/shared/components/shadcn/drawer';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/shared/components/shadcn/drawer';
 import { Check, Pen, User } from 'lucide-react';
 interface AvatarsDrawerProps {
   isDrawerOpen: boolean;
@@ -13,7 +20,7 @@ const AvatarsDrawer = ({
   setIsDrawerOpen,
   avatarList,
   selectedAvatar,
-  handleAvatarSelect
+  handleAvatarSelect,
 }: AvatarsDrawerProps) => {
   return (
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
@@ -76,4 +83,4 @@ const AvatarsDrawer = ({
   );
 };
 
-export default AvatarsDrawer
+export default AvatarsDrawer;

@@ -3,7 +3,7 @@ import AvatarLJH from '@/shared/assets/images/ljh-avatar.png';
 import AvatarKWH from '@/shared/assets/images/kwh-avatar.png';
 import AvatarKHM from '@/shared/assets/images/khm-avatar.png';
 import AvatarSYJ from '@/shared/assets/images/syj-avatar.png';
-import AvartarYDY from '@/shared/assets/images/ydy-avatar.png';
+import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
 
 const TeamSection = () => {
   const teamMembers = [
@@ -11,7 +11,7 @@ const TeamSection = () => {
     { name: '김원호', role: 'Backend', img: AvatarKWH },
     { name: '김혜민', role: 'Frontend', img: AvatarKHM },
     { name: '서영진', role: 'Backend', img: AvatarSYJ },
-    { name: '유다연', role: 'Frontend', img: AvartarYDY },
+    { name: '유다연', role: 'Frontend', img: AvatarYDY },
   ];
 
   return (

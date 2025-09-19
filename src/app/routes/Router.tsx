@@ -15,7 +15,7 @@ export const ROUTE_PATH = {
   PROJECT: '/project/:projectId',
   MYTASK: '/my-task',
   ERROR: '/error',
-  AVARTAR:'/avatar'
+  AVATAR: '/avatar',
 };
 const PUBLIC_ROUTES = [
   { path: '/', element: <LandingPage /> },
@@ -25,7 +25,7 @@ const PUBLIC_ROUTES = [
 const PROTECTED_ROUTES = [
   { path: '/project/:projectId', element: <ProjectPage /> },
   { path: '/my-task', element: <MyTaskPage /> },
-  {path: '/avartar', element: <AvatarPickerPage/>}
+  { path: '/avatar', element: <AvatarPickerPage /> },
 ];
 
 export const router = createBrowserRouter([

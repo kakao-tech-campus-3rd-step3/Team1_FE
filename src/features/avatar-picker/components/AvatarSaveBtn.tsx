@@ -1,9 +1,9 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { Check } from 'lucide-react';
-interface handleSaveProps {
-  handleSave:()=>void
-} 
-const AvatarSaveBtn = ({ handleSave }: handleSaveProps) => {
+interface AvatarSaveBtnProps {
+  handleSave: () => void;
+}
+const AvatarSaveBtn = ({ handleSave }: AvatarSaveBtnProps) => {
   return (
     <div className="pt-12">
       <Button
@@ -21,4 +21,4 @@ const AvatarSaveBtn = ({ handleSave }: handleSaveProps) => {
   );
 };
 
-export default AvatarSaveBtn
+export default AvatarSaveBtn;

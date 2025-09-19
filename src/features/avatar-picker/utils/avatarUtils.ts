@@ -1,7 +1,7 @@
 type AvatarModule = { default: string };
 
 export const getAvatarListUtils = () => {
-  const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.svg', {
+  const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.png', {
     eager: true,
   });
   return Object.values(avatarModules).map((module) => module.default);

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getAvatarListUtils, getRandomAvatar } from '@/features/avatar-picker/utils/avatarUtils';
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
-import AvartarInfo from '@/features/avatar-picker/components/AvatarInfo';
-import AvatarBackgroundDecorations from '../features/avatar-picker/components/AvatarBackgroundDecorations';
-import AvartarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
+import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
+import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
+import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 
 const AvatarSettingsPage = () => {
@@ -41,8 +41,8 @@ const AvatarSettingsPage = () => {
           avatarList={avatarList}
           handleAvatarSelect={handleAvatarSelect}
         />
-        <AvartarInfo />
-        <AvartarSaveBtn handleSave={handleSave} />
+        <AvatarInfo />
+        <AvatarSaveBtn handleSave={handleSave} />
       </div>
     </div>
   );

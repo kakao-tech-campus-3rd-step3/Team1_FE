@@ -67,7 +67,7 @@ jobs:
   # 2️⃣ 미리보기 배포 (feature, develop 브랜치)
   deploy-preview:
     if: "!startsWith(github.ref, 'refs/heads/release/')"
-    needs: [lint, build]  # lint와 build가 모두 성공해야 배포
+    needs: [lint, build] # lint와 build가 모두 성공해야 배포
     runs-on: ubuntu-latest
     steps:
       - name: 코드 체크아웃
@@ -92,7 +92,7 @@ jobs:
           script: |
             const deployUrl = '${{ steps.deploy.outputs.url }}';
             const comment = `🚀 **미리보기 배포 완료!**\n\n📝 **배포 URL:** ${deployUrl}\n\n✅ **브랜치:** \`${{ github.head_ref }}\`\n✅ **커밋:** \`${{ github.sha }}\``;
-            
+
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -103,7 +103,7 @@ jobs:
   # 3️⃣ 운영 배포 (release 브랜치)
   deploy-production:
     if: startsWith(github.ref, 'refs/heads/release/')
-    needs: [lint, build]  # lint와 build가 모두 성공해야 배포
+    needs: [lint, build] # lint와 build가 모두 성공해야 배포
     runs-on: ubuntu-latest
     steps:
       - name: 코드 체크아웃

@@ -10,6 +10,6 @@ const AvatarInfo = () => {
       </div>
     </div>
   );
-}
+};
 
-export default AvatarInfo
+export default AvatarInfo;

@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/features/auth/store/authStore';
 import axios from 'axios';
-import { handleGeneralApiError} from '@/shared/api/errorHandler';
+import { handleGeneralApiError } from '@/shared/api/errorHandler';
 import { handleUnauthorizedRequest } from '@/shared/api/authIntercepter';
 // TODO: 인증 불필요 API에도 토큰이 붙음 → 보안상 불필요. 나중에 apiPublic 같은 인스턴스 분리 고려
 export const api = axios.create({
