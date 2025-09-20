@@ -28,11 +28,7 @@ const PDFPreview = () => {
     <div className="flex flex-col bg-gray-300 justify-between gap-4  w-[50rem] h-screen">
       <div className="w-full h-full ">
         <Document className="w-full h-full " file={pdfurl} onLoadSuccess={onDocumentLoadSuccess}>
-          <Page
-            className="w-full "
-            pageNumber={pageNumber}
-       
-          />
+          <Page className="w-full " pageNumber={pageNumber} />
         </Document>
       </div>
 

@@ -33,7 +33,7 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
   { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
-  { path: ROUTE_PATH.PDF_PREVIEW, element: <PDFViewer/> },
+  { path: ROUTE_PATH.PDF_PREVIEW, element: <PDFViewer /> },
 ];
 
 export const router = createBrowserRouter([
