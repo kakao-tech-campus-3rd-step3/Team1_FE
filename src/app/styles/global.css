@@ -21,3 +21,6 @@ body,
     'Segoe UI Symbol',
     sans-serif;
 }
+.react-pdf__Page__textContent {
+  max-width: 50rem !important;
+}
