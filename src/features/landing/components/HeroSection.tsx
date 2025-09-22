@@ -20,7 +20,7 @@ const HeroSection = () => {
     { label: '에러 페이지', click: () => navigate(ROUTE_PATH.ERROR) },
     { label: '모달 테스트 페이지', click: () => navigate(ROUTE_PATH.MODAL) },
     { label: '아바타 설정 페이지', click: () => navigate(ROUTE_PATH.AVATAR) },
-    { label: 'PDF 미리보기', click: () => navigate(ROUTE_PATH.PDF_PREVIEW) },
+    { label: '할 일 상세 페이지', click: () => navigate(ROUTE_PATH.TASK_DETAIL) },
   ];
 
   return (
