@@ -65,7 +65,7 @@ export const usePdfStore = create<PdfState>((set, get) => ({
           pageSize: { width: viewport.width, height: viewport.height },
         });
       } catch (error) {
-        console.error('에러 : 페이지 크기 가져오기 실패');
+        console.error('에러 : 페이지 크기 가져오기 실패', error);
       }
     }
   },
