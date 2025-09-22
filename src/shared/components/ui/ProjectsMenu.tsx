@@ -52,16 +52,16 @@ const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
         />
       </SidebarMenuButton>
       <SidebarMenuSub>
-        {item.subItems?.map((subItem) => {
+        {item.subItems?.map((subItem, index) => {
           return (
-            <SidebarMenuSubButton asChild>
+            <SidebarMenuSubButton key={index} asChild>
               <Link to={subItem.url}>
                 <span className="flex-1 text-left">{subItem.title}</span>
               </Link>
             </SidebarMenuSubButton>
           );
         })}
-      </SidebarMenuSub>{' '}
+      </SidebarMenuSub>
     </>
   );
 };
