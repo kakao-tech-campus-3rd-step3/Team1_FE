@@ -5,41 +5,48 @@ import {
   SidebarMenuSubButton,
 } from '@/shared/components/shadcn/sidebar';
 import { Plus } from 'lucide-react';
-import React from 'react';
 import { Link } from 'react-router';
+import useModalStore from '@/shared/store/useModalStore';
+import ProjectCreateModalContent from '@/features/project/components/ProjectCreateModalContent';
+import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProjectMutation';
+import toast from 'react-hot-toast';
+
 interface SidebarMenuItemProps {
   item: SidebarItem;
 }
+
 const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
-  const [open, setOpen] = React.useState(false);
+  const { openModal } = useModalStore();
+
+  const createProjectMutation = useCreateProjectMutation();
+
+  const handleOpenProjectCreateModal = () => {
+    openModal({
+      type: 'custom',
+      title: '프로젝트 생성하기',
+      description: '프로젝트 이름을 입력하면, 새로운 프로젝트를 생성할 수 있어요.',
+      content: (
+        <ProjectCreateModalContent
+          onConfirm={async (projectName) => {
+            await createProjectMutation.mutateAsync(projectName);
+            toast.success(`프로젝트가 성공적으로 생성되었습니다!`);
+          }}
+        />
+      ),
+    });
+  };
 
   return (
     <>
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-[400px]">
-            <h2 className="text-lg font-semibold mb-4">프로젝트 생성</h2>
-            <input
-              type="text"
-              placeholder="프로젝트 이름"
-              className="w-full border rounded-md px-3 py-2 mb-4"
-            />
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setOpen(false)} className="px-4 py-2 rounded-md border">
-                취소
-              </button>
-              <button className="px-4 py-2 rounded-md bg-blue-600 text-white">생성</button>
-            </div>
-          </div>
-        </div>
-      )}
       <SidebarMenuButton>
         {item.icon}
         <span className="flex-shrink-0">{item.title}</span>
 
         <Plus
-          onClick={() => {
-            setOpen(true);
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleOpenProjectCreateModal();
           }}
           className="ml-auto cursor-pointer"
         />
