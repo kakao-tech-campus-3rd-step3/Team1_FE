@@ -1,0 +1,16 @@
+import { useEffect, useState } from 'react';
+import api from '@/shared/api/axiosInstance';
+
+export default function ApiHealthCheck() {
+  const [result, setResult] = useState('');
+  console.log(import.meta.env.VITE_API_BASE_URL);
+
+  useEffect(() => {
+    api
+      .get('/health')
+      .then((res) => setResult(JSON.stringify(res.data)))
+      .catch((err) => setResult('에러: ' + err.message));
+  }, []);
+
+  return <div>Health 체크 결과: {result}</div>;
+}

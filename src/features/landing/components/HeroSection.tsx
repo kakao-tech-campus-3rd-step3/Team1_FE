@@ -21,6 +21,7 @@ const HeroSection = () => {
     { label: '모달 테스트 페이지', click: () => navigate(ROUTE_PATH.MODAL) },
     { label: '아바타 설정 페이지', click: () => navigate(ROUTE_PATH.AVATAR) },
     { label: '할 일 상세 페이지', click: () => navigate(ROUTE_PATH.TASK_DETAIL) },
+    { label: 'API 연동 체크', click: () => navigate(ROUTE_PATH.API_CHECK) },
   ];
 
   return (

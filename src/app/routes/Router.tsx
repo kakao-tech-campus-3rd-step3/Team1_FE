@@ -10,6 +10,7 @@ import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
+import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -19,6 +20,7 @@ export const ROUTE_PATH = {
   ERROR: '/error',
   MODAL: '/modal-test',
   AVATAR: '/avatar',
+  API_CHECK: '/health',
   TASK_DETAIL: '/task-detail'
 };
 
@@ -27,6 +29,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.MODAL, element: <ModalTestPage /> },
+  { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
 ];
 
 const PROTECTED_ROUTES = [
