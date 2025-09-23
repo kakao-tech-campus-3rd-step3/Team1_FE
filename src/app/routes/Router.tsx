@@ -9,7 +9,7 @@ import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
-import PDFViewer from '@/features/pdfPreview/components/PDFViewer';
+import TaskDetailPage from '@/pages/TaskDetailPage';
 import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 
 export const ROUTE_PATH = {
@@ -20,8 +20,8 @@ export const ROUTE_PATH = {
   ERROR: '/error',
   MODAL: '/modal-test',
   AVATAR: '/avatar',
-  PDF_PREVIEW: '/pdf-preview',
   API_CHECK: '/health',
+  TASK_DETAIL: '/task-detail'
 };
 
 const PUBLIC_ROUTES = [
@@ -36,7 +36,7 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
   { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
-  { path: ROUTE_PATH.PDF_PREVIEW, element: <PDFViewer /> },
+  { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
 ];
 
 export const router = createBrowserRouter([
