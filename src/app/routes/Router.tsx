@@ -10,6 +10,8 @@ import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
+import TaskDetailPage from '@/pages/TaskDetailPage';
+import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -20,20 +22,24 @@ export const ROUTE_PATH = {
   MODAL: '/modal-test',
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
+  API_CHECK: '/health',
+  TASK_DETAIL: '/task-detail'
 };
 
 const PUBLIC_ROUTES = [
-  { path: '/', element: <LandingPage /> },
-  { path: '/login', element: <LoginPage /> },
-  { path: '/error', element: <ServerErrorPage /> },
+  { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
+  { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+  { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.MODAL, element: <ModalTestPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
+  { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
 ];
 
 const PROTECTED_ROUTES = [
-  { path: '/project/:projectId', element: <ProjectPage /> },
-  { path: '/my-task', element: <MyTaskPage /> },
-  { path: '/avatar', element: <AvatarPickerPage /> },
+  { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
+  { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
+  { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
+  { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
 ];
 
 export const router = createBrowserRouter([
