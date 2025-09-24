@@ -8,14 +8,14 @@ interface CommonModalProps {
 }
 
 export const useModal = () => {
-  const { openModal, closeModal, backModal } = useModalStore();
+  const { openModal, resetModal, backModal } = useModalStore();
 
   const wrapButton = (btn: ModalButton): ModalButton => ({
     ...btn,
     onClick: async () => {
       try {
         await btn.onClick();
-        closeModal();
+        resetModal();
       } catch (err) {
         console.error('Modal action failed:', err);
       }
@@ -53,7 +53,7 @@ export const useModal = () => {
           variant: 'outline',
           onClick: async () => {
             await onCancel?.();
-            closeModal();
+            resetModal();
           },
         },
         wrapButton({
@@ -76,5 +76,5 @@ export const useModal = () => {
     });
   };
 
-  return { showAlert, showConfirm, showCustom, showSelect, closeModal, backModal };
+  return { showAlert, showConfirm, showCustom, showSelect, resetModal, backModal };
 };
