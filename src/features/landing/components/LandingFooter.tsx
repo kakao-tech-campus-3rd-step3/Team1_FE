@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/shadcn/button';
 
 const LandingFooter = () => {
   return (
-    <section id="help" className="mt-24 bg-gray-900 text-white w-screen py-20">
+    <div className="mt-24 bg-gray-900 text-white w-screen py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16">
           <div>
@@ -69,7 +69,7 @@ const LandingFooter = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

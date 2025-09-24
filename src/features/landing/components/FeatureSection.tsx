@@ -25,9 +25,8 @@ const FeaturesSection = ({
   animationType = 'left',
 }: FeatureSectionProps) => {
   return (
-    <section
-      id="about"
-      className={`flex flex-col items-center justify-between max-w-6xl mx-auto py-20 px-6 gap-12 ${animationType === 'left' ? 'ml-30' : ''} ${animationType === 'right' ? 'mr-30' : ''}`}
+    <div
+      className={`flex flex-col w-fit items-center max-w-6xl mx-auto py-20 px-6 gap-12 ${animationType === 'left' ? 'ml-30' : ''} ${animationType === 'right' ? 'mr-30' : ''}`}
     >
       <motion.div
         className={`flex-1`}
@@ -52,7 +51,7 @@ const FeaturesSection = ({
           variants={animationVariants[animationType]}
         />
       )}
-    </section>
+    </div>
   );
 };
 
