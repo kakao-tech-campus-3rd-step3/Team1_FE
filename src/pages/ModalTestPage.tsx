@@ -6,7 +6,7 @@ import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProj
 import toast from 'react-hot-toast';
 
 const ModalTestPage = () => {
-  const { showAlert, showConfirm, showCustom, closeModal } = useModal();
+  const { showAlert, showConfirm, showCustom, resetModal } = useModal();
   const createProjectMutation = useCreateProjectMutation();
 
   return (
@@ -49,7 +49,7 @@ const ModalTestPage = () => {
                 여기에 내가 만들고 싶은 내용을 content 컴포넌트로 만들어 추가합니다.
               </div>
             ),
-            buttons: [{ text: '닫기', onClick: () => closeModal(), variant: 'primary' }],
+            buttons: [{ text: '닫기', onClick: () => resetModal(), variant: 'primary' }],
           })
         }
       >
