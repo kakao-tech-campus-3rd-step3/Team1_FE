@@ -14,9 +14,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://api.boost.ai.kr',
+        target: 'https://api.boost.ai.kr',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
