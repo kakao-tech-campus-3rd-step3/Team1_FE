@@ -23,7 +23,12 @@ export const useCreateTaskMutation = () => {
         files: 0,
         description: '',
         urgent: false,
-        requiredReviewCount: 2,
+        review: {
+          requiredReviewCount: 4,
+          approvedCount: 2,
+          pendingCount: 0,
+          isCompleted: false,
+        },
       };
 
       queryClient.setQueryData(['tasks'], (old: Task[]) => {
