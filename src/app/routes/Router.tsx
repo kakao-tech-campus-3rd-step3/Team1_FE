@@ -9,6 +9,7 @@ import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
+import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 
@@ -20,6 +21,7 @@ export const ROUTE_PATH = {
   ERROR: '/error',
   MODAL: '/modal-test',
   AVATAR: '/avatar',
+  CALLBACK: '/auth/callback',
   API_CHECK: '/health',
   TASK_DETAIL: '/task-detail'
 };
@@ -29,6 +31,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.MODAL, element: <ModalTestPage /> },
+  { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
 ];
 

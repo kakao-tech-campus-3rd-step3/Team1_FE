@@ -16,7 +16,8 @@ export default defineConfig({
       '/api': {
         target: 'http://api.boost.ai.kr',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
