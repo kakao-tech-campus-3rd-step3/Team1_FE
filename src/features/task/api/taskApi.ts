@@ -16,7 +16,12 @@ let mockTasks: Task[] = [
     comments: 2,
     files: 3,
     urgent: true,
-    requiredReviewCount: 0,
+    review: {
+      requiredReviewCount: 4,
+      approvedCount: 2,
+      pendingCount: 0,
+      isCompleted: false,
+    },
   },
   {
     id: '2',
@@ -29,7 +34,12 @@ let mockTasks: Task[] = [
     comments: 0,
     files: 1,
     urgent: true,
-    requiredReviewCount: 2,
+    review: {
+      requiredReviewCount: 4,
+      approvedCount: 2,
+      pendingCount: 0,
+      isCompleted: false,
+    },
   },
   {
     id: '3',
@@ -42,7 +52,12 @@ let mockTasks: Task[] = [
     comments: 5,
     files: 0,
     urgent: false,
-    requiredReviewCount: 2,
+    review: {
+      requiredReviewCount: 4,
+      approvedCount: 2,
+      pendingCount: 0,
+      isCompleted: false,
+    },
   },
   {
     id: '4',
@@ -55,7 +70,12 @@ let mockTasks: Task[] = [
     comments: 1,
     files: 1,
     urgent: false,
-    requiredReviewCount: 0,
+    review: {
+      requiredReviewCount: 4,
+      approvedCount: 2,
+      pendingCount: 0,
+      isCompleted: false,
+    },
   },
 ];
 
@@ -78,7 +98,12 @@ export const kanbanApi = {
       files: 0,
       description: '할 일 설명',
       urgent: true,
-      requiredReviewCount: 2,
+      review: {
+        requiredReviewCount: 4,
+        approvedCount: 2,
+        pendingCount: 0,
+        isCompleted: false,
+      },
     };
     mockTasks.push(newTask);
     return newTask;
