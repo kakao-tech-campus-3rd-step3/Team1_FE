@@ -1,5 +1,7 @@
 import FileSection from '@/features/task-detail/components/FileSection';
 import PDFViewer from '@/features/task-detail/components/PdfViewer';
+import TaskDetailTobTab from '@/features/task-detail/components/TaskDetailTopTab';
+import { mockTask } from '@/features/task/types/taskTypes';
 import { useState } from 'react';
 
 const TaskDetailPage = () => {
@@ -7,7 +9,7 @@ const TaskDetailPage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="bg-gray-500 h-12">상단바 영역</div>
+      <TaskDetailTobTab task={mockTask} />
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
