@@ -9,7 +9,8 @@ interface ModalButtonsProps {
 }
 
 export function ModalButtons({ buttons }: ModalButtonsProps) {
-  const { isLoading, setLoading } = useModalStore();
+  const { setLoading, stack } = useModalStore();
+  const isLoading = stack[stack.length - 1]?.isLoading ?? false;
 
   const handleClick = async (onClick: () => void | Promise<void>) => {
     setLoading(true);
