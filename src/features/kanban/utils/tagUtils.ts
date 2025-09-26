@@ -4,6 +4,7 @@ const tagColorMap: Record<string, string> = {
   긴급: 'bg-red-100 text-red-800',
   검토필요: 'bg-green-100 text-green-800',
   검토완료: 'bg-blue-100 text-blue-800',
+  마감일: 'bg-green-100 text-green-800',
 };
 
 const defaultColors = [
