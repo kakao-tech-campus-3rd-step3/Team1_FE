@@ -3,6 +3,7 @@ import PDFViewer from '@/features/task-detail/components/PdfViewer';
 import TaskDetailTobTab from '@/features/task-detail/components/TaskDetailTopTab';
 import { mockTask } from '@/features/task/types/taskTypes';
 import { useState } from 'react';
+import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent';
 
 const TaskDetailPage = () => {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
@@ -16,8 +17,12 @@ const TaskDetailPage = () => {
             <PDFViewer />
           ) : (
             <>
-              <section id="detail" aria-label="할 일 상세 섹션" className="h-8/12 bg-gray-300">
-                할 일 상세 섹션
+              <section
+                id="detail"
+                aria-label="할 일 상세 섹션"
+                className="h-8/12  overflow-y-scroll"
+              >
+                <TaskDetailContent />
               </section>
               <section id="file" aria-label="파일 섹션" className="h-4/12 bg-gray-400">
                 <FileSection onOpenPdf={() => setIsPdfOpen(true)} />
