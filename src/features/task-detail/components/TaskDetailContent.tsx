@@ -3,14 +3,13 @@ import { mockTask } from '@/features/task/types/taskTypes';
 import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
 import { Badge } from '@/shared/components/shadcn/badge';
 import { User, Calendar, Tag, FileText, ChevronUp } from 'lucide-react';
-import { calculateDDay } from '@/features/task-detail/util/dDayUtiils';
+import { calculateDDay } from '@/shared/utils/dateUtils';
 import TagList from '@/features/task-detail/components/TagList';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import { useState } from 'react';
 
 const TaskDetailContent = () => {
   const tags = generateTags(mockTask);
-  const dDay = calculateDDay(mockTask.dueDate);
   const [showAllAssignees, setShowAllAssignees] = useState(false);
   const displayedAssignees = showAllAssignees ? mockTask.assignees : mockTask.assignees.slice(0, 2);
 
@@ -58,7 +57,9 @@ const TaskDetailContent = () => {
         <ContentItem icon={<Calendar className="w-5 h-5 text-xl text-gray-900" />} title="마감일">
           <div className="flex items-center gap-2">
             <p>{mockTask.dueDate}</p>
-            <Badge className={`text-gray-500 ${getColorForTag('마감일')}`}>{dDay}일 남음</Badge>
+            <Badge className={`text-gray-500 ${getColorForTag('마감일')}`}>
+              {calculateDDay(mockTask.dueDate, 'text')}
+            </Badge>
           </div>
         </ContentItem>
       </div>
