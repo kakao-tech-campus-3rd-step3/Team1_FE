@@ -1,3 +1,4 @@
+import CommentSection from '@/features/task-detail/components/CommentSection';
 import FileSection from '@/features/task-detail/components/FileSection';
 import PDFViewer from '@/features/task-detail/components/PdfViewer';
 import TaskDetailTobTab from '@/features/task-detail/components/TaskDetailTopTab';
@@ -26,8 +27,8 @@ const TaskDetailPage = () => {
           )}
         </div>
         <div id="right" className="w-4/10 bg-gray-200">
-          <section id="comment" aria-label="댓글 섹션">
-            댓글 섹션
+          <section id="comment" aria-label="댓글 섹션" className="h-[calc(100vh-4rem)]">
+            <CommentSection />
           </section>
         </div>
       </div>
