@@ -6,7 +6,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { Task } from '@/features/task/types/taskTypes';
 import { useDeleteTaskMutation } from '@/features/task/hooks/useDeleteTaskMutation';
-import { getDDay } from '@/shared/utils/dateUtils';
+import { calculateDDay } from '@/shared/utils/dateUtils';
 import { generateTags, getColorForTag } from '@/features/kanban/utils/tagUtils';
 
 interface Props {
@@ -81,7 +81,7 @@ const TaskCard = ({ task }: Props) => {
           <Calendar className="w-3.5 h-3.5" />
           {task.dueDate}
         </div>
-        <div className="ml-2 ">{getDDay(task.dueDate)}</div>
+        <div className="ml-2 ">{calculateDDay(task.dueDate, 'string')}</div>
       </div>
 
       {/* 담당자, 댓글 수, 파일 수 */}
