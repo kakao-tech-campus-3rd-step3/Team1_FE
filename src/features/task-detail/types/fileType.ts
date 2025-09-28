@@ -3,8 +3,8 @@ import green from '@/shared/assets/images/file_spinner_green.png';
 
 export type FileType = {
   fileName: string;
-  onOpenPdf: (fileUrl?: string) => void;
-  fileUrl?: string;
+  onOpenPdf: (fileUrl: string) => void;
+  fileUrl: string;
   onDelete: () => void;
   onDownload: () => void;
   fileSize: string;
