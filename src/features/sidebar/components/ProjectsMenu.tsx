@@ -1,4 +1,3 @@
-import type { SidebarItem } from '@/widgets/AppSidebar';
 import {
   SidebarMenuButton,
   SidebarMenuSub,
@@ -10,6 +9,7 @@ import ProjectCreateModalContent from '@/features/project/components/ProjectCrea
 import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProjectMutation';
 import toast from 'react-hot-toast';
 import { useModal } from '@/shared/hooks/useModal';
+import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 
 interface SidebarMenuItemProps {
   item: SidebarItem;
