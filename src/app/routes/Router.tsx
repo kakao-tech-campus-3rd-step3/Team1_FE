@@ -23,7 +23,7 @@ export const ROUTE_PATH = {
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
   API_CHECK: '/health',
-  TASK_DETAIL: '/task-detail'
+  TASK_DETAIL: '/task-detail',
 };
 
 const PUBLIC_ROUTES = [
