@@ -1,23 +1,45 @@
-import { Button } from '@/shared/components/shadcn/button';
 import ContentItem from './ContentItem';
-import { Link } from 'lucide-react';
+import { Link, Upload } from 'lucide-react';
 import FileItem from './FileItem';
-
+import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
+import { useState } from 'react';
+import type { FileStatus } from '../types/fileType';
+//TODO: 파일 타입
 interface FileSectionProps {
-  onOpenPdf: () => void;
+  onOpenPdf: (fileUrl?: string) => void;
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
+  const [files, setFiles] = useState([
+    { id: 1, name: 'example.pdf', url: examplePdfUrl, size: '2MB', timeLeft: '5m', status: 'uploading' },
+    { id: 2, name: 'doc.pdf', url: examplePdfUrl, size: '1.2MB', timeLeft: '10m', status: 'success' },
+  ]);
+  const handleDelete = (id: number) => {
+    setFiles((prev) => prev.filter((file) => file.id !== id));
+  };
+
   return (
-    <div className="p-3 border-t border-gray-300  flex flex-col">
-      <ContentItem icon={<Link className="w-5 h-5 text-xl text-gray-900" />} title="파일">
-        <div className='w-full flex flex-col'>
-         <FileItem />
+    <div className="w-full  h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
+      <ContentItem
+        icon={<Link className="w-5 h-5 text-xl text-gray-900" />}
+        title="첨부파일"
+        action={<Upload onClick={() => {}} className='w-5 h-5  text-gray-900' />}
+      >
+        <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
+          {files.map((item) => (
+            <FileItem
+              key={item.id}
+              fileName={item.name}
+              fileUrl={item.url}
+              fileSize={item.size}
+              timeleft={item.timeLeft}
+              onDelete={() => handleDelete(item.id)}
+              onOpenPdf={onOpenPdf}
+              status={item.status as FileStatus}
+            />
+          ))}
         </div>
       </ContentItem>
-      <Button onClick={onOpenPdf} className="bg-boost-orange hover:bg-boost-orange-hover">
-        PDF 뷰어 열기
-      </Button>
     </div>
   );
 };
