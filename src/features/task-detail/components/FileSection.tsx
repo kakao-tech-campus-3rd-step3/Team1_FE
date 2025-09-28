@@ -11,13 +11,7 @@ interface FileSectionProps {
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
-  const onDrop = (acceptedFiles: File[]) => {
-    //TODO: 추후 파일 업로드 했을 때 호출할 함수 구현 필요
-    console.log(acceptedFiles);
-  };
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  const [files, setFiles] = useState([
+ const [files, setFiles] = useState([
     {
       id: 1,
       name: 'example.pdf',
@@ -35,6 +29,21 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
       status: 'success',
     },
   ]);
+   const onDrop = (acceptedFiles: File[]) => {
+  const newFiles = acceptedFiles.map((file, idx) => ({
+    id: Date.now() + idx, 
+    name: file.name,
+    url: URL.createObjectURL(file),
+    size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+    timeLeft: '방금',
+    status: 'uploading' as FileStatus,
+  }));
+
+  // 기존 파일 + 새 파일
+  setFiles((prev) => [...prev, ...newFiles]);
+};
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  
   const DeleteFile = (id: number) => {
     setFiles((prev) => prev.filter((file) => file.id !== id));
   };
@@ -44,7 +53,7 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
   };
 
   return (
-    <div className="w-full  h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
+    <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
       <ContentItem
         icon={<Link className="w-5 h-5 text-xl text-gray-900" />}
         title="첨부파일"
@@ -54,7 +63,8 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
             <Upload className="w-5 h-5  text-gray-900" />
           </div>
         }
-      >
+      >      </ContentItem>
+
         <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
           {files.map((item) => (
             <FileItem
@@ -70,7 +80,6 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
             />
           ))}
         </div>
-      </ContentItem>
     </div>
   );
 };
