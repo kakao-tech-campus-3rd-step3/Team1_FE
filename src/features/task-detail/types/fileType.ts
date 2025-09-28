@@ -6,11 +6,12 @@ export type FileType = {
   onOpenPdf: (fileUrl?: string) => void;
   fileUrl?: string;
   onDelete: () => void;
+  onDownload: () => void;
   fileSize: string;
   timeleft: string;
   status: FileStatus;
 };
-export type FileStatus ='uploading' | 'success' ;
+export type FileStatus = 'uploading' | 'success';
 
 export const FileStatusImages: Record<FileStatus, string> = {
   uploading: orange,
