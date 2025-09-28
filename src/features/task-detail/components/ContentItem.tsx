@@ -3,7 +3,6 @@ type ContentItemProps = {
   title: string;
   children: React.ReactNode;
   action?: React.ReactNode;
-  
 };
 
 const ContentItem = ({ icon, title, children, action }: ContentItemProps) => {
@@ -15,8 +14,8 @@ const ContentItem = ({ icon, title, children, action }: ContentItemProps) => {
         </div>
         <span> {action}</span>
       </div>
-        {children}
-      </div>
+      {children}
+    </div>
   );
 };
 export default ContentItem;
