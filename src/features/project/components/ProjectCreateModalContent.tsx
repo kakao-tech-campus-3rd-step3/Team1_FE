@@ -12,7 +12,6 @@ const ProjectCreateModalContent = ({ onConfirm }: ProjectCreateModalProps) => {
   const [projectName, setProjectName] = useState('');
   const { resetModal, setLoading, backModal, stack } = useModalStore();
   const isLoading = stack[stack.length - 1]?.isLoading ?? false;
-
   const handleConfirm = async () => {
     setLoading(true);
     try {

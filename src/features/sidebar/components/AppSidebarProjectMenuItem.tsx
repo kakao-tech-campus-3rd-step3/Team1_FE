@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
+import { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -12,8 +12,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import { SidebarMenuButton, SidebarMenuItem } from '@/shared/components/shadcn/sidebar';
 import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
-import { SquarePlus } from 'lucide-react';
-import { useState } from 'react';
+import ProjectCreateButton from '@/features/sidebar/components/ProjectCreateButton';
 
 const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
   const [position, setPosition] = useState(item.subItems ? item.subItems[0].title : '');
@@ -57,12 +56,8 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>
-
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex ">
-            <SquarePlus />
-            <span>프로젝트 생성하기</span>
-          </DropdownMenuItem>
+          <ProjectCreateButton />
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>
