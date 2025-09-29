@@ -7,7 +7,7 @@ import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 
 const AvatarSettingsPage = () => {
-const avatarList = useMemo(() => getAvatarListUtils(), []);
+  const avatarList = useMemo(() => getAvatarListUtils(), []);
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

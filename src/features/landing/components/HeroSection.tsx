@@ -19,12 +19,13 @@ const HeroSection = () => {
     { label: '프로젝트 페이지', click: () => navigate(`/project/${123}`) },
     { label: '에러 페이지', click: () => navigate(ROUTE_PATH.ERROR) },
     { label: '모달 테스트 페이지', click: () => navigate(ROUTE_PATH.MODAL) },
-    { label: '에러 페이지', click: () => navigate('/error') },
-    { label: '아바타 설정 페이지', click: () => navigate('/avatar') },
+    { label: '아바타 설정 페이지', click: () => navigate(ROUTE_PATH.AVATAR) },
+    { label: '할 일 상세 페이지', click: () => navigate(ROUTE_PATH.TASK_DETAIL) },
+    { label: 'API 연동 체크', click: () => navigate(ROUTE_PATH.API_CHECK) },
   ];
 
   return (
-    <section id="home" className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center min-h-[80vh] gap-6 sm:gap-10">
         <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
@@ -86,7 +87,7 @@ const HeroSection = () => {
           }}
         />
       </div>
-    </section>
+    </div>
   );
 };
 

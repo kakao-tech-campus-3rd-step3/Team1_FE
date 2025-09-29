@@ -9,7 +9,7 @@ const ProjectPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
 
   return (
-    <div className="flex flex-row min-h-screen overflow-auto">
+    <div className="flex flex-row h-screen">
       <div className="flex-1 flex flex-col">
         <TobTab />
         <Header projectId={Number(projectId)} />

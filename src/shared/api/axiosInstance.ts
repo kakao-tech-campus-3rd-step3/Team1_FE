@@ -4,7 +4,7 @@ import { handleGeneralApiError } from '@/shared/api/errorHandler';
 import { handleUnauthorizedRequest } from '@/shared/api/authIntercepter';
 // TODO: 인증 불필요 API에도 토큰이 붙음 → 보안상 불필요. 나중에 apiPublic 같은 인스턴스 분리 고려
 export const api = axios.create({
-  baseURL: 'http://localhost:4000', // 추후 백엔드 주소로 교체
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, //쿠키를 포함한 요청을 보냅니다.
   headers: {
     'Content-Type': 'application/json',

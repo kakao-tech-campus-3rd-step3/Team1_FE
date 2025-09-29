@@ -6,30 +6,28 @@ import {
 } from '@/shared/components/shadcn/sidebar';
 import { Plus } from 'lucide-react';
 import { Link } from 'react-router';
-import useModalStore from '@/shared/store/useModalStore';
 import ProjectCreateModalContent from '@/features/project/components/ProjectCreateModalContent';
 import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProjectMutation';
 import toast from 'react-hot-toast';
+import { useModal } from '@/shared/hooks/useModal';
 
 interface SidebarMenuItemProps {
   item: SidebarItem;
 }
 
 const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
-  const { openModal } = useModalStore();
-
   const createProjectMutation = useCreateProjectMutation();
+  const { showCustom } = useModal();
 
   const handleOpenProjectCreateModal = () => {
-    openModal({
-      type: 'custom',
+    showCustom({
       title: '프로젝트 생성하기',
       description: '프로젝트 이름을 입력하면, 새로운 프로젝트를 생성할 수 있어요.',
       content: (
         <ProjectCreateModalContent
           onConfirm={async (projectName) => {
             await createProjectMutation.mutateAsync(projectName);
-            toast.success(`프로젝트가 성공적으로 생성되었습니다!`);
+            toast.success('프로젝트가 성공적으로 생성되었습니다!');
           }}
         />
       ),
@@ -52,16 +50,16 @@ const ProjectsMenu = ({ item }: SidebarMenuItemProps) => {
         />
       </SidebarMenuButton>
       <SidebarMenuSub>
-        {item.subItems?.map((subItem) => {
+        {item.subItems?.map((subItem, index) => {
           return (
-            <SidebarMenuSubButton asChild>
+            <SidebarMenuSubButton key={index} asChild>
               <Link to={subItem.url}>
                 <span className="flex-1 text-left">{subItem.title}</span>
               </Link>
             </SidebarMenuSubButton>
           );
         })}
-      </SidebarMenuSub>{' '}
+      </SidebarMenuSub>
     </>
   );
 };

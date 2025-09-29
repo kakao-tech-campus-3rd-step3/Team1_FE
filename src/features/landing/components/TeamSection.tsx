@@ -15,7 +15,7 @@ const TeamSection = () => {
   ];
 
   return (
-    <section id="team" className="py-35 bg-white">
+    <div className="py-35 bg-white">
       <div className="text-center mb-18">
         <h2 className="text-4xl font-bold text-gray-800">Boost Team</h2>
         <p className="mt-4 text-lg text-gray-500">
@@ -42,7 +42,7 @@ const TeamSection = () => {
           </Card>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 

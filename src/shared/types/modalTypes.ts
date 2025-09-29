@@ -13,4 +13,5 @@ export type ModalPayload = {
   description?: string;
   content?: ReactNode;
   buttons?: ModalButton[];
+  isLoading?: boolean;
 };

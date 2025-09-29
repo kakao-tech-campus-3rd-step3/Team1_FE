@@ -1,6 +1,16 @@
 import { useAuthStore } from '@/features/auth/store/authStore';
 import type { AxiosError } from 'axios';
+export class ApiError extends Error {
+  public status: number;
+  public originalError?: AxiosError;
 
+  constructor(message: string, status: number, originalError?: AxiosError) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.originalError = originalError;
+  }
+}
 interface ApiErrorResponse {
   message: string;
 }
@@ -22,7 +32,7 @@ export const handleGeneralApiError = (error: AxiosError<ApiErrorResponse>) => {
 
     case 500:
       //500 에러일때 에러바운더리에 걸리게 함
-      throw new Error(data?.message || '서버 에러가 발생했습니다. ');
+      throw new ApiError(data?.message || '서버 에러가 발생했습니다. ', status, error);
 
     default:
       alert(data.message || '알 수 없는 오류가 발생했습니다.');

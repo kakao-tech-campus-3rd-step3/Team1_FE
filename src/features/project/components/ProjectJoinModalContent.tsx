@@ -10,15 +10,16 @@ interface ProjectJoinModalProps {
 
 const ProjectJoinModalContent = ({ onConfirm }: ProjectJoinModalProps) => {
   const [joinCode, setJoinCode] = useState('');
-  const { closeModal, isLoading, setLoading, backModal } = useModalStore();
+  const { resetModal, setLoading, backModal, stack } = useModalStore();
+  const isLoading = stack[stack.length - 1]?.isLoading ?? false;
 
   const handleConfirm = async () => {
     setLoading(true);
     try {
       await onConfirm(joinCode);
-      closeModal();
+      resetModal();
     } catch (error) {
-      console.error('Project creation failed:', error);
+      console.error('프로젝트 참여 실패 :', error);
     } finally {
       setLoading(false);
     }

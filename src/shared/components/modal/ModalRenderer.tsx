@@ -6,16 +6,15 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/shared/components/shadcn/dialog';
-import { ModalButtons } from '@/shared/components/ui/ModalButtons';
+import { ModalButtons } from '@/shared/components/modal/ModalButtons';
 
-const ModalContainer = () => {
-  const { stack, closeModal } = useModalStore();
+const ModalRenderer = () => {
+  const { stack, resetModal } = useModalStore();
   const current = stack[stack.length - 1];
-
   if (!current) return null;
 
   return (
-    <Dialog open={!!current} onOpenChange={closeModal}>
+    <Dialog open={!!current} onOpenChange={resetModal}>
       <DialogContent className="sm:max-w-[425px] border-gray-300">
         <DialogHeader className="mb-0">
           <DialogTitle>{current.title}</DialogTitle>
@@ -30,4 +29,4 @@ const ModalContainer = () => {
   );
 };
 
-export default ModalContainer;
+export default ModalRenderer;

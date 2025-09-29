@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppRouter } from '@/app/routes/Router';
 import ServerErrorPage from './pages/ServerErrorPage';
 import { ErrorBoundary } from 'react-error-boundary';
-import ModalProvider from '@/shared/components/ui/ModalContainer';
+import ModalRenderer from '@/shared/components/modal/ModalRenderer';
 import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
@@ -18,7 +18,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         {/* < AppInitializer/> */}
         {/* <BuggyComponent /> */}
-        <ModalProvider />
+        <ModalRenderer />
         <AppRouter />
         <Toaster position="top-right" reverseOrder={false} />
       </QueryClientProvider>
