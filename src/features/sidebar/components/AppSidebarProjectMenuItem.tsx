@@ -41,7 +41,7 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
           sideOffset={30}
           className="w-56 pt-2 pb-2 border border-gray-300 bg-white shadow-lg rounded-md"
         >
-          <DropdownMenuLabel className="ext-xs font-medium">{item.title}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-xs font-medium">{item.title}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             {item.subItems!.map((sub) => (
@@ -52,7 +52,7 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
                   navigate(sub.url);
                 }}
               >
-                <button className="w-full text-left">{sub.title}</button>
+             {sub.title}
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>
