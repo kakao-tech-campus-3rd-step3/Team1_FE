@@ -11,7 +11,7 @@ interface FileSectionProps {
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
- const [files, setFiles] = useState([
+  const [files, setFiles] = useState([
     {
       id: 1,
       name: 'example.pdf',
@@ -29,21 +29,21 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
       status: 'success',
     },
   ]);
-   const onDrop = (acceptedFiles: File[]) => {
-  const newFiles = acceptedFiles.map((file, idx) => ({
-    id: Date.now() + idx, 
-    name: file.name,
-    url: URL.createObjectURL(file),
-    size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
-    timeLeft: '방금',
-    status: 'uploading' as FileStatus,
-  }));
+  const onDrop = (acceptedFiles: File[]) => {
+    const newFiles = acceptedFiles.map((file, idx) => ({
+      id: Date.now() + idx,
+      name: file.name,
+      url: URL.createObjectURL(file),
+      size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+      timeLeft: '방금',
+      status: 'uploading' as FileStatus,
+    }));
 
-  // 기존 파일 + 새 파일
-  setFiles((prev) => [...prev, ...newFiles]);
-};
+    // 기존 파일 + 새 파일
+    setFiles((prev) => [...prev, ...newFiles]);
+  };
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  
+
   const DeleteFile = (id: number) => {
     setFiles((prev) => prev.filter((file) => file.id !== id));
   };
@@ -63,23 +63,25 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
             <Upload className="w-5 h-5  text-gray-900" />
           </div>
         }
-      >      </ContentItem>
+      >
+        {' '}
+      </ContentItem>
 
-        <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
-          {files.map((item) => (
-            <FileItem
-              key={item.id}
-              fileName={item.name}
-              fileUrl={item.url}
-              fileSize={item.size}
-              timeleft={item.timeLeft}
-              onDelete={() => DeleteFile(item.id)}
-              onDownload={() => DownloadFile(item.url, item.name)}
-              onOpenPdf={onOpenPdf}
-              status={item.status as FileStatus}
-            />
-          ))}
-        </div>
+      <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
+        {files.map((item) => (
+          <FileItem
+            key={item.id}
+            fileName={item.name}
+            fileUrl={item.url}
+            fileSize={item.size}
+            timeleft={item.timeLeft}
+            onDelete={() => DeleteFile(item.id)}
+            onDownload={() => DownloadFile(item.url, item.name)}
+            onOpenPdf={onOpenPdf}
+            status={item.status as FileStatus}
+          />
+        ))}
+      </div>
     </div>
   );
 };
