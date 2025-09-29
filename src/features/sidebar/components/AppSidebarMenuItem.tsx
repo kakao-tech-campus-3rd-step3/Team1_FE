@@ -8,16 +8,16 @@ const AppSidebarMenuItem = ({ item }: { item: SidebarItem }) => {
 
   return (
     <SidebarMenuItem className="pb-4">
-      <SidebarMenuButton asChild>
-        <Link to={item.url || '#'}>
-          <Tooltip>
-            <TooltipTrigger>{item.icon}</TooltipTrigger>
-            <TooltipContent side="right" className="text-center">
-              <p>{item.title}</p>
-            </TooltipContent>
-          </Tooltip>
-        </Link>
-      </SidebarMenuButton>
+      <Link to={item.url || '#'}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SidebarMenuButton>{item.icon} </SidebarMenuButton>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="text-center">
+            <p>{item.title}</p>
+          </TooltipContent>
+        </Tooltip>
+      </Link>
     </SidebarMenuItem>
   );
 };
