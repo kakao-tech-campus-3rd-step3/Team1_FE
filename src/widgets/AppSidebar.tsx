@@ -15,7 +15,6 @@ import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarP
 
 const AppSidebar = () => {
   //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
-  console.log(items);
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
@@ -24,7 +23,6 @@ const AppSidebar = () => {
           <img src={logo} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
-
       <SidebarContent className="flex-col pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
