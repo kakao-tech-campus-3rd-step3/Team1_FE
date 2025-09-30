@@ -3,32 +3,15 @@ import { useDropzone } from 'react-dropzone';
 import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
-import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
 import type { FileStatus } from '@/features/task-detail/types/fileType';
+import { mockFiles } from '@/shared/data/mockFiles';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
-  const [files, setFiles] = useState([
-    {
-      id: 1,
-      name: 'example.pdf',
-      url: examplePdfUrl,
-      size: '2MB',
-      timeLeft: '5m',
-      status: 'uploading',
-    },
-    {
-      id: 2,
-      name: 'doc.pdf',
-      url: examplePdfUrl,
-      size: '1.2MB',
-      timeLeft: '10m',
-      status: 'success',
-    },
-  ]);
+  const [files, setFiles] = useState(mockFiles);
   const onDrop = (acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map((file, idx) => ({
       id: Date.now() + idx,
