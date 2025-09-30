@@ -1,4 +1,4 @@
-import { getColorForTag } from '@/features/kanban/utils/tagUtils';
+import { getColorForTag } from '@/shared/utils/tagUtils';
 import type { Task } from '@/features/task/types/taskTypes';
 import { Badge } from '@/shared/components/shadcn/badge';
 
