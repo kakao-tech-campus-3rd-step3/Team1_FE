@@ -7,28 +7,40 @@ import { CSS } from '@dnd-kit/utilities';
 import type { Task } from '@/features/task/types/taskTypes';
 import { useDeleteTaskMutation } from '@/features/task/hooks/useDeleteTaskMutation';
 import { calculateDDay } from '@/shared/utils/dateUtils';
-import { generateTags, getColorForTag } from '@/features/kanban/utils/tagUtils';
+import { generateTags, getColorForTag } from '@/shared/utils/tagUtils';
+import { AvatarImage } from '@radix-ui/react-avatar';
+import { mockMembers } from '@/shared/data/mockMembers';
+import { cn } from '@/shared/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/components/shadcn/tooltip';
 
-interface Props {
+interface TaskCardProps {
   task: Task;
+  draggable?: boolean;
 }
 
-const TaskCard = ({ task }: Props) => {
+const TaskCard = ({ task, draggable = false }: TaskCardProps) => {
   const deleteTaskMutation = useDeleteTaskMutation();
   const tags = generateTags(task);
 
-  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+  const sortable = useSortable({
     id: task.id,
-    data: {
-      type: 'Task',
-      task,
-    },
+    data: { type: 'Task', task },
+    disabled: !draggable,
   });
 
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
+  const style = sortable
+    ? { transition: sortable.transition, transform: CSS.Transform.toString(sortable.transform) }
+    : undefined;
+
+  const setNodeRef = sortable?.setNodeRef ?? undefined;
+  const attributes = sortable?.attributes ?? {};
+  const listeners = sortable?.listeners ?? {};
+  const isDragging = sortable?.isDragging ?? false;
 
   if (isDragging) {
     return (
@@ -47,9 +59,12 @@ const TaskCard = ({ task }: Props) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 hover:shadow-md transition-shadow cursor-grab relative group"
+      className={cn(
+        'bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
+        'hover:shadow-md',
+        draggable ? 'cursor-grab' : 'cursor-default',
+      )}
     >
-      {/* 할 일 삭제 버튼 (임시) */}
       <Button
         onClick={(e) => {
           e.stopPropagation();
@@ -64,7 +79,7 @@ const TaskCard = ({ task }: Props) => {
       {/* 태그들 */}
       <div className="flex flex-wrap gap-1 m-1">
         {tags.map((tag) => (
-          <Badge key={tag} className={`text-xs ${getColorForTag(tag)}`}>
+          <Badge key={tag} className={cn('text-xs', getColorForTag(tag))}>
             {tag}
           </Badge>
         ))}
@@ -86,13 +101,32 @@ const TaskCard = ({ task }: Props) => {
 
       {/* 담당자, 댓글 수, 파일 수 */}
       <div className="flex justify-between text-xs m-1 mt-3">
-        <div className="flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
-          {task.assignees.map((name) => (
-            <Avatar key={name} className="w-6 h-6">
-              <AvatarFallback>{name[0]}</AvatarFallback>
-            </Avatar>
-          ))}
+        <div className="flex -space-x-2">
+          {task.assignees.map((assigneeName) => {
+            const member = mockMembers.find((m) => m.name === assigneeName);
+            return (
+              <TooltipProvider key={assigneeName}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Avatar
+                      className={cn(
+                        'w-6 h-6 cursor-pointer ring-1 ring-background',
+                        member?.backgroundColor,
+                      )}
+                    >
+                      <AvatarFallback>{assigneeName[0]}</AvatarFallback>
+                      <AvatarImage src={member?.avatar || ''} />
+                    </Avatar>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>{assigneeName}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            );
+          })}
         </div>
+
         <div className="flex justify-center gap-3 text-gray-600">
           <span className="flex items-center gap-1">
             <MessageCircle className="w-4 h-4" /> 댓글 {task.comments}
