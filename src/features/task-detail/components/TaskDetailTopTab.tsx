@@ -20,12 +20,12 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
     const updatedApproved = review.approvedCount + 1;
     const updatedPending = Math.max(review.requiredReviewCount - updatedApproved, 0);
 
-    setReview({
-      ...review,
+    setReview((prevReview) => ({
+      ...prevReview,
       approvedCount: updatedApproved,
       pendingCount: updatedPending,
       isCompleted: updatedApproved >= review.requiredReviewCount,
-    });
+    }));
 
     setIsMyReviewed(true);
   };
