@@ -17,17 +17,13 @@ interface TeamMemberColumnProps {
 const TeamMemberColumn = ({ member, tasks }: TeamMemberColumnProps) => {
   const [isColumnHover, setIsColumnHover] = useState(false);
 
-  const sortedColumnStatus = useMemo(
-    () =>
-      columnStatus
-        .filter((c) => c.status !== 'DONE')
-        .sort(
-          (a, b) =>
-            ['PROGRESS', 'REVIEW', 'TODO'].indexOf(a.status) -
-            ['PROGRESS', 'REVIEW', 'TODO'].indexOf(b.status),
-        ),
-    [],
-  );
+  const sortedColumnStatus = columnStatus
+    .filter((c) => c.status !== 'DONE')
+    .sort(
+      (a, b) =>
+        ['PROGRESS', 'REVIEW', 'TODO'].indexOf(a.status) -
+        ['PROGRESS', 'REVIEW', 'TODO'].indexOf(b.status),
+    );
 
   const columnData = useMemo(
     () =>
