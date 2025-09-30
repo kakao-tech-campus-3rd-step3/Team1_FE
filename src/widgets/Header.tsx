@@ -23,7 +23,7 @@ const Header = ({ projectId }: Props) => {
   if (isError || !project) return <div>프로젝트를 불러오지 못했습니다.</div>;
 
   return (
-    <div className="flex items-center justify-between w-full h-35 p-6 bg-white shadow-sm">
+    <div className="flex items-center justify-between w-full h-24 p-6 bg-white shadow-sm">
       <div className="flex flex-col justify-center">
         <span className="label1-regular text-gray-500">{today}</span>
         <span className="title1-bold !text-3xl">{project.name}</span>

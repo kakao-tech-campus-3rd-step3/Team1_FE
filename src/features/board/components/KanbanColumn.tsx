@@ -1,15 +1,15 @@
 import { SortableContext } from '@dnd-kit/sortable';
 import type { Column, Task } from '@/features/task/types/taskTypes';
 import { useMemo } from 'react';
-import TaskCard from '@/features/kanban/components/TaskCard';
+import TaskCard from '@/features/board/components/TaskCard';
 import { useDroppable } from '@dnd-kit/core';
 
-interface Props {
+interface KanbanColumnProps {
   column: Column;
   tasks: Task[];
 }
 
-const KanbanColumn = ({ column, tasks }: Props) => {
+const KanbanColumn = ({ column, tasks }: KanbanColumnProps) => {
   const tasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const { setNodeRef } = useDroppable({
@@ -33,7 +33,7 @@ const KanbanColumn = ({ column, tasks }: Props) => {
       <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} draggable={true} />
           ))}
         </SortableContext>
       </div>

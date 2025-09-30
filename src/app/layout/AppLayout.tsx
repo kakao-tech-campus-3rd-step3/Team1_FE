@@ -7,7 +7,7 @@ const AppLayout = () => {
     <SidebarProvider defaultOpen={false}>
       <div className="flex w-screen h-screen">
         <AppSidebar />
-        <main className="flex-1 h-full">
+        <main className="flex-1 flex flex-col min-w-0">
           <Outlet />
         </main>
       </div>

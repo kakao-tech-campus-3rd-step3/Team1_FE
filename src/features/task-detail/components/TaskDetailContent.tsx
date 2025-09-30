@@ -1,4 +1,4 @@
-import { generateTags, getColorForTag } from '@/features/kanban/utils/tagUtils';
+import { generateTags, getColorForTag } from '@/shared/utils/tagUtils';
 import { mockTask } from '@/features/task/types/taskTypes';
 import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
 import { Badge } from '@/shared/components/shadcn/badge';

@@ -10,19 +10,13 @@ import {
 import { useState } from 'react';
 import type { Task } from '@/features/task/types/taskTypes';
 import { createPortal } from 'react-dom';
-import TaskCard from '@/features/kanban/components/TaskCard';
-import KanbanColumn from '@/features/kanban/components/KanbanColumn';
+import TaskCard from '@/features/board/components/TaskCard';
+import KanbanColumn from '@/features/board/components/KanbanColumn';
 import { useTasksQuery } from '@/features/task/hooks/useTasksQuery';
 import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
+import { columnStatus } from '@/features/board/types/boardTypes';
 
 const KanbanBoard = () => {
-  const columns = [
-    { status: 'TODO', title: '진행 전' },
-    { status: 'PROGRESS', title: '진행 중' },
-    { status: 'REVIEW', title: '검토 중' },
-    { status: 'DONE', title: '완료' },
-  ];
-
   const { data: tasks, isLoading, isError } = useTasksQuery();
   const { mutate: moveTaskMutation } = useMoveTaskMutation();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -62,7 +56,7 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-3 overflow-hidden">
+    <div className="flex-1 flex flex-col p-3 overflow-hidden h-full">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -70,7 +64,7 @@ const KanbanBoard = () => {
         onDragOver={onDragOver}
       >
         <div className="flex gap-3 flex-grow overflow-x-auto overflow-y-hidden items-stretch">
-          {columns.map((col) => (
+          {columnStatus.map((col) => (
             <KanbanColumn
               key={col.status}
               column={col}
