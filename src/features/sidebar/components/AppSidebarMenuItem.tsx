@@ -4,8 +4,6 @@ import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 import { Link } from 'react-router';
 
 const AppSidebarMenuItem = ({ item }: { item: SidebarItem }) => {
-  console.log(item);
-
   return (
     <SidebarMenuItem className="pb-4">
       <Link to={item.url || '#'}>
