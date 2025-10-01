@@ -2,7 +2,7 @@ import TaskCard from '@/features/board/components/TaskCard';
 import type { Task } from '@/features/task/types/taskTypes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
-import rocket from '@/shared/assets/images/rocket-2d.png';
+import rocket from '@/shared/assets/images/boost/rocket-2d.png';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
