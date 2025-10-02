@@ -1,5 +1,5 @@
 import { generateTags, getColorForTag } from '@/shared/utils/tagUtils';
-import { mockTask } from '@/features/task/types/taskTypes';
+import { mockTask } from '@/shared/data/mockTask';
 import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
 import { Badge } from '@/shared/components/shadcn/badge';
 import { User, Calendar, Tag, FileText, ChevronUp } from 'lucide-react';

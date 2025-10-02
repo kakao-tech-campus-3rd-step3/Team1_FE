@@ -2,7 +2,7 @@ import CommentSection from '@/features/task-detail/components/CommentSection';
 import FileSection from '@/features/task-detail/components/FileSection';
 import PDFViewer from '@/features/task-detail/components/PdfViewer';
 import TaskDetailTobTab from '@/features/task-detail/components/TaskDetailTopTab';
-import { mockTask } from '@/features/task/types/taskTypes';
+import { mockTask } from '@/shared/data/mockTask';
 import { useState } from 'react';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent';
 
