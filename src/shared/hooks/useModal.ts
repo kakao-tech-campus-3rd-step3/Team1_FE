@@ -26,6 +26,7 @@ export const useModal = () => {
     openModal({
       type: 'alert',
       title,
+      size: 'sm',
       description,
       buttons: [
         wrapButton({
@@ -46,6 +47,7 @@ export const useModal = () => {
     openModal({
       type: 'confirm',
       title,
+      size: 'sm',
       description,
       buttons: [
         {
@@ -65,13 +67,14 @@ export const useModal = () => {
   };
 
   const showCustom = (payload: Omit<ModalPayload, 'type' | 'id'>) => {
-    openModal({ ...payload, type: 'custom' });
+    openModal({ ...payload, type: 'custom', size: payload.size || 'md' });
   };
 
   const showSelect = (payload: Omit<ModalPayload, 'type'>) => {
     openModal({
       ...payload,
       type: 'select',
+      size: payload.size || 'md',
       buttons: payload.buttons?.map(wrapButton),
     });
   };
