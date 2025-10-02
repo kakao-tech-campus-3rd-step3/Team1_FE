@@ -3,10 +3,11 @@ import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
 import CommentItem from '@/features/task-detail/components/CommentItem';
-import { mockComments, type Comment } from '@/features/task-detail/types/commentTypes';
+import type { Comment } from '@/features/task-detail/types/commentTypes';
+import { mockComments } from '@/shared/data/mockComments';
 import { v4 as uuidv4 } from 'uuid';
 import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
-import Boo from '@/shared/assets/images/boo.png';
+import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 
 const CommentSection = () => {
@@ -20,8 +21,8 @@ const CommentSection = () => {
   const handleAdd = () => {
     if (!input.trim()) return;
 
-    setComments([
-      ...comments,
+    setComments((prevComments) => [
+      ...prevComments,
       {
         id: uuidv4(),
         author: isAnonymous ? '익명' : currentUserName,

@@ -75,7 +75,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.{js,ts,tsx}": "eslint --cache --fix"
   },
   "pnpm": {
     "overrides": {

@@ -12,7 +12,7 @@ const defaultColors = [
   'bg-purple-100 text-purple-800',
   'bg-pink-100 text-pink-800',
   'bg-indigo-100 text-indigo-800',
-  'bg-boost-yellow-light text-boost-yellow-dark',
+  'bg-boost-yellow-light/40 text-boost-yellow-dark',
 ];
 
 export function getColorForTag(tag: string) {

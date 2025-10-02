@@ -1,4 +1,4 @@
-import Profile from '@/shared/assets/images/15.png';
+import Profile from '@/shared/assets/images/avatars/78.png';
 import type { Marker, PageSize } from '@/features/task-detail/types/pdfTypes';
 
 interface OverlayProps {
@@ -13,7 +13,7 @@ const Overlay = ({ markers, pageNumber, zoom, pageSize, onClick }: OverlayProps)
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>
       {markers
-        .filter((m) => m.page === pageNumber)
+        .filter((m: Marker) => m.page === pageNumber)
         .map((m) => {
           const left = (m.x / pageSize.width) * 100;
           const top = 100 - (m.y / pageSize.height) * 100;

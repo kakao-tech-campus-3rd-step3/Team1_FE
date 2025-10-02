@@ -7,6 +7,7 @@ import Overlay from '@/features/task-detail/components/PdfOverlay';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useRef } from 'react';
 import PdfControlBar from '@/features/task-detail/components/PdfControlBar';
+import { cn } from '@/shared/lib/utils';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -81,7 +82,7 @@ const PDFViewer = () => {
     <div className="flex flex-col w-full h-full bg-gray-300">
       <div className="flex-1 flex justify-center items-center overflow-hidden">
         <div
-          className={`relative bg-white ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          className={cn('relative bg-white', isDragging ? 'cursor-grabbing' : 'cursor-grab')}
           style={{
             width: pageSize.width,
             height: pageSize.height,
