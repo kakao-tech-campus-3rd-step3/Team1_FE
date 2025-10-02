@@ -32,7 +32,7 @@ const AppSidebar = () => {
             item.title === '프로젝트' ? (
               <AppSidebarProjectMenuItem key={item.title} item={item} />
             ) : item.title === '알림' ? (
-              <AppSidebarAlarmMenuItem key={item.title} item={item} />
+              <AppSidebarAlarmMenuItem key={item.title}  />
             ) : (
               <AppSidebarMenuItem key={item.title} item={item} />
             ),

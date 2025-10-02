@@ -1,92 +1,29 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
-import { Bell, Check, CheckCircle, Heart, MessageSquareShare, UserPlus, X } from 'lucide-react';
+import { Bell, Check, X } from 'lucide-react';
 import { useState } from 'react';
 import { Tooltip, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import { SidebarMenuButton } from '@/shared/components/shadcn/sidebar';
 import { Badge } from '@/shared/components/shadcn/badge';
 import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
+import { mockAlarms } from '@/shared/data/mockAlarms';
 
-const AppSidebarAlarmMenuItem = ({ item }) => {
-  const [alarms, setAlarms] = useState([
-    {
-      id: 1,
-      type: 'approve',
-      title: '승인 완료',
-      description: '김혜민님이 승인하셨습니다.',
-      time: '5분 전',
-      read: false,
-      icon: MessageSquareShare,
-    },
-    {
-      id: 2,
-      type: 'follow',
-      title: '새로운 댓글',
-      description: '서영진님이 내 할일에 댓글을 남겼어요.',
-      time: '1시간 전',
-      read: true,
-      icon: UserPlus,
-    },
-    {
-      id: 3,
-      type: 'reminder',
-      title: '할일 마감 임박',
-      description: '홍길동님이 설정한 할일이 30분 후 마감됩니다.',
-      time: '30분 전',
-      read: false,
-      icon: Bell,
-    },
-    {
-      id: 4,
-      type: 'complete',
-      title: '할일 완료',
-      description: '이진호님이 할일을 완료했습니다.',
-      time: '2시간 전',
-      read: true,
-      icon: CheckCircle,
-    },
-    {
-      id: 5,
-      type: 'like',
-      title: '할일 좋아요',
-      description: '김서연님이 당신의 할일을 좋아합니다.',
-      time: '10분 전',
-      read: false,
-      icon: Heart,
-    },
-    {
-      id: 6,
-      type: 'approve',
-      title: '승인 요청',
-      description: '박지훈님이 승인을 요청했습니다.',
-      time: '3시간 전',
-      read: false,
-      icon: MessageSquareShare,
-    },
-    {
-      id: 7,
-      type: 'follow',
-      title: '새로운 팔로우',
-      description: '최민수님이 당신을 팔로우하기 시작했습니다.',
-      time: '1일 전',
-      read: true,
-      icon: UserPlus,
-    },
-  ]);
+const AppSidebarAlarmMenuItem = () => {
+  const [alarms, setAlarms] = useState([...mockAlarms]);
 
   const unreadCount = alarms.filter((i) => !i.read).length;
 
-  const markAsRead = (id: number, e) => {
+  const markAsRead = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setAlarms(alarms.map((a) => (a.id === id ? { ...a, read: true } : a)));
   };
 
-  const deleteAlarm = (id: number, e) => {
+  const deleteAlarm = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setAlarms(alarms.filter((a) => a.id !== id));
   };
 
-  const markAllAsRead = (e) => {
+  const markAllAsRead = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setAlarms(alarms.map((a) => ({ ...a, read: true })));
   };
