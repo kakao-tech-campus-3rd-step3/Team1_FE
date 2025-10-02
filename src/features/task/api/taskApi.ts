@@ -1,6 +1,7 @@
 import type { Task } from '@/features/task/types/taskTypes';
 import type { Id } from '@/shared/types/commonTypes';
-import { generateId } from '@/shared/utils/idUtils';
+import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
+import { v4 as uuidv4 } from 'uuid';
 import { arrayMove } from '@dnd-kit/sortable';
 import { mockTasks } from '@/shared/data/mockTasks';
 
@@ -11,21 +12,21 @@ export const kanbanApi = {
   },
 
   // 할 일 생성
-  createTask: async (status: string): Promise<Task> => {
+  createTask: async (taskData: CreateTaskInput): Promise<Task> => {
     const newTask: Task = {
-      id: generateId(),
-      status: status,
-      title: '새로운 할 일',
-      tags: ['FE'],
-      assignees: ['유다연'],
-      dueDate: '2025-09-20',
+      id: uuidv4(),
+      status: taskData.status,
+      title: taskData.title,
+      description: taskData.description || '',
+      tags: taskData.tags || [],
+      assignees: taskData.assignees,
+      dueDate: taskData.dueDate,
+      urgent: taskData.urgent || false,
       comments: 0,
       files: 0,
-      description: '할 일 설명',
-      urgent: true,
       review: {
-        requiredReviewCount: 4,
-        approvedCount: 2,
+        requiredReviewCount: taskData.reviewCount || 0,
+        approvedCount: 0,
         pendingCount: 0,
         isCompleted: false,
       },
@@ -38,7 +39,7 @@ export const kanbanApi = {
   deleteTask: async (id: Id): Promise<{ success: boolean }> => {
     const index = mockTasks.findIndex((task) => task.id === id);
     if (index !== -1) {
-      mockTasks.splice(index, 1); // 재할당 대신 splice
+      mockTasks.splice(index, 1);
     }
     return { success: true };
   },

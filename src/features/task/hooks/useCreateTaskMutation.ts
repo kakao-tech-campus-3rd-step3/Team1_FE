@@ -1,45 +1,54 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { kanbanApi } from '@/features/task/api/taskApi';
 import type { Task } from '@/features/task/types/taskTypes';
-import { generateId } from '@/shared/utils/idUtils';
+import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
+import { v4 as uuidv4 } from 'uuid';
 
-// 할 일 생성
+const createTempTask = (taskData: CreateTaskInput, tempId: string): Task => ({
+  id: tempId,
+  title: taskData.title,
+  description: taskData.description || '',
+  status: taskData.status,
+  tags: taskData.tags || [],
+  assignees: taskData.assignees || [],
+  dueDate: taskData.dueDate,
+  urgent: taskData.urgent ?? false,
+  comments: 0,
+  files: 0,
+  review: {
+    requiredReviewCount: taskData.reviewCount || 0,
+    approvedCount: 0,
+    pendingCount: 0,
+    isCompleted: false,
+  },
+});
+
 export const useCreateTaskMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: kanbanApi.createTask,
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['tasks'] });
-      const previousTasks = queryClient.getQueryData(['tasks']);
 
-      const newTempTask: Task = {
-        id: `temp-${generateId()}`,
-        status: 'TODO',
-        title: '새로운 할 일',
-        tags: ['임시'],
-        assignees: ['신규'],
-        dueDate: '',
-        comments: 0,
-        files: 0,
-        description: '',
-        urgent: false,
-        review: {
-          requiredReviewCount: 4,
-          approvedCount: 2,
-          pendingCount: 0,
-          isCompleted: false,
-        },
-      };
+  return useMutation<Task, Error, CreateTaskInput, { previousTasks?: Task[]; tempId?: string }>({
+    mutationFn: (taskData) => kanbanApi.createTask(taskData),
 
-      queryClient.setQueryData(['tasks'], (old: Task[]) => {
-        return [...(old || []), newTempTask];
-      });
+    onMutate: (taskData) => {
+      const previousTasks = queryClient.getQueryData<Task[]>(['tasks']);
+      const tempId = `temp-${uuidv4()}`;
+      const newTempTask = createTempTask(taskData, tempId);
 
-      return { previousTasks };
+      queryClient.setQueryData<Task[]>(['tasks'], (old = []) => [newTempTask, ...old]);
+
+      return { previousTasks, tempId };
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    onSuccess: (createdTask, _taskData, context) => {
+      queryClient.setQueryData<Task[]>(['tasks'], (old = []) =>
+        old.map((task) => (task.id === context?.tempId ? createdTask : task)),
+      );
+    },
+
+    onError: (_err, _taskData, context) => {
+      if (context?.previousTasks) {
+        queryClient.setQueryData<Task[]>(['tasks'], context.previousTasks);
+      }
     },
   });
 };
