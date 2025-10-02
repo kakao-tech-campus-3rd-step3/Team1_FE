@@ -49,7 +49,7 @@ const AppSidebarAlarmMenuItem = () => {
         side="right"
         align="start"
         sideOffset={16}
-        className="w-96 max-h-[500px] overflow-y-auto border border-gray-300 bg-white shadow-lg rounded-md"
+        className="w-96 max-h-[450px] overflow-y-auto border border-gray-300 bg-white shadow-lg rounded-md"
       >
         <DropdownMenuLabel className="flex items-center justify-between py-3 px-4">
           <span className="text-base font-semibold">알림</span>
