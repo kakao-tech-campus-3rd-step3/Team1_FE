@@ -39,7 +39,8 @@ export const kanbanApi = {
   deleteTask: async (id: Id): Promise<{ success: boolean }> => {
     const index = mockTasks.findIndex((task) => task.id === id);
     if (index !== -1) {
-      mockTasks.splice(index, 1);
+      const newTasks = mockTasks.filter((task) => task.id !== id);
+      mockTasks.splice(0, mockTasks.length, ...newTasks);
     }
     return { success: true };
   },

@@ -4,6 +4,7 @@ import AvatarKWH from '@/shared/assets/images/kwh-avatar.png';
 import AvatarKHM from '@/shared/assets/images/khm-avatar.png';
 import AvatarSYJ from '@/shared/assets/images/syj-avatar.png';
 import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
+import { cn } from '@/shared/lib/utils';
 
 const TeamSection = () => {
   const teamMembers = [
@@ -31,7 +32,10 @@ const TeamSection = () => {
           >
             <img
               src={member.img}
-              className={`w-30 ${member.role === 'Backend' ? 'bg-boost-blue' : 'bg-boost-orange'} rounded-full p-2.5`}
+              className={cn('w-30 rounded-full p-2.5', {
+                'bg-boost-blue': member.role === 'Backend',
+                'bg-boost-orange': member.role === 'Frontend',
+              })}
               alt={member.name}
             />
 
