@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .eslintcache
+
+
+# Vite 환경 변수
+.env
+.env.local
+.env.development
+.env.production
