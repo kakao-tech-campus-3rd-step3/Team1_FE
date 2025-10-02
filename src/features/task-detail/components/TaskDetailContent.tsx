@@ -7,6 +7,7 @@ import { calculateDDay } from '@/shared/utils/dateUtils';
 import TagList from '@/features/task-detail/components/TagList';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import { useState } from 'react';
+import { cn } from '@/shared/lib/utils';
 
 const TaskDetailContent = () => {
   const tags = generateTags(mockTask);
@@ -35,7 +36,7 @@ const TaskDetailContent = () => {
                   {!showAllAssignees && (
                     <button
                       onClick={() => setShowAllAssignees((prev) => !prev)}
-                      className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200  hover:bg-gray-300"
+                      className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300"
                     >
                       +{mockTask.assignees.length - 2}
                     </button>
@@ -57,7 +58,7 @@ const TaskDetailContent = () => {
         <ContentItem icon={<Calendar className="w-5 h-5 text-xl text-gray-900" />} title="마감일">
           <div className="flex items-center gap-2">
             <p>{mockTask.dueDate}</p>
-            <Badge className={`text-gray-500 ${getColorForTag('마감일')}`}>
+            <Badge className={cn('text-gray-500', getColorForTag('마감일'))}>
               {calculateDDay(mockTask.dueDate, 'text')}
             </Badge>
           </div>

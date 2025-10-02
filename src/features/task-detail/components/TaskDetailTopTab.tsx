@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components/shadcn/button';
 import { ChevronLeft } from 'lucide-react';
 import type { Task } from '@/features/task/types/taskTypes';
+import { cn } from '@/shared/lib/utils';
 
 interface TaskDetailTopTabProps {
   task: Task;
@@ -44,21 +45,23 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
 
       <div className="flex flex-row items-center gap-3 mr-4  cursor-default">
         <div
-          className={`rounded-full border h-9 px-4 py-2 ${
+          className={cn(
+            'rounded-full border h-9 px-4 py-2',
             isMyReviewed
               ? 'border-green-600 bg-green-100 text-green-700'
-              : 'border-boost-blue-pressed bg-boost-blue/10 text-boost-blue-dark'
-          }`}
+              : 'border-boost-blue-pressed bg-boost-blue/10 text-boost-blue-dark',
+          )}
         >
           검토 완료 수 {review.approvedCount}/{review.requiredReviewCount}
         </div>
         <Button
           onClick={handleReviewComplete}
-          className={`rounded-md ${
+          className={cn(
+            'rounded-md',
             isMyReviewed
               ? 'bg-green-600 hover:bg-green-600'
-              : 'bg-boost-blue hover:bg-boost-blue-hover'
-          }`}
+              : 'bg-boost-blue hover:bg-boost-blue-hover',
+          )}
         >
           {isMyReviewed ? '검토 완료됨' : '검토 완료하기'}
         </Button>

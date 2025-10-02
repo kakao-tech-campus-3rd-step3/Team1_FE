@@ -7,7 +7,7 @@ import {
   SidebarHeader,
 } from '@/shared/components/shadcn/sidebar';
 import { Separator } from '@/shared/components/shadcn/separator';
-import logo from '@/shared/assets/images/15.png';
+import Profile from '@/shared/assets/images/avatars/78.png';
 import { items } from '@/features/sidebar/data/menuData';
 import { LogOut } from 'lucide-react';
 import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
@@ -20,7 +20,7 @@ const AppSidebar = () => {
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
       <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
         <a className="flex justify-center items-center w-11 h-11 bg-boost-orange rounded-4xl">
-          <img src={logo} alt="" className="w-8 h-8" />
+          <img src={Profile} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
       <SidebarContent className="flex-col pl-3 pr-3 bg-white">

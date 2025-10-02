@@ -7,7 +7,7 @@ import type { Comment } from '@/features/task-detail/types/commentTypes';
 import { mockComments } from '@/shared/data/mockComments';
 import { v4 as uuidv4 } from 'uuid';
 import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
-import Boo from '@/shared/assets/images/boo.png';
+import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 
 const CommentSection = () => {

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { fadeInDown, fadeInLeft, fadeInRight, fadeInUp, scaleUp } from '@/shared/utils/animation';
+import { cn } from '@/shared/lib/utils';
 
 interface FeatureSectionProps {
   title: string;
@@ -26,10 +27,13 @@ const FeaturesSection = ({
 }: FeatureSectionProps) => {
   return (
     <div
-      className={`flex flex-col w-fit items-center max-w-6xl mx-auto py-20 px-6 gap-12 ${animationType === 'left' ? 'ml-30' : ''} ${animationType === 'right' ? 'mr-30' : ''}`}
+      className={cn('flex flex-col w-fit items-center max-w-6xl mx-auto py-20 px-6 gap-12', {
+        'ml-30': animationType === 'left',
+        'mr-30': animationType === 'right',
+      })}
     >
       <motion.div
-        className={`flex-1`}
+        className={'flex-1'}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
