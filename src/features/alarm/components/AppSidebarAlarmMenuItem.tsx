@@ -1,0 +1,224 @@
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
+import { Bell, Check, CheckCircle, Heart, MessageSquareShare, UserPlus, X } from 'lucide-react';
+import { useState } from 'react';
+import { Tooltip, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
+import { SidebarMenuButton } from '@/shared/components/shadcn/sidebar';
+import { Badge } from '@/shared/components/shadcn/badge';
+import { Button } from '@/shared/components/shadcn/button';
+import { cn } from '@/shared/lib/utils';
+
+const AppSidebarAlarmMenuItem = ({ item }) => {
+  const [alarms, setAlarms] = useState([
+    {
+      id: 1,
+      type: 'approve',
+      title: '승인 완료',
+      description: '김혜민님이 승인하셨습니다.',
+      time: '5분 전',
+      read: false,
+      icon: MessageSquareShare,
+    },
+    {
+      id: 2,
+      type: 'follow',
+      title: '새로운 댓글',
+      description: '서영진님이 내 할일에 댓글을 남겼어요.',
+      time: '1시간 전',
+      read: true,
+      icon: UserPlus,
+    },
+    {
+      id: 3,
+      type: 'reminder',
+      title: '할일 마감 임박',
+      description: '홍길동님이 설정한 할일이 30분 후 마감됩니다.',
+      time: '30분 전',
+      read: false,
+      icon: Bell,
+    },
+    {
+      id: 4,
+      type: 'complete',
+      title: '할일 완료',
+      description: '이진호님이 할일을 완료했습니다.',
+      time: '2시간 전',
+      read: true,
+      icon: CheckCircle,
+    },
+    {
+      id: 5,
+      type: 'like',
+      title: '할일 좋아요',
+      description: '김서연님이 당신의 할일을 좋아합니다.',
+      time: '10분 전',
+      read: false,
+      icon: Heart,
+    },
+    {
+      id: 6,
+      type: 'approve',
+      title: '승인 요청',
+      description: '박지훈님이 승인을 요청했습니다.',
+      time: '3시간 전',
+      read: false,
+      icon: MessageSquareShare,
+    },
+    {
+      id: 7,
+      type: 'follow',
+      title: '새로운 팔로우',
+      description: '최민수님이 당신을 팔로우하기 시작했습니다.',
+      time: '1일 전',
+      read: true,
+      icon: UserPlus,
+    },
+  ]);
+
+  const unreadCount = alarms.filter((i) => !i.read).length;
+
+  const markAsRead = (id: number, e) => {
+    e.stopPropagation();
+    setAlarms(alarms.map((a) => (a.id === id ? { ...a, read: true } : a)));
+  };
+
+  const deleteAlarm = (id: number, e) => {
+    e.stopPropagation();
+    setAlarms(alarms.filter((a) => a.id !== id));
+  };
+
+  const markAllAsRead = (e) => {
+    e.stopPropagation();
+    setAlarms(alarms.map((a) => ({ ...a, read: true })));
+  };
+
+  return (
+    <DropdownMenu>
+      <Tooltip>
+        <DropdownMenuTrigger asChild>
+          <TooltipTrigger asChild>
+            <SidebarMenuButton className="relative">
+              <Bell className="h-3 w-3" />
+              {unreadCount > 0 && (
+                <Badge className="absolute z-100 top-1 right-0.5 h-3 w-3 flex items-center justify-center p-0 bg-red-500 text-white text-[10px] ">
+                  {unreadCount}
+                </Badge>
+              )}
+            </SidebarMenuButton>
+          </TooltipTrigger>
+        </DropdownMenuTrigger>
+      </Tooltip>
+
+      <DropdownMenuContent
+        side="right"
+        align="start"
+        sideOffset={16}
+        className="w-96 max-h-[500px] overflow-y-auto  border border-gray-300 bg-white shadow-lg rounded-md"
+      >
+        <DropdownMenuLabel className="flex items-center justify-between py-3 px-4">
+          <span className="text-base font-semibold">알림</span>
+          <div className="flex items-center gap-2">
+            {unreadCount > 0 && (
+              <>
+                <span className="text-xs text-muted-foreground">안읽음 {unreadCount}</span>
+                <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={markAllAsRead}>
+                  모두 읽음
+                </Button>
+              </>
+            )}
+          </div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        {alarms.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+            <Bell className="h-12 w-12 mb-3 opacity-20" />
+            <p className="text-sm">새로운 알림이 없습니다</p>
+          </div>
+        ) : (
+          <div className="py-1">
+            {alarms.map((alarm, index) => {
+              const Icon = alarm.icon;
+              return (
+                <div key={alarm.id}>
+                  <DropdownMenuItem
+                    className={cn(
+                      'group relative px-4 py-3 cursor-pointer',
+                      'focus:bg-accent',
+                      !alarm.read && 'bg-blue-50/50',
+                    )}
+                  >
+                    <div className="flex gap-3 w-full pr-16">
+                      {/* 아이콘 영역 */}
+                      <div
+                        className={cn(
+                          'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center',
+                          alarm.read
+                            ? 'bg-muted text-muted-foreground'
+                            : 'bg-blue-100 text-blue-600',
+                        )}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </div>
+
+                      {/* 내용 영역 */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <p
+                            className={cn(
+                              'text-sm font-medium truncate',
+                              alarm.read ? 'text-muted-foreground' : 'text-foreground',
+                            )}
+                          >
+                            {alarm.title}
+                          </p>
+                          {!alarm.read && (
+                            <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1.5" />
+                          )}
+                        </div>
+                        <p
+                          className={cn(
+                            'text-xs line-clamp-2 mb-1',
+                            alarm.read ? 'text-muted-foreground/70' : 'text-muted-foreground',
+                          )}
+                        >
+                          {alarm.description}
+                        </p>
+                        <p className="text-xs text-muted-foreground/60">{alarm.time}</p>
+                      </div>
+                    </div>
+
+                    {/* 액션 버튼 */}
+                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                      {!alarm.read && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 hover:bg-blue-100"
+                          onClick={(e) => markAsRead(alarm.id, e)}
+                        >
+                          <Check className="h-4 w-4  text-blue-700" />
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 hover:bg-red-100 "
+                        onClick={(e) => deleteAlarm(alarm.id, e)}
+                      >
+                        <X className="h-4 w-4 text-red-700" />
+                      </Button>
+                    </div>
+                  </DropdownMenuItem>
+                  {index < alarms.length - 1 && <DropdownMenuSeparator />}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export default AppSidebarAlarmMenuItem;
