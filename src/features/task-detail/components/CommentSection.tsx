@@ -21,8 +21,8 @@ const CommentSection = () => {
   const handleAdd = () => {
     if (!input.trim()) return;
 
-    setComments([
-      ...comments,
+    setComments((prevComments) => [
+      ...prevComments,
       {
         id: uuidv4(),
         author: isAnonymous ? '익명' : currentUserName,
