@@ -24,15 +24,15 @@ const AppSidebar = () => {
           <img src={Profile} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
-      <SidebarContent className="flex-col pl-3 pr-3 bg-white">
+      <SidebarContent className=" pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
-        <SidebarMenu>
+        <SidebarMenu className="flex flex-col items-center">
           {items.map((item) =>
             item.title === '프로젝트' ? (
               <AppSidebarProjectMenuItem key={item.title} item={item} />
             ) : item.title === '알림' ? (
-              <AppSidebarAlarmMenuItem key={item.title}  />
+              <AppSidebarAlarmMenuItem key={item.title} />
             ) : (
               <AppSidebarMenuItem key={item.title} item={item} />
             ),
