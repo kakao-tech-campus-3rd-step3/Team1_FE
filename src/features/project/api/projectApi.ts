@@ -1,6 +1,6 @@
 import type { Id } from '@/shared/types/commonTypes';
-import { generateId } from '@/shared/utils/idUtils';
 import type { Project } from '@/features/project/types/projectTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 // 임시 mock project 데이터
 let mockProjects: Project[] = [
@@ -40,7 +40,7 @@ export const projectApi = {
   // 프로젝트 생성
   createProject: async (projectName: string): Promise<Project> => {
     const newProject: Project = {
-      projectId: generateId(),
+      projectId: uuidv4(),
       name: projectName,
       defaultReviewerCount: 2,
       role: 'admin',
