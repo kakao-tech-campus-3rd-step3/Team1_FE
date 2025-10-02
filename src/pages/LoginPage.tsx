@@ -10,10 +10,15 @@ import {
 import KakaoLogin from '@/shared/assets/images/kakao_login.png';
 
 const LoginPage = () => {
+  const redirectUri =
+    import.meta.env.VITE_IS_LOCAL === 'true'
+      ? 'http://localhost:5173/auth/callback'
+      : 'https://boost.ai.kr/auth/callback';
+  const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+
   const handleKakaoLogin = () => {
     //TODO: 인증 URL 받으면 아래의 주소도 수정할 예정입니다.
-    window.location.href =
-      'https://kauth.kakao.com/oauth/authorize/?client_id=db9e83ab822a2197b18b808099d3c683&redirect_uri=https://boost.ai.kr/auth/callback&response_type=code';
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   };
 
   return (
