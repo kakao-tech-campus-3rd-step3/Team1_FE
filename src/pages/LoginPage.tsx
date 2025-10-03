@@ -14,13 +14,14 @@ const LoginPage = () => {
     import.meta.env.VITE_IS_LOCAL === 'true'
       ? 'http://localhost:5173/auth/callback'
       : 'https://boost.ai.kr/auth/callback';
-  const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+
 
   const handleKakaoLogin = () => {
-    //TODO: 인증 URL 받으면 아래의 주소도 수정할 예정입니다.
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    const encodedRedirectUri = encodeURIComponent(redirectUri);
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodedRedirectUri}&response_type=code
+`;
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
       {/* 배경 장식 요소들 */}
