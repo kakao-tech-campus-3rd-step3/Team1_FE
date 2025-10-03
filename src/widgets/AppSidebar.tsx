@@ -12,6 +12,7 @@ import { items } from '@/features/sidebar/data/menuData';
 import { LogOut } from 'lucide-react';
 import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
+import AppSidebarAlarmMenuItem from '@/features/alarm/components/AppSidebarAlarmMenuItem';
 
 const AppSidebar = () => {
   //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
@@ -23,19 +24,19 @@ const AppSidebar = () => {
           <img src={Profile} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
-      <SidebarContent className="flex-col pl-3 pr-3 bg-white">
+      <SidebarContent className=" pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
-        <SidebarMenu>
-          <SidebarGroup>
-            {items.map((item) =>
-              item.title === '프로젝트' ? (
-                <AppSidebarProjectMenuItem key={item.title} item={item} />
-              ) : (
-                <AppSidebarMenuItem key={item.title} item={item} />
-              ),
-            )}
-          </SidebarGroup>
+        <SidebarMenu className="flex flex-col items-center">
+          {items.map((item) =>
+            item.title === '프로젝트' ? (
+              <AppSidebarProjectMenuItem key={item.title} item={item} />
+            ) : item.title === '알림' ? (
+              <AppSidebarAlarmMenuItem key={item.title} />
+            ) : (
+              <AppSidebarMenuItem key={item.title} item={item} />
+            ),
+          )}
         </SidebarMenu>
         <SidebarGroup />
       </SidebarContent>
