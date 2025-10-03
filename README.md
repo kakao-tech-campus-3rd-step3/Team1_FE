@@ -1,7 +1,7 @@
 ## 🚀 프로젝트 소개
 
 <div align="center">
-  <img src="src\shared\assets\images/boo-with-title.png" width="200" />
+  <img src="src/shared/assets/images/boost/boo-with-title.png" width="200" />
 </div>
 <div align="center">
 대학생을 위한 팀 프로젝트 매니저 <strong>🚀 Boost</strong>의 <strong>Front-end 프로젝트</strong>입니다!
