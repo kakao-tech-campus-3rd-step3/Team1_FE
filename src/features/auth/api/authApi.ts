@@ -8,7 +8,7 @@ import type {
 //카카오 로그인 (받아온 인가코드와 함께 BE에 전송)
 export const fetchKaKaoLogin = async ({ code }: KakaoLoginRequest): Promise<KakaoLoginResponse> => {
   console.log('인가코드:', code);
-  const res = await api.post('/auth/login/kakao', {}, { params: { code } });
+  const res = await api.post('/auth/login/kakao', { code });
   return res.data;
 };
 
