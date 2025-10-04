@@ -16,6 +16,7 @@ const LoginPage = () => {
       : 'https://boost.ai.kr/auth/callback';
   const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
 
+
   const handleKakaoLogin = () => {
     const encodedRedirectUri = encodeURIComponent(redirectUri);
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodedRedirectUri}&response_type=code`;
