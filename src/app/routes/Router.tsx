@@ -12,6 +12,7 @@ import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
+import MyInfoPage from '@/pages/MyInfoPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -24,6 +25,7 @@ export const ROUTE_PATH = {
   CALLBACK: '/auth/callback',
   API_CHECK: '/health',
   TASK_DETAIL: '/task-detail',
+  MY_INFO: '/my-info',
 };
 
 const PUBLIC_ROUTES = [
@@ -40,6 +42,7 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
+  { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
 ];
 
 export const router = createBrowserRouter([
