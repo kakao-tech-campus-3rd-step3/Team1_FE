@@ -6,3 +6,5 @@ export const columnStatus = [
 ] as const;
 
 export type Status = (typeof columnStatus)[number]['status'];
+
+export const statusList: Status[] = columnStatus.map((c) => c.status);
