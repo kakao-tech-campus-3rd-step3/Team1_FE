@@ -1,6 +1,4 @@
 import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
-import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
-import examplePptUrl from '@/shared/assets/pdf-example/sample.pptx';
 
 export const mockFiles = [
   {
@@ -36,7 +34,7 @@ export const mockFiles = [
   {
     id: 4,
     name: 'qa-checklist.pptx',
-    url: examplePptUrl,
+    url: examplePdfUrl,
     size: '4MB',
     timeLeft: '20m',
     status: 'uploading',
@@ -46,7 +44,7 @@ export const mockFiles = [
   {
     id: 5,
     name: 'deployment-plan.pptx',
-    url: examplePptUrl,
+    url: examplePdfUrl,
     size: '5MB',
     timeLeft: '12m',
     status: 'success',
@@ -56,7 +54,7 @@ export const mockFiles = [
   {
     id: 6,
     name: 'team-meeting.pptx',
-    url: examplePptUrl,
+    url: examplePdfUrl,
     size: '2.5MB',
     timeLeft: '7m',
     status: 'pending',
