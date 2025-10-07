@@ -3,18 +3,22 @@ import { useEffect, useRef } from 'react';
 
 const KakaoCallbackPage = () => {
   const { mutate: kakaoLoginMutation } = useKakaoLoginMutation();
- const hasLoggedIn = useRef(false);
+  const hasLoggedIn = useRef(false);
+
   useEffect(() => {
-    if (hasLoggedIn.current) return 
+    if (hasLoggedIn.current) return;
+
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
+
     if (code) {
       console.log('인가코드:', code);
       kakaoLoginMutation({ code });
       hasLoggedIn.current = true;
     }
-  }, []);
-  return null; //백그라운드 로그인 처리용 페이지이므로 null 처리
+  }, [kakaoLoginMutation]);
+
+  return null; // 백그라운드 로그인 처리용 페이지이므로 null 처리
 };
 
 export default KakaoCallbackPage;

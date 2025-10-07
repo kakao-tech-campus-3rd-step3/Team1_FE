@@ -13,26 +13,36 @@ import { LogOut } from 'lucide-react';
 import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
 import AppSidebarAlarmMenuItem from '@/features/alarm/components/AppSidebarAlarmMenuItem';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const AppSidebar = () => {
   //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
+  const navigate = useNavigate();
+
+  const handleHeaderClick = () => {
+    navigate(ROUTE_PATH.MY_INFO);
+  };
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
-      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
+      <SidebarHeader
+        onClick={handleHeaderClick}
+        className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer"
+      >
         <a className="flex justify-center items-center w-11 h-11 bg-boost-orange rounded-4xl">
           <img src={Profile} alt="" className="w-8 h-8" />
         </a>
       </SidebarHeader>
-      <SidebarContent className="flex-col pl-3 pr-3 bg-white">
+      <SidebarContent className=" pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
-        <SidebarMenu>
+        <SidebarMenu className="flex flex-col items-center">
           {items.map((item) =>
             item.title === '프로젝트' ? (
               <AppSidebarProjectMenuItem key={item.title} item={item} />
             ) : item.title === '알림' ? (
-              <AppSidebarAlarmMenuItem key={item.title}  />
+              <AppSidebarAlarmMenuItem key={item.title} />
             ) : (
               <AppSidebarMenuItem key={item.title} item={item} />
             ),
