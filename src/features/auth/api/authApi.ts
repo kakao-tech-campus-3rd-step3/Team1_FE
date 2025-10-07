@@ -13,7 +13,7 @@ export const fetchKaKaoLogin = async ({ code }: KakaoLoginRequest): Promise<Kaka
 };
 
 export const fetchLogout = async () => {
-  const res = await api.post('/auth/logout/');
+  const res = await api.post('/auth/logout');
   return res.data;
 };
 
