@@ -16,27 +16,31 @@ import AppSidebarAlarmMenuItem from '@/features/alarm/components/AppSidebarAlarm
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
+import { useAuthStore } from '@/features/auth/store/authStore';
 
 const AppSidebar = () => {
-  //TODO: 로그인된 사용자이면 아바타 이미지,로그아웃 버튼 나옴
+  const user = useAuthStore((state) => state.user);
+  console.log(user)
   const navigate = useNavigate();
-const { mutate:LogoutMutaion } = useLogoutMutation() 
+  const { mutate: LogoutMutaion } = useLogoutMutation();
   const handleHeaderClick = () => {
     navigate(ROUTE_PATH.MY_INFO);
   };
-const handleLogoutClick=()=>{
-LogoutMutaion();
-}
+  const handleLogoutClick = () => {
+    LogoutMutaion();
+  };
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
-      <SidebarHeader
-        onClick={handleHeaderClick}
-        className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer"
-      >
-        <a className="flex justify-center items-center w-11 h-11 bg-boost-orange rounded-4xl">
-          <img src={Profile} alt="" className="w-8 h-8" />
-        </a>
-      </SidebarHeader>
+      {user && (
+        <SidebarHeader
+          onClick={handleHeaderClick}
+          className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer"
+        >
+          <a className="flex justify-center items-center w-11 h-11 bg-boost-orange rounded-4xl">
+            <img src={Profile} alt="" className="w-8 h-8" />
+          </a>
+        </SidebarHeader>
+      )}
       <SidebarContent className=" pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
@@ -55,10 +59,11 @@ LogoutMutaion();
       </SidebarContent>
 
       <Separator className="pl-3 pr-3" />
-
-      <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4 bg-white">
-        <LogOut onClick={handleLogoutClick} color="#D55F5A" />
-      </SidebarFooter>
+      {user && (
+        <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4 bg-white">
+          <LogOut onClick={handleLogoutClick} color="#D55F5A" />
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 };
