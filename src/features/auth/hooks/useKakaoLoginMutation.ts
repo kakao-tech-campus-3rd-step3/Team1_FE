@@ -40,7 +40,6 @@ export const useKakaoLoginMutation = () => {
       //논의 후 고쳐야 할 것 같습니다.
 
      const payload = decodeJwt(token)
-      console.log(payload);
       if (payload?.auth === 'USER') {
         const { setAuth } = useAuthStore.getState();
         const user = {

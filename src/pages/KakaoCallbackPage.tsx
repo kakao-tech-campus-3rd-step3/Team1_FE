@@ -12,7 +12,6 @@ const KakaoCallbackPage = () => {
     const code = params.get('code');
 
     if (code) {
-      console.log('인가코드:', code);
       kakaoLoginMutation({ code });
       hasLoggedIn.current = true;
     }
