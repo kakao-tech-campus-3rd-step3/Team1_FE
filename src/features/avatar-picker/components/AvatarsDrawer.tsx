@@ -8,12 +8,13 @@ import {
   DrawerTrigger,
 } from '@/shared/components/shadcn/drawer';
 import { Check, Pen, User } from 'lucide-react';
+import React from 'react';
 interface AvatarsDrawerProps {
   isDrawerOpen: boolean;
   setIsDrawerOpen: (open: boolean) => void;
   avatarList: string[];
   selectedAvatar: string;
-  handleAvatarSelect: (avatarUrl: string) => void;
+  handleAvatarSelect: (id:number) => void;
 }
 const AvatarsDrawer = ({
   isDrawerOpen,
@@ -46,7 +47,7 @@ const AvatarsDrawer = ({
               <div
                 key={index}
                 className="mt-4 flex justify-center relative cursor-pointer group"
-                onClick={() => handleAvatarSelect(avatarUrl)}
+                onClick={() => handleAvatarSelect(index)}
               >
                 <div className="relative">
                   {/* 선택된 아바타 배경 글로우 */}
@@ -83,4 +84,4 @@ const AvatarsDrawer = ({
   );
 };
 
-export default AvatarsDrawer;
+export default React.memo(AvatarsDrawer);
