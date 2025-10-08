@@ -8,6 +8,7 @@ export const useLogoutMutation = () => {
     mutationFn: fetchLogout,
     onSuccess: () => {
       clearAuth();
+      console.log("사용자 정보를 말끔히 지우다.")
     },
   });
 };
