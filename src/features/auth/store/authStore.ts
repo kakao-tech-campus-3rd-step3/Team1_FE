@@ -14,14 +14,13 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: null
-  
-  ,
+  user: null,
+
   accessToken: null,
   setAuth: ({ user, token }) =>
     set((prevState) => ({
-      user: user ? { ...prevState, ...user }as User : prevState.user,
-      accessToken: token?? prevState.accessToken,
+      user: user ? ({ ...prevState, ...user } as User) : prevState.user,
+      accessToken: token ?? prevState.accessToken,
     })),
 
   clearAuth: () => set({ user: null, accessToken: null }),

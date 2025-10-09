@@ -1,3 +1,1 @@
-export const useAvatarSaveMutaion = ()=>{
-    
-}
+export const useAvatarSaveMutaion = () => {};

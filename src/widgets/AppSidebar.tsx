@@ -18,14 +18,13 @@ import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { getAvatarListUtils } from '@/features/avatar-picker/utils/avatarUtils';
 import { useMemo } from 'react';
-import fallback from "@/shared/assets/images/avatars/fallbackUser.png"
+import fallback from '@/shared/assets/images/avatars/fallbackUser.png';
 const AppSidebar = () => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const { mutate: LogoutMutaion } = useLogoutMutation();
   const avatarList = useMemo(() => getAvatarListUtils(), []);
-  const userAvatar =
-    user?.profileEmoji !== undefined && avatarList[Number(user.profileEmoji)];
+  const userAvatar = user?.profileEmoji !== undefined && avatarList[Number(user.profileEmoji)];
   const handleHeaderClick = () => {
     navigate(ROUTE_PATH.MY_INFO);
   };

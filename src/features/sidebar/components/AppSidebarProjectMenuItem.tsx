@@ -52,7 +52,7 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
                   navigate(sub.url);
                 }}
               >
-             {sub.title}
+                {sub.title}
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>

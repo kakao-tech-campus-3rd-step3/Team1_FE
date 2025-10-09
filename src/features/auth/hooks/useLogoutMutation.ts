@@ -9,7 +9,7 @@ export const useLogoutMutation = () => {
     mutationFn: fetchLogout,
     onSuccess: () => {
       clearAuth();
-      toast.success("로그아웃 되었습니다.")
+      toast.success('로그아웃 되었습니다.');
     },
   });
 };

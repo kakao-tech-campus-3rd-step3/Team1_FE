@@ -8,7 +8,7 @@ export const handleUnauthorizedRequest = async (originalRequest: AxiosRequestCon
   originalRequest._retry = true;
   try {
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+      `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
       {},
       { withCredentials: true },
     );

@@ -4,6 +4,7 @@ import ServerErrorPage from './pages/ServerErrorPage';
 import { ErrorBoundary } from 'react-error-boundary';
 import ModalRenderer from '@/shared/components/ui/modal/ModalRenderer';
 import { Toaster } from 'react-hot-toast';
+import AppInitializer from '@/app/AppInitializer';
 
 const queryClient = new QueryClient();
 // 아래는 에러바운더리 테스트용 코드입니다.
@@ -16,7 +17,7 @@ function App() {
   return (
     <ErrorBoundary fallback={<ServerErrorPage />}>
       <QueryClientProvider client={queryClient}>
-        {/* < AppInitializer/> */}
+        <AppInitializer />
         {/* <BuggyComponent /> */}
         <ModalRenderer />
         <AppRouter />

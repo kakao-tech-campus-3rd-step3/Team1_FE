@@ -24,4 +24,3 @@ export type Task = {
     isCompleted: boolean;
   };
 };
-

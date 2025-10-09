@@ -14,7 +14,7 @@ interface AvatarsDrawerProps {
   setIsDrawerOpen: (open: boolean) => void;
   avatarList: string[];
   selectedAvatar: string;
-  handleAvatarSelect: (id:number) => void;
+  handleAvatarSelect: (id: number) => void;
 }
 const AvatarsDrawer = ({
   isDrawerOpen,

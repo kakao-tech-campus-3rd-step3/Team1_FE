@@ -10,6 +10,3 @@ export const getRandomAvatarId = (avatarList: string[]) => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
   return randomIndex;
 };
-
-
-
