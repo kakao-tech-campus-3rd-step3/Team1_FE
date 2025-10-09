@@ -3,14 +3,22 @@ import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
 
 const AppInitializer = () => {
+  console.log('앱이니셜라이저');
   const setAuth = useAuthStore((state) => state.setAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
   useEffect(() => {
+    const pathname = window.location.pathname;
+    const publicPaths = ['/', '/login', '/error', '/auth/callback'];
+    const isPublic = publicPaths.includes(pathname);
+    if (isPublic) {
+      return;
+    }
     const refreshAccessToken = async () => {
       try {
-        const { accessToken } = await fetchRefreshToken();
-        setAuth({ token: accessToken });
+        console.log('토큰을 다시 받아보다');
+        const { newAccessToken } = await fetchRefreshToken();
+        setAuth({ token: newAccessToken });
       } catch (error) {
         console.error('Refresh token expired:', error);
         clearAuth();
