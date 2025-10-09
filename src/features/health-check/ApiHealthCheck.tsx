@@ -7,7 +7,7 @@ export default function ApiHealthCheck() {
 
   useEffect(() => {
     api
-      .get('/health')
+      .get('https://api.boost.ai.kr/health')
       .then((res) => setResult(JSON.stringify(res.data)))
       .catch((err) => setResult('에러: ' + err.message));
   }, []);

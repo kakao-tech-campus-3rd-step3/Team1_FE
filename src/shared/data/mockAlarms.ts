@@ -1,5 +1,5 @@
 //TODO: type에 따라서 알림 아이콘을 설정해줄 수 있도록 해야해요!
-//아직 알림 관련 얘기를 나눠보지 않아서 아래처럼 해놓음!! 
+//아직 알림 관련 얘기를 나눠보지 않아서 아래처럼 해놓음!!
 
 import { Bell, CheckCircle, Heart, MessageSquareShare, UserPlus } from 'lucide-react';
 

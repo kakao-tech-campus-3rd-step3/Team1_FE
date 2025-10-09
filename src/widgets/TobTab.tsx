@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Clipboard, FileTextIcon, Edit2 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 
@@ -10,9 +9,12 @@ const tabs = [
 
 type Tab = (typeof tabs)[number]['label'];
 
-const TobTab = () => {
-  const [activeTab, setActiveTab] = useState<Tab>('보드');
+interface TobTabProps {
+  activeTab: Tab;
+  onChangeTab: (tab: Tab) => void;
+}
 
+const TobTab = ({ activeTab, onChangeTab }: TobTabProps) => {
   return (
     <nav className="w-full bg-gray-100 border-b border-gray-300 subtitle2-bold">
       <ul className="flex h-12 pl-5">
@@ -25,7 +27,7 @@ const TobTab = () => {
                 ? 'border-b-boost-blue text-boost-blue'
                 : 'border-b-transparent subtitle2-regular text-gray-600 hover:text-gray-700',
             )}
-            onClick={() => setActiveTab(label)}
+            onClick={() => onChangeTab(label)}
           >
             <Icon className="w-4 h-4" />
             {label}
