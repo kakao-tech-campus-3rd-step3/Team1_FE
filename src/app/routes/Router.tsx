@@ -13,11 +13,16 @@ import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 import MyInfoPage from '@/pages/MyInfoPage';
+import BoardPage from '@/pages/BoardPage';
+import MemoPage from '@/pages/MemoPage';
+import FilePage from '@/pages/FilePage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
   LOGIN: '/login',
   PROJECT: '/project/:projectId',
+  PROJECT_BOARD: '/project/:projectId/board',
+  PROJECT_MEMO: '/project/:projectId/memo',
   MYTASK: '/my-task',
   ERROR: '/error',
   MODAL: '/modal-test',
@@ -38,6 +43,15 @@ const PUBLIC_ROUTES = [
 ];
 
 const PROTECTED_ROUTES = [
+  {
+    path: ROUTE_PATH.PROJECT,
+    element: <ProjectPage />,
+    children: [
+      { path: 'board', element: <BoardPage /> },
+      { path: 'files', element: <FilePage /> },
+      { path: 'memo', element: <MemoPage /> },
+    ],
+  },
   { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
   { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
