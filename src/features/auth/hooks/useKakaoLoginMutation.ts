@@ -1,59 +1,32 @@
 import { useMutation } from '@tanstack/react-query';
 import type { KakaoLoginRequest, KakaoLoginResponse } from '@/features/auth/types/authTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import { fetchKaKaoLogin } from '@/features/auth/api/authApi';
+import { fetchKaKaoLogin, fetchMyInfo } from '@/features/auth/api/authApi';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import toast from 'react-hot-toast';
-
-const decodeJwt = (token: string) => {
-  try {
-    const base64Payload = token.split('.')[1];
-    const payload = JSON.parse(
-      decodeURIComponent(
-        Array.from(atob(base64Payload))
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join(''),
-      ),
-    );
-    return payload;
-  } catch (err) {
-    console.error('JWT 디코딩 실패', err);
-    return null;
-  }
-};
 
 export const useKakaoLoginMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (data: KakaoLoginRequest) => fetchKaKaoLogin(data),
-    onSuccess: (data: KakaoLoginResponse) => {
+    onSuccess: async (data: KakaoLoginResponse) => {
       const { setAuth } = useAuthStore.getState();
       setAuth({ token: data.accessToken });
 
       const token = data.accessToken;
       if (!token) return;
-      //TODO: 최초로그인 여부는 현재 토큰 필드에 USER 가 있으면 되게 했는데
-      //백엔드로부터 최초 로그인인지 판단을 해서 필드로 반환해주는 것이 좋다고 해요!
-      //논의 후 고쳐야 할 것 같습니다.
 
-      const payload = decodeJwt(token);
-      console.log(payload);
-      if (payload?.auth === 'USER') {
-        const user = {
-          id: payload.sub,
-          name: payload.name,
-          profileEmoji: payload.avatar,
-          createdAt: new Date(), // 임시로 현재 시간
-          updatedAt: new Date(),
-        };
-        console.log(user);
-        setAuth({ token: data.accessToken, user: user });
+      try {
+        const myInfo = await fetchMyInfo();
+        console.log('내 정보', myInfo);
+        setAuth({ token: data.accessToken, user: myInfo });
         toast.success('로그인이 완료되었습니다.');
         navigate(ROUTE_PATH.AVATAR);
-      } else {
-        console.warn('JWT에 유저 정보 없음');
+      } catch (error) {
+        console.error('내 정보 조회 실패:', error);
+        toast.error('로그인은 되었지만 사용자 정보를 불러오지 못했습니다 😢');
       }
     },
     onError: (err) => {
