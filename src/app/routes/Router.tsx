@@ -5,7 +5,7 @@ import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
-import ProtectedRoute from '@/app/routes/ProtectedRoute';
+// import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
@@ -61,21 +61,24 @@ const PROTECTED_ROUTES_NO_LAYOUT = [{ path: ROUTE_PATH.AVATAR, element: <AvatarP
 export const router = createBrowserRouter([
   // 공개 라우트
   ...PUBLIC_ROUTES,
-  // 사이드바는 없는 보호된 라우트
-  ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
-    ...route,
-    element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-  })),
+
+  // 사이드바 없는 보호 라우트
+  // ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
+  //   ...route,
+  //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+  // })),
+  ...PROTECTED_ROUTES_NO_LAYOUT, // 그냥 바로 렌더링
 
   {
     path: '/',
     element: <AppLayout />,
     children: [
       // 보호된 라우트
-      ...PROTECTED_ROUTES.map((route) => ({
-        ...route,
-        element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-      })),
+      // ...PROTECTED_ROUTES.map((route) => ({
+      //   ...route,
+      //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+      // })),
+      ...PROTECTED_ROUTES,
     ],
   },
 ]);
