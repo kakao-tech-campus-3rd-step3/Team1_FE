@@ -5,7 +5,7 @@ interface AvatarSelectorProps {
   setIsDrawerOpen: (open: boolean) => void;
   avatarList: string[];
   selectedAvatar: string;
-  handleAvatarSelect: (avatarUrl: string) => void;
+  handleAvatarSelect: (id: number) => void;
 }
 const AvatarSelector = ({
   isDrawerOpen,

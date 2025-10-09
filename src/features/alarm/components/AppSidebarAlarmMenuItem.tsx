@@ -1,4 +1,11 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/shadcn/dropdown-menu';
 import { Bell, Check, X } from 'lucide-react';
 import { useState } from 'react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/shared/components/shadcn/tooltip';
@@ -25,11 +32,11 @@ const AppSidebarAlarmMenuItem = () => {
 
   const markAllAsRead = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setAlarms(prevAlarms => prevAlarms.map((a) => ({ ...a, read: true })));
+    setAlarms((prevAlarms) => prevAlarms.map((a) => ({ ...a, read: true })));
   };
 
   return (
-    <SidebarMenuItem className='pb-4'> 
+    <SidebarMenuItem className="pb-4">
       <DropdownMenu>
         <Tooltip>
           <DropdownMenuTrigger asChild>

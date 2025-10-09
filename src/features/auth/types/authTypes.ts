@@ -7,5 +7,5 @@ export interface KakaoLoginResponse {
 }
 
 export interface RefreshTokenResponse {
-  accessToken: string;
+  newAccessToken: string;
 }

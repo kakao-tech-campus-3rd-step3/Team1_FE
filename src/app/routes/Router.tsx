@@ -40,14 +40,19 @@ const PUBLIC_ROUTES = [
 const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
   { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
-  { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
 ];
-
+const PROTECTED_ROUTES_NO_LAYOUT = [{ path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> }];
 export const router = createBrowserRouter([
   // 공개 라우트
   ...PUBLIC_ROUTES,
+  // 사이드바는 없는 보호된 라우트
+  ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
+    ...route,
+    element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+  })),
+
   {
     path: '/',
     element: <AppLayout />,

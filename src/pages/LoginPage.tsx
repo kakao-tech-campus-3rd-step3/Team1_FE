@@ -10,14 +10,14 @@ import {
 import KakaoLogin from '@/shared/assets/images/kakao_login.png';
 
 const LoginPage = () => {
-  // const redirectUri =
-  //   import.meta.env.VITE_IS_LOCAL === 'true'
-  //     ? 'http://localhost:5173/auth/callback'
-  //     : 'https://boost.ai.kr/auth/callback';
+  const redirectUri =
+    import.meta.env.VITE_IS_LOCAL === 'true'
+      ? 'http://localhost:5173/auth/callback'
+      : 'https://boost.ai.kr/auth/callback';
   const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
 
   const handleKakaoLogin = () => {
-    const encodedRedirectUri = encodeURIComponent('https://team1-fe-six.vercel.app/auth/callback');
+    const encodedRedirectUri = encodeURIComponent(redirectUri);
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodedRedirectUri}&response_type=code`;
   };
   return (
