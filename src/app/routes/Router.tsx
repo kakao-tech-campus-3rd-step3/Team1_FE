@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
   //   ...route,
   //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
   // })),
-  ...PROTECTED_ROUTES_NO_LAYOUT, // 그냥 바로 렌더링
+  ...PROTECTED_ROUTES_NO_LAYOUT, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
 
   {
     path: '/',
@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
       //   ...route,
       //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
       // })),
-      ...PROTECTED_ROUTES,
+      ...PROTECTED_ROUTES, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
     ],
   },
 ]);
