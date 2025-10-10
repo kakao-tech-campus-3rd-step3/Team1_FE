@@ -1,25 +1,21 @@
 import { Button } from '@/shared/components/shadcn/button';
-import { Download, MoreVertical } from 'lucide-react';
+import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
+import { getFileIcon } from '@/features/file/utils/fileUtils';
+import { useNavigate } from 'react-router';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const FilePage = () => {
-const files = mockAllFiles
-  const getFileIcon = (type:string) => {
-    return (
-      <div className="w-12 h-12 bg-red-500 rounded flex items-center justify-center flex-shrink-0">
-        <span className="text-white text-xs font-bold uppercase">{type}</span>
-      </div>
-    );
-  };
+  const files = mockAllFiles;
+const navigate = useNavigate()
   return (
-    <div className="p-6 bg-gray-50">
+    <div className="p-6  bg-gray-50">
       <div>
-        <div className="max-w-5xl mx-auto">
+        <div className=" mx-auto">
           <div className="mb-8">
             <p className="font-bold text-gray-700">프로젝트 중 업로드한 작업물을 관리하세요</p>
           </div>
@@ -30,8 +26,10 @@ const files = mockAllFiles
             {files.map((file) => (
               <div key={file.id} className="p-4 bg-white rounded-xl">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 ">
-                    {getFileIcon(file.type)}
+                  <div className="flex items-center gap-6 ">
+                    <div className="w-10 h-10  flex items-center justify-center flex-shrink-0">
+                      <img src={getFileIcon(file.type)} alt="" />{' '}
+                    </div>
 
                     <div className=" min-w-0">
                       <h3 className="font-medium text-gray-900 ">{file.name}</h3>
@@ -40,7 +38,7 @@ const files = mockAllFiles
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="text-sm border-gray-400">
+                  <Button onClick={()=>{navigate(ROUTE_PATH.TASK_DETAIL)}} variant="outline" size="sm" className="text-sm border-gray-400">
                     {file.taskName}
                   </Button>
 
@@ -51,12 +49,12 @@ const files = mockAllFiles
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="w-9 h-9 p-0">
-                          <MoreVertical className="w-5 h-5" />
+                          <ChevronRight />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      {/* <DropdownMenuContent align="end"> */}
                         {/* <DropdownMenuItem>이름 변경</DropdownMenuItem> */}
-                      </DropdownMenuContent>
+                      {/* </DropdownMenuContent> */}
                     </DropdownMenu>
                   </div>
                 </div>

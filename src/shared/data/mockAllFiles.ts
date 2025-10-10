@@ -58,8 +58,8 @@ export const mockAllFiles = [
   },
   {
     id: 6,
-    name: 'Style_Guide.pdf',
-    type: 'pdf',
+    name: 'Style_Guide.ppt',
+    type: 'ppt',
     url: examplePdfUrl,
 
     size: '1.5 MB',
