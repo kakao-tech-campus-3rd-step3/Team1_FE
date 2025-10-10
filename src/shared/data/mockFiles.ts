@@ -1,15 +1,6 @@
 import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
-//할 일 상세 페이지에 있는 파
-export interface MockTaskFileType {
-  id: number;
-  name: string;
-  url: string;
-  size: string;
-  timeLeft: string;
-  status: string;
-  type: string;
-  date: string;
-}
+
+//할 일 상세 페이지에 있는 파일
 export const mockFiles = [
   {
     id: 1,
