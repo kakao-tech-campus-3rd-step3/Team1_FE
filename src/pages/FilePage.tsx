@@ -16,6 +16,12 @@ const FilePage = () => {
           <div className="mb-8">
             <p className="font-bold text-gray-700">프로젝트 중 업로드한 작업물을 관리하세요</p>
           </div>
+          {/* 헤더 */}
+          <div className="flex ml-24 pr-13 items-center justify-between px-4 py-2 text-sm font-semibold text-gray-500">
+            <span className="">파일명</span>
+            <span className=" text-center pl-12">할 일</span>
+            <span>다운로드</span>
+          </div>
           {/* File List */}
           <div className="flex flex-col gap-4">
             {files.map((file) => (
@@ -67,11 +73,7 @@ const FilePage = () => {
           {/* Footer Info */}
           <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
             <p>총 {files.length}개 파일</p>
-            <p>
-              전체 용량 :{' '}
-              {getFileSize(files)}{' '}
-              MB
-            </p>
+            <p>전체 용량 : {getFileSize(files)} MB</p>
           </div>
         </div>
       </div>
