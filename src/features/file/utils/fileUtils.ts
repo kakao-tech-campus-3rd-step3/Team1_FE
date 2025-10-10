@@ -1,24 +1,19 @@
 import type { FileType } from '@/features/file/types/fileTypes';
-
-type FileModule = { default: string };
-
-export const getFileListUtils = () => {
-  const fileModules = import.meta.glob<FileModule>('@/shared/assets/images/fileIcon/*.png', {
-    eager: true,
-  });
-  return Object.values(fileModules).map((module) => module.default);
+import pptUrl from '@/shared/assets/images/fileIcon/PPT.png';
+import pdfUrl from '@/shared/assets/images/fileIcon/PPT.png';
+import csvUrl from '@/shared/assets/images/fileIcon/PPT.png';
+type FileIcon = {
+  name: string;
+  url: string;
 };
+const fileIcons: FileIcon[] = [
+  { name: 'csv', url: csvUrl },
+  { name: 'ppt', url: pptUrl },
+  { name: 'pdf', url: pdfUrl },
+];
 export const getFileIcon = (type: string) => {
-  const fileIcons = getFileListUtils();
-  console.log(fileIcons)
-  return fileIcons.find(
-    (icon) =>
-      icon
-        .split('/')
-        .pop()
-        ?.replace(/\.png$/i, '')
-        .toLowerCase() === type.toLowerCase(),
-  );
+  const match = fileIcons.find((icon) => icon.name.toLowerCase() === type.toLowerCase());
+  return match?.url;
 };
 export const getFileSize = (files: FileType[]) => {
   return files
