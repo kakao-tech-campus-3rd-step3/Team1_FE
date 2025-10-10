@@ -8,11 +8,17 @@ const BoardPage = () => {
   const [selectedTab, setSelectedTab] = useState<'state' | 'team-member'>('state');
 
   return (
-    <>
-      <FilterTab value={selectedTab} onChange={setSelectedTab} />
+    <div className="flex flex-col flex-1 min-h-0 h-full">
+      <section aria-label="filter" className="shrink-0">
+        <FilterTab value={selectedTab} onChange={setSelectedTab} />
+      </section>
+
       <Separator className="bg-gray-300" />
-      {selectedTab === 'state' ? <KanbanBoard /> : <TeamMemberBoard />}
-    </>
+
+      <section aria-label="board" className="overflow-x-auto flex-1">
+        {selectedTab === 'state' ? <KanbanBoard /> : <TeamMemberBoard />}
+      </section>
+    </div>
   );
 };
 

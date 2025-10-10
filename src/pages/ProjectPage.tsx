@@ -11,7 +11,7 @@ const ProjectPage = () => {
   const currentPath = location.pathname.split('/').pop();
 
   const [activeTab, setActiveTab] = useState<'보드' | '파일' | '메모'>(
-    currentPath === 'files' ? '파일' : currentPath === 'memo' ? '메모' : '보드',
+    currentPath === 'file' ? '파일' : currentPath === 'memo' ? '메모' : '보드',
   );
 
   const handleChangeTab = (tab: '보드' | '파일' | '메모') => {
@@ -28,11 +28,22 @@ const ProjectPage = () => {
   }, [location.pathname, projectId, navigate]);
 
   return (
-    <div className="flex flex-col flex-1 min-w-0 h-screen">
-      <TobTab activeTab={activeTab} onChangeTab={handleChangeTab} />
-      <Header projectId={Number(projectId)} />
-      <Separator className="bg-gray-300" />
-      <Outlet />
+    <div className="flex flex-row flex-1 overflow-x-auto h-screen">
+      <div className="flex-1 flex flex-col min-w-0">
+        <nav aria-label="top-tab">
+          <TobTab activeTab={activeTab} onChangeTab={handleChangeTab} />
+        </nav>
+
+        <header aria-label="header">
+          <Header projectId={Number(projectId)} />
+        </header>
+
+        <Separator className="bg-gray-300" />
+
+        <section aria-label="board" className="overflow-x-auto flex-1">
+          <Outlet />
+        </section>
+      </div>
     </div>
   );
 };
