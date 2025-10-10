@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
-import { getFileIcon } from '@/features/file/utils/fileUtils';
+import { getFileIcon, getFileSize } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
@@ -68,13 +68,8 @@ const FilePage = () => {
           <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
             <p>총 {files.length}개 파일</p>
             <p>
-              전체 용량:{' '}
-              {files
-                .reduce((acc, file) => {
-                  const size = parseFloat(file.size);
-                  return acc + (file.size.includes('MB') ? size : size / 1024);
-                }, 0)
-                .toFixed(1)}{' '}
+              전체 용량 :{' '}
+              {getFileSize(files)}{' '}
               MB
             </p>
           </div>
