@@ -4,7 +4,7 @@ import type {
   KakaoLoginResponse,
   RefreshTokenResponse,
 } from '@/features/auth/types/authTypes';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
 
 //카카오 로그인 (받아온 인가코드와 함께 BE에 전송)
 export const fetchKaKaoLogin = async ({ code }: KakaoLoginRequest): Promise<KakaoLoginResponse> => {
