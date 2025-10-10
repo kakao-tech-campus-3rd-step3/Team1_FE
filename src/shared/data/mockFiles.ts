@@ -1,5 +1,15 @@
 import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
 //할 일 상세 페이지에 있는 파
+export interface MockTaskFileType {
+  id: number;
+  name: string;
+  url: string;
+  size: string;
+  timeLeft: string;
+  status: string;
+  type: string;
+  date: string;
+}
 export const mockFiles = [
   {
     id: 1,
@@ -27,7 +37,7 @@ export const mockFiles = [
     url: examplePdfUrl,
     size: '3MB',
     timeLeft: '15m',
-    status: 'pending',
+    status: 'success',
     type: 'pdf',
     date: '2024-10-01',
   },
@@ -57,7 +67,7 @@ export const mockFiles = [
     url: examplePdfUrl,
     size: '2.5MB',
     timeLeft: '7m',
-    status: 'pending',
+    status: 'success',
     type: 'ppt',
     date: '2024-10-01',
   },

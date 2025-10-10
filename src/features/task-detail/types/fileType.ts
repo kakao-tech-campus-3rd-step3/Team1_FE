@@ -8,7 +8,7 @@ export type FileType = {
   onDelete: () => void;
   onDownload: () => void;
   fileSize: string;
-  timeleft: string;
+  timeLeft: string;
   status: FileStatus;
 };
 export type FileStatus = 'uploading' | 'success';

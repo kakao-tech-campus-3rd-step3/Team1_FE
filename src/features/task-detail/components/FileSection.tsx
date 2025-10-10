@@ -4,24 +4,25 @@ import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
 import type { FileStatus } from '@/features/task-detail/types/fileType';
-import { mockFiles } from '@/shared/data/mockFiles';
+import { mockFiles, type MockTaskFileType } from '@/shared/data/mockFiles';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
-  const [files, setFiles] = useState(mockFiles);
+  const [files, setFiles] = useState<MockTaskFileType[]>(mockFiles);
   const onDrop = (acceptedFiles: File[]) => {
-    const newFiles = acceptedFiles.map((file, idx) => ({
-      id: Date.now() + idx,
-      name: file.name,
-      url: URL.createObjectURL(file),
-      size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
-      timeLeft: '방금',
-      status: 'uploading' as FileStatus,
-    }));
-
+   const newFiles: MockTaskFileType[] = acceptedFiles.map((file, idx) => ({
+     id: Date.now() + idx,
+     name: file.name,
+     url: URL.createObjectURL(file),
+     size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+     timeLeft: '방금',
+     status: 'uploading',
+     type: file.name.endsWith('.pdf') ? 'pdf' : file.name.endsWith('.pptx') ? 'pptx' : 'ppt',
+     date: new Date().toISOString().split('T')[0],
+   }));
     // 기존 파일 + 새 파일
     setFiles((prev) => [...prev, ...newFiles]);
   };
@@ -55,7 +56,7 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
             fileName={item.name}
             fileUrl={item.url}
             fileSize={item.size}
-            timeleft={item.timeLeft}
+            timeLeft={item.timeLeft}
             onDelete={() => DeleteFile(item.id)}
             onDownload={() => DownloadFile(item.url, item.name)}
             onOpenPdf={onOpenPdf}
