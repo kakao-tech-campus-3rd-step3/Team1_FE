@@ -11,8 +11,8 @@ export const getFileListUtils = () => {
 export const getFileIcon = (type: string) => {
   const fileIcons = getFileListUtils();
   const match = fileIcons.find((icon) => {
-    const fileName = icon.split('/').pop()?.replace('.png', '').toLowerCase();
-    return fileName === type.toLowerCase();
+    const fileName = icon.split('/').pop()?.replace('.png', '');
+    return fileName?.toLowerCase().startsWith(type.toLowerCase());
   });
   return match;
 };
