@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { kanbanApi } from '@/features/task/api/taskApi';
-import type { Task } from '../types/taskTypes';
+import type { Task } from '@/features/task/types/taskTypes';
 import type { Id } from '@/shared/types/commonTypes';
 
 // 할 일 삭제
