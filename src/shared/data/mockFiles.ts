@@ -1,5 +1,5 @@
 import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
-
+//할 일 상세 페이지에 있는 파
 export const mockFiles = [
   {
     id: 1,
@@ -8,8 +8,8 @@ export const mockFiles = [
     size: '2MB',
     timeLeft: '5m',
     status: 'uploading',
-    type: 'design',
-    fileType: 'pdf', // 파일 종류 추가
+    type: 'ppt',
+    date: '2024-10-01',
   },
   {
     id: 2,
@@ -18,8 +18,8 @@ export const mockFiles = [
     size: '1.2MB',
     timeLeft: '10m',
     status: 'success',
-    type: 'backend',
-    fileType: 'pdf',
+    type: 'pdf',
+    date: '2024-10-01',
   },
   {
     id: 3,
@@ -28,8 +28,8 @@ export const mockFiles = [
     size: '3MB',
     timeLeft: '15m',
     status: 'pending',
-    type: 'frontend',
-    fileType: 'pdf',
+    type: 'pdf',
+    date: '2024-10-01',
   },
   {
     id: 4,
@@ -38,8 +38,8 @@ export const mockFiles = [
     size: '4MB',
     timeLeft: '20m',
     status: 'uploading',
-    type: 'qa',
-    fileType: 'ppt',
+    type: 'pdf',
+    date: '2024-10-01',
   },
   {
     id: 5,
@@ -48,8 +48,8 @@ export const mockFiles = [
     size: '5MB',
     timeLeft: '12m',
     status: 'success',
-    type: 'devops',
-    fileType: 'ppt',
+    type: 'pdf',
+    date: '2024-10-01',
   },
   {
     id: 6,
@@ -58,7 +58,7 @@ export const mockFiles = [
     size: '2.5MB',
     timeLeft: '7m',
     status: 'pending',
-    type: 'management',
-    fileType: 'ppt',
+    type: 'ppt',
+    date: '2024-10-01',
   },
 ];
