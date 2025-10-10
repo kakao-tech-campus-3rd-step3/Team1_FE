@@ -6,7 +6,6 @@ export const getFileListUtils = () => {
   const fileModules = import.meta.glob<FileModule>('@/shared/assets/images/fileIcon/*.png', {
     eager: true,
   });
-  console.log(Object.values(fileModules).map((module) => module.default));
   return Object.values(fileModules).map((module) => module.default);
 };
 export const getFileIcon = (type: string) => {
@@ -15,7 +14,6 @@ export const getFileIcon = (type: string) => {
     const fileName = icon.split('/').pop()?.replace('.png', '').toLowerCase();
     return fileName === type.toLowerCase();
   });
-  console.log(match);
   return match;
 };
 export const getFileSize = (files: FileType[]) => {
