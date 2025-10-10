@@ -17,11 +17,11 @@ const LoginPage = () => {
   const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
 
   const handleKakaoLogin = () => {
-  const encodedRedirectUri = encodeURIComponent(redirectUri);
-  const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
-  console.log(kakaoUrl);
-  window.location.href = kakaoUrl;
-};
+    const encodedRedirectUri = encodeURIComponent(redirectUri);
+    const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
+    console.log(kakaoUrl);
+    window.location.href = kakaoUrl;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
