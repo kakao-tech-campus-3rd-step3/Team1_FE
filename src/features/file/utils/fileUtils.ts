@@ -1,6 +1,6 @@
 import type { FileType } from '@/features/file/types/fileTypes';
 import pptUrl from '@/shared/assets/images/fileIcon/PPT.png';
-import pdfUrl from '@/shared/assets/images/fileIcon/PDF.png';
+import pdfUrl from '@/shared/assets/images/fileIcon/pdf.png';
 import csvUrl from '@/shared/assets/images/fileIcon/CSV.png';
 type FileIcon = {
   name: string;
