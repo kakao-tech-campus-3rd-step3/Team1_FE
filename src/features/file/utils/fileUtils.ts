@@ -1,3 +1,5 @@
+import type { FileType } from '@/features/file/types/fileTypes';
+
 type FileModule = { default: string };
 
 export const getFileListUtils = () => {
@@ -8,7 +10,6 @@ export const getFileListUtils = () => {
   return Object.values(fileModules).map((module) => module.default);
 };
 export const getFileIcon = (type: string) => {
-  console.log('타입은 ', type);
   const fileIcons = getFileListUtils();
   const match = fileIcons.find((icon) => {
     const fileName = icon.split('/').pop()?.replace('.png', '').toLowerCase();
@@ -16,4 +17,12 @@ export const getFileIcon = (type: string) => {
   });
   console.log(match);
   return match;
+};
+export const getFileSize = (files: FileType[]) => {
+  return files
+    .reduce((acc, file) => {
+      const size = parseFloat(file.size);
+      return acc + (file.size.includes('MB') ? size : size / 1024);
+    }, 0)
+    .toFixed(1);
 };

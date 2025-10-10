@@ -1,17 +1,14 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from '@/shared/components/shadcn/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
 import { getFileIcon } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
 const FilePage = () => {
   const files = mockAllFiles;
-const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="p-6  bg-gray-50">
       <div>
@@ -19,9 +16,7 @@ const navigate = useNavigate()
           <div className="mb-8">
             <p className="font-bold text-gray-700">프로젝트 중 업로드한 작업물을 관리하세요</p>
           </div>
-
           {/* File List */}
-
           <div className="flex flex-col gap-4">
             {files.map((file) => (
               <div key={file.id} className="p-4 bg-white rounded-xl">
@@ -38,7 +33,14 @@ const navigate = useNavigate()
                       </p>
                     </div>
                   </div>
-                  <Button onClick={()=>{navigate(ROUTE_PATH.TASK_DETAIL)}} variant="outline" size="sm" className="text-sm border-gray-400">
+                  <Button
+                    onClick={() => {
+                      navigate(ROUTE_PATH.TASK_DETAIL);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="text-sm border-gray-400"
+                  >
                     {file.taskName}
                   </Button>
 
@@ -53,7 +55,7 @@ const navigate = useNavigate()
                         </Button>
                       </DropdownMenuTrigger>
                       {/* <DropdownMenuContent align="end"> */}
-                        {/* <DropdownMenuItem>이름 변경</DropdownMenuItem> */}
+                      {/* <DropdownMenuItem>이름 변경</DropdownMenuItem> */}
                       {/* </DropdownMenuContent> */}
                     </DropdownMenu>
                   </div>
