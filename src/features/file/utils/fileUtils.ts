@@ -10,11 +10,14 @@ export const getFileListUtils = () => {
 };
 export const getFileIcon = (type: string) => {
   const fileIcons = getFileListUtils();
-  const match = fileIcons.find((icon) => {
-    const fileName = icon.split('/').pop()?.replace('.png', '');
-    return fileName?.toLowerCase().startsWith(type.toLowerCase());
-  });
-  return match;
+  return fileIcons.find(
+    (icon) =>
+      icon
+        .split('/')
+        .pop()
+        ?.replace(/\.png$/i, '')
+        .toLowerCase() === type.toLowerCase(),
+  );
 };
 export const getFileSize = (files: FileType[]) => {
   return files
