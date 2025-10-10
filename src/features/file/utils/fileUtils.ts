@@ -10,6 +10,7 @@ export const getFileListUtils = () => {
 };
 export const getFileIcon = (type: string) => {
   const fileIcons = getFileListUtils();
+  console.log(fileIcons)
   return fileIcons.find(
     (icon) =>
       icon
