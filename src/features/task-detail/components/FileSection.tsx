@@ -3,38 +3,33 @@ import { useDropzone } from 'react-dropzone';
 import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
-import type { FileStatus, MockTaskFileType } from '@/features/task-detail/types/fileType';
-import { mockFiles } from '@/shared/data/mockFiles';
+import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
 }
 
 const FileSection = ({ onOpenPdf }: FileSectionProps) => {
-  const [files, setFiles] = useState<MockTaskFileType[]>(mockFiles);
+  const [files, setFiles] = useState<TaskDetailFileType[]>([]);
   const onDrop = (acceptedFiles: File[]) => {
-    const newFiles: MockTaskFileType[] = acceptedFiles.map((file, idx) => ({
-      id: Date.now() + idx,
-      name: file.name,
-      url: URL.createObjectURL(file),
-      size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+    const newFile: TaskDetailFileType[] = acceptedFiles.map((file, idx) => ({
+      fileId: Date.now().toString() + idx,
+      fileName: file.name,
+      fileUrl: URL.createObjectURL(file),
+      fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
       timeLeft: '방금',
       status: 'uploading',
-      type: file.name.endsWith('.pdf') ? 'pdf' : file.name.endsWith('.pptx') ? 'pptx' : 'ppt',
-      date: new Date().toISOString().split('T')[0],
+      onOpenPdf: onOpenPdf,
+      onDelete: (id?: string) => {
+        setFiles((prev) => prev.filter((file) => file.fileId !== id));
+      },
+      onDownload: (fileUrl?: string, fileName?: string) => {
+        console.log('Downloading', fileUrl, fileName);
+      },
     }));
-    // 기존 파일 + 새 파일
-    setFiles((prev) => [...prev, ...newFiles]);
+    setFiles((prev) => [...prev, ...newFile]);
   };
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const DeleteFile = (id: number) => {
-    setFiles((prev) => prev.filter((file) => file.id !== id));
-  };
-  const DownloadFile = (fileUrl: string, fileName: string) => {
-    //TODO: 추후 다운로드 API와 연결 필요
-    console.log('Downloading', fileUrl, fileName);
-  };
 
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
@@ -49,18 +44,19 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
         }
       />
 
-      <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
+      <div className="w-full h-full pt-3 flex flex-col gap-2 overflow-y-auto">
         {files.map((item) => (
           <FileItem
-            key={item.id}
-            fileName={item.name}
-            fileUrl={item.url}
-            fileSize={item.size}
+            key={item.fileId}
+            fileId={item.fileId}
+            fileName={item.fileName}
+            fileUrl={item.fileUrl}
+            fileSize={item.fileSize}
             timeLeft={item.timeLeft}
-            onDelete={() => DeleteFile(item.id)}
-            onDownload={() => DownloadFile(item.url, item.name)}
-            onOpenPdf={onOpenPdf}
-            status={item.status as FileStatus}
+            onDelete={item.onDelete}
+            onDownload={item.onDownload}
+            onOpenPdf={item.onOpenPdf}
+            status={item.status}
           />
         ))}
       </div>

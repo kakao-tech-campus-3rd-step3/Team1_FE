@@ -1,7 +1,6 @@
 import fileIcon from '@/shared/assets/images/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
-import type { FileType } from '@/features/task-detail/types/fileType';
-import { FileStatusImages } from '@/features/task-detail/types/fileType';
+import { type TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu';
+import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 
 const FileItem = ({
   fileName,
@@ -19,7 +19,7 @@ const FileItem = ({
   fileSize,
   timeLeft,
   status,
-}: FileType) => {
+}: TaskDetailFileType) => {
   const handleOpenPdf = () => {
     if (!fileUrl) return;
     onOpenPdf(fileUrl);
