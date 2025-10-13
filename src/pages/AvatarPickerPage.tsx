@@ -34,7 +34,7 @@ const AvatarSettingsPage = () => {
     if (selectedAvatarId === null) return;
     setAuth({ user: { profileEmoji: String(selectedAvatarId) } }); // 혹은 URL로 저장
     toast.success('아바타가 저장되었습니다!');
-    navigate(ROUTE_PATH.PROJECT.replace(':projectId', '123'));
+    navigate(ROUTE_PATH.MY_TASK); // 로그인 완료 시 나의 할 일 페이지로 이동
     //TODO: API 연동하기
   };
 
