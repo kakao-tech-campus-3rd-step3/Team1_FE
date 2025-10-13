@@ -17,6 +17,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/components/shadcn/tooltip';
+import { useNavigate } from 'react-router';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 interface TaskCardProps {
   task: Task;
@@ -26,7 +28,7 @@ interface TaskCardProps {
 const TaskCard = ({ task, draggable = false }: TaskCardProps) => {
   const deleteTaskMutation = useDeleteTaskMutation();
   const tags = generateTags(task);
-
+const navigate = useNavigate()
   const sortable = useSortable({
     id: task.id,
     data: { type: 'Task', task },
@@ -55,6 +57,9 @@ const TaskCard = ({ task, draggable = false }: TaskCardProps) => {
 
   return (
     <div
+      onClick={() => {
+        navigate(ROUTE_PATH.TASK_DETAIL);
+      }}
       ref={setNodeRef}
       style={style}
       {...attributes}
