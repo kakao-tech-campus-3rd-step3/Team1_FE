@@ -16,13 +16,8 @@ export const projectApi = {
 
   // 프로젝트 생성
   createProject: async (projectName: string): Promise<Project> => {
-    const res = await api.post('/projects', { name: projectName });
-    const data = res.data;
-    return {
-      id: data.id,
-      name: data.name,
-      defaultReviewerCount: data.defaultReviewerCount,
-    };
+    const { data } = await api.post<Project>('/projects', { name: projectName });
+    return data;
   },
 
   // 프로젝트 수정
