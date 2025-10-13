@@ -15,7 +15,7 @@ export const getFileIcon = (type: string) => {
   const match = fileIcons.find((icon) => icon.name.toLowerCase() === type.toLowerCase());
   return match?.url;
 };
-export const getFileSize = (files: FileType[]) => {
+export const getTotalFileSize = (files: FileType[]) => {
   return files
     .reduce((acc, file) => {
       const size = parseFloat(file.size);

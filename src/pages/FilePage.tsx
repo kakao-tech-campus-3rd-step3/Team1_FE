@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
-import { getFileIcon, getFileSize } from '@/features/file/utils/fileUtils';
+import { getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
@@ -73,7 +73,7 @@ const FilePage = () => {
           {/* Footer Info */}
           <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
             <p>총 {files.length}개 파일</p>
-            <p>전체 용량 : {getFileSize(files)} MB</p>
+            <p>전체 용량 : {getTotalFileSize(files)} MB</p>
           </div>
         </div>
       </div>
