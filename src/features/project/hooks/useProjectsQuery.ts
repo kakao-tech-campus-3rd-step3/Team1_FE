@@ -6,9 +6,6 @@ import type { Project } from '@/features/project/types/projectTypes';
 export const useProjectsQuery = () => {
   return useQuery<Project[]>({
     queryKey: ['projects', 'me'],
-    queryFn: async () => {
-      const data = await projectApi.fetchProjects();
-      return data;
-    },
+    queryFn: projectApi.fetchProjects,
   });
 };
