@@ -28,7 +28,7 @@ interface TaskCardProps {
 const TaskCard = ({ task, draggable = false }: TaskCardProps) => {
   const deleteTaskMutation = useDeleteTaskMutation();
   const tags = generateTags(task);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const sortable = useSortable({
     id: task.id,
     data: { type: 'Task', task },

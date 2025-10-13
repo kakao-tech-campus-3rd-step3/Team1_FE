@@ -46,7 +46,7 @@ export const useUploadFileMutation = () => {
       return { prevFiles, tempId };
     },
     onSuccess: async (data, variables, context) => {
-      queryClient.setQueryData(['uploadedFile'], (old:TaskDetailFileType[]) =>
+      queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[]) =>
         old?.map((file) =>
           file.fileId === context?.tempId
             ? {
