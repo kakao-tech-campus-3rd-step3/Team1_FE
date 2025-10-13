@@ -19,8 +19,6 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
   const navigate = useNavigate();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
-  if (!item.subItems || item.subItems.length === 0) return null;
-
   return (
     <SidebarMenuItem className="pb-4">
       <DropdownMenu>
