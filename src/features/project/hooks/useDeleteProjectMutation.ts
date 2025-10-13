@@ -28,9 +28,12 @@ export const useDeleteProjectMutation = () => {
       }
     },
 
-    onSettled: (_, __, projectId) => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
+    onSuccess: (_, __, projectId) => {
       queryClient.removeQueries({ queryKey: ['project', 'me', projectId] });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
     },
   });
 };
