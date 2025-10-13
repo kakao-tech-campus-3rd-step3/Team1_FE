@@ -4,31 +4,42 @@ import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
 import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import { useUploadFileMutation } from '../hooks/useFileUploadUrlMutation';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
+  taskId: string;
 }
 
-const FileSection = ({ onOpenPdf }: FileSectionProps) => {
+const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
   const [files, setFiles] = useState<TaskDetailFileType[]>([]);
+  const fileUploadUrlMutation = useUploadFileMutation();
   const onDrop = (acceptedFiles: File[]) => {
-    const newFile: TaskDetailFileType[] = acceptedFiles.map((file, idx) => ({
-      fileId: Date.now().toString() + idx,
-      fileName: file.name,
-      fileUrl: URL.createObjectURL(file),
-      fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
-      timeLeft: '방금',
-      status: 'uploading',
-      onOpenPdf: onOpenPdf,
-      onDelete: (id?: string) => {
-        setFiles((prev) => prev.filter((file) => file.fileId !== id));
-      },
-      onDownload: (fileUrl?: string, fileName?: string) => {
-        console.log('Downloading', fileUrl, fileName);
-      },
-    }));
-    setFiles((prev) => [...prev, ...newFile]);
+    acceptedFiles.forEach((file, idx) => {
+      const tempId = Date.now().toString() + idx;
+
+      // 임시 UI 파일
+      const newFile: TaskDetailFileType = {
+        fileId: tempId,
+        fileName: file.name,
+        fileUrl: URL.createObjectURL(file),
+        fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+        timeLeft: '방금',
+        status: 'uploading',
+        onOpenPdf: onOpenPdf,
+        onDelete: () => setFiles((prev) => prev.filter((f) => f.fileId !== tempId)),
+        onDownload: () => console.log('Downloading', file.name),
+      };
+
+      // UI에 바로 추가
+      setFiles((prev) => [...prev, newFile]);
+
+      // 업로드 호출
+      console.log(file);
+      fileUploadUrlMutation.mutate({ file, taskId });
+    });
   };
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
