@@ -16,11 +16,11 @@ export const useUpdateProjectMutation = () => {
       projectApi.updateProject(projectId, updatedData),
 
     onMutate: async ({ projectId, updatedData }) => {
-      await queryClient.cancelQueries({ queryKey: ['projects'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
+      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
+      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
 
       queryClient.setQueryData<Project[]>(
-        ['projects'],
+        ['projects', 'me'],
         (old) => old?.map((p) => (p.id === projectId ? { ...p, ...updatedData } : p)) ?? [],
       );
       return { previousProjects };
@@ -29,21 +29,21 @@ export const useUpdateProjectMutation = () => {
     onError: (error, __, context) => {
       console.error('프로젝트 수정 실패:', error);
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects'], context.previousProjects);
+        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
     },
 
     onSuccess: (updatedProject) => {
-      queryClient.setQueryData(['project', updatedProject.id], updatedProject);
+      queryClient.setQueryData(['project', 'me', updatedProject.id], updatedProject);
       queryClient.setQueryData<Project[]>(
-        ['projects'],
+        ['projects', 'me'],
         (old) => old?.map((p) => (p.id === updatedProject.id ? updatedProject : p)) ?? [],
       );
     },
 
     onSettled: (_, __, { projectId }) => {
-      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['project', 'me', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
     },
   });
 };

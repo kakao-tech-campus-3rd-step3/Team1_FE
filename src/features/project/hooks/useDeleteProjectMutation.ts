@@ -10,11 +10,11 @@ export const useDeleteProjectMutation = () => {
     mutationFn: (projectId: string) => projectApi.deleteProject(projectId),
 
     onMutate: async (projectId: string) => {
-      await queryClient.cancelQueries({ queryKey: ['projects'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
+      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
+      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
 
       queryClient.setQueryData<Project[]>(
-        ['projects'],
+        ['projects', 'me'],
         (old) => old?.filter((p) => p.id !== projectId) ?? [],
       );
 
@@ -24,12 +24,12 @@ export const useDeleteProjectMutation = () => {
     onError: (error, __, context) => {
       console.error('프로젝트 삭제 실패:', error);
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects'], context.previousProjects);
+        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
     },
   });
 };
