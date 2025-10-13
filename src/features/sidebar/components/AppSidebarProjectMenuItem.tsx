@@ -1,5 +1,4 @@
-import { useNavigate, useLocation } from 'react-router';
-import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,16 +16,8 @@ import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 
 const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
   const { data: projects } = useProjectsQuery();
-
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const currentProjectId = location.pathname.split('/')[2];
-  const [selectedProjectId, setSelectedProjectId] = useState(currentProjectId);
-
-  useEffect(() => {
-    setSelectedProjectId(currentProjectId);
-  }, [currentProjectId]);
+  const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
   if (!item.subItems || item.subItems.length === 0) return null;
 
@@ -53,9 +44,8 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
           <DropdownMenuLabel className="text-xs font-medium">{item.title}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
-            value={selectedProjectId}
+            value={currentProjectId}
             onValueChange={(value) => {
-              setSelectedProjectId(value);
               navigate(`/project/${value}/board`);
             }}
           >
