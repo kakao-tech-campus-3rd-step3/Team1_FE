@@ -6,24 +6,34 @@ import { v4 as uuidv4 } from 'uuid';
 // 프로젝트 생성
 export const useCreateProjectMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: projectApi.createProject,
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['projects'] });
-      const previousProjects = queryClient.getQueryData(['projects']);
 
+  return useMutation({
+    mutationFn: (projectName: string) => projectApi.createProject(projectName),
+
+    onMutate: async (projectName: string) => {
+      await queryClient.cancelQueries({ queryKey: ['projects'] });
+      const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
+
+      // optimistic UI
       const newTempProject: Project = {
-        projectId: `temp-${uuidv4()}`,
-        name: `새로운 프로젝트`,
+        id: `temp-${uuidv4()}`,
+        name: projectName,
         defaultReviewerCount: 2,
-        role: 'admin',
       };
 
-      queryClient.setQueryData(['projects'], (old: Project[]) => {
-        return [...(old || []), newTempProject];
-      });
+      queryClient.setQueryData(['projects'], (old: Project[] | undefined) => [
+        ...(old || []),
+        newTempProject,
+      ]);
 
       return { previousProjects };
+    },
+
+    onError: (error, __, context) => {
+      console.error('프로젝트 생성 실패:', error);
+      if (context?.previousProjects) {
+        queryClient.setQueryData(['projects'], context.previousProjects);
+      }
     },
 
     onSettled: () => {

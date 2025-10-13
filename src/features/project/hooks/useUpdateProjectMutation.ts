@@ -1,23 +1,49 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
-import type { Id } from '@/shared/types/commonTypes';
+
+type UpdateProjectParams = {
+  projectId: string;
+  updatedData: Partial<Project>;
+};
 
 // 프로젝트 수정
 export const useUpdateProjectMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ projectId, updatedData }: { projectId: Id; updatedData: Partial<Project> }) =>
+    mutationFn: ({ projectId, updatedData }: UpdateProjectParams) =>
       projectApi.updateProject(projectId, updatedData),
 
-    onSuccess: (updatedProject) => {
-      queryClient.setQueryData(['project', updatedProject.projectId], updatedProject);
+    onMutate: async ({ projectId, updatedData }) => {
+      await queryClient.cancelQueries({ queryKey: ['projects'] });
+      const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
 
-      queryClient.setQueryData<Project[]>(['projects'], (old) => {
-        if (!old) return [];
-        return old.map((p) => (p.projectId === updatedProject.projectId ? updatedProject : p));
-      });
+      queryClient.setQueryData<Project[]>(
+        ['projects'],
+        (old) => old?.map((p) => (p.id === projectId ? { ...p, ...updatedData } : p)) ?? [],
+      );
+      return { previousProjects };
+    },
+
+    onError: (error, __, context) => {
+      console.error('프로젝트 수정 실패:', error);
+      if (context?.previousProjects) {
+        queryClient.setQueryData(['projects'], context.previousProjects);
+      }
+    },
+
+    onSuccess: (updatedProject) => {
+      queryClient.setQueryData(['project', updatedProject.id], updatedProject);
+      queryClient.setQueryData<Project[]>(
+        ['projects'],
+        (old) => old?.map((p) => (p.id === updatedProject.id ? updatedProject : p)) ?? [],
+      );
+    },
+
+    onSettled: (_, __, { projectId }) => {
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });
 };
