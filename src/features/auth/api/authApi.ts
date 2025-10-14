@@ -32,13 +32,7 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
   const res = await api.post('/auth/reissue', {}, { withCredentials: true });
   return res.data;
 };
-
 export const fetchMyInfo = async () => {
-  const token = useAuthStore.getState().accessToken;
-  const res = await api.get('/members/me', {
-    headers: { Authorization: `Bearer ${token}` },
-    withCredentials: false, // 쿠키 제외 → CORS 에러 회피
-  });
+  const res = await api.get('/members/me');
   return res.data;
 };
-
