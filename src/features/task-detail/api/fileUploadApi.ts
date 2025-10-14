@@ -2,6 +2,7 @@ import api from '@/shared/api/axiosInstance';
 import type {
   CompleteFileUploadRequest,
   CompleteFileUploadResponse,
+  FileDownloadUrlResponse,
   FileUploadUrlRequest,
   FileUploadUrlResponse,
 } from '@/features/task-detail/types/fileApiTypes';
@@ -30,5 +31,9 @@ export const fileUploadApi = {
       sizeBytes,
     });
     return res.data;
+  },
+  fetchFileDownloadUrl: async (fileId: string): Promise<FileDownloadUrlResponse> => {
+    const { data } = await api.get(`/files/${fileId}/download-url`);
+    return data;
   },
 };

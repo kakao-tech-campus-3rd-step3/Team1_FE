@@ -35,13 +35,13 @@ export const useUploadFileMutation = () => {
       // 4️⃣ ✅ 다운로드 URL 요청
 
       const downloadUrlRes = await fileUploadApi.fetchFileDownloadUrl(presigned.fileId);
-console.log(downloadUrlRes)
+      console.log(downloadUrlRes);
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({ queryKey: ['uploadedFile'] });
       const prevFiles = queryClient.getQueriesData({ queryKey: ['uploadedFile'] });
-      const tempId =uuidv4()
+      const tempId = uuidv4();
       const newFile: TaskDetailFileType = {
         fileId: tempId,
         fileName: variables.file.name,
@@ -65,14 +65,14 @@ console.log(downloadUrlRes)
                 ...file,
                 status: 'success',
                 fileId: data.fileId,
-                fileUrl:data.downloadUrl
+                fileUrl: data.downloadUrl,
               }
             : file,
         ),
       );
     },
     onError: (error: Error, _variables, context) => {
-      toast.error("파일 업로드에 실패했습니다.");
+      toast.error('파일 업로드에 실패했습니다.');
       console.log(error);
       if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
     },

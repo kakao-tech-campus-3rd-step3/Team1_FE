@@ -18,7 +18,7 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
   const fileUploadUrlMutation = useUploadFileMutation();
   const onDrop = (acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
-      const tempId = uuidv4()
+      const tempId = uuidv4();
       // 임시 UI 파일
       const newFile: TaskDetailFileType = {
         fileId: tempId,
