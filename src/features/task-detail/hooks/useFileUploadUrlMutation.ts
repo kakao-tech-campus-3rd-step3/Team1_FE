@@ -45,7 +45,7 @@ export const useUploadFileMutation = () => {
 
       return { prevFiles, tempId };
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, _variables, context) => {
       queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[]) =>
         old?.map((file) =>
           file.fileId === context?.tempId
@@ -58,7 +58,7 @@ export const useUploadFileMutation = () => {
         ),
       );
     },
-    onError: (error: Error, variables, context) => {
+    onError: (error: Error, _variables, context) => {
       toast.error(error.message);
       console.log(error);
       if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
