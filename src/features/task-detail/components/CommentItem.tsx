@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/
 import { Pin } from 'lucide-react';
 import { User } from 'lucide-react';
 import type { Comment } from '@/features/task-detail/types/commentTypes';
+import { cn } from '@/shared/lib/utils';
 
 interface CommentItemProps {
   comment: Comment;
@@ -15,9 +16,10 @@ const CommentItem = ({ comment }: CommentItemProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
               <Avatar
-                className={`h-8 w-8 shrink-0 shadow-xs text-white text-xs ${
-                  comment.author === '익명' ? 'bg-gray-400' : 'bg-boost-orange'
-                }`}
+                className={cn(
+                  'h-8 w-8 shrink-0 shadow-xs text-white text-xs',
+                  comment.author === '익명' ? 'bg-gray-400' : 'bg-boost-orange',
+                )}
               >
                 {comment.avatar ? (
                   <AvatarImage

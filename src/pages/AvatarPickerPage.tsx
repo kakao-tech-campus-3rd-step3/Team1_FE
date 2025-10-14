@@ -1,31 +1,40 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getAvatarListUtils, getRandomAvatar } from '@/features/avatar-picker/utils/avatarUtils';
+import { getAvatarListUtils, getRandomAvatarId } from '@/features/avatar-picker/utils/avatarUtils';
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
 import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
 import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const AvatarSettingsPage = () => {
   const avatarList = useMemo(() => getAvatarListUtils(), []);
-  const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [selectedAvatarId, setSelectedAvatarId] = useState<number | null>(null);
+  const [selectedAvatarUrl, setSelectedAvatarUrl] = useState<string>('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   // 초기 랜덤 아바타 선택
   useEffect(() => {
-    const randomAvatar = getRandomAvatar(avatarList);
-    setSelectedAvatar(randomAvatar);
+    const randomId = getRandomAvatarId(avatarList);
+    setSelectedAvatarId(randomId);
+    setSelectedAvatarUrl(avatarList[randomId]);
   }, [avatarList]);
 
-  const handleAvatarSelect = (avatarUrl: string) => {
-    setSelectedAvatar(avatarUrl);
-    setIsDrawerOpen(false);
+  const handleAvatarSelect = (id: number) => {
+    setSelectedAvatarId(id);
+    setSelectedAvatarUrl(avatarList[id]);
   };
 
   const handleSave = () => {
-    console.log('Selected avatar:', selectedAvatar);
-    alert('아바타가 저장되었습니다!');
-    //TODO: 페이지 이동 구현하기
+    if (selectedAvatarId === null) return;
+    setAuth({ user: { profileEmoji: String(selectedAvatarId) } }); // 혹은 URL로 저장
+    toast.success('아바타가 저장되었습니다!');
+    navigate(ROUTE_PATH.PROJECT.replace(':projectId', '123'));
     //TODO: API 연동하기
   };
 
@@ -36,7 +45,7 @@ const AvatarSettingsPage = () => {
         <AvatarHeader />
         <AvatarSelector
           isDrawerOpen={isDrawerOpen}
-          selectedAvatar={selectedAvatar}
+          selectedAvatar={selectedAvatarUrl}
           setIsDrawerOpen={setIsDrawerOpen}
           avatarList={avatarList}
           handleAvatarSelect={handleAvatarSelect}

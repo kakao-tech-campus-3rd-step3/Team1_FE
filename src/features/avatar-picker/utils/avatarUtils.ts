@@ -6,7 +6,7 @@ export const getAvatarListUtils = () => {
   });
   return Object.values(avatarModules).map((module) => module.default);
 };
-export const getRandomAvatar = (avatarList: string[]): string => {
+export const getRandomAvatarId = (avatarList: string[]) => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
-  return avatarList[randomIndex];
+  return randomIndex;
 };

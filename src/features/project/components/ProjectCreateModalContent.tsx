@@ -48,7 +48,7 @@ const ProjectCreateModalContent = ({ onConfirm }: ProjectCreateModalProps) => {
         </Button>
         <Button
           onClick={handleConfirm}
-          disabled={!projectName || isLoading}
+          disabled={!projectName.trim() || isLoading}
           className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
         >
           생성

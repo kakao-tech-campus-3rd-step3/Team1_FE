@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
-import { generateId } from '@/shared/utils/idUtils';
+import { v4 as uuidv4 } from 'uuid';
 
 // 프로젝트 생성
 export const useCreateProjectMutation = () => {
@@ -13,7 +13,7 @@ export const useCreateProjectMutation = () => {
       const previousProjects = queryClient.getQueryData(['projects']);
 
       const newTempProject: Project = {
-        projectId: `temp-${generateId()}`,
+        projectId: `temp-${uuidv4()}`,
         name: `새로운 프로젝트`,
         defaultReviewerCount: 2,
         role: 'admin',
