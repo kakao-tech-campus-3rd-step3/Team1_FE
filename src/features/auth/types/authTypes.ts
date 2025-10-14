@@ -1,5 +1,6 @@
 export interface KakaoLoginRequest {
   code: string;
+  redirectUri: string;
 }
 
 export interface KakaoLoginResponse {
