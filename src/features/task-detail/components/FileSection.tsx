@@ -35,7 +35,6 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
       setFiles((prev) => [...prev, newFile]);
 
       // 업로드 호출
-      console.log(file);
       fileUploadUrlMutation.mutate({ file, taskId });
     });
   };

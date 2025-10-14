@@ -7,11 +7,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  console.log('프로텍티드');
   // TODO: 로그인 API 연동 후 아래 주석을 풀 것입니다.
   const { accessToken } = useAuthStore();
   const location = useLocation(); // 현재 URL 정보 가져오기
-  console.log(accessToken);
   // accessToken 없으면 로그인 페이지로 이동, 이동 전 원래 위치 저장
   //TODO: 로그인 API 연동 후 아래 주석을 풀 것입니다.
   if (!accessToken) {

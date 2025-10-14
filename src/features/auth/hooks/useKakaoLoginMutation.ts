@@ -20,7 +20,6 @@ export const useKakaoLoginMutation = () => {
 
       try {
         const myInfo = await fetchMyInfo();
-        console.log('내 정보', myInfo);
         setAuth({ token: data.accessToken, user: myInfo });
         toast.success('로그인이 완료되었습니다.');
         navigate(ROUTE_PATH.AVATAR);

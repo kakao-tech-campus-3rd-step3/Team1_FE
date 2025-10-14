@@ -3,7 +3,6 @@ import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
 
 const AppInitializer = () => {
-  console.log('앱이니셜라이저');
   const setAuth = useAuthStore((state) => state.setAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
@@ -16,7 +15,6 @@ const AppInitializer = () => {
     }
     const refreshAccessToken = async () => {
       try {
-        console.log('토큰을 다시 받아보다');
         const { newAccessToken } = await fetchRefreshToken();
         setAuth({ token: newAccessToken });
       } catch (error) {

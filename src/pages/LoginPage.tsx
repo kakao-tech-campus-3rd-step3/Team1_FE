@@ -19,7 +19,6 @@ const LoginPage = () => {
   const handleKakaoLogin = () => {
     const encodedRedirectUri = encodeURIComponent(redirectUri);
     const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
-    console.log(kakaoUrl);
     window.location.href = kakaoUrl;
   };
 
