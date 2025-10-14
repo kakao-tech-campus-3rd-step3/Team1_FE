@@ -73,7 +73,7 @@ const FilePage = () => {
           {/* Footer Info */}
           <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
             <p>총 {files.length}개 파일</p>
-            <p>전체 용량 : {getTotalFileSize(files)} MB</p>
+            <p>전체 용량 : {getTotalFileSize(files)}</p>
           </div>
         </div>
       </div>

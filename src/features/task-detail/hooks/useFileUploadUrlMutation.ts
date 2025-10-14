@@ -7,17 +7,24 @@ import type {
 import { uploadToS3 } from '@/features/task-detail/utils/fileUploadToS3';
 import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ file, taskId }: { file: File; taskId: string }) => {
+      // 1️⃣ presigned URL 요청
+
       const presigned = await fileUploadApi.fetchFileUploadUrl({
         filename: file.name,
         contentType: file.type,
         sizeBytes: file.size,
       });
+      // 2️⃣ S3에 실제 업로드
+
       await uploadToS3(file, presigned.url, presigned.headers);
+      // 3️⃣ 업로드 완료 콜백 (서버에 알림)
+
       await fileUploadApi.completeFileUpload({
         fileId: presigned.fileId,
         taskId,
@@ -25,12 +32,16 @@ export const useUploadFileMutation = () => {
         contentType: file.type,
         sizeBytes: file.size,
       });
-      return { fileId: presigned.fileId };
+      // 4️⃣ ✅ 다운로드 URL 요청
+
+      const downloadUrlRes = await fileUploadApi.fetchFileDownloadUrl(presigned.fileId);
+console.log(downloadUrlRes)
+      return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({ queryKey: ['uploadedFile'] });
       const prevFiles = queryClient.getQueriesData({ queryKey: ['uploadedFile'] });
-      const tempId = Date.now().toString();
+      const tempId =uuidv4()
       const newFile: TaskDetailFileType = {
         fileId: tempId,
         fileName: variables.file.name,
@@ -54,6 +65,7 @@ export const useUploadFileMutation = () => {
                 ...file,
                 status: 'success',
                 fileId: data.fileId,
+                fileUrl:data.downloadUrl
               }
             : file,
         ),
