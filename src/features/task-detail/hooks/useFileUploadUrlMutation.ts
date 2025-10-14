@@ -60,7 +60,7 @@ export const useUploadFileMutation = () => {
     },
     onError: (error: Error, variables, context) => {
       toast.error(error.message);
-      console.log(error)
+      console.log(error);
       if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
     },
   });

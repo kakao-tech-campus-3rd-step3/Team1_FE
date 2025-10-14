@@ -17,7 +17,6 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
   const onDrop = (acceptedFiles: File[]) => {
     acceptedFiles.forEach((file, idx) => {
       const tempId = Date.now().toString() + idx;
-
       // 임시 UI 파일
       const newFile: TaskDetailFileType = {
         fileId: tempId,

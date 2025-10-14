@@ -3,7 +3,7 @@ export type FileType = {
   name: string;
   type: string;
   url: string;
-  size: string;
+  sizeBytes: number;
   date: string;
   taskNum: number;
   taskName: string;

@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
-import { getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
+import { formatBytes, getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
@@ -35,7 +35,7 @@ const FilePage = () => {
                     <div className=" min-w-0">
                       <h3 className="font-medium text-gray-900 ">{file.name}</h3>
                       <p className="text-sm text-gray-500 mt-1">
-                        {file.size} · {file.date}
+                        {formatBytes(file.sizeBytes)} · {file.date}
                       </p>
                     </div>
                   </div>
