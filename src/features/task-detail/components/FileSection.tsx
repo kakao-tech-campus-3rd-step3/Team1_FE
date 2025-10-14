@@ -6,6 +6,7 @@ import FileItem from '@/features/task-detail/components/FileItem';
 import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
 import { formatBytes } from '@/features/file/utils/fileUtils';
+import { v4 as uuidv4 } from 'uuid';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
@@ -16,8 +17,8 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
   const [files, setFiles] = useState<TaskDetailFileType[]>([]);
   const fileUploadUrlMutation = useUploadFileMutation();
   const onDrop = (acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file, idx) => {
-      const tempId = Date.now().toString() + idx;
+    acceptedFiles.forEach((file) => {
+      const tempId = uuidv4()
       // 임시 UI 파일
       const newFile: TaskDetailFileType = {
         fileId: tempId,
