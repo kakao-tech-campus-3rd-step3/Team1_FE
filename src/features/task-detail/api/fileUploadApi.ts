@@ -4,7 +4,7 @@ import type {
   CompleteFileUploadResponse,
   FileUploadUrlRequest,
   FileUploadUrlResponse,
-} from '../types/fileApiTypes';
+} from '@/features/task-detail/types/fileApiTypes';
 
 export const fileUploadApi = {
   fetchFileUploadUrl: async ({

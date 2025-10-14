@@ -4,7 +4,7 @@ import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
 import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
-import { useUploadFileMutation } from '../hooks/useFileUploadUrlMutation';
+import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;

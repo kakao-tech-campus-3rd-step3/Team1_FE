@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { fileUploadApi } from '../api/fileUploadApi';
-import type { FileStatus, TaskDetailFileType } from '../types/taskDetailFileType';
-import { uploadToS3 } from '../utils/fileUploadToS3';
+import { fileUploadApi } from '@/features/task-detail/api/fileUploadApi';
+import type { FileStatus, TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import { uploadToS3 } from '@/features/task-detail/utils/fileUploadToS3';
 import toast from 'react-hot-toast';
 
 export const useUploadFileMutation = () => {

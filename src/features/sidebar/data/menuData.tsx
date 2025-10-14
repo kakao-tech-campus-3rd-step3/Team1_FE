@@ -1,4 +1,4 @@
-import type { SidebarItem } from '../types/menuTypes';
+import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 import { Settings, User, Layers, Bell } from 'lucide-react';
 
 //TODO: 추후 프로젝트 목록은 api로 받아올 예정

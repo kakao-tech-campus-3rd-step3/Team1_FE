@@ -2,7 +2,7 @@ import TeamMemberColumn from '@/features/board/components/TeamMemberColumn';
 import { useTasksQuery } from '@/features/task/hooks/useTasksQuery';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import { mockMembers } from '@/shared/data/mockMembers';
-import DoneColumn from './DoneColumn';
+import DoneColumn from '@/features/board/components/DoneColumn';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const TeamMemberBoard = () => {
