@@ -33,7 +33,7 @@ const AppSidebar = () => {
   const handleLogoutClick = () => {
     LogoutMutaion();
   };
-  
+
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
       <SidebarHeader

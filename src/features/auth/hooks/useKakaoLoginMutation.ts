@@ -12,19 +12,10 @@ export const useKakaoLoginMutation = () => {
   return useMutation({
     mutationFn: async (data: KakaoLoginRequest) => {
       const loginData: KakaoLoginResponse = await fetchKaKaoLogin(data);
-
+      const myInfo = await fetchMyInfo();
       const { setAuth } = useAuthStore.getState();
-      setAuth({ token: loginData.accessToken });
+      setAuth({ token: loginData.accessToken, user: myInfo });
 
-      let myInfo = null;
-      if (loginData.accessToken) {
-        try {
-          myInfo = await fetchMyInfo();
-          setAuth({ token: loginData.accessToken, user: myInfo });
-        } catch (err) {
-          console.log(err);
-        }
-      }
       return { myInfo };
     },
     onSuccess: ({ myInfo }) => {
