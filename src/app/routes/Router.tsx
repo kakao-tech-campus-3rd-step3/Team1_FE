@@ -24,7 +24,7 @@ export const ROUTE_PATH = {
   PROJECT_BOARD: '/project/:projectId/board',
   PROJECT_MEMO: '/project/:projectId/memo',
   PROJECT_FILE: '/project/:projectId/file',
-  MYTASK: '/my-task',
+  MY_TASK: '/my-task',
   ERROR: '/error',
   MODAL: '/modal-test',
   AVATAR: '/avatar',
@@ -53,8 +53,7 @@ const PROTECTED_ROUTES = [
       { path: 'memo', element: <MemoPage /> },
     ],
   },
-  { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
-  { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
+  { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
 ];
