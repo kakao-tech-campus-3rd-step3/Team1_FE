@@ -28,11 +28,16 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
         status: 'uploading',
       };
 
-      // UI에 바로 추가
       setFiles((prev) => [...prev, newFile]);
 
-      // 업로드 호출
-      fileUploadUrlMutation.mutate({ file, taskId });
+      fileUploadUrlMutation.mutate(
+        { file, taskId },
+        {
+          onError: () => {
+            setFiles((prev) => prev.filter((f) => f.fileName !== file.name));
+          },
+        },
+      );
     });
   };
 
