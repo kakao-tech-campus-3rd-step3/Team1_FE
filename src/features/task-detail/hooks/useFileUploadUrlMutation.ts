@@ -60,7 +60,7 @@ export const useUploadFileMutation = () => {
       );
     },
     onError: (error: Error, _variables, context) => {
-      toast.error(error.message);
+      toast.error("파일 업로드에 실패했습니다.");
       console.log(error);
       if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
     },
