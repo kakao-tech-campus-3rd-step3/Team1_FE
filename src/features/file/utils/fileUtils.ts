@@ -1,4 +1,3 @@
-import type { FileType } from '@/features/file/types/fileTypes';
 import pptUrl from '@/shared/assets/images/fileIcon/PPT.png';
 import pdfUrl from '@/shared/assets/images/fileIcon/pdf.png';
 import csvUrl from '@/shared/assets/images/fileIcon/CSV.png';
@@ -15,11 +14,13 @@ export const getFileIcon = (type: string) => {
   const match = fileIcons.find((icon) => icon.name.toLowerCase() === type.toLowerCase());
   return match?.url;
 };
-export const getFileSize = (files: FileType[]) => {
-  return files
-    .reduce((acc, file) => {
-      const size = parseFloat(file.size);
-      return acc + (file.size.includes('MB') ? size : size / 1024);
-    }, 0)
-    .toFixed(1);
+export const getTotalFileSize = (files: { sizeBytes: number }[]) => {
+  const totalBytes = files.reduce((acc, file) => acc + file.sizeBytes, 0);
+  return formatBytes(totalBytes);
+};
+export const formatBytes = (sizeBytes: number) => {
+  if (sizeBytes < 1024) return `${sizeBytes} B`;
+  if (sizeBytes < 1024 * 1024) return `${(sizeBytes / 1024).toFixed(2)} KB`;
+  if (sizeBytes < 1024 * 1024 * 1024) return `${(sizeBytes / 1024 / 1024).toFixed(2)} MB`;
+  return `${(sizeBytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
 };

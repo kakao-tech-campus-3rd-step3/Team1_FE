@@ -3,39 +3,54 @@ import { useDropzone } from 'react-dropzone';
 import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
-import type { FileStatus, MockTaskFileType } from '@/features/task-detail/types/fileType';
-import { mockFiles } from '@/shared/data/mockFiles';
+import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
+import { formatBytes } from '@/features/file/utils/fileUtils';
+import { v4 as uuidv4 } from 'uuid';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
+  taskId: string;
 }
 
-const FileSection = ({ onOpenPdf }: FileSectionProps) => {
-  const [files, setFiles] = useState<MockTaskFileType[]>(mockFiles);
+const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
+  const [files, setFiles] = useState<TaskDetailFileType[]>([]);
+  const fileUploadUrlMutation = useUploadFileMutation();
   const onDrop = (acceptedFiles: File[]) => {
-    const newFiles: MockTaskFileType[] = acceptedFiles.map((file, idx) => ({
-      id: Date.now() + idx,
-      name: file.name,
-      url: URL.createObjectURL(file),
-      size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
-      timeLeft: '방금',
-      status: 'uploading',
-      type: file.name.endsWith('.pdf') ? 'pdf' : file.name.endsWith('.pptx') ? 'pptx' : 'ppt',
-      date: new Date().toISOString().split('T')[0],
-    }));
-    // 기존 파일 + 새 파일
-    setFiles((prev) => [...prev, ...newFiles]);
+    acceptedFiles.forEach((file) => {
+      const tempId = uuidv4();
+      // 임시 UI 파일
+      const newFile: TaskDetailFileType = {
+        fileId: tempId,
+        fileName: file.name,
+        fileUrl: URL.createObjectURL(file),
+        fileSize: formatBytes(file.size),
+        timeLeft: '방금',
+        status: 'uploading',
+      };
+
+      setFiles((prev) => [...prev, newFile]);
+
+      fileUploadUrlMutation.mutate(
+        { file, taskId },
+        {
+          onError: () => {
+            setFiles((prev) => prev.filter((f) => f.fileName !== file.name));
+          },
+        },
+      );
+    });
   };
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const DeleteFile = (id: number) => {
-    setFiles((prev) => prev.filter((file) => file.id !== id));
-  };
-  const DownloadFile = (fileUrl: string, fileName: string) => {
-    //TODO: 추후 다운로드 API와 연결 필요
-    console.log('Downloading', fileUrl, fileName);
+  const handleDelete = (fileId: string) => {
+    setFiles((prev) => prev.filter((f) => f.fileId !== fileId));
   };
 
+  const handleDownload = (fileName: string) => {
+    console.log('Downloading', fileName);
+  };
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
       <ContentItem
@@ -49,18 +64,19 @@ const FileSection = ({ onOpenPdf }: FileSectionProps) => {
         }
       />
 
-      <div className="w-full h-full pt-3 flex flex-col  gap-2 overflow-y-auto">
+      <div className="w-full h-full pt-3 flex flex-col gap-2 overflow-y-auto">
         {files.map((item) => (
           <FileItem
-            key={item.id}
-            fileName={item.name}
-            fileUrl={item.url}
-            fileSize={item.size}
+            key={item.fileId}
+            fileId={item.fileId}
+            fileName={item.fileName}
+            fileUrl={item.fileUrl}
+            fileSize={item.fileSize}
             timeLeft={item.timeLeft}
-            onDelete={() => DeleteFile(item.id)}
-            onDownload={() => DownloadFile(item.url, item.name)}
+            onDelete={() => handleDelete(item.fileId)}
+            onDownload={() => handleDownload(item.fileName)}
             onOpenPdf={onOpenPdf}
-            status={item.status as FileStatus}
+            status={item.status}
           />
         ))}
       </div>

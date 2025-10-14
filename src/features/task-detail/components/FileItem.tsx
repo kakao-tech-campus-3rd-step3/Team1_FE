@@ -1,14 +1,19 @@
 import fileIcon from '@/shared/assets/images/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
-import type { FileType } from '@/features/task-detail/types/fileType';
-import { FileStatusImages } from '@/features/task-detail/types/fileType';
+import { type TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
+} from '@/shared/components/shadcn/dropdown-menu';
+interface FileItemProps extends TaskDetailFileType {
+  onOpenPdf: (fileUrl: string) => void;
+  onDelete: () => void;
+  onDownload: () => void;
+}
 
 const FileItem = ({
   fileName,
@@ -19,10 +24,9 @@ const FileItem = ({
   fileSize,
   timeLeft,
   status,
-}: FileType) => {
+}: FileItemProps) => {
   const handleOpenPdf = () => {
-    if (!fileUrl) return;
-    onOpenPdf(fileUrl);
+    if (onOpenPdf) onOpenPdf(fileUrl);
   };
   return (
     <div
@@ -34,7 +38,7 @@ const FileItem = ({
         <div className="flex-1">
           <p className="text-sm">{fileName}</p>
           <p className="text-xs pt-1 text-gray-500">
-            {fileSize} | 55% | {timeLeft} left |
+            {fileSize} | {timeLeft} left |
             <img src={FileStatusImages[status]} alt={status} className="inline-block w-4 h-4" />
             {status}
           </p>
@@ -53,7 +57,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDownload();
+                  if (onDownload) onDownload();
                 }}
                 className="px-4 py-2 text-gray-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >
@@ -62,7 +66,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete();
+                  if (onDelete) onDelete();
                 }}
                 className="px-4 py-2 text-red-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >

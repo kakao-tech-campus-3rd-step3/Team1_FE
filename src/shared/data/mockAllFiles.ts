@@ -7,7 +7,7 @@ export const mockAllFiles: FileType[] = [
     name: 'Wireframe_8.pdf',
     type: 'pdf',
     url: examplePdfUrl,
-    size: '2.4 MB',
+    sizeBytes: 2_400_000, // 2.4 MB
     date: '2024-10-01',
     taskNum: 1,
     taskName: 'Wireframe 제작',
@@ -17,8 +17,7 @@ export const mockAllFiles: FileType[] = [
     name: 'Design_System.pdf',
     type: 'pdf',
     url: examplePdfUrl,
-
-    size: '3.1 MB',
+    sizeBytes: 3_100_000, // 3.1 MB
     date: '2024-09-28',
     taskNum: 2,
     taskName: '디자인 시스템 구성',
@@ -28,8 +27,7 @@ export const mockAllFiles: FileType[] = [
     name: 'UI_Mockup.pdf',
     type: 'pdf',
     url: examplePdfUrl,
-
-    size: '1.8 MB',
+    sizeBytes: 1_800_000, // 1.8 MB
     date: '2024-10-03',
     taskNum: 3,
     taskName: 'UI 목업 제작',
@@ -39,8 +37,7 @@ export const mockAllFiles: FileType[] = [
     name: 'Project_Plan.pdf',
     type: 'pdf',
     url: examplePdfUrl,
-
-    size: '956 KB',
+    sizeBytes: 956_000, // 956 KB
     date: '2024-10-02',
     taskNum: 4,
     taskName: '프로젝트 계획 수립',
@@ -50,8 +47,7 @@ export const mockAllFiles: FileType[] = [
     name: 'User_Research.pdf',
     type: 'pdf',
     url: examplePdfUrl,
-
-    size: '2.2 MB',
+    sizeBytes: 2_200_000, // 2.2 MB
     date: '2024-09-30',
     taskNum: 5,
     taskName: '사용자 리서치',
@@ -61,8 +57,7 @@ export const mockAllFiles: FileType[] = [
     name: 'Style_Guide.ppt',
     type: 'ppt',
     url: examplePdfUrl,
-
-    size: '1.5 MB',
+    sizeBytes: 1_500_000, // 1.5 MB
     date: '2024-09-29',
     taskNum: 6,
     taskName: '스타일 가이드 작성',

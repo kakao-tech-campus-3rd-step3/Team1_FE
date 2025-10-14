@@ -26,7 +26,7 @@ const TaskDetailPage = () => {
                 <TaskDetailContent />
               </section>
               <section id="file" aria-label="파일 섹션" className="h-4/12">
-                <FileSection onOpenPdf={() => setIsPdfOpen(true)} />
+                <FileSection onOpenPdf={() => setIsPdfOpen(true)} taskId={mockTask.id} />
               </section>
             </>
           )}
