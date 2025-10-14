@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileUploadApi } from '../api/fileUploadApi';
 import type { FileStatus, TaskDetailFileType } from '../types/taskDetailFileType';
 import { uploadToS3 } from '../utils/fileUploadToS3';
+import toast from 'react-hot-toast';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -12,7 +13,6 @@ export const useUploadFileMutation = () => {
         contentType: file.type,
         sizeBytes: file.size,
       });
-      console.log(presigned);
       await uploadToS3(file, presigned.url, presigned.headers);
       await fileUploadApi.completeFileUpload({
         fileId: presigned.fileId,
@@ -45,7 +45,7 @@ export const useUploadFileMutation = () => {
 
       return { prevFiles, tempId };
     },
-    onSuccess: async (data, variables, context) => {
+    onSuccess: (data, variables, context) => {
       queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[]) =>
         old?.map((file) =>
           file.fileId === context?.tempId
@@ -57,6 +57,10 @@ export const useUploadFileMutation = () => {
             : file,
         ),
       );
+    },
+    onError: (error: Error, variables, context) => {
+      toast.error(error.message);
+      if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
     },
   });
 };
