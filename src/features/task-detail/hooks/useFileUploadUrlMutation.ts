@@ -52,7 +52,7 @@ export const useUploadFileMutation = () => {
           file.fileId === context?.tempId
             ? {
                 ...file,
-                status: 'completed',
+                status: 'success',
                 fileId: data.fileId,
               }
             : file,
