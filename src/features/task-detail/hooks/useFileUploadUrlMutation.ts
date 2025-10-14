@@ -1,8 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileUploadApi } from '@/features/task-detail/api/fileUploadApi';
-import type { FileStatus, TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import type {
+  FileStatus,
+  TaskDetailFileType,
+} from '@/features/task-detail/types/taskDetailFileType';
 import { uploadToS3 } from '@/features/task-detail/utils/fileUploadToS3';
 import toast from 'react-hot-toast';
+import { formatBytes } from '@/features/file/utils/fileUtils';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -31,12 +35,9 @@ export const useUploadFileMutation = () => {
         fileId: tempId,
         fileName: variables.file.name,
         fileUrl: '',
-        fileSize: `${(variables.file.size / 1024 / 1024).toFixed(2)} MB`,
+        fileSize: formatBytes(variables.file.size),
         timeLeft: '방금',
         status: 'uploading' as FileStatus,
-        onOpenPdf: (url?: string) => window.open(url, '_blank'),
-        onDelete: () => console.log('삭제', variables.file.name),
-        onDownload: () => {},
       };
       queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[] = []) => [
         ...old,

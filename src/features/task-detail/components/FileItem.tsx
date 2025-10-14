@@ -1,14 +1,19 @@
 import fileIcon from '@/shared/assets/images/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
 import { type TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
+import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
+} from '@/shared/components/shadcn/dropdown-menu';
+interface FileItemProps extends TaskDetailFileType {
+  onOpenPdf: (fileUrl: string) => void;
+  onDelete: () => void;
+  onDownload: () => void;
+}
 
 const FileItem = ({
   fileName,
@@ -19,10 +24,9 @@ const FileItem = ({
   fileSize,
   timeLeft,
   status,
-}: TaskDetailFileType) => {
+}: FileItemProps) => {
   const handleOpenPdf = () => {
-    if (!fileUrl) return;
-    onOpenPdf(fileUrl);
+    if (onOpenPdf) onOpenPdf(fileUrl);
   };
   return (
     <div
@@ -53,7 +57,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDownload();
+                  if (onDownload) onDownload();
                 }}
                 className="px-4 py-2 text-gray-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >
@@ -62,7 +66,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete();
+                  if (onDelete) onDelete();
                 }}
                 className="px-4 py-2 text-red-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >

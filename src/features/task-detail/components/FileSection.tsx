@@ -5,6 +5,7 @@ import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
 import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
+import { formatBytes } from '@/features/file/utils/fileUtils';
 
 interface FileSectionProps {
   onOpenPdf: (fileUrl?: string) => void;
@@ -22,12 +23,9 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
         fileId: tempId,
         fileName: file.name,
         fileUrl: URL.createObjectURL(file),
-        fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+        fileSize: formatBytes(file.size),
         timeLeft: '방금',
         status: 'uploading',
-        onOpenPdf: onOpenPdf,
-        onDelete: () => setFiles((prev) => prev.filter((f) => f.fileId !== tempId)),
-        onDownload: () => console.log('Downloading', file.name),
       };
 
       // UI에 바로 추가
@@ -40,6 +38,13 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
+  const handleDelete = (fileId: string) => {
+    setFiles((prev) => prev.filter((f) => f.fileId !== fileId));
+  };
+
+  const handleDownload = (fileName: string) => {
+    console.log('Downloading', fileName);
+  };
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
       <ContentItem
@@ -62,9 +67,9 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
             fileUrl={item.fileUrl}
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
-            onDelete={item.onDelete}
-            onDownload={item.onDownload}
-            onOpenPdf={item.onOpenPdf}
+            onDelete={() => handleDelete(item.fileId)}
+            onDownload={() => handleDownload(item.fileName)}
+            onOpenPdf={onOpenPdf}
             status={item.status}
           />
         ))}
