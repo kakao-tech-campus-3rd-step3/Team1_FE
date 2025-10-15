@@ -10,7 +10,7 @@ export const downloadFromS3 = async (
   const blobUrl = window.URL.createObjectURL(res.data);
   const a = document.createElement('a');
   a.href = blobUrl;
-  a.download = fileName ;
+  a.download = fileName;
   document.body.appendChild(a);
   a.click();
   a.remove();
