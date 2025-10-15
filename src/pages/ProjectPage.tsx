@@ -5,6 +5,7 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import { useEffect, useState } from 'react';
 import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
 import { Loader2 } from 'lucide-react';
+import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 const ProjectPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -12,6 +13,13 @@ const ProjectPage = () => {
   const location = useLocation();
   const currentPath = location.pathname.split('/').pop();
   const { data: project, isLoading, isError } = useProjectQuery(projectId);
+  const { setProjectData } = useProjectStore();
+
+  useEffect(() => {
+    if (project) {
+      setProjectData(project);
+    }
+  }, [project, setProjectData]);
 
   const [activeTab, setActiveTab] = useState<'보드' | '파일' | '메모'>(
     currentPath === 'file' ? '파일' : currentPath === 'memo' ? '메모' : '보드',
