@@ -8,6 +8,7 @@ import { uploadToS3 } from '@/features/task-detail/utils/fileUploadToS3';
 import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
+import { fetchFileDownloadUrl } from './../../file/api/fileDownloadApi';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ export const useUploadFileMutation = () => {
       });
       // 4️⃣ ✅ 다운로드 URL 요청
 
-      const downloadUrlRes = await fileUploadApi.fetchFileDownloadUrl(presigned.fileId);
+      const downloadUrlRes = await fetchFileDownloadUrl(presigned.fileId);
       console.log(downloadUrlRes);
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
