@@ -27,7 +27,9 @@ const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps)
       navigate(ROUTE_PATH.MY_TASK);
       toast.success('프로젝트가 삭제되었습니다.');
     } catch (error) {
-      toast.error('프로젝트 삭제 실패 : ' + error);
+      toast.error(
+        `프로젝트 삭제 실패: ${error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'}`,
+      );
     }
   };
 
