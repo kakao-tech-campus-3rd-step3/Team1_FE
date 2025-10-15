@@ -36,7 +36,6 @@ export const useUploadFileMutation = () => {
       // 4️⃣ ✅ 다운로드 URL 요청
 
       const downloadUrlRes = await fetchFileDownloadUrl(presigned.fileId);
-      console.log(downloadUrlRes);
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
     onMutate: async (variables) => {
@@ -74,7 +73,6 @@ export const useUploadFileMutation = () => {
     },
     onError: (error: Error, _variables, context) => {
       toast.error('파일 업로드에 실패했습니다.');
-      console.log(error);
       if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
     },
   });
