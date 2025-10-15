@@ -1,11 +1,12 @@
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
 import { Button } from '@/shared/components/shadcn/button';
-import { PlusCircle, UserPlus } from 'lucide-react';
+import { MoreVertical, PlusCircle, UserPlus } from 'lucide-react';
 import TaskCreateModalContent from '@/features/task/components/TaskCreateModalContent/TaskCreateModalContent';
-import ProjectOptionsMenu from '@/features/project/components/ProjectOptionsMenu';
 import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
 import type { Project } from '@/features/project/types/projectTypes';
+import ProjectUpdateModalContent from '@/features/project/components/ProjectUpdateModalContent/ProjectUpdateModalContent';
+import { useNavigate } from 'react-router';
 
 interface HeaderProps {
   project: Project;
@@ -14,6 +15,7 @@ interface HeaderProps {
 const Header = ({ project }: HeaderProps) => {
   const { mutate: createTaskMutation } = useCreateTaskMutation();
   const { showCustom } = useModal();
+  const navigate = useNavigate();
 
   const today = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -38,6 +40,15 @@ const Header = ({ project }: HeaderProps) => {
     });
   };
 
+  const handleProjectUpdateClick = () => {
+    showCustom({
+      title: '프로젝트 관리',
+      size: 'lg',
+      description: '프로젝트 기본 정보와 멤버를 관리합니다.',
+      content: <ProjectUpdateModalContent navigate={navigate} />,
+    });
+  };
+
   return (
     <div className="flex items-center justify-between w-full h-26 p-6 bg-white shadow-sm">
       <div className="flex flex-col justify-center gap-1">
@@ -46,10 +57,17 @@ const Header = ({ project }: HeaderProps) => {
       </div>
 
       <div className="flex items-center gap-2">
+        <Button
+          onClick={handleProjectUpdateClick}
+          size="icon"
+          variant="outline"
+          className="border-gray-300"
+        >
+          <MoreVertical />
+        </Button>
         <Button size="icon" variant="outline" className="border-gray-300">
           <UserPlus />
         </Button>
-        <ProjectOptionsMenu projectId={project.id} />
         <Button
           className="text-gray-100 m-2 justify-center bg-boost-blue hover:bg-boost-blue/90 h-8 ml-auto px-3 py-1 rounded"
           onClick={handleTaskCreateClick}
