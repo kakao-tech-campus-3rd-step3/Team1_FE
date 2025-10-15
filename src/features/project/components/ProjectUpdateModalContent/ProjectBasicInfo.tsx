@@ -9,7 +9,7 @@ const ProjectBasicInfo = () => {
       <EditField
         label="프로젝트 이름"
         value={projectData.name}
-        onSave={(newValue) => updateProjectData({ ...projectData, name: newValue as string })}
+        onSave={(newValue) => updateProjectData({ name: newValue as string })}
       />
       <EditField
         label="기본 검토 수"
