@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { fetchFileDownloadUrl } from '../api/fileDownloadApi';
-import { downloadFromS3 } from '../utils/fileDownloadUtil';
+import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
+import { downloadFromS3 } from '@/features/file/utils/fileDownloadUtil';
 import toast from 'react-hot-toast';
 
 export const useFileDownloadMutation = () => {

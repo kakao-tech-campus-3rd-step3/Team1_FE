@@ -8,7 +8,7 @@ import { uploadToS3 } from '@/features/task-detail/utils/fileUploadUtil';
 import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
-import { fetchFileDownloadUrl } from './../../file/api/fileDownloadApi';
+import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
