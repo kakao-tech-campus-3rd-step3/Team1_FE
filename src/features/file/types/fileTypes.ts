@@ -1,5 +1,5 @@
 export type FileType = {
-  id: number;
+  id: string;
   name: string;
   type: string;
   url: string;

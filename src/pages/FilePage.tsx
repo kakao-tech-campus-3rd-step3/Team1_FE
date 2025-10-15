@@ -5,10 +5,13 @@ import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dr
 import { formatBytes, getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
+import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 
 const FilePage = () => {
   const files = mockAllFiles;
   const navigate = useNavigate();
+  const { mutate: downloadFile } = useFileDownloadMutation();
+
   return (
     <div className="p-6  bg-gray-50">
       <div>
@@ -51,7 +54,12 @@ const FilePage = () => {
                   </Button>
 
                   <div className="flex items-center gap-3">
-                    <Button variant="ghost" size="sm" className="w-9 h-9 p-0">
+                    <Button
+                      onClick={() => downloadFile({ fileId: file.id, fileName: file.name })}
+                      variant="ghost"
+                      size="sm"
+                      className="w-9 h-9 p-0"
+                    >
                       <Download className="w-4 h-4" />
                     </Button>
                     <DropdownMenu>

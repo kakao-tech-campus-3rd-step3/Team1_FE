@@ -4,7 +4,7 @@ import type {
   FileStatus,
   TaskDetailFileType,
 } from '@/features/task-detail/types/taskDetailFileType';
-import { uploadToS3 } from '@/features/task-detail/utils/fileUploadToS3';
+import { uploadToS3 } from '@/features/task-detail/utils/fileUploadUtil';
 import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
