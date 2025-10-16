@@ -1,5 +1,5 @@
-import TaskCard from '@/features/board/components/TaskCard';
-import type { Task } from '@/features/task/types/taskTypes';
+import TaskCard from '@/features/task/components/TaskCard/TaskCard';
+import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
@@ -11,7 +11,7 @@ import { cn } from '@/shared/lib/utils';
 
 interface TeamMemberColumnProps {
   member: Member;
-  tasks: Task[];
+  tasks: TaskListItem[];
 }
 
 const TeamMemberColumn = ({ member, tasks }: TeamMemberColumnProps) => {
@@ -115,7 +115,7 @@ const TeamMemberColumn = ({ member, tasks }: TeamMemberColumnProps) => {
 
             <div className="flex flex-col gap-2">
               {filteredTasks.map((task) => (
-                <TaskCard key={task.id} task={task} draggable={false} />
+                <TaskCard key={task.taskId} task={task} draggable={false} />
               ))}
             </div>
           </div>
