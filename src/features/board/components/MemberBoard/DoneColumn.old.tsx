@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import type { Task } from '@/features/task/types/taskTypes';
-import TaskCard from '@/features/board/components/TaskCard';
+import type { TaskListItem } from '@/features/task/types/taskTypes';
+import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import doneIcon from '@/shared/assets/images/done.png';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import { cn } from '@/shared/lib/utils';
 
 interface DoneColumnProps {
-  tasks: Task[];
+  tasks: TaskListItem[];
 }
 
 const DoneColumn = ({ tasks }: DoneColumnProps) => {
@@ -81,7 +81,7 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
 
       <div className="relative flex flex-col p-2 gap-4 overflow-y-auto">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} draggable={false} />
+          <TaskCard key={task.taskId} task={task} draggable={false} />
         ))}
       </div>
     </div>

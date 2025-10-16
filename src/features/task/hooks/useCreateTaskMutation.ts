@@ -1,54 +1,97 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { kanbanApi } from '@/features/task/api/taskApi';
-import type { Task } from '@/features/task/types/taskTypes';
+import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import { taskApi } from '@/features/task/api/taskApi';
+import type { TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { v4 as uuidv4 } from 'uuid';
 
-const createTempTask = (taskData: CreateTaskInput, tempId: string): Task => ({
-  id: tempId,
+const createTempTask = (
+  taskData: CreateTaskInput,
+  projectId: string,
+  tempId: string,
+): TaskListItem => ({
+  taskId: tempId,
+  projectId,
   title: taskData.title,
   description: taskData.description || '',
   status: taskData.status,
-  tags: taskData.tags || [],
-  assignees: taskData.assignees || [],
   dueDate: taskData.dueDate,
   urgent: taskData.urgent ?? false,
-  comments: 0,
-  files: 0,
-  review: {
-    requiredReviewCount: taskData.reviewCount || 0,
-    approvedCount: 0,
-    pendingCount: 0,
-    isCompleted: false,
-  },
+  requiredReviewerCount: taskData.requiredReviewerCount ?? 0,
+  tags: taskData.tags || [],
+  assignees: [],
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 });
 
-export const useCreateTaskMutation = () => {
+export const useCreateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation<Task, Error, CreateTaskInput, { previousTasks?: Task[]; tempId?: string }>({
-    mutationFn: (taskData) => kanbanApi.createTask(taskData),
+  return useMutation<
+    TaskListItem,
+    Error,
+    CreateTaskInput,
+    { previousData?: InfiniteData<TaskListResponse>; tempId?: string }
+  >({
+    mutationFn: (taskData) => taskApi.createTask(projectId, taskData),
 
-    onMutate: (taskData) => {
-      const previousTasks = queryClient.getQueryData<Task[]>(['tasks']);
+    onMutate: async (taskData) => {
+      const queryKey = ['tasks', projectId, taskData.status];
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(queryKey);
       const tempId = `temp-${uuidv4()}`;
-      const newTempTask = createTempTask(taskData, tempId);
+      const tempTask = createTempTask(taskData, projectId, tempId);
 
-      queryClient.setQueryData<Task[]>(['tasks'], (old = []) => [newTempTask, ...old]);
+      queryClient.setQueryData<InfiniteData<TaskListResponse>>(queryKey, (oldData) => {
+        if (!oldData) {
+          return {
+            pageParams: [undefined],
+            pages: [
+              {
+                tasks: [tempTask],
+                count: 1,
+                nextCursor: undefined,
+                hasNext: false,
+              },
+            ],
+          };
+        }
 
-      return { previousTasks, tempId };
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page, idx) =>
+            idx === 0 ? { ...page, tasks: [tempTask, ...page.tasks] } : page,
+          ),
+        };
+      });
+
+      return { previousData, tempId };
     },
 
-    onSuccess: (createdTask, _taskData, context) => {
-      queryClient.setQueryData<Task[]>(['tasks'], (old = []) =>
-        old.map((task) => (task.id === context?.tempId ? createdTask : task)),
-      );
-    },
-
-    onError: (_err, _taskData, context) => {
-      if (context?.previousTasks) {
-        queryClient.setQueryData<Task[]>(['tasks'], context.previousTasks);
+    onError: (_, taskData, context) => {
+      const queryKey = ['tasks', projectId, taskData.status];
+      if (context?.previousData) {
+        queryClient.setQueryData(queryKey, context.previousData);
       }
+    },
+
+    onSuccess: (createdTask, taskData, context) => {
+      const queryKey = ['tasks', projectId, taskData.status];
+
+      queryClient.setQueryData<InfiniteData<TaskListResponse>>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            tasks: page.tasks.map((task) => (task.taskId === context?.tempId ? createdTask : task)),
+          })),
+        };
+      });
+    },
+
+    onSettled: (_, __, taskData) => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', projectId, taskData.status] });
     },
   });
 };

@@ -1,71 +1,52 @@
-import type { Task } from '@/features/task/types/taskTypes';
-import type { Id } from '@/shared/types/commonTypes';
+import type { TaskDetail, TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
-import { v4 as uuidv4 } from 'uuid';
-import { arrayMove } from '@dnd-kit/sortable';
-import { mockTasks } from '@/shared/data/mockTasks';
+import api from '@/shared/api/axiosInstance';
 
-// 추후 실제 API 호출 예정
-export const kanbanApi = {
-  fetchTasks: async (): Promise<Task[]> => {
-    return mockTasks;
+export const taskApi = {
+  // 📍 TODO: 나의 할 일 조회
+  // 📍 TODO: 할 일 목록 조회 - 특정 팀원
+
+  // 할 일 목록 조회 - 상태 기준
+  fetchTasksByStatus: async (
+    projectId: string,
+    cursor?: string,
+    status?: string,
+    limit = 10,
+  ): Promise<TaskListResponse> => {
+    const res = await api.get<TaskListResponse>(`/projects/${projectId}/tasks`, {
+      params: { cursor, limit, status },
+    });
+    return res.data;
+  },
+
+  // 할 일 상세 조회
+  fetchTaskDetail: async (projectId: string, taskId: string): Promise<TaskDetail> => {
+    const res = await api.get<TaskDetail>(`/projects/${projectId}/tasks/${taskId}`);
+    return res.data;
   },
 
   // 할 일 생성
-  createTask: async (taskData: CreateTaskInput): Promise<Task> => {
-    const newTask: Task = {
-      id: uuidv4(),
-      status: taskData.status,
-      title: taskData.title,
-      description: taskData.description || '',
-      tags: taskData.tags || [],
-      assignees: taskData.assignees,
-      dueDate: taskData.dueDate,
-      urgent: taskData.urgent || false,
-      comments: 0,
-      files: 0,
-      review: {
-        requiredReviewCount: taskData.reviewCount || 0,
-        approvedCount: 0,
-        pendingCount: 0,
-        isCompleted: false,
-      },
-    };
-    mockTasks.push(newTask);
-    return newTask;
+  createTask: async (projectId: string, taskData: CreateTaskInput): Promise<TaskListItem> => {
+    const res = await api.post<TaskListItem>(`/projects/${projectId}/tasks`, taskData);
+    return res.data;
   },
 
   // 할 일 삭제
-  deleteTask: async (id: Id): Promise<{ success: boolean }> => {
-    const index = mockTasks.findIndex((task) => task.id === id);
-    if (index !== -1) {
-      const newTasks = mockTasks.filter((task) => task.id !== id);
-      mockTasks.splice(0, mockTasks.length, ...newTasks);
-    }
-    return { success: true };
+  deleteTask: async (projectId: string, taskId: string): Promise<{ success: boolean }> => {
+    const res = await api.delete<{ success: boolean }>(`/projects/${projectId}/tasks/${taskId}`);
+    return res.data;
   },
 
   // 할 일 이동
-  moveTask: async (activeTaskId: Id, overId: Id): Promise<{ id: Id; status: string }> => {
-    const activeIndex = mockTasks.findIndex((t) => t.id === activeTaskId);
-    if (activeIndex === -1) {
-      throw new Error('Task not found');
-    }
-
-    const overTaskIndex = mockTasks.findIndex((t) => t.id === overId);
-
-    if (overTaskIndex !== -1) {
-      if (mockTasks[activeIndex].status === mockTasks[overTaskIndex].status) {
-        const moved = arrayMove(mockTasks, activeIndex, overTaskIndex);
-        mockTasks.splice(0, mockTasks.length, ...moved);
-      } else {
-        mockTasks[activeIndex].status = mockTasks[overTaskIndex].status;
-        const moved = arrayMove(mockTasks, activeIndex, overTaskIndex);
-        mockTasks.splice(0, mockTasks.length, ...moved);
-      }
-    } else {
-      mockTasks[activeIndex].status = String(overId);
-    }
-    return { id: activeTaskId, status: mockTasks[activeIndex].status };
+  moveTask: async (
+    projectId: string,
+    taskId: string,
+    status: string,
+  ): Promise<{ id: string; status: string }> => {
+    const res = await api.patch<{ id: string; status: string }>(
+      `/projects/${projectId}/tasks/${taskId}`,
+      { status },
+    );
+    return res.data;
   },
 };

@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { taskSchema, type CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
+import { mockMembers } from '@/shared/data/mockMembers';
 
 export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> | void) => {
   const { resetModal } = useModal();
@@ -14,7 +15,7 @@ export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> 
     defaultValues: {
       title: '',
       description: '',
-      reviewCount: 0,
+      requiredReviewerCount: 0,
       assignees: [],
       dueDate: '',
       status: 'TODO',
@@ -26,7 +27,22 @@ export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> 
   const handleConfirm = form.handleSubmit(async (data) => {
     setIsLoading(true);
     try {
-      await onConfirm(data);
+      const assigneeIds = data.assignees
+        .map((name) => mockMembers.find((m) => m.name === name)?.id)
+        .filter(Boolean) as string[];
+
+      const payload = {
+        title: data.title,
+        description: data.description,
+        status: data.status,
+        dueDate: data.dueDate,
+        urgent: data.urgent,
+        requiredReviewerCount: data.requiredReviewerCount,
+        tags: data.tags,
+        assignees: assigneeIds,
+      };
+
+      await onConfirm(payload);
       resetModal();
       form.reset();
     } finally {

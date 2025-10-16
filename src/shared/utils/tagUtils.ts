@@ -1,5 +1,3 @@
-import type { Task } from '@/features/task/types/taskTypes';
-
 const tagColorMap: Record<string, string> = {
   긴급: 'bg-red-100 text-red-800',
   검토필요: 'bg-green-100 text-green-800',
@@ -15,17 +13,25 @@ const defaultColors = [
   'bg-boost-yellow-light/40 text-boost-yellow-dark',
 ];
 
+interface TaskWithTags {
+  urgent?: boolean;
+  requiredReviewerCount?: number;
+  tags?: string[];
+}
+
+// 태그 색상 반환
 export function getColorForTag(tag: string) {
   if (tagColorMap[tag]) return tagColorMap[tag];
   const index = tag.charCodeAt(0) % defaultColors.length;
   return defaultColors[index];
 }
 
-export function generateTags(task: Task) {
+// 태그 생성
+export function generateTags(task: TaskWithTags) {
   const tags: string[] = [];
 
   if (task.urgent) tags.push('긴급');
-  if (task.review.requiredReviewCount > 0) tags.push('검토필요');
+  if (task.requiredReviewerCount && task.requiredReviewerCount > 0) tags.push('검토필요');
   if (task.tags) tags.push(...task.tags);
 
   return tags;
