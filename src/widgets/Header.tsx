@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 const Header = ({ project }: HeaderProps) => {
-  const { mutate: createTaskMutation } = useCreateTaskMutation();
+  const { mutate: createTaskMutation } = useCreateTaskMutation(project.id);
   const { showCustom } = useModal();
   const navigate = useNavigate();
 
