@@ -9,18 +9,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
+import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 interface FileItemProps extends TaskDetailFileType {
   onOpenPdf: (fileUrl: string) => void;
   onDelete: () => void;
-  onDownload: () => void;
+  onDownload?: () => void;
 }
 
 const FileItem = ({
+  fileId,
   fileName,
   fileUrl,
   onOpenPdf,
   onDelete,
-  onDownload,
   fileSize,
   timeLeft,
   status,
@@ -28,6 +29,8 @@ const FileItem = ({
   const handleOpenPdf = () => {
     if (onOpenPdf) onOpenPdf(fileUrl);
   };
+  const { mutate: downloadFile } = useFileDownloadMutation();
+
   return (
     <div
       onClick={handleOpenPdf}
@@ -57,7 +60,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (onDownload) onDownload();
+                  downloadFile({ fileId, fileName });
                 }}
                 className="px-4 py-2 text-gray-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >

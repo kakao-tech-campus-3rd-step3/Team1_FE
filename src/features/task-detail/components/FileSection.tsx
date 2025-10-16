@@ -48,9 +48,6 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
     setFiles((prev) => prev.filter((f) => f.fileId !== fileId));
   };
 
-  const handleDownload = (fileName: string) => {
-    console.log('Downloading', fileName);
-  };
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300  flex flex-col">
       <ContentItem
@@ -74,7 +71,6 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
             onDelete={() => handleDelete(item.fileId)}
-            onDownload={() => handleDownload(item.fileName)}
             onOpenPdf={onOpenPdf}
             status={item.status}
           />

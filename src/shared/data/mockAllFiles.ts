@@ -3,7 +3,7 @@ import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
 
 export const mockAllFiles: FileType[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Wireframe_8.pdf',
     type: 'pdf',
     url: examplePdfUrl,
@@ -13,7 +13,7 @@ export const mockAllFiles: FileType[] = [
     taskName: 'Wireframe 제작',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Design_System.pdf',
     type: 'pdf',
     url: examplePdfUrl,
@@ -23,7 +23,7 @@ export const mockAllFiles: FileType[] = [
     taskName: '디자인 시스템 구성',
   },
   {
-    id: 3,
+    id: '3',
     name: 'UI_Mockup.pdf',
     type: 'pdf',
     url: examplePdfUrl,
@@ -33,7 +33,7 @@ export const mockAllFiles: FileType[] = [
     taskName: 'UI 목업 제작',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Project_Plan.pdf',
     type: 'pdf',
     url: examplePdfUrl,
@@ -43,7 +43,7 @@ export const mockAllFiles: FileType[] = [
     taskName: '프로젝트 계획 수립',
   },
   {
-    id: 5,
+    id: '5',
     name: 'User_Research.pdf',
     type: 'pdf',
     url: examplePdfUrl,
@@ -53,7 +53,7 @@ export const mockAllFiles: FileType[] = [
     taskName: '사용자 리서치',
   },
   {
-    id: 6,
+    id: '6',
     name: 'Style_Guide.ppt',
     type: 'ppt',
     url: examplePdfUrl,
