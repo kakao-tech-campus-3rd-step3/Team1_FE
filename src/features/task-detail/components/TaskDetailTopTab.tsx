@@ -2,32 +2,22 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components/shadcn/button';
 import { ChevronLeft } from 'lucide-react';
-import type { Task } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { cn } from '@/shared/lib/utils';
 
 interface TaskDetailTopTabProps {
-  task: Task;
+  task: TaskDetail;
 }
 
 const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
   const navigate = useNavigate();
-  const [review, setReview] = useState(task.review);
 
+  const [approvedCount, setApprovedCount] = useState(task.approvedCount);
   const [isMyReviewed, setIsMyReviewed] = useState(false);
 
   const handleReviewComplete = () => {
     if (isMyReviewed) return;
-
-    const updatedApproved = review.approvedCount + 1;
-    const updatedPending = Math.max(review.requiredReviewCount - updatedApproved, 0);
-
-    setReview((prevReview) => ({
-      ...prevReview,
-      approvedCount: updatedApproved,
-      pendingCount: updatedPending,
-      isCompleted: updatedApproved >= review.requiredReviewCount,
-    }));
-
+    setApprovedCount((prev) => prev + 1);
     setIsMyReviewed(true);
   };
 
@@ -43,7 +33,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
         <div>{task.title}</div>
       </div>
 
-      <div className="flex flex-row items-center gap-3 mr-4  cursor-default">
+      <div className="flex flex-row items-center gap-3 mr-4 cursor-default">
         <div
           className={cn(
             'rounded-full border h-9 px-4 py-2',
@@ -52,7 +42,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
               : 'border-boost-blue-pressed bg-boost-blue/10 text-boost-blue-dark',
           )}
         >
-          검토 완료 수 {review.approvedCount}/{review.requiredReviewCount}
+          검토 완료 수 {approvedCount}/{task.requiredReviewerCount}
         </div>
         <Button
           onClick={handleReviewComplete}
