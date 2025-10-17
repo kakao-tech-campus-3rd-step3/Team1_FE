@@ -3,7 +3,7 @@ import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
 import type { InfiniteData } from '@tanstack/react-query';
 import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskTypes';
-import { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
 type MoveTaskParams = {
@@ -118,9 +118,7 @@ export const useMoveTaskMutation = (projectId: string) => {
         queryClient.setQueryData(['tasks', projectId, variables.toStatus], context.previousTo);
       }
 
-      const axiosErr = error as AxiosError;
-
-      if (axiosErr.response?.status === 403) {
+      if (isAxiosError(error) && error.response?.status === 403) {
         toast.error('담당자만 가능해요!');
         return;
       }

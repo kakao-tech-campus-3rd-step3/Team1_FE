@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
-import type { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 
 export const useJoinCode = (projectId: string) => {
   const [joinCode, setJoinCode] = useState<string | null>(null);
@@ -15,14 +15,15 @@ export const useJoinCode = (projectId: string) => {
 
       try {
         // 참여 코드 조회
-        let codeInfo = await projectMembershipApi.fetchJoinCode(projectId).catch((err: unknown) => {
-          const axiosErr = err as AxiosError;
-          if (axiosErr.response?.status === 404) {
+        let codeInfo = await projectMembershipApi
+          .fetchJoinCode(projectId)
+          .catch((error: unknown) => {
             // 코드 없음 → 생성
-            return projectMembershipApi.createJoinCode(projectId);
-          }
-          throw err;
-        });
+            if (isAxiosError(error) && error.response?.status === 404) {
+              return projectMembershipApi.createJoinCode(projectId);
+            }
+            throw error;
+          });
 
         // 만료된 코드면 새로 생성
         if (!codeInfo || new Date(codeInfo.expiresAt) < new Date()) {
