@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import type { Project } from '@/features/project/types/projectTypes';
 import ProjectUpdateModalContent from '@/features/project/components/ProjectUpdateModalContent/ProjectUpdateModalContent';
 import { useNavigate } from 'react-router';
+import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinCodeViewModalContent';
 
 interface HeaderProps {
   project: Project;
@@ -49,6 +50,14 @@ const Header = ({ project }: HeaderProps) => {
     });
   };
 
+  const handleProjectJoinCodeViewModal = () => {
+    showCustom({
+      title: '프로젝트 참여 코드 확인',
+      description: '프로젝트 참여 코드를 확인하거나 복사할 수 있어요.',
+      content: <ProjectJoinCodeViewModalContent projectId={project.id} />,
+    });
+  };
+
   return (
     <div className="flex items-center justify-between w-full h-26 p-6 bg-white shadow-sm">
       <div className="flex flex-col justify-center gap-1">
@@ -65,7 +74,12 @@ const Header = ({ project }: HeaderProps) => {
         >
           <MoreVertical />
         </Button>
-        <Button size="icon" variant="outline" className="border-gray-300">
+        <Button
+          onClick={handleProjectJoinCodeViewModal}
+          size="icon"
+          variant="outline"
+          className="border-gray-300"
+        >
           <UserPlus />
         </Button>
         <Button

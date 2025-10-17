@@ -5,6 +5,7 @@ export type ModalButton = {
   onClick: () => void | Promise<void>;
   variant?: 'default' | 'outline' | 'primary' | 'destructive';
   disabled?: boolean;
+  styleClass?: string;
 };
 
 export type ModalPayload = {
@@ -15,6 +16,7 @@ export type ModalPayload = {
   content?: ReactNode;
   buttons?: ModalButton[];
   isLoading?: boolean;
+  titleAlign?: 'left' | 'center';
 };
 
 export const ModalSize: Record<string, string> = {

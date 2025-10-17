@@ -7,7 +7,6 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 // import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
@@ -26,7 +25,6 @@ export const ROUTE_PATH = {
   PROJECT_FILE: '/project/:projectId/file',
   MY_TASK: '/my-task',
   ERROR: '/error',
-  MODAL: '/modal-test',
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
   API_CHECK: '/health',
@@ -38,7 +36,6 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
-  { path: ROUTE_PATH.MODAL, element: <ModalTestPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
 ];
