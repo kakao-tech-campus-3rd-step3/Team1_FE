@@ -50,7 +50,7 @@ const Header = ({ project }: HeaderProps) => {
     });
   };
 
-  const handleProjectJoinCodeViewMoadal = () => {
+  const handleProjectJoinCodeViewModal = () => {
     showCustom({
       title: '프로젝트 참여 코드 확인',
       description: '프로젝트 참여 코드를 확인하거나 복사할 수 있어요.',
@@ -75,7 +75,7 @@ const Header = ({ project }: HeaderProps) => {
           <MoreVertical />
         </Button>
         <Button
-          onClick={handleProjectJoinCodeViewMoadal}
+          onClick={handleProjectJoinCodeViewModal}
           size="icon"
           variant="outline"
           className="border-gray-300"
