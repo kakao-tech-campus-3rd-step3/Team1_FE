@@ -29,7 +29,7 @@ export function ModalButtons({ buttons }: ModalButtonsProps) {
           key={btn.text}
           onClick={() => handleClick(btn.onClick)}
           disabled={btn.disabled || isLoading}
-          className="flex-1"
+          className={`flex-1 ${btn.styleClass ?? ''}`}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {btn.text}
