@@ -2,6 +2,12 @@ import { Bell, X, CheckCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
+const colorClasses = {
+  blue: { blur: 'bg-blue-400/20', bg: 'bg-blue-50', text: 'text-blue-500' },
+  green: { blur: 'bg-green-400/20', bg: 'bg-green-50', text: 'text-green-500' },
+  red: { blur: 'bg-red-400/20', bg: 'bg-red-50', text: 'text-red-500' },
+};
+
 const STATUS_CONTENT = {
   initial: {
     icon: Bell,
@@ -37,13 +43,14 @@ const StatusView = ({
   children?: React.ReactNode;
 }) => {
   const { icon: Icon, color, title, message } = STATUS_CONTENT[status];
+  const colors = colorClasses[color as keyof typeof colorClasses];
 
   return (
     <div className="h-screen flex flex-col justify-center items-center p-6 space-y-6 text-center">
       <div className="relative inline-block">
-        <div className={`absolute inset-0 bg-${color}-400/20 rounded-full blur-xl`} />
-        <div className={`relative bg-${color}-50 p-4 rounded-full w-fit mx-auto`}>
-          <Icon className={`w-10 h-10 text-${color}-500`} />
+        <div className={`absolute inset-0 ${colors.blur} rounded-full blur-xl`} />
+        <div className={`relative ${colors.bg} p-4 rounded-full w-fit mx-auto`}>
+          <Icon className={`w-10 h-10 ${colors.text}`} />
         </div>
       </div>
 
@@ -75,7 +82,6 @@ const WebPushMobile = () => {
   };
 
   if (permission === 'denied') return <StatusView status="denied" />;
-
   if (permission === 'granted') return <StatusView status="granted" />;
 
   return (

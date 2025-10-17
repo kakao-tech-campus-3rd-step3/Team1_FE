@@ -17,7 +17,7 @@ import BoardPage from '@/pages/BoardPage';
 import MemoPage from '@/pages/MemoPage';
 import FilePage from '@/pages/FilePage';
 import WebpushQRPage from '@/features/alarm/components/WebPushQrPage';
-import WepPushMobile from '@/features/alarm/components/WepPushMobile';
+import WebPushMobile from '@/features/alarm/components/WebPushMobile';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -34,8 +34,8 @@ export const ROUTE_PATH = {
   API_CHECK: '/health',
   TASK_DETAIL: '/project/:projectId/tasks/:taskId',
   MY_INFO: '/my-info',
-  ALARM_SETUP:'/alarm/setup',
-  ALARM_SETUP_MOBILE: '/alarm/permission'
+  ALARM_SETUP: '/alarm/setup',
+  ALARM_SETUP_MOBILE: '/alarm/permission',
 };
 
 const PUBLIC_ROUTES = [
@@ -60,10 +60,12 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP , element :<WebpushQRPage/>},
-  {path:ROUTE_PATH.ALARM_SETUP_MOBILE, element:<WepPushMobile/>}
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <WebPushMobile /> },
 ];
-const PROTECTED_ROUTES_NO_LAYOUT = [{ path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> }];
+const PROTECTED_ROUTES_NO_LAYOUT = [
+  { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP, element: <WebpushQRPage /> },
+];
 export const router = createBrowserRouter([
   // 공개 라우트
   ...PUBLIC_ROUTES,
