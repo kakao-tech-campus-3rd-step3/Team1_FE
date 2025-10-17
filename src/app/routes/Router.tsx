@@ -32,7 +32,7 @@ export const ROUTE_PATH = {
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
   API_CHECK: '/health',
-  TASK_DETAIL: '/task-detail',
+  TASK_DETAIL: '/project/:projectId/tasks/:taskId',
   MY_INFO: '/my-info',
   ALARM_SETUP:'/alarm/setup',
   ALARM_SETUP_MOBILE: '/alarm/permission'

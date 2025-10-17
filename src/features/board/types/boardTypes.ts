@@ -5,6 +5,8 @@ export const columnStatus = [
   { status: 'DONE', title: '완료' },
 ] as const;
 
+// Status 타입: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE'
 export type Status = (typeof columnStatus)[number]['status'];
 
+// statusList: ['TODO', 'PROGRESS', 'REVIEW', 'DONE']
 export const statusList: Status[] = columnStatus.map((c) => c.status);

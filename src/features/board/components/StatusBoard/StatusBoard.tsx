@@ -1,0 +1,135 @@
+import {
+  DndContext,
+  DragOverlay,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  type DragStartEvent,
+  type DragOverEvent,
+} from '@dnd-kit/core';
+import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import TaskCard from '@/features/task/components/TaskCard/TaskCard';
+import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
+import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
+import { columnStatus } from '@/features/board/types/boardTypes';
+import type { TaskListItem } from '@/features/task/types/taskTypes';
+import { useInfiniteTasksByStatusQuery } from '@/features/task/hooks/useInfiniteTasksByStatusQuery';
+
+interface KanbanBoardProps {
+  projectId: string;
+}
+
+const KanbanBoard = ({ projectId }: KanbanBoardProps) => {
+  const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
+  const { mutate: moveTaskMutation } = useMoveTaskMutation(projectId);
+
+  const todoQuery = useInfiniteTasksByStatusQuery(projectId, 'TODO');
+  const progressQuery = useInfiniteTasksByStatusQuery(projectId, 'PROGRESS');
+  const reviewQuery = useInfiniteTasksByStatusQuery(projectId, 'REVIEW');
+  const doneQuery = useInfiniteTasksByStatusQuery(projectId, 'DONE');
+
+  const columnsData = [
+    { status: 'TODO', query: todoQuery },
+    { status: 'PROGRESS', query: progressQuery },
+    { status: 'REVIEW', query: reviewQuery },
+    { status: 'DONE', query: doneQuery },
+  ];
+
+  const lastMoveRef = useRef<{
+    activeId: string;
+    toStatus: string;
+  } | null>(null);
+
+  const onDragStart = (event: DragStartEvent) => {
+    const activeData = event.active.data.current;
+    if (activeData?.type === 'Task') {
+      setActiveTask(activeData.task);
+    }
+  };
+
+  const onDragEnd = () => {
+    setActiveTask(null);
+    lastMoveRef.current = null;
+  };
+
+  const onDragOver = ({ active, over }: DragOverEvent) => {
+    if (!over) return;
+
+    const activeTask = active.data.current?.task as TaskListItem | undefined;
+    const overData = over.data.current;
+    if (!activeTask || active.id === over.id) return;
+
+    const toStatus =
+      overData?.type === 'Task'
+        ? overData.task.status
+        : overData?.type === 'Column'
+          ? overData.column.status
+          : undefined;
+    if (!toStatus) return;
+
+    if (
+      lastMoveRef.current &&
+      lastMoveRef.current.activeId === active.id &&
+      lastMoveRef.current.toStatus === toStatus
+    ) {
+      return;
+    }
+
+    if (activeTask.status === toStatus) return;
+
+    lastMoveRef.current = { activeId: active.id as string, toStatus };
+
+    moveTaskMutation({
+      projectId,
+      activeTaskId: active.id as string,
+      fromStatus: activeTask.status,
+      toStatus,
+      overId: overData?.type === 'Task' ? (over.id as string) : undefined,
+    });
+  };
+
+  return (
+    <div className="flex-1 flex flex-col p-3 overflow-hidden h-full">
+      <DndContext
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      >
+        <div className="flex gap-3 flex-grow overflow-x-auto overflow-y-hidden items-stretch">
+          {columnsData.map(({ status, query }) => {
+            if (query.isLoading)
+              return <ColumnFallback key={status} status={status} state="loading" />;
+            if (query.isError || !query.data)
+              return <ColumnFallback key={status} status={status} state="error" />;
+
+            const column = columnStatus.find((c) => c.status === status)!;
+
+            return <StatusColumn key={status} column={column} projectId={projectId} />;
+          })}
+        </div>
+
+        {createPortal(
+          <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>,
+          document.body,
+        )}
+      </DndContext>
+    </div>
+  );
+};
+
+const ColumnFallback = ({ status, state }: { status: string; state: 'loading' | 'error' }) => {
+  const message = state === 'loading' ? '로딩 중...' : '불러오기 실패';
+  return (
+    <div
+      key={status}
+      className="flex-1 min-w-[300px] flex items-center justify-center bg-gray-50 rounded-lg text-gray-500"
+    >
+      {message}
+    </div>
+  );
+};
+
+export default KanbanBoard;

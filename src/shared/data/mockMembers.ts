@@ -1,7 +1,4 @@
-import AvatarLJH from '@/shared/assets/images/ljh-avatar.png';
-import AvatarKWH from '@/shared/assets/images/kwh-avatar.png';
 import AvatarKHM from '@/shared/assets/images/khm-avatar.png';
-import AvatarSYJ from '@/shared/assets/images/syj-avatar.png';
 import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
 
 export interface Member {
@@ -14,38 +11,17 @@ export interface Member {
 
 export const mockMembers: Member[] = [
   {
-    id: '1',
+    id: '7b81b6d1-abbe-4e52-b478-8515d890f9c5',
     name: '유다연',
     avatar: AvatarYDY,
     backgroundColor: 'bg-boost-yellow',
     boostingScore: 120,
   },
   {
-    id: '2',
+    id: 'a3c237e5-6170-4eca-96d6-c0d16ea57d36',
     name: '김혜민',
     avatar: AvatarKHM,
     backgroundColor: 'bg-boost-blue-hover',
-    boostingScore: 120,
-  },
-  {
-    id: '3',
-    name: '이진호',
-    avatar: AvatarLJH,
-    backgroundColor: 'bg-boost-blue',
-    boostingScore: 120,
-  },
-  {
-    id: '4',
-    name: '서영진',
-    avatar: AvatarSYJ,
-    backgroundColor: 'bg-boost-orange',
-    boostingScore: 120,
-  },
-  {
-    id: '5',
-    name: '김원호',
-    avatar: AvatarKWH,
-    backgroundColor: 'bg-boost-orange-hover',
     boostingScore: 120,
   },
 ];

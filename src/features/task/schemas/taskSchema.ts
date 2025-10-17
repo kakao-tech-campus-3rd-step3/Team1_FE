@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const taskSchema = z.object({
   title: z.string().min(1, '제목은 필수입니다.'),
   description: z.string().optional(),
-  reviewCount: z
+  requiredReviewerCount: z
     .number({ error: '숫자를 입력해주세요' })
     .min(0, '검토 수는 0 이상이어야 합니다.')
     .optional(),

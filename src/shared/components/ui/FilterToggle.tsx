@@ -1,8 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/shadcn/tabs';
 
 interface FilterToggleProps {
-  value: 'state' | 'team-member';
-  onChange: (value: 'state' | 'team-member') => void;
+  value: 'status' | 'member';
+  onChange: (value: 'status' | 'member') => void;
 }
 
 const FilterToggle = ({ value, onChange }: FilterToggleProps) => {
@@ -10,12 +10,12 @@ const FilterToggle = ({ value, onChange }: FilterToggleProps) => {
     <div className="flex max-w-sm flex-col gap-6">
       <Tabs
         value={value}
-        defaultValue="state"
-        onValueChange={(val) => onChange(val as 'state' | 'team-member')}
+        defaultValue="status"
+        onValueChange={(val) => onChange(val as 'status' | 'member')}
       >
         <TabsList>
-          <TabsTrigger value="state">상태</TabsTrigger>
-          <TabsTrigger value="team-member">팀원</TabsTrigger>
+          <TabsTrigger value="status">상태</TabsTrigger>
+          <TabsTrigger value="member">팀원</TabsTrigger>
         </TabsList>
       </Tabs>
     </div>

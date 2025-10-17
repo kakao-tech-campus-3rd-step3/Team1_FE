@@ -3,8 +3,8 @@ import FilterToggle from '@/shared/components/ui/FilterToggle';
 import SortDropDown from '@/shared/components/ui/SortDropDown';
 
 interface FilterTabProps {
-  value: 'state' | 'team-member';
-  onChange: (value: 'state' | 'team-member') => void;
+  value: 'status' | 'member';
+  onChange: (value: 'status' | 'member') => void;
 }
 
 const FilterTab = ({ value, onChange }: FilterTabProps) => {
