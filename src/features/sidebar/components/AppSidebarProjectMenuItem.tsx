@@ -23,7 +23,10 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
     <SidebarMenuItem className="pb-4">
       <DropdownMenu>
         <Tooltip>
-          <TooltipTrigger asChild>
+          <TooltipTrigger
+            asChild
+            onFocus={(e) => e.preventDefault()} 
+          >
             <SidebarMenuButton asChild>
               <DropdownMenuTrigger>{item.icon}</DropdownMenuTrigger>
             </SidebarMenuButton>
@@ -32,7 +35,6 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
             <p>{item.title}</p>
           </TooltipContent>
         </Tooltip>
-
         <DropdownMenuContent
           side="right"
           align="center"

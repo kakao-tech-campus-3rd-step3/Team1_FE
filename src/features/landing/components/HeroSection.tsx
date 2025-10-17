@@ -20,6 +20,18 @@ const HeroSection = () => {
     { label: '아바타 설정 페이지', click: () => navigate(ROUTE_PATH.AVATAR) },
     { label: '할 일 상세 페이지', click: () => navigate(ROUTE_PATH.TASK_DETAIL) },
     { label: 'API 연동 체크', click: () => navigate(ROUTE_PATH.API_CHECK) },
+    {
+      label: '알림 QR 페이지',
+      click: () => {
+        navigate(ROUTE_PATH.ALARM_SETUP);
+      },
+    },
+    {
+      label: '알림 허용 페이지',
+      click: () => {
+        navigate(ROUTE_PATH.ALARM_SETUP_MOBILE);
+      },
+    },
   ];
 
   return (
