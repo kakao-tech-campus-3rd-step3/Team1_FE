@@ -40,7 +40,7 @@ const AppSidebarAlarmMenuItem = () => {
       <DropdownMenu>
         <Tooltip>
           <DropdownMenuTrigger asChild>
-            <TooltipTrigger asChild>
+            <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
               <SidebarMenuButton className="relative">
                 <Bell className="h-3 w-3" />
                 {unreadCount > 0 && (
