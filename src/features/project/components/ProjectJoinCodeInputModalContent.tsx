@@ -43,12 +43,10 @@ const ProjectJoinCodeInputModalContent = ({
       </div>
       <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
         <Button
-          onClick={() => {
-            onCreateClick();
-          }}
+          onClick={onCreateClick}
           variant="outline"
           disabled={isLoading}
-          className="border-gray-400 hover:bg-gray-200 border-none text-gray-500 p-1 hover:text-gray-600 underline"
+          className="border-none text-gray-500 p-1 hover:text-gray-600 underline cursor-pointer hover:bg-gray-100"
         >
           생성할래요
         </Button>
