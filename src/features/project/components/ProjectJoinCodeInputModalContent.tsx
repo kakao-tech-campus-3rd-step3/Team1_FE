@@ -4,11 +4,15 @@ import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import useModalStore from '@/shared/store/useModalStore';
 
-interface ProjectJoinModalProps {
+interface ProjectJoinCodeInputModalProps {
   onConfirm: (joinCode: string) => Promise<void> | void;
+  onCreateClick: () => void;
 }
 
-const ProjectJoinModalContent = ({ onConfirm }: ProjectJoinModalProps) => {
+const ProjectJoinCodeInputModalContent = ({
+  onConfirm,
+  onCreateClick,
+}: ProjectJoinCodeInputModalProps) => {
   const [joinCode, setJoinCode] = useState('');
   const { resetModal, setLoading, backModal, stack } = useModalStore();
   const isLoading = stack[stack.length - 1]?.isLoading ?? false;
@@ -37,25 +41,37 @@ const ProjectJoinModalContent = ({ onConfirm }: ProjectJoinModalProps) => {
           className="border-gray-400 h-10 focus:ring-transparent focus:border-gray-600"
         />
       </div>
-      <DialogFooter>
+      <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
         <Button
-          onClick={backModal}
+          onClick={() => {
+            onCreateClick();
+          }}
           variant="outline"
           disabled={isLoading}
-          className="border-gray-400 sm:w-20 hover:bg-gray-200 cursor-pointer"
+          className="border-gray-400 hover:bg-gray-200 border-none text-gray-500 p-1 hover:text-gray-600 underline"
         >
-          취소
+          생성할래요
         </Button>
-        <Button
-          onClick={handleConfirm}
-          disabled={!joinCode || isLoading}
-          className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
-        >
-          입력
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={backModal}
+            variant="outline"
+            disabled={isLoading}
+            className="border-gray-400 sm:w-20 hover:bg-gray-200 cursor-pointer"
+          >
+            취소
+          </Button>
+          <Button
+            onClick={handleConfirm}
+            disabled={!joinCode || isLoading}
+            className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
+          >
+            입력
+          </Button>
+        </div>
       </DialogFooter>
     </>
   );
 };
 
-export default ProjectJoinModalContent;
+export default ProjectJoinCodeInputModalContent;
