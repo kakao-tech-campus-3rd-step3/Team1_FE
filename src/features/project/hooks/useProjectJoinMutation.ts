@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 import type { Project } from '@/features/project/types/projectTypes';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 type JoinProjectContext = {
   previousProjects?: Project[];
@@ -24,7 +25,7 @@ export const useJoinProjectMutation = () => {
     onSuccess: (joinedProject) => {
       if (!joinedProject.projectId) {
         console.error('프로젝트 ID가 없습니다.');
-        return;
+        throw new Error('프로젝트 ID가 응답에 포함되지 않았습니다.');
       }
       const project: Project = {
         id: joinedProject.projectId,
@@ -43,7 +44,7 @@ export const useJoinProjectMutation = () => {
       if (context?.previousProjects) {
         queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
-      alert('프로젝트 참여 중 오류가 발생했습니다.');
+      toast.error('프로젝트 참여 중 오류가 발생했습니다.');
     },
 
     onSettled: () => {
