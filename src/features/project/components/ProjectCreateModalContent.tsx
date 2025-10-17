@@ -6,9 +6,10 @@ import useModalStore from '@/shared/store/useModalStore';
 
 interface ProjectCreateModalProps {
   onConfirm: (projectName: string) => Promise<void> | void;
+  onJoinClick: () => void;
 }
 
-const ProjectCreateModalContent = ({ onConfirm }: ProjectCreateModalProps) => {
+const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModalProps) => {
   const [projectName, setProjectName] = useState('');
   const { resetModal, setLoading, backModal, stack } = useModalStore();
   const isLoading = stack[stack.length - 1]?.isLoading ?? false;
@@ -37,22 +38,34 @@ const ProjectCreateModalContent = ({ onConfirm }: ProjectCreateModalProps) => {
           className="border-gray-400 h-10 focus:ring-transparent focus:border-gray-600"
         />
       </div>
-      <DialogFooter>
+      <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
         <Button
-          onClick={backModal}
+          onClick={() => {
+            onJoinClick();
+          }}
           variant="outline"
           disabled={isLoading}
-          className="border-gray-400 sm:w-20 hover:bg-gray-200"
+          className="border-gray-400 hover:bg-gray-200 border-none text-gray-500 p-1 hover:text-gray-600 underline"
         >
-          취소
+          참여할래요
         </Button>
-        <Button
-          onClick={handleConfirm}
-          disabled={!projectName.trim() || isLoading}
-          className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
-        >
-          생성
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={backModal}
+            variant="outline"
+            disabled={isLoading}
+            className="border-gray-400 sm:w-20 hover:bg-gray-200"
+          >
+            취소
+          </Button>
+          <Button
+            onClick={handleConfirm}
+            disabled={!projectName.trim() || isLoading}
+            className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
+          >
+            생성
+          </Button>
+        </div>
       </DialogFooter>
     </>
   );
