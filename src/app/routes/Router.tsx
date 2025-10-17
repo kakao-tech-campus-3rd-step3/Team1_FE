@@ -16,7 +16,7 @@ import MyInfoPage from '@/pages/MyInfoPage';
 import BoardPage from '@/pages/BoardPage';
 import MemoPage from '@/pages/MemoPage';
 import FilePage from '@/pages/FilePage';
-import WebpushQRPage from '@/features/alarm/components/WebpushQRPage';
+import WebpushQRPage from '@/features/alarm/components/WebPushQrPage';
 import WepPushMobile from '@/features/alarm/components/WepPushMobile';
 
 export const ROUTE_PATH = {
