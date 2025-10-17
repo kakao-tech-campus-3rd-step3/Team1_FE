@@ -76,10 +76,7 @@ const WebPushMobile = () => {
 
   if (permission === 'denied') return <StatusView status="denied" />;
 
-  if (permission === 'granted')
-    return (
-      <StatusView status="granted"/>
-    );
+  if (permission === 'granted') return <StatusView status="granted" />;
 
   return (
     <StatusView status="initial">

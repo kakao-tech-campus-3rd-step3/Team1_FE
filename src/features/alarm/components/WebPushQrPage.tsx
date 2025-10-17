@@ -13,13 +13,9 @@ const WebpushQRPage = () => {
           </div>
           <p className="text-gray-600 text-md">QR 코드를 스캔하여 알림을 받아보세요!</p>
         </div>
-
         <div className="w-[240px] m-auto bg-gray-50 rounded-lg p-4 flex flex-col items-center mb-6">
-          {qrCode && (
-            <img src={qrCode} alt="QR 코드" className="p-1 " />
-          )}
+          {qrCode && <img src={qrCode} alt="QR 코드" className="p-1 " />}
         </div>
-
         <div className="bg-blue-50 rounded-lg p-4 space-y-3">
           <p className="text-xs text-gray-700 uppercase tracking-wider font-semibold">
             받을 수 있는 소식
