@@ -1,4 +1,4 @@
-import qrCode from '@/shared/assets/images/QR코드.png';
+import qrCode from '@/shared/assets/images/qr-code.png';
 import boo from '@/shared/assets/images/boost/boo-with-message.png';
 
 const WebpushQRPage = () => {
