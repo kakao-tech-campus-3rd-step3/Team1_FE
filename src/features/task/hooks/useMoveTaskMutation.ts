@@ -3,7 +3,8 @@ import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
 import type { InfiniteData } from '@tanstack/react-query';
 import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskTypes';
-import axios from 'axios';
+import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
 type MoveTaskParams = {
   projectId: string;
@@ -117,8 +118,10 @@ export const useMoveTaskMutation = (projectId: string) => {
         queryClient.setQueryData(['tasks', projectId, variables.toStatus], context.previousTo);
       }
 
-      if (axios.isAxiosError(error) && error.response?.status === 403) {
-        console.warn('권한 없음: 담당자만 이동 가능');
+      const axiosErr = error as AxiosError;
+
+      if (axiosErr.response?.status === 403) {
+        toast.error('담당자만 가능해요!');
         return;
       }
       alert('할 일 이동 중 오류가 발생했습니다.');
