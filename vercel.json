@@ -1,3 +1,19 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/fonts/(.*)\\.woff2",
+      "headers": [
+        { "key": "Content-Type", "value": "font/woff2" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)\\.woff",
+      "headers": [
+        { "key": "Content-Type", "value": "font/woff" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
+  ]
 }
