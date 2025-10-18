@@ -3,20 +3,20 @@ import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
-import { createBrowserRouter } from 'react-router';
-import { RouterProvider } from 'react-router-dom';
-// import ProtectedRoute from '@/app/routes/ProtectedRoute';
-import ServerErrorPage from '@/pages/ServerErrorPage';
-import AvatarPickerPage from '@/pages/AvatarPickerPage';
-import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
-import TaskDetailPage from '@/pages/TaskDetailPage';
-import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 import MyInfoPage from '@/pages/MyInfoPage';
 import BoardPage from '@/pages/BoardPage';
 import MemoPage from '@/pages/MemoPage';
 import FilePage from '@/pages/FilePage';
-import WebpushQRPage from '@/features/alarm/components/WebPushQrPage';
-import WebPushMobile from '@/features/alarm/components/WebPushMobile';
+import ServerErrorPage from '@/pages/ServerErrorPage';
+import TaskDetailPage from '@/pages/TaskDetailPage';
+import AvatarPickerPage from '@/pages/AvatarPickerPage';
+import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
+import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router-dom';
+import AlarmSetupPage from '@/pages/AlarmSetupPage';
+import AlarmPermissionPage from '@/pages/AlarmPermissionPage';
+// import ProtectedRoute from '@/app/routes/ProtectedRoute';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -57,12 +57,14 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <WebPushMobile /> },
 ];
+
 const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP, element: <WebpushQRPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
 ];
+
 export const router = createBrowserRouter([
   // 공개 라우트
   ...PUBLIC_ROUTES,

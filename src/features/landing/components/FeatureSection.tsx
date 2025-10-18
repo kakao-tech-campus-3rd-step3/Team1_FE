@@ -1,5 +1,11 @@
 import { motion } from 'framer-motion';
-import { fadeInDown, fadeInLeft, fadeInRight, fadeInUp, scaleUp } from '@/shared/utils/animation';
+import {
+  fadeInDown,
+  fadeInLeft,
+  fadeInRight,
+  fadeInUp,
+  scaleUp,
+} from '@/shared/utils/animations/motionVariants';
 import { cn } from '@/shared/lib/utils';
 
 interface FeatureSectionProps {
