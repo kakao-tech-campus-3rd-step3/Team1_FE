@@ -124,7 +124,7 @@
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
-  src: url('/src/shared/assets/fonts/Pretendard-Regular.woff2') format('woff2');
+  src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
 }
 
 /* 스크롤바 디자인 */
