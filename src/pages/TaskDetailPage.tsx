@@ -13,14 +13,21 @@ const TaskDetailPage = () => {
 
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
+  const [fileName, setFileName] = useState('');
+
   if (isLoading || !task) return <div>Loading...</div>;
+
   return (
     <div className="flex flex-col h-screen">
       <TaskDetailTopTab task={task!} />
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
-            <PDFViewer pdfUrl={pdfUrl} />
+            <PDFViewer
+              pdfUrl={pdfUrl}
+              fileName={fileName}
+              onClose={() => setIsPdfOpen(false)}
+            />
           ) : (
             <>
               <section
@@ -30,21 +37,23 @@ const TaskDetailPage = () => {
               >
                 <TaskDetailContent task={task} />
               </section>
+
               <section id="file" aria-label="파일 섹션" className="h-4/12">
                 <FileSection
                   files={task.files}
                   taskId={taskId ?? ''}
-                  onOpenPdf={(url) => {
+                  onOpenPdf={(url, name) => {
                     setPdfUrl(url ?? '');
+                    setFileName(name ?? '파일 미리보기');
                     setIsPdfOpen(true);
                   }}
-                ></FileSection>
+                />
               </section>
             </>
           )}
         </div>
+
         <div id="right" className="w-4/10 bg-gray-200">
-          {/* 📍 TODO: API 호출로 조회한 데이터로 교체 필요함 */}
           <section id="comment" aria-label="댓글 섹션" className="h-[calc(100vh-4rem)]">
             <CommentSection />
           </section>
