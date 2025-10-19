@@ -12,7 +12,9 @@ export const fetchKaKaoLogin = async ({
   redirectUri,
 }: KakaoLoginRequest): Promise<KakaoLoginResponse> => {
   const res = await api.post('/auth/login/kakao', { code, redirectUri });
+  console.log(res.data)
   return res.data;
+  
 };
 
 export const fetchLogout = async () => {
@@ -28,9 +30,5 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
     throw new Error('Access token is missing — cannot reissue');
   }
   const res = await api.post('/auth/reissue', {}, { withCredentials: true });
-  return res.data;
-};
-export const fetchMyInfo = async () => {
-  const res = await api.get('/members/me');
   return res.data;
 };
