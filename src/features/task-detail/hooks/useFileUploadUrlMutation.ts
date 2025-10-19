@@ -37,8 +37,9 @@ export const useUploadFileMutation = () => {
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: ['uploadedFile'] });
-      const prevFiles = queryClient.getQueriesData({ queryKey: ['uploadedFile'] });
+      const { taskId } = variables;
+      await queryClient.cancelQueries({ queryKey: ['uploadedFile', taskId] });
+      const prevFiles = queryClient.getQueryData<TaskDetailFileType[]>(['uploadedFile', taskId]);
       const tempId = uuidv4();
       const newFile: TaskDetailFileType = {
         fileId: tempId,
@@ -48,15 +49,14 @@ export const useUploadFileMutation = () => {
         timeLeft: '방금',
         status: 'uploading' as FileStatus,
       };
-      queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[] = []) => [
+      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[] = []) => [
         ...old,
         newFile,
       ]);
-
-      return { prevFiles, tempId };
+      return { prevFiles, tempId, taskId };
     },
-    onSuccess: (data, _variables, context) => {
-      queryClient.setQueryData(['uploadedFile'], (old: TaskDetailFileType[]) =>
+    onSuccess: (data, { taskId }, context) => {
+      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[]) =>
         old?.map((file) =>
           file.fileId === context?.tempId
             ? {
@@ -71,7 +71,8 @@ export const useUploadFileMutation = () => {
     },
     onError: (_error: Error, _variables, context) => {
       toast.error('파일 업로드에 실패했습니다.');
-      if (context?.prevFiles) queryClient.setQueryData(['uploadedFile'], context?.prevFiles);
+      if (context?.prevFiles)
+        queryClient.setQueryData(['uploadedFile', context.taskId], context.prevFiles);
     },
   });
 };

@@ -24,9 +24,8 @@ export const mockMembers: Member[] = [
     backgroundColor: 'bg-boost-yellow',
     boostingScore: 120,
   },
-  // 📍TODO: 참여 팀원 목록 조회 API 구현 이전까지 혜민님 ID 넣어서 Test 해주세요!
   {
-    id: '',
+    id: 'c9f422c2-2178-44d1-ad99-5d7396059416',
     name: '김혜민',
     avatar: AvatarKHM,
     backgroundColor: 'bg-boost-yellow',
