@@ -23,11 +23,7 @@ const TaskDetailPage = () => {
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
-            <PDFViewer
-              pdfUrl={pdfUrl}
-              fileName={fileName}
-              onClose={() => setIsPdfOpen(false)}
-            />
+            <PDFViewer pdfUrl={pdfUrl} fileName={fileName} onClose={() => setIsPdfOpen(false)} />
           ) : (
             <>
               <section
@@ -54,6 +50,7 @@ const TaskDetailPage = () => {
         </div>
 
         <div id="right" className="w-4/10 bg-gray-200">
+          {/* 📍 TODO: API 호출로 조회한 데이터로 교체 필요함 */}
           <section id="comment" aria-label="댓글 섹션" className="h-[calc(100vh-4rem)]">
             <CommentSection />
           </section>
