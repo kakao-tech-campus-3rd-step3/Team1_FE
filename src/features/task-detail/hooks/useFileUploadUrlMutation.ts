@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
+import type { AxiosError } from 'axios';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -32,10 +33,12 @@ export const useUploadFileMutation = () => {
         contentType: file.type,
         sizeBytes: file.size,
       });
+
       // 4️⃣ ✅ 다운로드 URL 요청
       const downloadUrlRes = await fetchFileDownloadUrl(presigned.fileId);
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
+
     onMutate: async (variables) => {
       const { taskId } = variables;
       await queryClient.cancelQueries({ queryKey: ['uploadedFile', taskId] });
@@ -55,9 +58,10 @@ export const useUploadFileMutation = () => {
       ]);
       return { prevFiles, tempId, taskId };
     },
+
     onSuccess: (data, { taskId }, context) => {
-      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[]) =>
-        old?.map((file) =>
+      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[] = []) =>
+        old.map((file) =>
           file.fileId === context?.tempId
             ? {
                 ...file,
@@ -69,10 +73,17 @@ export const useUploadFileMutation = () => {
         ),
       );
     },
-    onError: (_error: Error, _variables, context) => {
-      toast.error('파일 업로드에 실패했습니다.');
-      if (context?.prevFiles)
+
+    onError: (error: Error, _variables, context) => {
+      const axiosError = error as AxiosError<{ detail?: string }>;
+      if (axiosError.response?.status === 400) {
+        toast.error('pdf 파일만 업로드 할 수 있습니다.');
+      } else {
+        toast.error('파일 업로드에 실패했습니다.');
+      }
+      if (context?.prevFiles) {
         queryClient.setQueryData(['uploadedFile', context.taskId], context.prevFiles);
+      }
     },
   });
 };
