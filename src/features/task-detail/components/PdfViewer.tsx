@@ -1,7 +1,6 @@
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import pdfurl from '@/shared/assets/pdf-example/ppt-sample.pdf';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import Overlay from '@/features/task-detail/components/PdfOverlay';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,7 +10,7 @@ import { cn } from '@/shared/lib/utils';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = () => {
+const PDFViewer = ({ pdfUrl }: { pdfUrl: string }) => {
   const {
     pageNumber,
     zoom,
@@ -94,7 +93,7 @@ const PDFViewer = () => {
           onMouseLeave={onMouseUp}
         >
           <Document
-            file={pdfurl}
+            file={pdfUrl}
             onLoadSuccess={(pdf) => {
               onDocumentLoadSuccess(pdf);
               setPdfDocument(pdf);

@@ -10,17 +10,17 @@ import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
+
   const [isPdfOpen, setIsPdfOpen] = useState(false);
-
+  const [pdfUrl, setPdfUrl] = useState('');
   if (isLoading || !task) return <div>Loading...</div>;
-
   return (
     <div className="flex flex-col h-screen">
       <TaskDetailTopTab task={task!} />
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
-            <PDFViewer />
+            <PDFViewer pdfUrl={pdfUrl} />
           ) : (
             <>
               <section
@@ -32,7 +32,14 @@ const TaskDetailPage = () => {
               </section>
               {/* 📍 TODO: API 호출로 조회한 task 데이터로 교체 필요함 */}
               <section id="file" aria-label="파일 섹션" className="h-4/12">
-                <FileSection onOpenPdf={() => setIsPdfOpen(true)} taskId={task.taskId} />
+                <FileSection
+                  files={task.files}
+                  taskId={taskId ?? ''}
+                  onOpenPdf={(url) => {
+                    setPdfUrl(url ?? '');
+                    setIsPdfOpen(true);
+                  }}
+                ></FileSection>
               </section>
             </>
           )}
