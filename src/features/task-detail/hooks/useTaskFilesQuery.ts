@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   mapToTaskDetailFileType,
-  type ServerFileType,
 } from '@/features/task-detail/utils/fileAdapter';
+import type { ServerFileType } from '../types/fileApiTypes';
 
 export const useTaskFilesQuery = (serverFiles: ServerFileType[], taskId: string) => {
   return useQuery({
