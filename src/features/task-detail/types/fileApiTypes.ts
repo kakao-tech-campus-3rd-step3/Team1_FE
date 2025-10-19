@@ -1,3 +1,12 @@
+// 서버 응답 구조
+export interface ServerFileType {
+  id: string;
+  filename: string;
+  contentType: string;
+  sizeBytes: number;
+  type: string;
+}
+
 export interface FileUploadUrlRequest {
   filename: string;
   contentType: string;
