@@ -1,5 +1,5 @@
 import { type Member } from '@/shared/data/mockMembers';
-import ProjectMemberItem from './ProjectMemberItem';
+import ProjectMemberItem from '@/features/project/components/ProjectUpdateModalContent/ProjectMemberItem';
 
 interface ProjectMembersProps {
   members: Member[];

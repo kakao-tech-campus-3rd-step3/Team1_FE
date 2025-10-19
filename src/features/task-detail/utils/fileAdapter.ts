@@ -1,5 +1,5 @@
 import { formatBytes } from '@/features/file/utils/fileUtils';
-import type { TaskDetailFileType } from '../types/taskDetailFileType';
+import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 
 // 서버 응답 구조
