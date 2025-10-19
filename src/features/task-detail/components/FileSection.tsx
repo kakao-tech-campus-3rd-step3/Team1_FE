@@ -1,51 +1,30 @@
-import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Link, Upload } from 'lucide-react';
 import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
-import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
-import { formatBytes } from '@/features/file/utils/fileUtils';
-import { v4 as uuidv4 } from 'uuid';
+import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuery';
+import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 interface FileSectionProps {
-  onOpenPdf: (fileUrl?: string) => void;
+  onOpenPdf: (url: string, fileName: string) => void;
   taskId: string;
+  files: ServerFileType[];
 }
-
-const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
-  const [files, setFiles] = useState<TaskDetailFileType[]>([]);
+const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps) => {
   const fileUploadUrlMutation = useUploadFileMutation();
+  const { data: uiFiles } = useTaskFilesQuery(serverFiles, taskId);
+
   const onDrop = (acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
-      const tempId = uuidv4();
-      // 임시 UI 파일
-      const newFile: TaskDetailFileType = {
-        fileId: tempId,
-        fileName: file.name,
-        fileUrl: URL.createObjectURL(file),
-        fileSize: formatBytes(file.size),
-        timeLeft: '방금',
-        status: 'uploading',
-      };
-
-      setFiles((prev) => [...prev, newFile]);
-
-      fileUploadUrlMutation.mutate(
-        { file, taskId },
-        {
-          onError: () => {
-            setFiles((prev) => prev.filter((f) => f.fileName !== file.name));
-          },
-        },
-      );
+      fileUploadUrlMutation.mutate({ file, taskId });
     });
   };
-
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const handleDelete = (fileId: string) => {
-    setFiles((prev) => prev.filter((f) => f.fileId !== fileId));
+    console.log(fileId);
+    //TODO: 파일 삭제 기능 필요
   };
 
   return (
@@ -62,7 +41,7 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
       />
 
       <div className="w-full h-full pt-3 flex flex-col gap-2 overflow-y-auto">
-        {files.map((item) => (
+        {uiFiles?.map((item) => (
           <FileItem
             key={item.fileId}
             fileId={item.fileId}
@@ -71,7 +50,7 @@ const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
             onDelete={() => handleDelete(item.fileId)}
-            onOpenPdf={onOpenPdf}
+            onOpenPdf={() => onOpenPdf(item.fileUrl, item.fileName)}
             status={item.status}
           />
         ))}

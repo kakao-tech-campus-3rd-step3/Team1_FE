@@ -11,7 +11,6 @@ export const fetchKaKaoLogin = async ({
   code,
   redirectUri,
 }: KakaoLoginRequest): Promise<KakaoLoginResponse> => {
-  console.log('인가코드:', code);
   const res = await api.post('/auth/login/kakao', { code, redirectUri });
   return res.data;
 };
