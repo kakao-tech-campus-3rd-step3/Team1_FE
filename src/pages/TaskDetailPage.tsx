@@ -30,7 +30,6 @@ const TaskDetailPage = () => {
               >
                 <TaskDetailContent task={task} />
               </section>
-              {/* 📍 TODO: API 호출로 조회한 task 데이터로 교체 필요함 */}
               <section id="file" aria-label="파일 섹션" className="h-4/12">
                 <FileSection
                   files={task.files}
