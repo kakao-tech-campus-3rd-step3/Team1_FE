@@ -1,5 +1,4 @@
-import { createBrowserRouter } from 'react-router';
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';

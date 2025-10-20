@@ -1,6 +1,6 @@
 import Header from '@/widgets/Header';
 import { useModal } from '@/shared/hooks/useModal';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import ProjectUpdateModalContent from '@/features/project/components/ProjectUpdateModal/ProjectUpdateModalContent';
 import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeViewModalContent';
 import TaskCreateModalContent from '@/features/task/components/TaskCreateModal/TaskCreateModalContent';

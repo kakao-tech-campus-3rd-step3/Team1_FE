@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
-import type { NavigateFunction } from 'react-router';
+import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
