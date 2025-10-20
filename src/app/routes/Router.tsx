@@ -16,7 +16,7 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmPermissionPage from '@/pages/AlarmPermissionPage';
-// import ProtectedRoute from '@/app/routes/ProtectedRoute';
+import ProtectedRoute from '@/app/routes/ProtectedRoute';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -70,22 +70,22 @@ export const router = createBrowserRouter([
   ...PUBLIC_ROUTES,
 
   // 사이드바 없는 보호 라우트
-  // ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
-  //   ...route,
-  //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-  // })),
-  ...PROTECTED_ROUTES_NO_LAYOUT, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
+  ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
+    ...route,
+    element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+  })),
+  // ...PROTECTED_ROUTES_NO_LAYOUT, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
 
   {
     path: '/',
     element: <AppLayout />,
     children: [
       // 보호된 라우트
-      // ...PROTECTED_ROUTES.map((route) => ({
-      //   ...route,
-      //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-      // })),
-      ...PROTECTED_ROUTES, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
+      ...PROTECTED_ROUTES.map((route) => ({
+        ...route,
+        element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+      })),
+      // ...PROTECTED_ROUTES, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
     ],
   },
 ]);

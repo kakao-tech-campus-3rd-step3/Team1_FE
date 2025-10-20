@@ -24,7 +24,7 @@ const AppSidebar = () => {
   const navigate = useNavigate();
   const { mutate: LogoutMutaion } = useLogoutMutation();
   const avatarList = useMemo(() => getAvatarListUtils(), []);
-  const userAvatar = user?.profileEmoji !== undefined && avatarList[Number(user.profileEmoji)];
+  const userAvatar = user?.avatar !== undefined && avatarList[Number(user.avatar)];
 
   const handleHeaderClick = () => {
     navigate(ROUTE_PATH.MY_INFO);
