@@ -17,17 +17,17 @@ import {
   NotebookPen,
   Folder,
 } from 'lucide-react';
-import StatusButtons from '@/features/task/components/TaskCreateModalContent/StatusButtons';
-import UrgentToggle from '@/features/task/components/TaskCreateModalContent/UrgentToggle';
-import AssigneeDropdown from '@/features/task/components/TaskCreateModalContent/AssigneeDropdown';
-import TagInput from '@/features/task/components/TaskCreateModalContent/TagInput';
+import StatusButtons from '@/features/task/components/TaskCreateModal/StatusButtons';
+import UrgentToggle from '@/features/task/components/TaskCreateModal/UrgentToggle';
+import AssigneeDropdown from '@/features/task/components/TaskCreateModal/AssigneeDropdown';
+import TagInput from '@/features/task/components/TaskCreateModal/TagInput';
+import ProjectDropdown from '@/features/task/components/TaskCreateModal/ProjectSelect';
 import { useTaskForm } from '@/features/task/hooks/useTaskForm';
 import { statusList } from '@/features/board/types/boardTypes';
 import { useEffect } from 'react';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
 import toast from 'react-hot-toast';
-import ProjectDropdown from '@/features/task/components/TaskCreateModalContent/ProjectSelect';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
