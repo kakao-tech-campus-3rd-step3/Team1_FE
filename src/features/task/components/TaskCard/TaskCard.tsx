@@ -10,105 +10,114 @@ import { useDeleteTaskMutation } from '@/features/task/hooks/useDeleteTaskMutati
 import { calculateDDay } from '@/shared/utils/dateUtils';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
 import AssigneesList from '@/features/task/components/TaskCard/AssigneesList';
+import { useProjectsStore } from '@/features/project/store/useProjectsStore';
 
 interface TaskCardProps {
   task: TaskListItem;
   draggable?: boolean;
+  showProjectNameTag?: boolean;
 }
 
-const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(({ task, draggable = false }, ref) => {
-  const deleteTaskMutation = useDeleteTaskMutation(task.projectId);
-  const navigate = useNavigate();
+const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
+  ({ task, draggable = false, showProjectNameTag = false }, ref) => {
+    const deleteTaskMutation = useDeleteTaskMutation(task.projectId);
 
-  const sortable = useSortable({
-    id: task.taskId,
-    data: { type: 'Task', task },
-    disabled: !draggable,
-  });
+    const navigate = useNavigate();
 
-  const style = {
-    transition: sortable.transition,
-    transform: CSS.Transform.toString(sortable.transform),
-  };
+    const rawProjectName = useProjectsStore((state) => state.getProjectName(task.projectId));
+    const projectName = showProjectNameTag ? rawProjectName : undefined;
 
-  const setNodeRef = (node: HTMLDivElement | null) => {
-    sortable.setNodeRef(node);
-    if (ref) {
-      if (typeof ref === 'function') ref(node);
-      else ref.current = node;
+    const sortable = useSortable({
+      id: task.taskId,
+      data: { type: 'Task', task },
+      disabled: !draggable,
+    });
+
+    const style = {
+      transition: sortable.transition,
+      transform: CSS.Transform.toString(sortable.transform),
+    };
+
+    const setNodeRef = (node: HTMLDivElement | null) => {
+      sortable.setNodeRef(node);
+      if (ref) {
+        if (typeof ref === 'function') ref(node);
+        else ref.current = node;
+      }
+    };
+
+    const { attributes, listeners, isDragging } = sortable;
+
+    if (isDragging) {
+      return (
+        <div
+          ref={setNodeRef}
+          style={style}
+          className="opacity-50 bg-gray-100 p-3 min-h-[180px] flex flex-col rounded-xl border-2 border-boost-blue cursor-grab relative"
+        />
+      );
     }
-  };
 
-  const { attributes, listeners, isDragging } = sortable;
+    const handleDelete = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      // 📍 TODO: 할 일 삭제 확인용 모달 구현 필요
+      if (window.confirm('정말 이 할 일을 삭제하시겠습니까?')) {
+        deleteTaskMutation.mutate({ taskId: task.taskId, status: task.status });
+      }
+    };
 
-  if (isDragging) {
     return (
       <div
+        onClick={() => navigate(`/project/${task.projectId}/tasks/${task.taskId}`)}
         ref={setNodeRef}
         style={style}
-        className="opacity-50 bg-gray-100 p-3 min-h-[180px] flex flex-col rounded-xl border-2 border-boost-blue cursor-grab relative"
-      />
-    );
-  }
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // 📍 TODO: 할 일 삭제 확인용 모달 구현 필요
-    if (window.confirm('정말 이 할 일을 삭제하시겠습니까?')) {
-      deleteTaskMutation.mutate({ taskId: task.taskId, status: task.status });
-    }
-  };
-
-  return (
-    <div
-      onClick={() => navigate(`/project/${task.projectId}/tasks/${task.taskId}`)}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={cn(
-        'bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
-        'hover:shadow-md',
-        draggable ? 'cursor-grab' : 'cursor-default',
-      )}
-    >
-      {/* 삭제 버튼 + 태그 */}
-      <div className="relative">
-        <Button
-          onClick={handleDelete}
-          className="stroke-gray-100 absolute right-3 top-3 bg-boost-blue p-2 rounded-full opacity-0 group-hover:opacity-80 hover:opacity-100 hover:bg-boost-blue-dark transition-opacity z-10"
-          size="icon"
-        >
-          <TrashIcon />
-        </Button>
-        <TaskTags task={task} />
-      </div>
-
-      {/* 할 일 제목 */}
-      <div className="flex items-center gap-2 m-2">
-        <span className="title2-bold">{task.title}</span>
-      </div>
-
-      {/* 마감일, 디데이 */}
-      <div className="flex items-center justify-between m-1 text-sm">
-        <div className="flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5" />
-          {task.dueDate || '-'}
+        {...attributes}
+        {...listeners}
+        className={cn(
+          'bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
+          'hover:shadow-md',
+          draggable ? 'cursor-grab' : 'cursor-default',
+        )}
+      >
+        {/* 삭제 버튼 + 태그 */}
+        <div className="relative flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleDelete}
+              className="stroke-gray-100 absolute right-3 top-3 bg-boost-blue p-2 rounded-full opacity-0 group-hover:opacity-80 hover:opacity-100 hover:bg-boost-blue-dark transition-opacity z-10"
+              size="icon"
+            >
+              <TrashIcon />
+            </Button>
+            <TaskTags task={task} projectName={projectName} />
+          </div>
         </div>
-        <div className="ml-2">{task.dueDate ? calculateDDay(task.dueDate, 'string') : '-'}</div>
-      </div>
 
-      {/* 담당자 목록 */}
-      <div className="flex justify-between text-xs m-1 mt-3">
-        <div className="flex -space-x-2">
-          {task.assignees?.map((assignee) => (
-            <AssigneesList key={assignee.id} assigneeId={assignee.id} />
-          ))}
+        {/* 할 일 제목 */}
+        <div className="flex items-center gap-2 m-2">
+          <span className="title2-bold">{task.title}</span>
         </div>
-      </div>
 
-      {/*📍 TODO: 댓글, 파일 필드 추가 후 구현 */}
-      {/* <div className="flex justify-center gap-3 text-gray-600">
+        {/* 마감일, 디데이 */}
+        <div className="flex items-center justify-between m-1 text-sm">
+          <div className="flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5" />
+            {task.dueDate || '-'}
+          </div>
+          <div className="ml-2">{task.dueDate ? calculateDDay(task.dueDate, 'string') : '-'}</div>
+        </div>
+
+        {/* 담당자 목록 */}
+        <div className="flex justify-between text-xs m-1 mt-3">
+          <div className="flex -space-x-2">
+            {task.assignees?.map((assignee) => (
+              <AssigneesList key={assignee.id} assigneeId={assignee.id} />
+            ))}
+          </div>
+        </div>
+
+        {/*📍 TODO: 댓글, 파일 필드 추가 후 구현 */}
+        {/* <div className="flex justify-center gap-3 text-gray-600">
           <span className="flex items-center gap-1">
             <MessageCircle className="w-4 h-4" /> 댓글 {task.comments}
           </span>
@@ -116,8 +125,9 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(({ task, draggable = 
             <Paperclip className="w-4 h-4" /> 파일 {task.files}
           </span>
         </div> */}
-    </div>
-  );
-});
+      </div>
+    );
+  },
+);
 
 export default TaskCard;

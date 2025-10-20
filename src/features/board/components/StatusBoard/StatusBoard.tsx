@@ -14,33 +14,55 @@ import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
 import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
-import { useInfiniteTasksByStatusQuery } from '@/features/task/hooks/useInfiniteTasksByStatusQuery';
+import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
+import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
 
-interface KanbanBoardProps {
-  projectId: string;
+interface StatusBoardProps {
+  projectId?: string;
 }
 
-const KanbanBoard = ({ projectId }: KanbanBoardProps) => {
+const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
-  const { mutate: moveTaskMutation } = useMoveTaskMutation(projectId);
+  const moveTaskMutation = useMoveTaskMutation();
 
-  const todoQuery = useInfiniteTasksByStatusQuery(projectId, 'TODO');
-  const progressQuery = useInfiniteTasksByStatusQuery(projectId, 'PROGRESS');
-  const reviewQuery = useInfiniteTasksByStatusQuery(projectId, 'REVIEW');
-  const doneQuery = useInfiniteTasksByStatusQuery(projectId, 'DONE');
+  const projectQueryOptions = { enabled: !!projectId };
+  const myTaskQueryOptions = { enabled: !projectId };
+
+  const queryTODO = useInfiniteProjectTasksByStatusQuery(
+    projectId ?? '',
+    'TODO',
+    projectQueryOptions,
+  );
+  const queryPROGRESS = useInfiniteProjectTasksByStatusQuery(
+    projectId ?? '',
+    'PROGRESS',
+    projectQueryOptions,
+  );
+  const queryREVIEW = useInfiniteProjectTasksByStatusQuery(
+    projectId ?? '',
+    'REVIEW',
+    projectQueryOptions,
+  );
+  const queryDONE = useInfiniteProjectTasksByStatusQuery(
+    projectId ?? '',
+    'DONE',
+    projectQueryOptions,
+  );
+
+  const queryMyTODO = useInfiniteMyTasksByStatusQuery('TODO', myTaskQueryOptions);
+  const queryMyPROGRESS = useInfiniteMyTasksByStatusQuery('PROGRESS', myTaskQueryOptions);
+  const queryMyREVIEW = useInfiniteMyTasksByStatusQuery('REVIEW', myTaskQueryOptions);
+  const queryMyDONE = useInfiniteMyTasksByStatusQuery('DONE', myTaskQueryOptions);
 
   const columnsData = [
-    { status: 'TODO', query: todoQuery },
-    { status: 'PROGRESS', query: progressQuery },
-    { status: 'REVIEW', query: reviewQuery },
-    { status: 'DONE', query: doneQuery },
+    { status: 'TODO', query: projectId ? queryTODO : queryMyTODO },
+    { status: 'PROGRESS', query: projectId ? queryPROGRESS : queryMyPROGRESS },
+    { status: 'REVIEW', query: projectId ? queryREVIEW : queryMyREVIEW },
+    { status: 'DONE', query: projectId ? queryDONE : queryMyDONE },
   ];
 
-  const lastMoveRef = useRef<{
-    activeId: string;
-    toStatus: string;
-  } | null>(null);
+  const lastMoveRef = useRef<{ activeId: string; toStatus: string } | null>(null);
 
   const onDragStart = (event: DragStartEvent) => {
     const activeData = event.active.data.current;
@@ -81,12 +103,13 @@ const KanbanBoard = ({ projectId }: KanbanBoardProps) => {
 
     lastMoveRef.current = { activeId: active.id as string, toStatus };
 
-    moveTaskMutation({
-      projectId,
+    moveTaskMutation.mutate({
+      projectId: activeTask.projectId,
       activeTaskId: active.id as string,
       fromStatus: activeTask.status,
       toStatus,
       overId: overData?.type === 'Task' ? (over.id as string) : undefined,
+      queryIdentifier: projectId || 'me',
     });
   };
 
@@ -106,13 +129,14 @@ const KanbanBoard = ({ projectId }: KanbanBoardProps) => {
               return <ColumnFallback key={status} status={status} state="error" />;
 
             const column = columnStatus.find((c) => c.status === status)!;
-
             return <StatusColumn key={status} column={column} projectId={projectId} />;
           })}
         </div>
 
         {createPortal(
-          <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>,
+          <DragOverlay>
+            {activeTask && <TaskCard task={activeTask} showProjectNameTag={!projectId} />}
+          </DragOverlay>,
           document.body,
         )}
       </DndContext>
@@ -132,4 +156,4 @@ const ColumnFallback = ({ status, state }: { status: string; state: 'loading' | 
   );
 };
 
-export default KanbanBoard;
+export default StatusBoard;
