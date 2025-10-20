@@ -6,12 +6,13 @@ import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskT
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
-type MoveTaskParams = {
+export type MoveTaskParams = {
   projectId: string;
   activeTaskId: string;
   fromStatus: string;
   toStatus: string;
   overId?: string;
+  queryIdentifier: string;
 };
 
 const createTempTask = (taskId: string, toStatus: string): TaskListItem => ({
@@ -29,16 +30,16 @@ const createTempTask = (taskId: string, toStatus: string): TaskListItem => ({
   updatedAt: new Date().toISOString(),
 });
 
-export const useMoveTaskMutation = (projectId: string) => {
+export const useMoveTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ activeTaskId, toStatus }: MoveTaskParams) =>
+    mutationFn: ({ projectId, activeTaskId, toStatus }: MoveTaskParams) =>
       taskApi.moveTask(projectId, activeTaskId, toStatus),
 
-    onMutate: async ({ activeTaskId, fromStatus, toStatus, overId }) => {
-      const fromKey = ['tasks', projectId, fromStatus];
-      const toKey = ['tasks', projectId, toStatus];
+    onMutate: async ({ activeTaskId, fromStatus, toStatus, overId, queryIdentifier }) => {
+      const fromKey = ['tasks', queryIdentifier, fromStatus];
+      const toKey = ['tasks', queryIdentifier, toStatus];
 
       await queryClient.cancelQueries({ queryKey: fromKey });
       await queryClient.cancelQueries({ queryKey: toKey });
@@ -46,7 +47,6 @@ export const useMoveTaskMutation = (projectId: string) => {
       const previousFrom = queryClient.getQueryData<InfiniteData<TaskListResponse>>(fromKey);
       const previousTo = queryClient.getQueryData<InfiniteData<TaskListResponse>>(toKey);
 
-      // 같은 상태 내 이동
       if (fromStatus === toStatus && previousFrom) {
         queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
           if (!old) return old;
@@ -66,9 +66,7 @@ export const useMoveTaskMutation = (projectId: string) => {
         });
       }
 
-      // 다른 상태로 이동
       if (fromStatus !== toStatus) {
-        // 이전 상태 페이지에서 삭제
         if (previousFrom) {
           queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
             if (!old) return old;
@@ -80,11 +78,9 @@ export const useMoveTaskMutation = (projectId: string) => {
           });
         }
 
-        // 새 상태 페이지에 추가
         const tempTask = createTempTask(activeTaskId, toStatus);
         queryClient.setQueryData<InfiniteData<TaskListResponse>>(toKey, (old) => {
           if (!old) {
-            // 페이지가 없으면 새로 생성
             return {
               pageParams: [undefined],
               pages: [
@@ -98,7 +94,6 @@ export const useMoveTaskMutation = (projectId: string) => {
             };
           }
 
-          // 기존 페이지가 있으면 첫 페이지에 추가
           const pages = old.pages.map((page, index) =>
             index === 0 ? { ...page, tasks: [tempTask, ...page.tasks] } : page,
           );
@@ -110,12 +105,19 @@ export const useMoveTaskMutation = (projectId: string) => {
     },
 
     onError: (error, variables, context) => {
-      // 롤백
+      const queryIdentifier = variables.queryIdentifier;
+
       if (context?.previousFrom) {
-        queryClient.setQueryData(['tasks', projectId, variables.fromStatus], context.previousFrom);
+        queryClient.setQueryData(
+          ['tasks', queryIdentifier, variables.fromStatus],
+          context.previousFrom,
+        );
       }
       if (context?.previousTo) {
-        queryClient.setQueryData(['tasks', projectId, variables.toStatus], context.previousTo);
+        queryClient.setQueryData(
+          ['tasks', queryIdentifier, variables.toStatus],
+          context.previousTo,
+        );
       }
 
       if (isAxiosError(error) && error.response?.status === 403) {
@@ -126,8 +128,13 @@ export const useMoveTaskMutation = (projectId: string) => {
     },
 
     onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', projectId, variables.fromStatus] });
-      queryClient.invalidateQueries({ queryKey: ['tasks', projectId, variables.toStatus] });
+      const queryIdentifier = variables.queryIdentifier;
+      queryClient.invalidateQueries({
+        queryKey: ['tasks', queryIdentifier, variables.fromStatus],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['tasks', queryIdentifier, variables.toStatus],
+      });
     },
   });
 };
