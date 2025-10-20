@@ -1,27 +1,29 @@
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
-import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
 import { Button } from '@/shared/components/shadcn/button';
-import type { Id } from '@/shared/types/commonTypes';
-import { PlusCircle, MoreVertical, UserPlus } from 'lucide-react';
+import { MoreVertical, PlusCircle, UserPlus } from 'lucide-react';
 import TaskCreateModalContent from '@/features/task/components/TaskCreateModalContent/TaskCreateModalContent';
 import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
+import type { Project } from '@/features/project/types/projectTypes';
+import ProjectUpdateModalContent from '@/features/project/components/ProjectUpdateModalContent/ProjectUpdateModalContent';
+import { useNavigate } from 'react-router';
+import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinCodeViewModalContent';
 
 interface HeaderProps {
-  projectId: Id;
+  project: Project;
 }
 
-const Header = ({ projectId }: HeaderProps) => {
+const Header = ({ project }: HeaderProps) => {
+  const { mutate: createTaskMutation } = useCreateTaskMutation(project.id);
+  const { showCustom } = useModal();
+  const navigate = useNavigate();
+
   const today = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'short',
   });
-
-  const { mutate: createTaskMutation } = useCreateTaskMutation();
-  const { data: project, isLoading, isError } = useProjectQuery(projectId);
-  const { showCustom } = useModal();
 
   const handleTaskCreateClick = () => {
     showCustom({
@@ -39,30 +41,50 @@ const Header = ({ projectId }: HeaderProps) => {
     });
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (isError || !project) return <div>프로젝트를 불러오지 못했습니다.</div>;
+  const handleProjectUpdateClick = () => {
+    showCustom({
+      title: '프로젝트 관리',
+      size: 'lg',
+      description: '프로젝트 기본 정보와 멤버를 관리합니다.',
+      content: <ProjectUpdateModalContent navigate={navigate} />,
+    });
+  };
+
+  const handleProjectJoinCodeViewModal = () => {
+    showCustom({
+      title: '프로젝트 참여 코드 확인',
+      description: '프로젝트 참여 코드를 확인하거나 복사할 수 있어요.',
+      content: <ProjectJoinCodeViewModalContent projectId={project.id} />,
+    });
+  };
 
   return (
-    <div className="flex items-center justify-between w-full h-24 p-6 bg-white shadow-sm">
-      <div className="flex flex-col justify-center">
+    <div className="flex items-center justify-between w-full h-26 p-6 bg-white shadow-sm">
+      <div className="flex flex-col justify-center gap-1">
         <span className="label1-regular text-gray-500">{today}</span>
         <span className="title1-bold !text-3xl">{project.name}</span>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button size="icon" variant="outline" className="border-gray-300">
+        <Button
+          onClick={handleProjectUpdateClick}
+          size="icon"
+          variant="outline"
+          className="border-gray-300"
+        >
+          <MoreVertical />
+        </Button>
+        <Button
+          onClick={handleProjectJoinCodeViewModal}
+          size="icon"
+          variant="outline"
+          className="border-gray-300"
+        >
           <UserPlus />
         </Button>
-        {project.role === 'admin' && (
-          <Button size="icon" variant="outline" className="border-gray-300">
-            <MoreVertical />
-          </Button>
-        )}
         <Button
-          className=" text-gray-100 m-2 justify-center bg-boost-blue hover:bg-boost-blue/90 h-8 ml-auto px-3 py-1 rounded"
-          onClick={() => {
-            handleTaskCreateClick();
-          }}
+          className="text-gray-100 m-2 justify-center bg-boost-blue hover:bg-boost-blue/90 h-8 ml-auto px-3 py-1 rounded"
+          onClick={handleTaskCreateClick}
         >
           <PlusCircle />할 일 추가
         </Button>

@@ -7,7 +7,6 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 // import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import ModalTestPage from '@/pages/ModalTestPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
@@ -16,6 +15,8 @@ import MyInfoPage from '@/pages/MyInfoPage';
 import BoardPage from '@/pages/BoardPage';
 import MemoPage from '@/pages/MemoPage';
 import FilePage from '@/pages/FilePage';
+import WebpushQRPage from '@/features/alarm/components/WebPushQrPage';
+import WebPushMobile from '@/features/alarm/components/WebPushMobile';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -24,21 +25,21 @@ export const ROUTE_PATH = {
   PROJECT_BOARD: '/project/:projectId/board',
   PROJECT_MEMO: '/project/:projectId/memo',
   PROJECT_FILE: '/project/:projectId/file',
-  MYTASK: '/my-task',
+  MY_TASK: '/my-task',
   ERROR: '/error',
-  MODAL: '/modal-test',
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
   API_CHECK: '/health',
-  TASK_DETAIL: '/task-detail',
+  TASK_DETAIL: '/project/:projectId/tasks/:taskId',
   MY_INFO: '/my-info',
+  ALARM_SETUP: '/alarm/setup',
+  ALARM_SETUP_MOBILE: '/alarm/permission',
 };
 
 const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
-  { path: ROUTE_PATH.MODAL, element: <ModalTestPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
 ];
@@ -53,12 +54,15 @@ const PROTECTED_ROUTES = [
       { path: 'memo', element: <MemoPage /> },
     ],
   },
-  { path: ROUTE_PATH.PROJECT, element: <ProjectPage /> },
-  { path: ROUTE_PATH.MYTASK, element: <MyTaskPage /> },
+  { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <WebPushMobile /> },
 ];
-const PROTECTED_ROUTES_NO_LAYOUT = [{ path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> }];
+const PROTECTED_ROUTES_NO_LAYOUT = [
+  { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP, element: <WebpushQRPage /> },
+];
 export const router = createBrowserRouter([
   // 공개 라우트
   ...PUBLIC_ROUTES,

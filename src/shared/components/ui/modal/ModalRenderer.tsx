@@ -19,13 +19,22 @@ const ModalRenderer = () => {
 
   return (
     <Dialog open={!!current} onOpenChange={resetModal}>
-      <DialogContent className={cn('border-gray-300', modalSize)}>
-        <DialogHeader className="mb-0">
+      <DialogContent
+        className={cn('border-gray-300 gap-0', modalSize)}
+        style={{ transition: 'none' }}
+      >
+        <DialogHeader
+          className={cn(
+            'mb-0 border-b pb-3 border-gray-300',
+            current.titleAlign === 'center' ? 'items-center' : '',
+          )}
+        >
           <DialogTitle>{current.title}</DialogTitle>
           {current.description && (
             <DialogDescription className="label2-regular">{current.description}</DialogDescription>
           )}
         </DialogHeader>
+
         {current.content}
         {current.buttons && <ModalButtons buttons={current.buttons} />}
       </DialogContent>

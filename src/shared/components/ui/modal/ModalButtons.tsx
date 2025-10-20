@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import useModalStore from '@/shared/store/useModalStore';
 import type { ModalButton } from '@/shared/types/modalTypes';
+import { cn } from '@/shared/lib/utils';
 
 interface ModalButtonsProps {
   buttons: ModalButton[];
@@ -29,7 +30,7 @@ export function ModalButtons({ buttons }: ModalButtonsProps) {
           key={btn.text}
           onClick={() => handleClick(btn.onClick)}
           disabled={btn.disabled || isLoading}
-          className="flex-1"
+          className={cn('flex-1', btn.styleClass)}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {btn.text}

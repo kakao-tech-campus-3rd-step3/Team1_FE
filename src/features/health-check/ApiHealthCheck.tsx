@@ -3,7 +3,6 @@ import api from '@/shared/api/axiosInstance';
 
 export default function ApiHealthCheck() {
   const [result, setResult] = useState('');
-  console.log(import.meta.env.VITE_API_BASE_URL);
 
   useEffect(() => {
     api

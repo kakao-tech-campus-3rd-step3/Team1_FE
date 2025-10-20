@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,30 +10,28 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import { SidebarMenuButton, SidebarMenuItem } from '@/shared/components/shadcn/sidebar';
-import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 import ProjectCreateButton from '@/features/sidebar/components/ProjectCreateButton';
+import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
+import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 
 const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
-  const [position, setPosition] = useState(item.subItems ? item.subItems[0].title : '');
+  const { data: projects } = useProjectsQuery();
   const navigate = useNavigate();
-  if (!item.subItems || item.subItems.length === 0) return null;
+  const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
   return (
     <SidebarMenuItem className="pb-4">
       <DropdownMenu>
         <Tooltip>
-          {/* tooltip dropdown 메뉴 트리거 아이콘 */}
-          <TooltipTrigger asChild>
+          <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
             <SidebarMenuButton asChild>
               <DropdownMenuTrigger>{item.icon}</DropdownMenuTrigger>
             </SidebarMenuButton>
           </TooltipTrigger>
-          {/* tooltip */}
           <TooltipContent side="right" className="text-center">
             <p>{item.title}</p>
           </TooltipContent>
         </Tooltip>
-        {/* dropdown menu: 하위 메뉴 아이템들 */}
         <DropdownMenuContent
           side="right"
           align="center"
@@ -43,18 +40,21 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
         >
           <DropdownMenuLabel className="text-xs font-medium">{item.title}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-            {item.subItems!.map((sub) => (
-              <DropdownMenuRadioItem
-                value={sub.title}
-                key={sub.title}
-                onClick={() => {
-                  navigate(sub.url);
-                }}
-              >
-                {sub.title}
-              </DropdownMenuRadioItem>
-            ))}
+          <DropdownMenuRadioGroup
+            value={currentProjectId}
+            onValueChange={(value) => {
+              navigate(`/project/${value}/board`);
+            }}
+          >
+            {projects && projects.length > 0 ? (
+              projects.map((project) => (
+                <DropdownMenuRadioItem key={project.id} value={project.id}>
+                  {project.name}
+                </DropdownMenuRadioItem>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 text-center py-2">프로젝트가 없습니다</p>
+            )}
           </DropdownMenuRadioGroup>
           <DropdownMenuSeparator />
           <ProjectCreateButton />

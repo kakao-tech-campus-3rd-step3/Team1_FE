@@ -1,8 +1,6 @@
-import type { Id } from '@/shared/types/commonTypes';
-
 export type Project = {
-  projectId: Id;
+  id: string;
+  projectId?: string; // API 응답용
   name: string;
   defaultReviewerCount: number;
-  role: string;
 };

@@ -81,11 +81,15 @@ const TaskCreateModalContent = ({ onConfirm }: TaskCreateModalContentProps) => {
         </div>
 
         {/* 필요한 검토 수 */}
-        <FormField icon={Check} label="필요한 검토 수" error={errors.reviewCount?.message}>
+        <FormField
+          icon={Check}
+          label="필요한 검토 수"
+          error={errors.requiredReviewerCount?.message}
+        >
           <Input
             type="number"
             min={0}
-            {...register('reviewCount', { valueAsNumber: true })}
+            {...register('requiredReviewerCount', { valueAsNumber: true })}
             className={inputClasses}
           />
         </FormField>
