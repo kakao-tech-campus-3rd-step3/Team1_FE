@@ -1,8 +1,8 @@
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import TobTab from '@/widgets/TopTab';
+import TopTab from '@/widgets/TopTab';
 
-const ProjectTobTab = () => {
+const ProjectTopTab = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,7 +26,7 @@ const ProjectTobTab = () => {
     }
   }, [location.pathname, projectId, navigate]);
 
-  return <TobTab activeTab={activeTab} onChangeTab={handleChangeTab} showTabs={true} />;
+  return <TopTab activeTab={activeTab} onChangeTab={handleChangeTab} showTabs={true} />;
 };
 
-export default ProjectTobTab;
+export default ProjectTopTab;
