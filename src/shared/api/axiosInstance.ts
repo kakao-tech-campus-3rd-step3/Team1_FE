@@ -11,11 +11,19 @@ export const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(async (config) => {
+  const { accessToken } = useAuthStore.getState();
+  console.log(
+    '[API 요청 직전]',
+    config.url,
+    'Authorization:',
+    accessToken ? `Bearer ${accessToken.slice(0, 20)}...` : '없음 😵',
+  );
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
+
   return config;
 });
 api.interceptors.response.use(
