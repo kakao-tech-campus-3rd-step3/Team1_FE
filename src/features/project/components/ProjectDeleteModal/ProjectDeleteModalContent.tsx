@@ -6,7 +6,7 @@ import { type NavigateFunction } from 'react-router';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { Button } from '@/shared/components/shadcn/button';
-import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModalContent/ProjectDeleteRotatingText';
+import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
 import Boo from '@/shared/assets/images/boost/boo.png';
 
 interface ProjectDeleteModalContentProps {
