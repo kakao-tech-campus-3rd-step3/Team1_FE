@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { memberApi } from '@/features/member/api/memberApi';
+import { memberApi } from '@/features/user/api/userApi';
 import toast from 'react-hot-toast';
 
 interface UpdateMemberVariables {

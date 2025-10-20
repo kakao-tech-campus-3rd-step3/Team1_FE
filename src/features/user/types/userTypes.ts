@@ -1,7 +1,7 @@
-export interface Member {
+export interface User {
   id: string;
   name: string;
-  profileEmoji?: string;
+  avatar?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -9,7 +9,7 @@ import { useAuthStore } from '@/features/auth/store/authStore';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
-import { useUpdateAvatarMutation } from '@/features/member/hooks/useUpdateAvatarMutation';
+import { useUpdateAvatarMutation } from '@/features/user/hooks/useUpdateAvatarMutation';
 
 const AvatarSettingsPage = () => {
   const avatarList = useMemo(() => getAvatarListUtils(), []);
