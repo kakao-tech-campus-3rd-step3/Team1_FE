@@ -9,6 +9,7 @@ import { useAuthStore } from '@/features/auth/store/authStore';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH } from '@/app/routes/Router';
+import { useUpdateAvatarMutation } from '@/features/member/hooks/useUpdateAvatarMutation';
 
 const AvatarSettingsPage = () => {
   const avatarList = useMemo(() => getAvatarListUtils(), []);
@@ -17,8 +18,9 @@ const AvatarSettingsPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
+  //TODO: 아바타 설정 API 교체 예정
+  const updateMemberMutation = useUpdateAvatarMutation(); 
 
-  // 초기 랜덤 아바타 선택
   useEffect(() => {
     const randomId = getRandomAvatarId(avatarList);
     setSelectedAvatarId(randomId);
@@ -32,10 +34,21 @@ const AvatarSettingsPage = () => {
 
   const handleSave = () => {
     if (selectedAvatarId === null) return;
-    setAuth({ user: { profileEmoji: String(selectedAvatarId) } }); // 혹은 URL로 저장
-    toast.success('아바타가 저장되었습니다!');
-    navigate(ROUTE_PATH.MY_TASK); // 로그인 완료 시 나의 할 일 페이지로 이동
-    //TODO: API 연동하기
+
+    setAuth({ user: { avatar: String(selectedAvatarId) } });
+
+    updateMemberMutation.mutate(
+      { avatar: String(selectedAvatarId) }, 
+      {
+        onSuccess: () => {
+          toast.success('아바타가 저장되었습니다!');
+          navigate(ROUTE_PATH.MY_TASK);
+        },
+        onError: () => {
+          toast.error('아바타 저장에 실패했습니다.');
+        },
+      },
+    );
   };
 
   return (
