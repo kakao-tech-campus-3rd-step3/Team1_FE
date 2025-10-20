@@ -1,4 +1,4 @@
-import type { Member } from '@/shared/data/mockMembers';
+import type { User } from '@/features/user/types/userTypes';
 
 export interface KakaoLoginRequest {
   code: string;
@@ -7,7 +7,7 @@ export interface KakaoLoginRequest {
 
 export interface KakaoLoginResponse {
   accessToken: string;
-  memberResponseDto: Member;
+  memberResponseDto: User;
   isNewUser: boolean;
 }
 
