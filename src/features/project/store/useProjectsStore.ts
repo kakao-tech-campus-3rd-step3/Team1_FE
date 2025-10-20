@@ -1,10 +1,5 @@
 import { create } from 'zustand';
-
-interface Project {
-  id: string;
-  name: string;
-  defaultReviewerCount?: number;
-}
+import type { Project } from '@/features/project/types/projectTypes';
 
 interface ProjectsState {
   projects: Project[];
