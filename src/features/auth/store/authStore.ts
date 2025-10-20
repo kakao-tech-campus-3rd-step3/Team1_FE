@@ -1,15 +1,10 @@
+import type { Member } from '@/shared/data/mockMembers';
 import { create } from 'zustand';
-interface User {
-  id: string;
-  name: string;
-  profileEmoji?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+
 interface AuthState {
-  user: User | null;
+  user: Member | null;
   accessToken: string | null;
-  setAuth: (payload: { user?: Partial<User>; token?: string }) => void;
+  setAuth: (payload: { user?: Partial<Member>; token?: string }) => void;
   clearAuth: () => void;
 }
 
@@ -19,7 +14,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
   setAuth: ({ user, token }) =>
     set((prevState) => ({
-      user: user ? ({ ...prevState.user, ...user } as User) : prevState.user,
+      user: user ? ({ ...prevState.user, ...user } as Member) : prevState.user,
       accessToken: token ?? prevState.accessToken,
     })),
 
