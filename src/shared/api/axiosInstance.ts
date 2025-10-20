@@ -13,13 +13,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const { accessToken } = useAuthStore.getState();
-  console.log(
-    '[API 요청 직전]',
-    config.url,
-    'Authorization:',
-    accessToken ? `Bearer ${accessToken.slice(0, 20)}...` : '없음 😵',
-  );
-
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
