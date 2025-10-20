@@ -4,6 +4,15 @@ import api from '@/shared/api/axiosInstance';
 
 export const taskApi = {
   // 📍 TODO: 나의 할 일 조회
+  fetchTasksByMe: async (
+    cursor?: string,
+    status?: string,
+    limit = 10,
+  ): Promise<TaskListResponse> => {
+    const res = await api.get<TaskListResponse>(`/me/tasks`, { params: { cursor, limit, status } });
+    return res.data;
+  },
+
   // 📍 TODO: 할 일 목록 조회 - 특정 팀원
 
   // 할 일 목록 조회 - 상태 기준
