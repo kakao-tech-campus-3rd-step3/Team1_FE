@@ -19,7 +19,7 @@ const AvatarSettingsPage = () => {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
   //TODO: 아바타 설정 API 교체 예정
-  const updateMemberMutation = useUpdateAvatarMutation(); 
+  const updateMemberMutation = useUpdateAvatarMutation();
 
   useEffect(() => {
     const randomId = getRandomAvatarId(avatarList);
@@ -38,7 +38,7 @@ const AvatarSettingsPage = () => {
     setAuth({ user: { avatar: String(selectedAvatarId) } });
 
     updateMemberMutation.mutate(
-      { avatar: String(selectedAvatarId) }, 
+      { avatar: String(selectedAvatarId) },
       {
         onSuccess: () => {
           toast.success('아바타가 저장되었습니다!');

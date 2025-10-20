@@ -8,7 +8,7 @@ export interface KakaoLoginRequest {
 export interface KakaoLoginResponse {
   accessToken: string;
   memberResponseDto: Member;
-  isNewUser:boolean
+  isNewUser: boolean;
 }
 
 export interface RefreshTokenResponse {

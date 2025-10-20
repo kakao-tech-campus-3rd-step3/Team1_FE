@@ -23,11 +23,7 @@ const TaskDetailPage = () => {
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
-            <PDFViewer
-              pdfUrl={pdfUrl}
-              fileName={fileName}
-              onClose={() => setIsPdfOpen(false)}
-            />
+            <PDFViewer pdfUrl={pdfUrl} fileName={fileName} onClose={() => setIsPdfOpen(false)} />
           ) : (
             <>
               <section

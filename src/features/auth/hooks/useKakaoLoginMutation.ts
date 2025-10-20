@@ -19,9 +19,8 @@ export const useKakaoLoginMutation = () => {
     },
     onSuccess: (isNewUser) => {
       toast.success('로그인이 완료되었습니다.');
-      if (isNewUser)
-         navigate(ROUTE_PATH.AVATAR);
-      else navigate(ROUTE_PATH.MY_TASK)
+      if (isNewUser) navigate(ROUTE_PATH.AVATAR);
+      else navigate(ROUTE_PATH.MY_TASK);
     },
     onError: (err) => {
       console.dir(err);
