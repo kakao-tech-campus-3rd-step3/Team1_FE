@@ -11,8 +11,29 @@ export const api = axios.create({
   },
 });
 
+export const apiPublic = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 api.interceptors.request.use(async (config) => {
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isInitializing } = useAuthStore.getState();
+  if (isInitializing) {
+
+    // 초기화가 끝날 때까지 polling (200ms 간격으로 체크)
+    await new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        const { isInitializing: stillInitializing } = useAuthStore.getState();
+        if (!stillInitializing) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 200);
+    });
+  }
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

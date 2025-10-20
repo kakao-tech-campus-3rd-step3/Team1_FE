@@ -23,9 +23,7 @@ const AppInitializer = () => {
         console.error('Refresh token expired:', error);
         clearAuth();
       } finally {
-        setTimeout(() => {
-          setIsInitializing(false);
-        }, 500);
+        setIsInitializing(false);
       }
     };
 

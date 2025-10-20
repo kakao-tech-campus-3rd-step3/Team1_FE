@@ -1,10 +1,9 @@
-import api from '@/shared/api/axiosInstance';
+import api, { apiPublic } from '@/shared/api/axiosInstance';
 import type {
   KakaoLoginRequest,
   KakaoLoginResponse,
   RefreshTokenResponse,
 } from '@/features/auth/types/authTypes';
-import axios from 'axios';
 
 //카카오 로그인 (받아온 인가코드와 함께 BE에 전송)
 export const fetchKaKaoLogin = async ({
@@ -22,6 +21,6 @@ export const fetchLogout = async () => {
 
 // 토큰 재발급 (특수한 경우에서만 사용되는 API)
 export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
-  const res = await axios.post('/api/auth/reissue', {}, { withCredentials: true });
+  const res = await apiPublic.post('/auth/reissue', {}, { withCredentials: true });
   return res.data;
 };
