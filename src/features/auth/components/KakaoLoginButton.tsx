@@ -14,7 +14,7 @@ const KakaoLoginButton = ({ onClick }: KakaoLoginButtonProps) => {
           fill="#000000"
         />
       </svg>
-      <span className="text-[17px]">카카오 로그인</span>
+      <span className="text-[16px]">카카오 로그인</span>
     </button>
   );
 };
