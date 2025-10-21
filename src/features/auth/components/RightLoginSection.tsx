@@ -1,4 +1,5 @@
 import KakaoLoginButton from '@/features/auth/components/KakaoLoginButton';
+import BubbleDecoration from './BubbleDecoration';
 
 interface RightLoginPanel {
   onClick: () => void;
@@ -15,8 +16,10 @@ const RightLoginSection = ({ onClick }: RightLoginPanel) => {
           카카오 계정으로 간편하게 시작할 수 있어요.
         </p>
       </div>
-
-      <KakaoLoginButton onClick={onClick} />
+      <div className="relative flex flex-col items-center mt-10">
+        <BubbleDecoration />
+        <KakaoLoginButton onClick={onClick} />
+      </div>
 
       <div className="flex items-center my-8">
         <div className="flex-1 h-px bg-gray-300" />
