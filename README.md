@@ -50,6 +50,7 @@ src/
 │ │ ├─ hooks/ # featuresA 전용 커스텀 훅
 │ │ ├─ types/ # featuresA 전용 타입 정의
 │ │ ├─ utils/ # featuresA 전용 유틸 함수
+│ │ ├─ store/ # featuresA 전용 전역 상태 관리 (zustand)
 │ │ └─ api/ # featuresA 전용 API 요청/서비스 로직
 │ └─ featureB/ # ex. 회원가입
 │

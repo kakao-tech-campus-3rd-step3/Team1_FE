@@ -2,11 +2,11 @@ import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { useDeleteProjectMutation } from '@/features/project/hooks/useDeleteProjectMutation';
 import { useModal } from '@/shared/hooks/useModal';
 import { ROUTE_PATH } from '@/app/routes/Router';
-import { type NavigateFunction } from 'react-router';
+import { type NavigateFunction } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { Button } from '@/shared/components/shadcn/button';
-import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModalContent/ProjectDeleteRotatingText';
+import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
 import Boo from '@/shared/assets/images/boost/boo.png';
 
 interface ProjectDeleteModalContentProps {

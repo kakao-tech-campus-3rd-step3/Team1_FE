@@ -1,6 +1,6 @@
 import { SidebarProvider } from '@/shared/components/shadcn/sidebar';
 import AppSidebar from '@/widgets/AppSidebar';
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 
 const AppLayout = () => {
   return (

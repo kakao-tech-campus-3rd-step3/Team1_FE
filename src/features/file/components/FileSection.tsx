@@ -3,7 +3,7 @@ import { ChevronRight, Download } from 'lucide-react';
 import { mockAllFiles } from '@/shared/data/mockAllFiles';
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
 import { formatBytes, getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 

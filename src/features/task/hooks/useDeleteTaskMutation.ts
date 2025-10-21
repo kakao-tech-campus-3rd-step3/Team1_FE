@@ -14,13 +14,20 @@ export const useDeleteTaskMutation = (projectId: string) => {
     mutationFn: ({ taskId }: DeleteTaskMutationVars) => taskApi.deleteTask(projectId, taskId),
 
     onMutate: async ({ taskId, status }) => {
-      const queryKey = ['tasks', projectId, status];
-      await queryClient.cancelQueries({ queryKey });
-      const previousData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(queryKey);
+      const projectKey = ['tasks', projectId, status];
+      const meKey = ['tasks', 'me', status];
 
-      queryClient.setQueryData<InfiniteData<TaskListResponse>>(queryKey, (oldData) => {
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: projectKey }),
+        queryClient.cancelQueries({ queryKey: meKey }),
+      ]);
+
+      const previousProjectData =
+        queryClient.getQueryData<InfiniteData<TaskListResponse>>(projectKey);
+      const previousMeData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(meKey);
+
+      const updateCache = (oldData: InfiniteData<TaskListResponse> | undefined) => {
         if (!oldData) return oldData;
-
         return {
           ...oldData,
           pages: oldData.pages.map((page) => ({
@@ -28,20 +35,38 @@ export const useDeleteTaskMutation = (projectId: string) => {
             tasks: page.tasks.filter((t) => t.taskId !== taskId),
           })),
         };
-      });
+      };
 
-      return { previousData };
+      queryClient.setQueryData(projectKey, updateCache);
+      queryClient.setQueryData(meKey, updateCache);
+
+      return {
+        previousData: {
+          [projectKey.join('-')]: previousProjectData,
+          [meKey.join('-')]: previousMeData,
+        },
+      };
     },
 
-    onError: (error, vars, context) => {
+    onError: (error, { status }, context) => {
       console.error('할 일 삭제 실패:', error);
+      const projectKey = ['tasks', projectId, status];
+      const meKey = ['tasks', 'me', status];
+
       if (context?.previousData) {
-        queryClient.setQueryData(['tasks', projectId, vars.status], context.previousData);
+        const prevProj = context.previousData[projectKey.join('-')];
+        const prevMe = context.previousData[meKey.join('-')];
+        if (prevProj) queryClient.setQueryData(projectKey, prevProj);
+        if (prevMe) queryClient.setQueryData(meKey, prevMe);
       }
     },
 
     onSuccess: (_, { status }) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', projectId, status] });
+      const projectKey = ['tasks', projectId, status];
+      const meKey = ['tasks', 'me', status];
+
+      queryClient.invalidateQueries({ queryKey: projectKey });
+      queryClient.invalidateQueries({ queryKey: meKey });
     },
   });
 };

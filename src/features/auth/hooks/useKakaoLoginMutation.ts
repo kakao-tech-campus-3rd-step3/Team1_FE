@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { KakaoLoginRequest, KakaoLoginResponse } from '@/features/auth/types/authTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { fetchKaKaoLogin } from '@/features/auth/api/authApi';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import toast from 'react-hot-toast';
 

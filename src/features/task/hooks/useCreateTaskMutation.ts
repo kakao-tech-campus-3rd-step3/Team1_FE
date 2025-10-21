@@ -30,19 +30,27 @@ export const useCreateTaskMutation = (projectId: string) => {
     TaskListItem,
     Error,
     CreateTaskInput,
-    { previousData?: InfiniteData<TaskListResponse>; tempId?: string }
+    { previousData?: Record<string, InfiniteData<TaskListResponse> | undefined>; tempId?: string }
   >({
     mutationFn: (taskData) => taskApi.createTask(projectId, taskData),
 
     onMutate: async (taskData) => {
-      const queryKey = ['tasks', projectId, taskData.status];
-      await queryClient.cancelQueries({ queryKey });
+      const projectKey = ['tasks', projectId, taskData.status];
+      const meKey = ['tasks', 'me', taskData.status];
 
-      const previousData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(queryKey);
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: projectKey }),
+        queryClient.cancelQueries({ queryKey: meKey }),
+      ]);
+
+      const previousProjectData =
+        queryClient.getQueryData<InfiniteData<TaskListResponse>>(projectKey);
+      const previousMeData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(meKey);
+
       const tempId = `temp-${uuidv4()}`;
       const tempTask = createTempTask(taskData, projectId, tempId);
 
-      queryClient.setQueryData<InfiniteData<TaskListResponse>>(queryKey, (oldData) => {
+      const updateCache = (oldData: InfiniteData<TaskListResponse> | undefined) => {
         if (!oldData) {
           return {
             pageParams: [undefined],
@@ -63,22 +71,37 @@ export const useCreateTaskMutation = (projectId: string) => {
             idx === 0 ? { ...page, tasks: [tempTask, ...page.tasks] } : page,
           ),
         };
-      });
+      };
 
-      return { previousData, tempId };
+      queryClient.setQueryData(projectKey, updateCache);
+      queryClient.setQueryData(meKey, updateCache);
+
+      return {
+        previousData: {
+          [projectKey.join('-')]: previousProjectData,
+          [meKey.join('-')]: previousMeData,
+        },
+        tempId,
+      };
     },
 
     onError: (_, taskData, context) => {
-      const queryKey = ['tasks', projectId, taskData.status];
+      const projectKey = ['tasks', projectId, taskData.status];
+      const meKey = ['tasks', 'me', taskData.status];
+
       if (context?.previousData) {
-        queryClient.setQueryData(queryKey, context.previousData);
+        if (context.previousData[projectKey.join('-')])
+          queryClient.setQueryData(projectKey, context.previousData[projectKey.join('-')]);
+        if (context.previousData[meKey.join('-')])
+          queryClient.setQueryData(meKey, context.previousData[meKey.join('-')]);
       }
     },
 
     onSuccess: (createdTask, taskData, context) => {
-      const queryKey = ['tasks', projectId, taskData.status];
+      const projectKey = ['tasks', projectId, taskData.status];
+      const meKey = ['tasks', 'me', taskData.status];
 
-      queryClient.setQueryData<InfiniteData<TaskListResponse>>(queryKey, (oldData) => {
+      const replaceTempTask = (oldData: InfiniteData<TaskListResponse> | undefined) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -87,11 +110,12 @@ export const useCreateTaskMutation = (projectId: string) => {
             tasks: page.tasks.map((task) => (task.taskId === context?.tempId ? createdTask : task)),
           })),
         };
-      });
+      };
+
+      queryClient.setQueryData(projectKey, replaceTempTask);
+      queryClient.setQueryData(meKey, replaceTempTask);
     },
 
-    onSettled: (_, __, taskData) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', projectId, taskData.status] });
-    },
+    // onSettled에서 invalidateQueries 제거 → 깜빡임 방지
   });
 };
