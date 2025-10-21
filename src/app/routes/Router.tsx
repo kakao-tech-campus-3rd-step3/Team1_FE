@@ -48,7 +48,7 @@ const PROTECTED_ROUTES = [
     path: ROUTE_PATH.PROJECT,
     element: <ProjectPage />,
     children: [
-      { path: 'board', element: <BoardSection /> },
+      { path: 'board', element: <BoardSection type="project" /> },
       { path: 'file', element: <FileSection /> },
       { path: 'memo', element: <MemoSection /> },
     ],
