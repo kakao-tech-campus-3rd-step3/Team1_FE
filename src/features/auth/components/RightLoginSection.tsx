@@ -1,11 +1,11 @@
 import KakaoLoginButton from '@/features/auth/components/KakaoLoginButton';
-import BubbleDecoration from './BubbleDecoration';
+import BubbleDecoration from '@/features/auth/components/BubbleDecoration';
 
-interface RightLoginPanel {
+interface RightLoginSectionProps {
   onClick: () => void;
 }
 
-const RightLoginSection = ({ onClick }: RightLoginPanel) => {
+const RightLoginSection = ({ onClick }: RightLoginSectionProps) => {
   return (
     <div className="flex-1 p-20 flex flex-col justify-center bg-white">
       <div className="mb-12">
