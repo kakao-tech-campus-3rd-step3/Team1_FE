@@ -14,7 +14,7 @@ export const useInfiniteMyTasksByStatusQuery = (
   return useInfiniteQuery<TaskListResponse, Error>({
     queryKey: ['tasks', 'me', status],
     queryFn: ({ pageParam }) =>
-      taskApi.fetchTasksByMe(typeof pageParam === 'string' ? pageParam : undefined, status),
+      taskApi.fetchMyTasksByStatus(typeof pageParam === 'string' ? pageParam : undefined, status),
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
     initialPageParam: undefined,
     ...options,

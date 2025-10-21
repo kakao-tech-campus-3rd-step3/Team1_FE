@@ -15,7 +15,7 @@ export const useInfiniteProjectTasksByStatusQuery = (
   return useInfiniteQuery({
     queryKey: ['tasks', projectId, status],
     queryFn: ({ pageParam }: { pageParam?: string }) =>
-      taskApi.fetchTasksByStatus(projectId, pageParam, status),
+      taskApi.fetchProjectTasksByStatus(projectId, pageParam, status),
     getNextPageParam: (lastPage: TaskListResponse) =>
       lastPage.hasNext ? lastPage.nextCursor : undefined,
     initialPageParam: undefined,
