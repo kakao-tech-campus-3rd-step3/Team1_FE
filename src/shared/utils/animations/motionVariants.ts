@@ -49,3 +49,12 @@ export const shakeVariant: Variants = {
     },
   },
 };
+
+export const fadeInLeftStagger: Variants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (index: number = 0) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: index * 0.3, duration: 0.8 },
+  }),
+};
