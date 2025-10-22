@@ -6,7 +6,6 @@ import { useProjectModals } from '@/features/project/hooks/useProjectModals';
 import { useEffect, useRef } from 'react';
 import { Separator } from '@/shared/components/shadcn/separator';
 import MyTaskHeader from '@/features/my-task/components/MyTaskPageComponents/MyTaskHeader';
-import MyTaskFilterTab from '@/features/my-task/components/MyTaskPageComponents/MyTaskFilterTab';
 import MyTaskTopTab from '@/features/my-task/components/MyTaskPageComponents/MyTaskTopTab';
 import BoardSection from '@/features/board/components/BoardSection';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
@@ -75,14 +74,8 @@ const MyTaskPage = () => {
 
         <Separator className="bg-gray-300" />
 
-        <section aria-label="filter" className="shrink-0">
-          <MyTaskFilterTab />
-        </section>
-
-        <Separator className="bg-gray-300" />
-
         <section aria-label="board" className="overflow-x-auto flex-1">
-          <BoardSection boardTab="status" />
+          <BoardSection type="myTask" />
         </section>
       </div>
     </div>
