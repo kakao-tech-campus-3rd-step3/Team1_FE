@@ -20,7 +20,6 @@ export const useCreateComment = (projectId: string, taskId: string) => {
       const previous = queryClient.getQueryData<CommentType[]>(queryKey) ?? [];
       const tempId = `temp-${uuidv4()}`;
       const now = new Date().toISOString();
-
       const tempComment: CommentType = {
         commentId: tempId,
         ...commentData,

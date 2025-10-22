@@ -75,7 +75,6 @@ const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewer
       y: pdfY,
     });
     setFileInfo({ fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY });
-    console.log(`마커 추가됨: ${pageNumber} 페이지의 (${pdfX}, ${pdfY})`);
   };
 
   return (
