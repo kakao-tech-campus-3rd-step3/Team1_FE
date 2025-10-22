@@ -22,7 +22,6 @@ export const apiPublic = axios.create({
 api.interceptors.request.use(async (config) => {
   const { accessToken, isInitializing } = useAuthStore.getState();
   if (isInitializing) {
-
     // 초기화가 끝날 때까지 polling (200ms 간격으로 체크)
     await new Promise<void>((resolve) => {
       const interval = setInterval(() => {
