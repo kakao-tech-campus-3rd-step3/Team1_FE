@@ -1,8 +1,8 @@
 export interface FileInfo {
-  fileId: string;
-  filePage: number;
-  fileX: number;
-  fileY: number;
+  fileId?: string;
+  filePage?: number;
+  fileX?: number;
+  fileY?: number;
 }
 export type CreateCommentRequest = Omit<
   CommentType,
@@ -13,7 +13,7 @@ export interface CommentType {
   content: string;
   persona: string;
   isAnonymous: boolean;
-  fileInfo: FileInfo;
+  fileInfo: Partial<FileInfo>;
   authorInfo: {
     id: string;
     name: string;
