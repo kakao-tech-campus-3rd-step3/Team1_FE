@@ -3,35 +3,33 @@ import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
 import CommentItem from '@/features/task-detail/components/CommentItem';
-import type { Comment } from '@/features/task-detail/types/commentTypes';
-import { mockComments } from '@/shared/data/mockComments';
-import { v4 as uuidv4 } from 'uuid';
-import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
-
-const CommentSection = () => {
-  const [comments, setComments] = useState<Comment[]>(mockComments);
+import { useCreateComment } from '@/features/comment/hooks/useCreateComment';
+import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
+import type { FileInfo } from '@/features/comment/types/commentTypes';
+interface CommentSectionProps {
+  projectId: string;
+  taskId: string;
+  fileInfo?: FileInfo | null;
+}
+const CommentSection = ({ projectId, taskId, fileInfo }: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const currentUserName = '유다연';
+  const { data: comments = [] } = useCommentQuery(projectId, taskId);
+  const { mutate: createComment } = useCreateComment(projectId, taskId);
 
   const handleAdd = () => {
     if (!input.trim()) return;
+    const newCommentData = {
+      content: input,
+      persona: 'BOO',
+      isAnonymous,
+      fileInfo: fileInfo && Object.keys(fileInfo).length > 0 ? fileInfo : {},
+    };
 
-    setComments((prevComments) => [
-      ...prevComments,
-      {
-        id: uuidv4(),
-        author: isAnonymous ? '익명' : currentUserName,
-        avatar: isAnonymous ? undefined : AvatarYDY,
-        fallback: isAnonymous ? '익' : currentUserName[0],
-        content: input,
-        timeAgo: '방금 전',
-      },
-    ]);
+    createComment({ commentData: newCommentData });
 
     setInput('');
   };
@@ -50,7 +48,7 @@ const CommentSection = () => {
 
       <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-35">
         {comments.map((c) => (
-          <CommentItem key={c.id} comment={c} />
+          <CommentItem key={c.commentId} comment={c} />
         ))}
       </div>
 
