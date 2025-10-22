@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
-import type { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -74,9 +74,8 @@ export const useUploadFileMutation = () => {
       );
     },
 
-    onError: (error: Error, _variables, context) => {
-      const axiosError = error as AxiosError<{ detail?: string }>;
-      if (axiosError.response?.status === 400) {
+    onError: (error, _variables, context) => {
+      if (isAxiosError(error) && error.response?.status === 400) {
         toast.error('pdf 파일만 업로드 할 수 있습니다.');
       } else {
         toast.error('파일 업로드에 실패했습니다.');

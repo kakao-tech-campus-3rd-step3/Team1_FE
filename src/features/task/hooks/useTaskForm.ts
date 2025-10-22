@@ -21,6 +21,7 @@ export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> 
       status: 'TODO',
       tags: [],
       urgent: false,
+      projectId: '',
     },
   });
 
@@ -40,6 +41,7 @@ export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> 
         requiredReviewerCount: data.requiredReviewerCount,
         tags: data.tags,
         assignees: assigneeIds,
+        projectId: data.projectId,
       };
 
       await onConfirm(payload);

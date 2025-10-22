@@ -1,17 +1,8 @@
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
+import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
-// 서버 응답 구조
-export interface ServerFileType {
-  id: string;
-  filename: string;
-  contentType: string;
-  sizeBytes: number;
-  type: string;
-}
-
-// 변환 함수
 export const mapToTaskDetailFileType = async (
   serverFile: ServerFileType,
 ): Promise<TaskDetailFileType> => {

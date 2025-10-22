@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
-import type { NavigateFunction } from 'react-router';
+import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
 import { mockMembers, type Member } from '@/shared/data/mockMembers';
-import ProjectBasicInfo from '@/features/project/components/ProjectUpdateModalContent/ProjectBasicInfo';
-import ProjectDeleteModalContent from '@/features/project/components/ProjectDeleteModalContent/ProjectDeleteModalContent';
+import ProjectBasicInfo from '@/features/project/components/ProjectUpdateModal/ProjectBasicInfo';
+import ProjectDeleteModalContent from '@/features/project/components/ProjectDeleteModal/ProjectDeleteModalContent';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import ProjectMembers from '@/features/project/components/ProjectUpdateModalContent/ProjectMembersList';
+import ProjectMembers from '@/features/project/components/ProjectUpdateModal/ProjectMembersList';
 import { useUpdateProjectMutation } from '@/features/project/hooks/useUpdateProjectMutation';
 
 interface ProjectUpdateModalProps {

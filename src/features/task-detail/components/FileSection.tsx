@@ -4,7 +4,7 @@ import ContentItem from '@/features/task-detail/components/ContentItem';
 import FileItem from '@/features/task-detail/components/FileItem';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
 import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuery';
-import type { ServerFileType } from '@/features/task-detail/utils/fileAdapter';
+import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;

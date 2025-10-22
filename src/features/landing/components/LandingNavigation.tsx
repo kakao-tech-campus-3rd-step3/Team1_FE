@@ -2,7 +2,7 @@ import { ROUTE_PATH } from '@/app/routes/Router';
 import { Button } from '@/shared/components/shadcn/button';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Home', href: '#home' },

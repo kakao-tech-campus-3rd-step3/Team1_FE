@@ -11,7 +11,7 @@ export interface Member {
 
 export const mockMembers: Member[] = [
   {
-    id: 'bef50c0f-edd7-421c-8509-7c9dc279dfc7',
+    id: 'c8decc22-45e4-4609-a2d8-e2c7446ac99e',
     name: '유다연',
     avatar: AvatarYDY,
     backgroundColor: 'bg-boost-yellow',

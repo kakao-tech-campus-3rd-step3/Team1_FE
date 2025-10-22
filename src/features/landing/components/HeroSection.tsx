@@ -1,8 +1,8 @@
 import { Button } from '@/shared/components/shadcn/button';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { motion } from 'framer-motion';
-import Boost_3D from '@/shared/assets/images/boost/boost-3d.png';
+import Boost_3D from '@/shared/assets/images/boost/boost-logo-3d.png';
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
 import { useState } from 'react';
 import {

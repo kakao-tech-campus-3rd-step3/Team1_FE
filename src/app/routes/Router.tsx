@@ -1,22 +1,21 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ProtectedRoute from '@/app/routes/ProtectedRoute';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import MyInfoPage from '@/pages/MyInfoPage';
-import BoardPage from '@/pages/BoardPage';
-import MemoPage from '@/pages/MemoPage';
-import FilePage from '@/pages/FilePage';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
-import { createBrowserRouter } from 'react-router';
-import { RouterProvider } from 'react-router-dom';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmPermissionPage from '@/pages/AlarmPermissionPage';
-import ProtectedRoute from '@/app/routes/ProtectedRoute';
+import BoardSection from '@/features/board/components/BoardSection';
+import MemoSection from '@/features/memo/components/MemoSection';
+import FileSection from '@/features/file/components/FileSection';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -49,9 +48,9 @@ const PROTECTED_ROUTES = [
     path: ROUTE_PATH.PROJECT,
     element: <ProjectPage />,
     children: [
-      { path: 'board', element: <BoardPage /> },
-      { path: 'file', element: <FilePage /> },
-      { path: 'memo', element: <MemoPage /> },
+      { path: 'board', element: <BoardSection type="project" /> },
+      { path: 'file', element: <FileSection /> },
+      { path: 'memo', element: <MemoSection /> },
     ],
   },
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },

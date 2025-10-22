@@ -7,7 +7,7 @@ import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutaion';
 
