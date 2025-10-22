@@ -11,7 +11,7 @@ import type { PDFViewerProps } from '@/features/task-detail/types/pdfViewerTypes
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({ pdfUrl, fileName, onClose }: PDFViewerProps) => {
+const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewerProps) => {
   const {
     pageNumber,
     zoom,
@@ -74,7 +74,7 @@ const PDFViewer = ({ pdfUrl, fileName, onClose }: PDFViewerProps) => {
       x: pdfX,
       y: pdfY,
     });
-
+    setFileInfo({ fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY });
     console.log(`마커 추가됨: ${pageNumber} 페이지의 (${pdfX}, ${pdfY})`);
   };
 
