@@ -14,8 +14,7 @@ import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
 import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
-import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
-import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
+import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
 
 interface StatusBoardProps {
   projectId?: string;
@@ -25,42 +24,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
   const moveTaskMutation = useMoveTaskMutation();
-
-  const projectQueryOptions = { enabled: !!projectId };
-  const myTaskQueryOptions = { enabled: !projectId };
-
-  const queryTODO = useInfiniteProjectTasksByStatusQuery(
-    projectId ?? '',
-    'TODO',
-    projectQueryOptions,
-  );
-  const queryPROGRESS = useInfiniteProjectTasksByStatusQuery(
-    projectId ?? '',
-    'PROGRESS',
-    projectQueryOptions,
-  );
-  const queryREVIEW = useInfiniteProjectTasksByStatusQuery(
-    projectId ?? '',
-    'REVIEW',
-    projectQueryOptions,
-  );
-  const queryDONE = useInfiniteProjectTasksByStatusQuery(
-    projectId ?? '',
-    'DONE',
-    projectQueryOptions,
-  );
-
-  const queryMyTODO = useInfiniteMyTasksByStatusQuery('TODO', myTaskQueryOptions);
-  const queryMyPROGRESS = useInfiniteMyTasksByStatusQuery('PROGRESS', myTaskQueryOptions);
-  const queryMyREVIEW = useInfiniteMyTasksByStatusQuery('REVIEW', myTaskQueryOptions);
-  const queryMyDONE = useInfiniteMyTasksByStatusQuery('DONE', myTaskQueryOptions);
-
-  const columnsData = [
-    { status: 'TODO', query: projectId ? queryTODO : queryMyTODO },
-    { status: 'PROGRESS', query: projectId ? queryPROGRESS : queryMyPROGRESS },
-    { status: 'REVIEW', query: projectId ? queryREVIEW : queryMyREVIEW },
-    { status: 'DONE', query: projectId ? queryDONE : queryMyDONE },
-  ];
+  const columnsData = useStatusBoardQueries(projectId);
 
   const lastMoveRef = useRef<{ activeId: string; toStatus: string } | null>(null);
 

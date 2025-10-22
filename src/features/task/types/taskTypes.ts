@@ -1,3 +1,5 @@
+import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
+
 export type Column = {
   status: string;
   title: string;
@@ -58,3 +60,6 @@ export type TaskDetail = BaseTask & {
   comments: Comment[];
   files: File[];
 };
+
+// useInfiniteQuery로 반환된 객체를 한 번에 명시하는 타입
+export type TaskQuery = UseInfiniteQueryResult<InfiniteData<TaskListResponse, unknown>, Error>;

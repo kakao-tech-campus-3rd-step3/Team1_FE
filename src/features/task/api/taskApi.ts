@@ -3,8 +3,8 @@ import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
 
 export const taskApi = {
-  // 📍 TODO: 나의 할 일 조회
-  fetchTasksByMe: async (
+  // 나의 할 일 목록 조회 (상태 기준)
+  fetchMyTasksByStatus: async (
     cursor?: string,
     status?: string,
     limit = 10,
@@ -13,10 +13,8 @@ export const taskApi = {
     return res.data;
   },
 
-  // 📍 TODO: 할 일 목록 조회 - 특정 팀원
-
-  // 할 일 목록 조회 - 상태 기준
-  fetchTasksByStatus: async (
+  // 프로젝트 할 일 목록 조회 (상태 기준)
+  fetchProjectTasksByStatus: async (
     projectId: string,
     cursor?: string,
     status?: string,
