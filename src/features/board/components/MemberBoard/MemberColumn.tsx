@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/
 import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
 import { columnOrder, columnStatus } from '@/features/board/types/boardTypes';
+import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
 
 interface MemberColumnProps {
   projectId: string;
@@ -38,7 +39,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const scrollRef = useVerticalScroll<HTMLDivElement>(() => {
     if (!scrollRef.current || !isMouseInside) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-    setIsProfileCollapsible(scrollHeight > 100);
+    setIsProfileCollapsible(scrollHeight > COLLAPSIBLE_SCROLL_THRESHOLD);
 
     const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
     if (isAtBottom && hasNextPage && !isFetchingNextPage) fetchNextPage();

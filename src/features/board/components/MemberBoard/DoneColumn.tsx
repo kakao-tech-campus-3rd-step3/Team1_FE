@@ -7,6 +7,7 @@ import doneIcon from '@/shared/assets/images/done.png';
 import { cn } from '@/shared/lib/utils';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
+import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
 
 interface DoneColumnProps {
   tasks: TaskListItem[];
@@ -19,7 +20,7 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
   const scrollRef = useVerticalScroll<HTMLDivElement>(() => {
     if (!scrollRef.current || !isMouseInside) return;
     const { scrollHeight } = scrollRef.current;
-    setIsProfileCollapsible(scrollHeight > 100);
+    setIsProfileCollapsible(scrollHeight > COLLAPSIBLE_SCROLL_THRESHOLD);
   });
 
   const handleMouseEnter = () => setIsMouseInside(true);
@@ -40,7 +41,7 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <motion.div
-          className={cn('flex items-center mt-5', { 'm1-3': isProfileCollapsible })}
+          className={cn('flex items-center mt-5', { 'ml-3': isProfileCollapsible })}
           animate={{
             marginTop: isProfileCollapsible ? '0px' : '20px',
             scale: isProfileCollapsible ? 0.8 : 1,
