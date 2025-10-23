@@ -8,5 +8,6 @@ export const useProjectTaskCountByStatusQuery = (projectId?: string) => {
   return useQuery<ProjectTaskCountByStatusMap, Error>({
     queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId ?? ''),
     queryFn: () => taskApi.fetchProjectTaskCountByStatus(projectId ?? ''),
+    enabled: !!projectId,
   });
 };
