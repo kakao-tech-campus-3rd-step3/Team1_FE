@@ -29,7 +29,6 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
     review: 0,
   };
 
-  console.log(memberTaskCountList);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteProjectTasksByMemberQuery(projectId, member.id);
 
