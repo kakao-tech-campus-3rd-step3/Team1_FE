@@ -1,5 +1,7 @@
 import type {
   MemberTaskListResponse,
+  ProjectTaskCountByMemberResponse,
+  ProjectTaskCountByStatusResponse,
   TaskDetail,
   TaskListItem,
   TaskListResponse,
@@ -41,6 +43,26 @@ export const taskApi = {
     const res = await api.get<MemberTaskListResponse>(
       `/projects/${projectId}/members/${memberId}/tasks`,
       { params: { cursor, limit } },
+    );
+    return res.data;
+  },
+
+  // 프로젝트 할 일 개수 조회 (상태 기준)
+  fetchProjectTaskCountByStatus: async (
+    projectId: string,
+  ): Promise<ProjectTaskCountByStatusResponse> => {
+    const res = await api.get<ProjectTaskCountByStatusResponse>(
+      `/projects/${projectId}/tasks/status-count`,
+    );
+    return res.data;
+  },
+
+  // 프로젝트 할 일 개수 조회 (팀원 기준)
+  fetchProjectTaskCountByMember: async (
+    projectId: string,
+  ): Promise<ProjectTaskCountByMemberResponse[]> => {
+    const res = await api.get<ProjectTaskCountByMemberResponse[]>(
+      `/projects/${projectId}/tasks/members/status-count`,
     );
     return res.data;
   },
