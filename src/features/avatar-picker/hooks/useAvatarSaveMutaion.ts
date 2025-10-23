@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { avatarApi } from '../api/avatarApi';
+import { avatarApi } from '@/features/avatar-picker/api/avatarApi';
 
 export const useAvatarSaveMutation = () => {
   return useMutation<void, Error, string>({

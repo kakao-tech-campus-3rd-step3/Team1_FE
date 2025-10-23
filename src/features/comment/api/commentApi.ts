@@ -1,5 +1,5 @@
 import api from '@/shared/api/axiosInstance';
-import type { CommentType, CreateCommentRequest } from '../types/commentTypes';
+import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
 
 export const commentApi = {
   // 댓글 목록 조회

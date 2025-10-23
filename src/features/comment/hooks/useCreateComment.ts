@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { commentApi } from '../api/commentApi';
+import { commentApi } from '@/features/comment/api/commentApi';
 import { v4 as uuidv4 } from 'uuid';
 import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';

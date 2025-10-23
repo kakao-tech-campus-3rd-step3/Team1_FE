@@ -1,5 +1,5 @@
-import type { CommentType, CommentUIType } from '../types/commentTypes';
-import { formatTimeAgo } from './formatTimeAgo';
+import type { CommentType, CommentUIType } from '@/features/comment/types/commentTypes';
+import { formatTimeAgo } from '@/features/comment/utils/formatTimeAgo';
 
 export const mapToUI = (comment: CommentType): CommentUIType => ({
   ...comment,
