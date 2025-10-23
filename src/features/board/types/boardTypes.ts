@@ -13,6 +13,9 @@ export type Status = (typeof columnStatus)[number]['status'];
 // statusList: ['TODO', 'PROGRESS', 'REVIEW', 'DONE']
 export const statusList: Status[] = columnStatus.map((c) => c.status);
 
+// Member Board에서 사용하는 순서 배열 :  ['TODO','PROGRESS','REVIEW']
+export const columnOrder = ['PROGRESS', 'REVIEW', 'TODO'];
+
 export type ColumnData = {
   status: Status;
   query: TaskQuery;

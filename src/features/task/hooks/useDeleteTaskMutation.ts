@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
+import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
 import type { TaskListResponse } from '@/features/task/types/taskTypes';
 
 interface DeleteTaskMutationVars {
@@ -10,63 +11,67 @@ interface DeleteTaskMutationVars {
 export const useDeleteTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ taskId }: DeleteTaskMutationVars) => taskApi.deleteTask(projectId, taskId),
+  return useMutation<
+    { success: boolean },
+    Error,
+    DeleteTaskMutationVars,
+    { previousData?: Map<readonly string[], InfiniteData<TaskListResponse> | undefined> }
+  >({
+    mutationFn: ({ taskId }) => taskApi.deleteTask(projectId, taskId),
 
     onMutate: async ({ taskId, status }) => {
-      const projectKey = ['tasks', projectId, status];
-      const meKey = ['tasks', 'me', status];
+      const projectKey = TASK_QUERY_KEYS.project(projectId, status);
+      const meKey = TASK_QUERY_KEYS.meStatus(status);
 
       await Promise.all([
         queryClient.cancelQueries({ queryKey: projectKey }),
         queryClient.cancelQueries({ queryKey: meKey }),
       ]);
 
-      const previousProjectData =
-        queryClient.getQueryData<InfiniteData<TaskListResponse>>(projectKey);
-      const previousMeData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(meKey);
+      const projectData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(projectKey);
+      const meData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(meKey);
 
-      const updateCache = (oldData: InfiniteData<TaskListResponse> | undefined) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page) => ({
-            ...page,
-            tasks: page.tasks.filter((t) => t.taskId !== taskId),
-          })),
-        };
-      };
+      const previousData = new Map<readonly string[], InfiniteData<TaskListResponse> | undefined>();
+      previousData.set(projectKey, projectData);
+      previousData.set(meKey, meData);
 
-      queryClient.setQueryData(projectKey, updateCache);
-      queryClient.setQueryData(meKey, updateCache);
+      const filterOutTask = (oldData?: InfiniteData<TaskListResponse>) =>
+        oldData
+          ? {
+              ...oldData,
+              pages: oldData.pages.map((page) => ({
+                ...page,
+                tasks: page.tasks.filter((t) => t.taskId !== taskId),
+              })),
+            }
+          : oldData;
 
-      return {
-        previousData: {
-          [projectKey.join('-')]: previousProjectData,
-          [meKey.join('-')]: previousMeData,
-        },
-      };
+      queryClient.setQueryData(projectKey, filterOutTask(projectData));
+      queryClient.setQueryData(meKey, filterOutTask(meData));
+
+      projectData?.pages.forEach((page) => {
+        const targetTask = page.tasks.find((task) => task.taskId === taskId);
+        targetTask?.assignees.forEach((assignee) => {
+          const memberKey = TASK_QUERY_KEYS.member(projectId, assignee.id);
+          queryClient.cancelQueries({ queryKey: memberKey });
+
+          const memberData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(memberKey);
+          if (memberData) {
+            queryClient.setQueryData(memberKey, filterOutTask(memberData));
+          }
+          previousData.set(memberKey, memberData);
+        });
+      });
+
+      return { previousData };
     },
 
-    onError: (error, { status }, context) => {
-      console.error('할 일 삭제 실패:', error);
-      const projectKey = ['tasks', projectId, status];
-      const meKey = ['tasks', 'me', status];
-
+    onError: (_, __, context) => {
       if (context?.previousData) {
-        const prevProj = context.previousData[projectKey.join('-')];
-        const prevMe = context.previousData[meKey.join('-')];
-        if (prevProj) queryClient.setQueryData(projectKey, prevProj);
-        if (prevMe) queryClient.setQueryData(meKey, prevMe);
+        context.previousData.forEach((data, key) => {
+          queryClient.setQueryData(key, data);
+        });
       }
-    },
-
-    onSuccess: (_, { status }) => {
-      const projectKey = ['tasks', projectId, status];
-      const meKey = ['tasks', 'me', status];
-
-      queryClient.invalidateQueries({ queryKey: projectKey });
-      queryClient.invalidateQueries({ queryKey: meKey });
     },
   });
 };

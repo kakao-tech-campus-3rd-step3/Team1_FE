@@ -1,0 +1,14 @@
+export const TASK_QUERY_KEYS = {
+  root: ['tasks'] as const,
+
+  project: (projectId: string, status: string) =>
+    [...TASK_QUERY_KEYS.root, 'project', projectId, status] as const,
+
+  meStatus: (status: string) => [...TASK_QUERY_KEYS.root, 'me', status] as const,
+
+  member: (projectId: string, memberId: string) =>
+    [...TASK_QUERY_KEYS.root, 'project', projectId, 'member', memberId] as const,
+
+  detail: (projectId: string, taskId: string) =>
+    [...TASK_QUERY_KEYS.root, 'detail', projectId, taskId] as const,
+};

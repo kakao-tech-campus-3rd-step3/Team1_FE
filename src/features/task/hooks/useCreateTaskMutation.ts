@@ -1,27 +1,33 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
-import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
-import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { v4 as uuidv4 } from 'uuid';
+import { taskApi } from '@/features/task/api/taskApi';
+import type { TaskListItem, TaskListResponse, Assignee } from '@/features/task/types/taskTypes';
+import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
+import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 
 const createTempTask = (
   taskData: CreateTaskInput,
   projectId: string,
   tempId: string,
-): TaskListItem => ({
-  taskId: tempId,
-  projectId,
-  title: taskData.title,
-  description: taskData.description || '',
-  status: taskData.status,
-  dueDate: taskData.dueDate,
-  urgent: taskData.urgent ?? false,
-  requiredReviewerCount: taskData.requiredReviewerCount ?? 0,
-  tags: taskData.tags || [],
-  assignees: [],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-});
+): TaskListItem => {
+  const assignees: Assignee[] = taskData.assignees.map((id) => ({ id, name: '' }));
+  return {
+    taskId: tempId,
+    projectId,
+    title: taskData.title,
+    description: taskData.description || '',
+    status: taskData.status,
+    dueDate: taskData.dueDate,
+    urgent: taskData.urgent ?? false,
+    requiredReviewerCount: taskData.requiredReviewerCount ?? 0,
+    commentCount: 0,
+    fileCount: 0,
+    tags: taskData.tags || [],
+    assignees,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+};
 
 export const useCreateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
@@ -30,27 +36,39 @@ export const useCreateTaskMutation = (projectId: string) => {
     TaskListItem,
     Error,
     CreateTaskInput,
-    { previousData?: Record<string, InfiniteData<TaskListResponse> | undefined>; tempId?: string }
+    {
+      previousData?: Map<readonly string[], InfiniteData<TaskListResponse> | undefined>;
+      tempId?: string;
+    }
   >({
     mutationFn: (taskData) => taskApi.createTask(projectId, taskData),
 
     onMutate: async (taskData) => {
-      const projectKey = ['tasks', projectId, taskData.status];
-      const meKey = ['tasks', 'me', taskData.status];
+      const projectKey = TASK_QUERY_KEYS.project(projectId, taskData.status);
+      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status);
+      const memberKeys = taskData.assignees.map((memberId) =>
+        TASK_QUERY_KEYS.member(projectId, memberId),
+      );
 
       await Promise.all([
         queryClient.cancelQueries({ queryKey: projectKey }),
         queryClient.cancelQueries({ queryKey: meKey }),
+        ...memberKeys.map((key) => queryClient.cancelQueries({ queryKey: key })),
       ]);
 
-      const previousProjectData =
-        queryClient.getQueryData<InfiniteData<TaskListResponse>>(projectKey);
-      const previousMeData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(meKey);
+      const previousData = new Map<readonly string[], InfiniteData<TaskListResponse> | undefined>();
+      const getAndStore = (key: readonly string[]) => {
+        previousData.set(key, queryClient.getQueryData<InfiniteData<TaskListResponse>>(key));
+      };
+
+      getAndStore(projectKey);
+      getAndStore(meKey);
+      memberKeys.forEach(getAndStore);
 
       const tempId = `temp-${uuidv4()}`;
       const tempTask = createTempTask(taskData, projectId, tempId);
 
-      const updateCache = (oldData: InfiniteData<TaskListResponse> | undefined) => {
+      const updateCache = (oldData?: InfiniteData<TaskListResponse>) => {
         if (!oldData) {
           return {
             pageParams: [undefined],
@@ -64,7 +82,6 @@ export const useCreateTaskMutation = (projectId: string) => {
             ],
           };
         }
-
         return {
           ...oldData,
           pages: oldData.pages.map((page, idx) =>
@@ -75,33 +92,25 @@ export const useCreateTaskMutation = (projectId: string) => {
 
       queryClient.setQueryData(projectKey, updateCache);
       queryClient.setQueryData(meKey, updateCache);
+      memberKeys.forEach((key) => queryClient.setQueryData(key, updateCache));
 
-      return {
-        previousData: {
-          [projectKey.join('-')]: previousProjectData,
-          [meKey.join('-')]: previousMeData,
-        },
-        tempId,
-      };
+      return { previousData, tempId };
     },
 
-    onError: (_, taskData, context) => {
-      const projectKey = ['tasks', projectId, taskData.status];
-      const meKey = ['tasks', 'me', taskData.status];
-
-      if (context?.previousData) {
-        if (context.previousData[projectKey.join('-')])
-          queryClient.setQueryData(projectKey, context.previousData[projectKey.join('-')]);
-        if (context.previousData[meKey.join('-')])
-          queryClient.setQueryData(meKey, context.previousData[meKey.join('-')]);
-      }
+    onError: (_, _taskData, context) => {
+      context?.previousData?.forEach((data, key) => {
+        queryClient.setQueryData(key, data);
+      });
     },
 
     onSuccess: (createdTask, taskData, context) => {
-      const projectKey = ['tasks', projectId, taskData.status];
-      const meKey = ['tasks', 'me', taskData.status];
+      const projectKey = TASK_QUERY_KEYS.project(projectId, taskData.status);
+      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status);
+      const memberKeys = taskData.assignees.map((memberId) =>
+        TASK_QUERY_KEYS.member(projectId, memberId),
+      );
 
-      const replaceTempTask = (oldData: InfiniteData<TaskListResponse> | undefined) => {
+      const replaceTempTask = (oldData?: InfiniteData<TaskListResponse>) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -114,8 +123,7 @@ export const useCreateTaskMutation = (projectId: string) => {
 
       queryClient.setQueryData(projectKey, replaceTempTask);
       queryClient.setQueryData(meKey, replaceTempTask);
+      memberKeys.forEach((key) => queryClient.setQueryData(key, replaceTempTask));
     },
-
-    // onSettled에서 invalidateQueries 제거 → 깜빡임 방지
   });
 };

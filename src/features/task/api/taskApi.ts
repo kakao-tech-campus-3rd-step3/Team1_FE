@@ -1,4 +1,9 @@
-import type { TaskDetail, TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
+import type {
+  MemberTaskListResponse,
+  TaskDetail,
+  TaskListItem,
+  TaskListResponse,
+} from '@/features/task/types/taskTypes';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
 
@@ -23,6 +28,20 @@ export const taskApi = {
     const res = await api.get<TaskListResponse>(`/projects/${projectId}/tasks`, {
       params: { cursor, limit, status },
     });
+    return res.data;
+  },
+
+  // 프로젝트 할 일 목록 조회 (멤버 기준)
+  fetchProjectTasksByMember: async (
+    projectId: string,
+    memberId: string,
+    cursor?: string,
+    limit = 10,
+  ): Promise<MemberTaskListResponse> => {
+    const res = await api.get<MemberTaskListResponse>(
+      `/projects/${projectId}/members/${memberId}/tasks`,
+      { params: { cursor, limit } },
+    );
     return res.data;
   },
 
