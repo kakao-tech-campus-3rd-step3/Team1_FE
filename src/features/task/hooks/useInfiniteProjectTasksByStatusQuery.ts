@@ -9,10 +9,14 @@ export const useInfiniteProjectTasksByStatusQuery = (
   status: string,
   options?: UseInfiniteTasksOptions,
 ) => {
-  return useInfiniteQuery({
+  return useInfiniteQuery<TaskListResponse, Error>({
     queryKey: TASK_QUERY_KEYS.project(projectId, status),
-    queryFn: ({ pageParam }: { pageParam?: string }) =>
-      taskApi.fetchProjectTasksByStatus(projectId, pageParam, status),
+    queryFn: ({ pageParam }) =>
+      taskApi.fetchProjectTasksByStatus(
+        projectId,
+        typeof pageParam === 'string' ? pageParam : undefined,
+        status,
+      ),
     getNextPageParam: (lastPage: TaskListResponse) =>
       lastPage.hasNext ? lastPage.nextCursor : undefined,
     initialPageParam: undefined,
