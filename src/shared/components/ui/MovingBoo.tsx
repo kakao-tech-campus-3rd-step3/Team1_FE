@@ -15,7 +15,7 @@ const sizeClassMap: Record<number, string> = {
 };
 
 const MovingBoo = ({ size = 32 }: MovingBooProps) => (
-  <div className="flex justify-center items-center pb-6">
+  <div className="flex justify-center items-center pt-12 pb-6">
     <motion.img
       src={Boo}
       className={cn(sizeClassMap[size])}
