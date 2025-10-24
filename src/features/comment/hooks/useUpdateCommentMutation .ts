@@ -1,19 +1,39 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CommentType } from '@/features/comment/types/commentTypes';
 import { commentApi } from '@/features/comment/api/commentApi';
+import type { CommentType } from '@/features/comment/types/commentTypes';
+import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 //댓글 수정
 export const useUpdateCommentMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
+  const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId);
 
-  return useMutation<CommentType, Error, { commentId: string; updatedData: Partial<CommentType> }>({
+  return useMutation<
+    CommentType,
+    Error,
+    { commentId: string; updatedData: Partial<CommentType> },
+    { previousComments?: CommentType[] }
+  >({
     mutationFn: ({ commentId, updatedData }) => commentApi.updateComment(commentId, updatedData),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', projectId, taskId] });
+    onMutate: async ({ commentId, updatedData }) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousComments = queryClient.getQueryData<CommentType[]>(queryKey);
+
+      queryClient.setQueryData<CommentType[]>(queryKey, (old) =>
+        old ? old.map((c) => (c.commentId === commentId ? { ...c, ...updatedData } : c)) : [],
+      );
+
+      return { previousComments };
     },
 
-    onError: (error) => {
-      console.error('[updateComment error]', error);
+    onError: (error, _, context) => {
+      if (context?.previousComments) {
+        queryClient.setQueryData(queryKey, context.previousComments);
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 };
