@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
 // 댓글 생성
-export const useCreateComment = (projectId: string, taskId: string) => {
+export const useCreateCommentMutation  = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
   return useMutation<
