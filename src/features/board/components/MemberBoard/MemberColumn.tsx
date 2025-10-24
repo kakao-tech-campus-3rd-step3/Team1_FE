@@ -10,6 +10,8 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
 import { columnOrder, columnStatus } from '@/features/board/types/boardTypes';
 import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
+import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/useProjectTaskCountByMemberQuery';
+import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 
 interface MemberColumnProps {
   projectId: string;
@@ -19,6 +21,13 @@ interface MemberColumnProps {
 const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const [isProfileCollapsible, setIsProfileCollapsible] = useState(false);
   const [isMouseInside, setIsMouseInside] = useState(false);
+
+  const { data: memberTaskCountMap } = useProjectTaskCountByMemberQuery(projectId);
+  const memberTaskCountList = memberTaskCountMap?.[member.id] ?? {
+    todo: 0,
+    progress: 0,
+    review: 0,
+  };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteProjectTasksByMemberQuery(projectId, member.id);
@@ -122,7 +131,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
             <div className="flex flex-row items-center">
               <div className="label1-regular text-gray-500 m-2">{title}</div>
               <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-md w-6 h-6">
-                {filteredTasks.length}
+                {getTaskCountByMember(status, memberTaskCountList)}
               </div>
             </div>
 

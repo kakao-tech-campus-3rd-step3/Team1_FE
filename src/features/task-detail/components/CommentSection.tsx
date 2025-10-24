@@ -10,6 +10,8 @@ import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteComment';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateComment';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 interface CommentSectionProps {
   projectId: string;
@@ -29,6 +31,9 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const { mutate: createComment } = useCreateComment(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
+  const navigate = useNavigate();
+
+  const currentUserName = '유다연';
 
   const handleAdd = () => {
     if (!input.trim()) return;
@@ -120,6 +125,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
           <Button
             size="sm"
             className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
+            onClick={() => navigate(ROUTE_PATH.AI_TEST)}
           >
             <img src={Boo} width="20" />
             <p className="label2-bold">Boo가 대신 말하기</p>
