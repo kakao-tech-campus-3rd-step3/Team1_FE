@@ -124,6 +124,8 @@ export const useCreateTaskMutation = (projectId: string) => {
       queryClient.setQueryData(projectKey, replaceTempTask);
       queryClient.setQueryData(meKey, replaceTempTask);
       memberKeys.forEach((key) => queryClient.setQueryData(key, replaceTempTask));
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
     },
   });
 };

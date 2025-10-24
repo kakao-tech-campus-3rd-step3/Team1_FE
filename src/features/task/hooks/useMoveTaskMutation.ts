@@ -134,6 +134,8 @@ export const useMoveTaskMutation = () => {
 
       queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
       queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
     },
   });
 };

@@ -16,9 +16,9 @@ const AppInitializer = () => {
     }
     const refreshAccessToken = async () => {
       try {
-        const { newAccessToken } = await fetchRefreshToken();
+        const { accessToken } = await fetchRefreshToken();
 
-        setAuth({ token: newAccessToken });
+        setAuth({ token: accessToken });
       } catch (error) {
         console.error('Refresh token expired:', error);
         clearAuth();

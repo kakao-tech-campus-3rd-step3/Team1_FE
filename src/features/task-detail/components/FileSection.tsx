@@ -7,7 +7,7 @@ import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuer
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 interface FileSectionProps {
-  onOpenPdf: (url: string, fileName: string) => void;
+  onOpenPdf: (url: string, fileName: string, id: string) => void;
   taskId: string;
   files: ServerFileType[];
 }
@@ -50,7 +50,7 @@ const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
             onDelete={() => handleDelete(item.fileId)}
-            onOpenPdf={() => onOpenPdf(item.fileUrl, item.fileName)}
+            onOpenPdf={() => onOpenPdf(item.fileUrl, item.fileName, item.fileId)}
             status={item.status}
           />
         ))}
