@@ -12,7 +12,7 @@ const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
-  const [fileInfo, setFileInfo] = useState<FileInfo>({});
+  const [fileInfo, setFileInfo] = useState<FileInfo | null>({});
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [fileName, setFileName] = useState('');
@@ -56,7 +56,12 @@ const TaskDetailPage = () => {
 
         <div id="right" className="w-4/10 bg-gray-200">
           <section id="comment" className="h-[calc(100vh-4rem)]">
-            <CommentSection projectId={projectId ?? ''} taskId={taskId ?? ''} fileInfo={fileInfo} />
+            <CommentSection
+              projectId={projectId ?? ''}
+              taskId={taskId ?? ''}
+              fileInfo={fileInfo}
+              setFileInfo={setFileInfo}
+            />
           </section>
         </div>
       </div>

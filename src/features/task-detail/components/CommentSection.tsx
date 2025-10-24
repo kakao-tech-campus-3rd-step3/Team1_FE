@@ -15,9 +15,10 @@ interface CommentSectionProps {
   projectId: string;
   taskId: string;
   fileInfo?: FileInfo | null;
+  setFileInfo?: (fileInfo: FileInfo | null) => void;
 }
 
-const CommentSection = ({ projectId, taskId, fileInfo }: CommentSectionProps) => {
+const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
@@ -36,13 +37,13 @@ const CommentSection = ({ projectId, taskId, fileInfo }: CommentSectionProps) =>
       content: input,
       persona: 'BOO',
       isAnonymous,
-      fileInfo: fileInfo && Object.keys(fileInfo).length > 0 ? fileInfo : {},
+      fileInfo: fileInfo ? { ...fileInfo } : {},
     };
 
     createComment({ commentData: newCommentData });
+    if (setFileInfo) setFileInfo({});
     setInput('');
   };
-
   const handleEdit = (comment: CommentUIType) => {
     setEditingCommentId(comment.commentId);
     setEditInput(comment.content);
@@ -50,12 +51,10 @@ const CommentSection = ({ projectId, taskId, fileInfo }: CommentSectionProps) =>
 
   const handleUpdate = (commentId: string) => {
     if (!editInput.trim()) return;
-
     updateComment({
       commentId,
       updatedData: { content: editInput },
     });
-
     setEditingCommentId(null);
     setEditInput('');
   };
