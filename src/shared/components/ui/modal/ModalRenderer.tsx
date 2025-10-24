@@ -18,10 +18,16 @@ const ModalRenderer = () => {
   const modalSize = ModalSize[current.size || 'md'];
 
   return (
-    <Dialog open={!!current} onOpenChange={resetModal}>
+    <Dialog
+      open={!!current}
+      onOpenChange={(open) => {
+        if (open === false && current.closeOnOutsideClick) resetModal();
+      }}
+    >
       <DialogContent
         className={cn('border-gray-300 gap-0', modalSize)}
         style={{ transition: 'none' }}
+        showCloseButton={current.showCloseButton}
       >
         <DialogHeader
           className={cn(
