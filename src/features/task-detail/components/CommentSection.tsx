@@ -33,8 +33,6 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const navigate = useNavigate();
 
-  const currentUserName = '유다연';
-
   const handleAdd = () => {
     if (!input.trim()) return;
 
