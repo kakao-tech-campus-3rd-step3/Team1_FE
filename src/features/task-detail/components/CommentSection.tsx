@@ -5,11 +5,11 @@ import { Switch } from '@/shared/components/shadcn/switch';
 import CommentItem from '@/features/task-detail/components/CommentItem';
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
-import { useCreateComment } from '@/features/comment/hooks/useCreateComment';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
-import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteComment';
-import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateComment';
+import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation ';
+import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation ';
+import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation ';
 
 interface CommentSectionProps {
   projectId: string;
@@ -26,7 +26,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
-  const { mutate: createComment } = useCreateComment(projectId, taskId);
+  const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
 
