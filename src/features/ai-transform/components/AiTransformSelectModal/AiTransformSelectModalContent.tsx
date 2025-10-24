@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
-import AiTransformTextCard from './AiTransformTextCard';
-import AiTransformGuide from './AiTransformGuide';
+import AiTransformTextCard from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformTextCard';
+import AiTransformGuide from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformGuide';
 
 const AiTransformSelectModalContent = () => {
   const { transformedText, originalText, setSelectedText } = useAiTransformStore();
