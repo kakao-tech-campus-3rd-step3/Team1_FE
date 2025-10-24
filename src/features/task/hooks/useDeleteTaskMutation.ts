@@ -73,5 +73,10 @@ export const useDeleteTaskMutation = (projectId: string) => {
         });
       }
     },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
+    },
   });
 };

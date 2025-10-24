@@ -2,9 +2,11 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import type { Column } from '@/features/task/types/taskTypes';
+import { type Column } from '@/features/task/types/taskTypes';
 import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
 import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
+import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/useProjectTaskCountByStatusQuery';
+import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 
 interface StatusColumnProps {
   column: Column;
@@ -12,6 +14,9 @@ interface StatusColumnProps {
 }
 
 const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
+  // 📍TODO: 나의 할 일 개수 조회 API 아직 없음. 추후 연동 및 리팩터링 필요.
+  const { data: statusTaskCountList } = useProjectTaskCountByStatusQuery(projectId);
+
   const projectTasksQuery = useInfiniteProjectTasksByStatusQuery(projectId ?? '', column.status, {
     enabled: !!projectId,
   });
@@ -57,7 +62,7 @@ const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
         <div className="flex gap-2 text-gray-600 items-center">
           {column.title}
           <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-full">
-            {sortedTasks.length}
+            {getTaskCountByStatus(column.status, statusTaskCountList)}
           </div>
         </div>
       </div>
