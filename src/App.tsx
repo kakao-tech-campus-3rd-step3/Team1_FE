@@ -17,11 +17,11 @@ function App() {
   return (
     <ErrorBoundary fallback={<ServerErrorPage />}>
       <QueryClientProvider client={queryClient}>
-        <AppInitializer />
-        {/* <BuggyComponent /> */}
-        <ModalRenderer />
-        <AppRouter />
-        <Toaster position="top-right" reverseOrder={false} />
+        <AppInitializer>
+          <ModalRenderer />
+          <AppRouter />
+          <Toaster position="top-right" reverseOrder={false} />
+        </AppInitializer>
       </QueryClientProvider>
     </ErrorBoundary>
   );
