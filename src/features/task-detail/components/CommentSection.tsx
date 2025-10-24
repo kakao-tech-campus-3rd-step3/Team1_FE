@@ -9,12 +9,16 @@ import { v4 as uuidv4 } from 'uuid';
 import AvatarYDY from '@/shared/assets/images/ydy-avatar.png';
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const CommentSection = () => {
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
 
   const currentUserName = '유다연';
 
@@ -59,6 +63,7 @@ const CommentSection = () => {
           <Button
             size="sm"
             className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
+            onClick={() => navigate(ROUTE_PATH.AI_TEST)}
           >
             <img src={Boo} width="20" />
             <p className="label2-bold">Boo가 대신 말하기</p>
