@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, TrashIcon } from 'lucide-react';
+import { Calendar, MessageCircle, Paperclip, TrashIcon } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/shared/components/shadcn/button';
@@ -114,17 +114,17 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
               <AssigneesList key={assignee.id} assigneeId={assignee.id} />
             ))}
           </div>
-        </div>
 
-        {/*📍 TODO: 댓글, 파일 필드 추가 후 구현 */}
-        {/* <div className="flex justify-center gap-3 text-gray-600">
-          <span className="flex items-center gap-1">
-            <MessageCircle className="w-4 h-4" /> 댓글 {task.comments}
-          </span>
-          <span className="flex items-center gap-1 ">
-            <Paperclip className="w-4 h-4" /> 파일 {task.files}
-          </span>
-        </div> */}
+          {/* 댓글 수, 파일 수 */}
+          <div className="flex justify-center gap-3 text-gray-600">
+            <span className="flex items-center gap-1">
+              <MessageCircle className="w-4 h-4" /> 댓글 {task.commentCount}
+            </span>
+            <span className="flex items-center gap-1 ">
+              <Paperclip className="w-4 h-4" /> 파일 {task.fileCount}
+            </span>
+          </div>
+        </div>
       </div>
     );
   },

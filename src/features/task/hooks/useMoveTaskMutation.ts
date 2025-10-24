@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
-import type { InfiniteData } from '@tanstack/react-query';
 import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskTypes';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
+import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
 
 export type MoveTaskParams = {
   projectId: string;
@@ -24,6 +24,8 @@ const createTempTask = (taskId: string, toStatus: string): TaskListItem => ({
   dueDate: '',
   urgent: false,
   requiredReviewerCount: 0,
+  commentCount: 0,
+  fileCount: 0,
   tags: [],
   assignees: [],
   createdAt: new Date().toISOString(),
@@ -37,9 +39,21 @@ export const useMoveTaskMutation = () => {
     mutationFn: ({ projectId, activeTaskId, toStatus }: MoveTaskParams) =>
       taskApi.moveTask(projectId, activeTaskId, toStatus),
 
-    onMutate: async ({ activeTaskId, fromStatus, toStatus, overId, queryIdentifier }) => {
-      const fromKey = ['tasks', queryIdentifier, fromStatus];
-      const toKey = ['tasks', queryIdentifier, toStatus];
+    onMutate: async ({
+      activeTaskId,
+      fromStatus,
+      toStatus,
+      overId,
+      queryIdentifier,
+      projectId,
+    }) => {
+      const getQueryKey = (status: string) =>
+        queryIdentifier === 'me'
+          ? TASK_QUERY_KEYS.meStatus(status)
+          : TASK_QUERY_KEYS.project(projectId, status);
+
+      const fromKey = getQueryKey(fromStatus);
+      const toKey = getQueryKey(toStatus);
 
       await queryClient.cancelQueries({ queryKey: fromKey });
       await queryClient.cancelQueries({ queryKey: toKey });
@@ -50,18 +64,15 @@ export const useMoveTaskMutation = () => {
       if (fromStatus === toStatus && previousFrom) {
         queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
           if (!old) return old;
-
           const pages = old.pages.map((page) => {
             const tasks = page.tasks.slice();
             if (overId) {
               const activeIndex = tasks.findIndex((t) => t.taskId === activeTaskId);
               const overIndex = tasks.findIndex((t) => t.taskId === overId);
-              const newTasks = arrayMove(tasks, activeIndex, overIndex);
-              return { ...page, tasks: newTasks };
+              return { ...page, tasks: arrayMove(tasks, activeIndex, overIndex) };
             }
             return page;
           });
-
           return { ...old, pages };
         });
       }
@@ -83,17 +94,9 @@ export const useMoveTaskMutation = () => {
           if (!old) {
             return {
               pageParams: [undefined],
-              pages: [
-                {
-                  tasks: [tempTask],
-                  count: 1,
-                  nextCursor: undefined,
-                  hasNext: false,
-                },
-              ],
+              pages: [{ tasks: [tempTask], count: 1, nextCursor: undefined, hasNext: false }],
             };
           }
-
           const pages = old.pages.map((page, index) =>
             index === 0 ? { ...page, tasks: [tempTask, ...page.tasks] } : page,
           );
@@ -105,20 +108,15 @@ export const useMoveTaskMutation = () => {
     },
 
     onError: (error, variables, context) => {
-      const queryIdentifier = variables.queryIdentifier;
+      const { fromStatus, toStatus, queryIdentifier, projectId } = variables;
+      const getQueryKey = (status: string) =>
+        queryIdentifier === 'me'
+          ? TASK_QUERY_KEYS.meStatus(status)
+          : TASK_QUERY_KEYS.project(projectId, status);
 
-      if (context?.previousFrom) {
-        queryClient.setQueryData(
-          ['tasks', queryIdentifier, variables.fromStatus],
-          context.previousFrom,
-        );
-      }
-      if (context?.previousTo) {
-        queryClient.setQueryData(
-          ['tasks', queryIdentifier, variables.toStatus],
-          context.previousTo,
-        );
-      }
+      if (context?.previousFrom)
+        queryClient.setQueryData(getQueryKey(fromStatus), context.previousFrom);
+      if (context?.previousTo) queryClient.setQueryData(getQueryKey(toStatus), context.previousTo);
 
       if (isAxiosError(error) && error.response?.status === 403) {
         toast.error('담당자만 가능해요!');
@@ -128,13 +126,14 @@ export const useMoveTaskMutation = () => {
     },
 
     onSettled: (_data, _error, variables) => {
-      const queryIdentifier = variables.queryIdentifier;
-      queryClient.invalidateQueries({
-        queryKey: ['tasks', queryIdentifier, variables.fromStatus],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['tasks', queryIdentifier, variables.toStatus],
-      });
+      const { fromStatus, toStatus, queryIdentifier, projectId } = variables;
+      const getQueryKey = (status: string) =>
+        queryIdentifier === 'me'
+          ? TASK_QUERY_KEYS.meStatus(status)
+          : TASK_QUERY_KEYS.project(projectId, status);
+
+      queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
+      queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
     },
   });
 };

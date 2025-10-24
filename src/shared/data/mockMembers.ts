@@ -28,7 +28,7 @@ export const mockMembers: Member[] = [
     id: 'ccc87f56-7c1c-42c7-8b82-54d5b2306e0c',
     name: '김혜민',
     avatar: AvatarKHM,
-    backgroundColor: 'bg-boost-yellow',
+    backgroundColor: 'bg-boost-orange',
     boostingScore: 120,
   },
 ];

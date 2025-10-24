@@ -29,7 +29,7 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
   };
 
   const renderBoard = () => {
-    if (boardTab === 'member') return <MemberBoard />;
+    if (boardTab === 'member') return <MemberBoard projectId={projectId} />;
     if (type === 'project' && projectId) return <StatusBoard projectId={projectId} />;
     return <StatusBoard />;
   };

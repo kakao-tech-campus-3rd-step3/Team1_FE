@@ -1,0 +1,1 @@
+export const COLLAPSIBLE_SCROLL_THRESHOLD = 100;

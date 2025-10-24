@@ -1,3 +1,4 @@
+import type { Member } from '@/features/user/types/userTypes';
 import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 
 export type Column = {
@@ -37,6 +38,8 @@ type BaseTask = {
   dueDate: string;
   urgent: boolean;
   requiredReviewerCount: number;
+  fileCount: number;
+  commentCount: number;
   tags: string[];
   assignees: Assignee[];
   createdAt: string;
@@ -63,3 +66,15 @@ export type TaskDetail = BaseTask & {
 
 // useInfiniteQuery로 반환된 객체를 한 번에 명시하는 타입
 export type TaskQuery = UseInfiniteQueryResult<InfiniteData<TaskListResponse, unknown>, Error>;
+
+export type MemberTaskListResponse = {
+  member: Member;
+  tasks: TaskListItem[];
+  count: number;
+  nextCursor?: string;
+  hasNext: boolean;
+};
+
+export interface UseInfiniteTasksOptions {
+  enabled?: boolean;
+}
