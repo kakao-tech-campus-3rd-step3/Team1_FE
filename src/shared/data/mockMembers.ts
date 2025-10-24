@@ -18,6 +18,13 @@ export const mockMembers: Member[] = [
     boostingScore: 120,
   },
   {
+    id: '48a9ecc3-a973-4299-b3ef-a20706344ab6',
+    name: '유서연',
+    avatar: AvatarYDY,
+    backgroundColor: 'bg-boost-yellow',
+    boostingScore: 120,
+  },
+  {
     id: 'ccc87f56-7c1c-42c7-8b82-54d5b2306e0c',
     name: '김혜민',
     avatar: AvatarKHM,
