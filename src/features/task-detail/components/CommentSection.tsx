@@ -5,11 +5,11 @@ import { Switch } from '@/shared/components/shadcn/switch';
 import CommentItem from '@/features/task-detail/components/CommentItem';
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
-import { useCreateComment } from '@/features/comment/hooks/useCreateComment';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
-import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteComment';
-import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateComment';
+import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
+import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
+import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import toast from 'react-hot-toast';
@@ -19,9 +19,18 @@ interface CommentSectionProps {
   taskId: string;
   fileInfo?: FileInfo | null;
   setFileInfo?: (fileInfo: FileInfo | null) => void;
+  onCommentSelect?: (fileInfo: FileInfo | null) => void;
+  onCommentsFetched?: (comments: CommentUIType[]) => void;
 }
 
-const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSectionProps) => {
+const CommentSection = ({
+  projectId,
+  taskId,
+  fileInfo,
+  setFileInfo,
+  onCommentSelect,
+  onCommentsFetched,
+}: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
@@ -29,9 +38,21 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
-  const { mutate: createComment } = useCreateComment(projectId, taskId);
+  const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
+  const prevCommentsRef = useRef<CommentUIType[] | null>(null);
+  // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
+  useEffect(() => {
+    if (!onCommentsFetched) return;
+    if (
+      comments.length > 0 &&
+      JSON.stringify(prevCommentsRef.current) !== JSON.stringify(comments)
+    ) {
+      onCommentsFetched(comments);
+      prevCommentsRef.current = comments;
+    }
+  }, [comments, onCommentsFetched]);
 
   const { showAiTransformConfirmModal } = useAiTransformModals();
   const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
@@ -61,7 +82,11 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
     };
 
     createComment({ commentData: newCommentData });
+    //⚠️ TODO: fileInfo =null 이면 500 에러 발생
+    // 댓글 생성 이후 setFileInfo={} 이라
+    // CurrentPin 초기화가 되지 않음
     if (setFileInfo) setFileInfo({});
+
     setInput('');
   };
 
@@ -129,6 +154,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
               comment={c}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onSelectPin={onCommentSelect}
             />
           ),
         )}

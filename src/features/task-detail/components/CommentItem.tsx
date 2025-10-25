@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { Pin, User, EllipsisVertical } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import type { CommentUIType } from '@/features/comment/types/commentTypes';
+import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
 import { useMemo } from 'react';
 import { getAvatarListUtils } from '@/features/avatar-picker/utils/avatarUtils';
 
@@ -16,9 +16,10 @@ interface CommentItemProps {
   comment: CommentUIType;
   onEdit?: (comment: CommentUIType) => void;
   onDelete?: (commentId: string) => void;
+  onSelectPin?: (fileInfo: FileInfo | null) => void;
 }
 
-const CommentItem = ({ comment, onEdit, onDelete }: CommentItemProps) => {
+const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
   const avatarList = useMemo(() => getAvatarListUtils(), []);
 
@@ -54,7 +55,14 @@ const CommentItem = ({ comment, onEdit, onDelete }: CommentItemProps) => {
               <span className="label1-bold text-sm text-gray-800">
                 {isAnonymous ? '익명' : comment.authorInfo.name}
               </span>
-              {comment.isPinned && <Pin className="h-3.5 w-3.5 text-boost-blue" />}
+              {comment.isPinned && (
+                <Pin
+                  onClick={() => {
+                    if (onSelectPin) onSelectPin(comment.fileInfo ?? null);
+                  }}
+                  className="h-3.5 w-3.5 text-boost-blue"
+                />
+              )}
             </div>
 
             <div className="flex items-center gap-1">

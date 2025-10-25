@@ -6,4 +6,7 @@ export interface PDFViewerProps {
   fileId: string;
   setFileInfo: (fileInfo: FileInfo) => void;
   onClose: () => void;
+  pins: FileInfo[];
+  currentPin: FileInfo | null;
+  setCurrentPin: (pin: FileInfo | null) => void;
 }

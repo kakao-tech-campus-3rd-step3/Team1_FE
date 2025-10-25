@@ -3,10 +3,13 @@ import { commentApi } from '@/features/comment/api/commentApi';
 import { v4 as uuidv4 } from 'uuid';
 import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 // 댓글 생성
-export const useCreateComment = (projectId: string, taskId: string) => {
+export const useCreateCommentMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId);
+
   return useMutation<
     CommentType,
     Error,
@@ -14,7 +17,6 @@ export const useCreateComment = (projectId: string, taskId: string) => {
     { previous?: CommentType[]; queryKey: string[]; tempId: string }
   >({
     onMutate: async ({ commentData }) => {
-      const queryKey = ['comments', projectId, taskId] as const;
       await queryClient.cancelQueries({ queryKey });
 
       const previous = queryClient.getQueryData<CommentType[]>(queryKey) ?? [];
