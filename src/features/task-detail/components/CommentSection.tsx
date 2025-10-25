@@ -41,7 +41,6 @@ const CommentSection = ({
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
-  const navigate = useNavigate();
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
   // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
   useEffect(() => {
