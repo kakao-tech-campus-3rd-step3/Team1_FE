@@ -6,7 +6,7 @@ import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 // 댓글 삭제
 export const useDeleteCommentMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
-  const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId); 
+  const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId);
 
   return useMutation<{ success: boolean }, Error, string, { previousComments?: CommentType[] }>({
     mutationFn: (commentId) => commentApi.deleteComment(commentId),
