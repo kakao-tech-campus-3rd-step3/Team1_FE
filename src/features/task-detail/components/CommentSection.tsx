@@ -10,8 +10,6 @@ import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTy
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
-import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import toast from 'react-hot-toast';
