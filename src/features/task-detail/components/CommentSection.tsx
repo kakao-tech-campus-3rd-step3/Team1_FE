@@ -7,9 +7,9 @@ import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
-import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation ';
-import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation ';
-import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation ';
+import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
+import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
+import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
