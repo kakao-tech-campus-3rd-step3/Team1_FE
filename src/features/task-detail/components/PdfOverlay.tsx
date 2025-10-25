@@ -44,7 +44,7 @@ const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: Over
           const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
           return (
             <div
-              className="absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer bg-boost-orange opacity-80 transition-all duration-300 ease-in-out"
+              className="absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer bg-boost-orange  transition-all duration-300 ease-in-out"
               style={{
                 left: `${left}%`,
                 top: `${top}%`,
