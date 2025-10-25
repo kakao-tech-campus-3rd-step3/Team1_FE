@@ -12,7 +12,18 @@ interface ModalState {
 const useModalStore = create<ModalState>((set) => ({
   stack: [],
   openModal: (payload) =>
-    set((state) => ({ stack: [...state.stack, { ...payload, isLoading: false }] })),
+    set((state) => ({
+      stack: [
+        ...state.stack,
+        {
+          ...payload,
+          isLoading: false,
+          closeOnOutsideClick: payload.closeOnOutsideClick ?? true,
+          showCloseButton: payload.showCloseButton ?? true,
+        },
+      ],
+    })),
+
   resetModal: () => set({ stack: [] }),
   backModal: () =>
     set((state) => {

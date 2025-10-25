@@ -10,8 +10,9 @@ import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteComment';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateComment';
-import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
+import toast from 'react-hot-toast';
 
 interface CommentSectionProps {
   projectId: string;
@@ -31,7 +32,23 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const { mutate: createComment } = useCreateComment(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
-  const navigate = useNavigate();
+
+  const { showAiTransformConfirmModal } = useAiTransformModals();
+  const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
+  const selectedText = useAiTransformStore((state) => state.selectedText);
+
+  useEffect(() => {
+    if (selectedText) setInput(selectedText);
+  }, [selectedText]);
+
+  const handleBooClick = () => {
+    if (!input.trim()) {
+      toast.error('댓글을 입력해주세요!');
+      return;
+    }
+    setOriginalText(input);
+    showAiTransformConfirmModal();
+  };
 
   const handleAdd = () => {
     if (!input.trim()) return;
@@ -47,6 +64,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
     if (setFileInfo) setFileInfo({});
     setInput('');
   };
+
   const handleEdit = (comment: CommentUIType) => {
     setEditingCommentId(comment.commentId);
     setEditInput(comment.content);
@@ -62,9 +80,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
     setEditInput('');
   };
 
-  const handleDelete = (commentId: string) => {
-    deleteComment(commentId);
-  };
+  const handleDelete = (commentId: string) => deleteComment(commentId);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -123,7 +139,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
           <Button
             size="sm"
             className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
-            onClick={() => navigate(ROUTE_PATH.AI_TEST)}
+            onClick={handleBooClick}
           >
             <img src={Boo} width="20" />
             <p className="label2-bold">Boo가 대신 말하기</p>
