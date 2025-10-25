@@ -52,7 +52,7 @@ const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: Over
               }}
               className="absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer bg-boost-orange opacity-80"
               style={{
-                left: `calc(${left}%)`,
+                left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(-50%, -50%) scale(${zoom})`,
               }}
