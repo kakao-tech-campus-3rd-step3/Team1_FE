@@ -26,7 +26,7 @@ export const useUpdateCommentMutation = (projectId: string, taskId: string) => {
       return { previousComments };
     },
 
-    onError: (error, _, context) => {
+    onError: (_error, _, context) => {
       if (context?.previousComments) {
         queryClient.setQueryData(queryKey, context.previousComments);
       }
