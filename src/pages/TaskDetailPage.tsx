@@ -8,6 +8,7 @@ import CommentSection from '@/features/task-detail/components/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
+import toast from 'react-hot-toast';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -27,13 +28,18 @@ const TaskDetailPage = () => {
   // 댓글을 선택하면 PDF 뷰어에서 해당 파일과 핀을 보여줌
   const handleCommentSelect = async (fileInfo: FileInfo | null) => {
     if (!fileInfo?.fileId) return;
-    const downloadResult = await fetchFileDownloadUrl(fileInfo.fileId);
-    const clickedFile = task?.files?.find((file) => file.id === fileInfo.fileId);
-    setPdfUrl(downloadResult.url);
-    setFileName(clickedFile ? clickedFile.filename : 'Unknown');
-    setSelectedFileId(fileInfo.fileId);
-    setIsPdfOpen(true);
-    setCurrentPin(fileInfo);
+    try {
+      const downloadResult = await fetchFileDownloadUrl(fileInfo.fileId);
+      const clickedFile = task?.files?.find((file) => file.id === fileInfo.fileId);
+      setPdfUrl(downloadResult.url);
+      setFileName(clickedFile ? clickedFile.filename : 'Unknown');
+      setSelectedFileId(fileInfo.fileId);
+      setIsPdfOpen(true);
+      setCurrentPin(fileInfo);
+    } catch (err) {
+      console.error('파일 열기 오류:', err);
+      toast.error('파일을 여는 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (isLoading || !task) return <div>Loading...</div>;
