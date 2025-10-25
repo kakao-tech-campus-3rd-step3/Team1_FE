@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import SplashScreen from '@/pages/SplashScreen';
 
 interface AppInitializerProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const AppInitializer = ({ children }: AppInitializerProps) => {
