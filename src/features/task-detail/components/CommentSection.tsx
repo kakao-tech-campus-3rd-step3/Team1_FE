@@ -10,9 +10,11 @@ import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTy
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
-
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
+import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
+import toast from 'react-hot-toast';
 
 interface CommentSectionProps {
   projectId: string;
@@ -55,6 +57,23 @@ const CommentSection = ({
     }
   }, [comments, onCommentsFetched]);
 
+  const { showAiTransformConfirmModal } = useAiTransformModals();
+  const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
+  const selectedText = useAiTransformStore((state) => state.selectedText);
+
+  useEffect(() => {
+    if (selectedText) setInput(selectedText);
+  }, [selectedText]);
+
+  const handleBooClick = () => {
+    if (!input.trim()) {
+      toast.error('댓글을 입력해주세요!');
+      return;
+    }
+    setOriginalText(input);
+    showAiTransformConfirmModal();
+  };
+
   const handleAdd = () => {
     if (!input.trim()) return;
 
@@ -89,9 +108,7 @@ const CommentSection = ({
     setEditInput('');
   };
 
-  const handleDelete = (commentId: string) => {
-    deleteComment(commentId);
-  };
+  const handleDelete = (commentId: string) => deleteComment(commentId);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -151,7 +168,7 @@ const CommentSection = ({
           <Button
             size="sm"
             className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
-            onClick={() => navigate(ROUTE_PATH.AI_TEST)}
+            onClick={handleBooClick}
           >
             <img src={Boo} width="20" />
             <p className="label2-bold">Boo가 대신 말하기</p>
