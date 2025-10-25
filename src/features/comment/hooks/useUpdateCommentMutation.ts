@@ -19,10 +19,18 @@ export const useUpdateCommentMutation = (projectId: string, taskId: string) => {
       await queryClient.cancelQueries({ queryKey });
       const previousComments = queryClient.getQueryData<CommentType[]>(queryKey);
 
-      queryClient.setQueryData<CommentType[]>(queryKey, (old) =>
-        old ? old.map((c) => (c.commentId === commentId ? { ...c, ...updatedData } : c)) : [],
-      );
-
+      queryClient.setQueryData<CommentType[]>(queryKey, (old) => {
+        if (!old) return old; 
+        return old.map((c) => {
+          if (c.commentId !== commentId) return c;
+          const { fileInfo: nextFileInfo, ...rest } = updatedData;
+          return {
+            ...c,
+            ...rest,
+            ...(nextFileInfo ? { fileInfo: { ...(c.fileInfo ?? {}), ...nextFileInfo } } : {}),
+          };
+        });
+      });
       return { previousComments };
     },
 
