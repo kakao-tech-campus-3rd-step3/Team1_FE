@@ -19,9 +19,18 @@ interface CommentSectionProps {
   taskId: string;
   fileInfo?: FileInfo | null;
   setFileInfo?: (fileInfo: FileInfo | null) => void;
+  onCommentSelect?: (fileInfo: FileInfo | null) => void;
+  onCommentsFetched?: (comments: CommentUIType[]) => void;
 }
 
-const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSectionProps) => {
+const CommentSection = ({
+  projectId,
+  taskId,
+  fileInfo,
+  setFileInfo,
+  onCommentSelect,
+  onCommentsFetched,
+}: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
@@ -33,6 +42,18 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const navigate = useNavigate();
+  const prevCommentsRef = useRef<CommentUIType[] | null>(null);
+  // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
+  useEffect(() => {
+    if (!onCommentsFetched) return;
+    if (
+      comments.length > 0 &&
+      JSON.stringify(prevCommentsRef.current) !== JSON.stringify(comments)
+    ) {
+      onCommentsFetched(comments);
+      prevCommentsRef.current = comments;
+    }
+  }, [comments, onCommentsFetched]);
 
   const handleAdd = () => {
     if (!input.trim()) return;
@@ -45,9 +66,14 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
     };
 
     createComment({ commentData: newCommentData });
+    //⚠️ TODO: fileInfo =null 이면 500 에러 발생
+    // 댓글 생성 이후 setFileInfo={} 이라
+    // CurrentPin 초기화가 되지 않음
     if (setFileInfo) setFileInfo({});
+
     setInput('');
   };
+
   const handleEdit = (comment: CommentUIType) => {
     setEditingCommentId(comment.commentId);
     setEditInput(comment.content);
@@ -114,6 +140,7 @@ const CommentSection = ({ projectId, taskId, fileInfo, setFileInfo }: CommentSec
               comment={c}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onSelectPin={onCommentSelect}
             />
           ),
         )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent';
@@ -6,7 +6,8 @@ import FileSection from '@/features/task-detail/components/FileSection';
 import PDFViewer from '@/features/task-detail/components/PdfViewer';
 import CommentSection from '@/features/task-detail/components/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
-import type { FileInfo } from '@/features/comment/types/commentTypes';
+import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
+import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -16,6 +17,24 @@ const TaskDetailPage = () => {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [fileName, setFileName] = useState('');
+  const [pins, setPins] = useState<FileInfo[]>([]); // 댓글에서 추출한 핀
+  const [currentPin, setCurrentPin] = useState<FileInfo | null>(null);
+  // 댓글을 맨 처음 불러왔을 때 핀 정보를 추출해 pins에 저장
+  const handleCommentsFetched = useCallback((comments: CommentUIType[]) => {
+    const extractedPins = comments.filter((c) => c.fileInfo).map((c) => c.fileInfo as FileInfo);
+    setPins(extractedPins);
+  }, []);
+  // 댓글을 선택하면 PDF 뷰어에서 해당 파일과 핀을 보여줌
+  const handleCommentSelect = async (fileInfo: FileInfo | null) => {
+    if (!fileInfo?.fileId) return;
+    const downloadResult = await fetchFileDownloadUrl(fileInfo.fileId);
+    const clickedFile = task?.files?.find((file) => file.id === fileInfo.fileId);
+    setPdfUrl(downloadResult.url);
+    setFileName(clickedFile ? clickedFile.filename : 'Unknown');
+    setSelectedFileId(fileInfo.fileId);
+    setIsPdfOpen(true);
+    setCurrentPin(fileInfo);
+  };
 
   if (isLoading || !task) return <div>Loading...</div>;
 
@@ -29,6 +48,9 @@ const TaskDetailPage = () => {
               pdfUrl={pdfUrl}
               fileId={selectedFileId ?? ''}
               fileName={fileName}
+              pins={pins}
+              currentPin={currentPin}
+              setCurrentPin={setCurrentPin}
               setFileInfo={setFileInfo}
               onClose={() => setIsPdfOpen(false)}
             />
@@ -61,6 +83,8 @@ const TaskDetailPage = () => {
               taskId={taskId ?? ''}
               fileInfo={fileInfo}
               setFileInfo={setFileInfo}
+              onCommentsFetched={handleCommentsFetched}
+              onCommentSelect={handleCommentSelect}
             />
           </section>
         </div>

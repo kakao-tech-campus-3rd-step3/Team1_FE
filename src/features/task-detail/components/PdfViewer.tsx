@@ -3,7 +3,6 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import Overlay from '@/features/task-detail/components/PdfOverlay';
-import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useRef } from 'react';
 import PdfControlBar from '@/features/task-detail/components/PdfControlBar';
 import { cn } from '@/shared/lib/utils';
@@ -11,14 +10,23 @@ import type { PDFViewerProps } from '@/features/task-detail/types/pdfViewerTypes
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewerProps) => {
+const PDFViewer = ({
+  pdfUrl,
+  fileName,
+  fileId,
+  onClose,
+  setFileInfo,
+  pins,
+  currentPin,
+  setCurrentPin,
+}: PDFViewerProps) => {
   const {
     pageNumber,
     zoom,
     position,
     isDragging,
     start,
-    markers,
+
     pdfDocument,
     pageSize,
 
@@ -26,7 +34,6 @@ const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewer
     startDrag,
     updatePosition,
     stopDrag,
-    addMarker,
     setPdfDocument,
     updatePageSize,
   } = usePdfStore();
@@ -67,14 +74,9 @@ const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewer
 
     const pdfX = (x / rect.width) * pageSize.width;
     const pdfY = (1 - y / rect.height) * pageSize.height;
-
-    addMarker({
-      id: uuidv4(),
-      page: pageNumber,
-      x: pdfX,
-      y: pdfY,
-    });
-    setFileInfo({ fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY });
+    const newPin = { fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY };
+    setCurrentPin(newPin);
+    setFileInfo(newPin);
   };
 
   return (
@@ -112,7 +114,8 @@ const PDFViewer = ({ pdfUrl, fileName, fileId, onClose, setFileInfo }: PDFViewer
           </Document>
 
           <Overlay
-            markers={markers}
+            pins={pins}
+            currentPin={currentPin}
             pageNumber={pageNumber}
             zoom={zoom}
             pageSize={pageSize}
