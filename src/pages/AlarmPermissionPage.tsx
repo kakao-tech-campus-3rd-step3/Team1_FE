@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
+import { webPushApi } from '@/features/alarm/api/pushApi';
+import { useSearchParams } from 'react-router-dom';
+import { normalizeSubscription } from '@/features/alarm/utils/normalizeSubscription';
 
 const STATUS_CONTENT = {
   initial: {
@@ -74,16 +77,54 @@ const StatusView = ({
 );
 
 const AlarmPermissionPage = () => {
+  const [params] = useSearchParams();
+  const token = params.get('token');
+
   const [permission, setPermission] = useState<'initial' | 'granted' | 'denied'>('initial');
+  if (!token) {
+    toast.error('잘못된 QR 입니다');
+    return;
+  }
+  const registerPushSubscription = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready;
 
-  const handleAllow = () => {
-    setPermission('granted');
-    toast.success('알림이 활성화되었습니다!');
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
+      });
+      const subscriptionData = normalizeSubscription(subscription.toJSON());
+
+      await webPushApi.registSubscription({ token, subscription: subscriptionData });
+
+      toast.success('푸시 구독에 성공했습니다. ');
+    } catch (error) {
+      console.log(error);
+      toast.error('푸시 구독에 실패했습니다.');
+    }
   };
+  const handleAllow = async () => {
+    const result = await Notification.requestPermission();
 
-  const handleDeny = () => {
-    setPermission('denied');
-    toast.error('알림을 받지 않기로 선택했습니다.');
+    if (result === 'granted') {
+      setPermission('granted');
+      toast.success('알림이 활성화되었습니다!');
+      await registerPushSubscription();
+    } else {
+      setPermission('denied');
+      toast.error('알림 권한이 거부되었습니다.');
+    }
+  };
+  const handleDeny = async () => {
+    try {
+      setPermission('denied');
+      toast('알림을 받지 않기로 선택했습니다.', { icon: '🔕' });
+
+      await webPushApi.unregisterSubscription(token);
+    } catch (error) {
+      console.error(error);
+      toast.error('푸시 구독 해제에 실패했습니다.');
+    }
   };
 
   const status = STATUS_CONTENT[permission];

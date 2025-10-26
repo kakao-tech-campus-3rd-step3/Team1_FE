@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 export const useCreatePushSessionMutation = () => {
   return useMutation<CreatePushQrResponse>({
-    mutationFn: webPushApi.fetchQrUrl,
+    mutationFn: webPushApi.createQrUrl,
     onSuccess: () => {
       console.log('Push session created successfully');
     },
