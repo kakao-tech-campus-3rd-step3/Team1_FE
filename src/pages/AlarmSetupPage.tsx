@@ -8,28 +8,28 @@ import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
 import { useCreatePushSessionMutation } from '@/features/alarm/hooks/useCreatePushSessionMutation';
-import { useCountdown } from '@/features/alarm/hooks/useCountdown';
-import { useCheckPushStatus } from '@/features/alarm/hooks/useCheckPushStatus';
 import toast from 'react-hot-toast';
+import { usePushSessionStatus } from '@/features/alarm/hooks/usePushSessionStatus';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const AlarmSetupPage = () => {
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
-  const { minutes, seconds, isExpired } = useCountdown(data?.expiredAt ?? null);
-  const { data: status } = useCheckPushStatus(data?.token);
+  const { data: statusData } = usePushSessionStatus(data?.token);
   useEffect(() => {
-    if (status?.isRegistered) {
+    if (statusData?.status) {
       toast.success('푸시가 허용되었습니다.');
     } else {
       toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
     }
-  }, [status]);
+  }, [statusData]);
   useEffect(() => {
     createPushSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const qrData = data?.registerUrl ?? '';
-
+  const qrData = data?.token
+    ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${data.token}`
+    : '';
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-screen text-gray-600 text-xl font-medium">
@@ -38,19 +38,19 @@ const AlarmSetupPage = () => {
     );
   }
 
-  if (isExpired) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen text-gray-600 text-xl font-medium gap-4">
-        <p>⏰ QR 코드가 만료되었습니다.</p>
-        <button
-          onClick={() => createPushSession()}
-          className="px-5 py-2 bg-boost-blue-light text-white rounded-lg hover:bg-boost-blue transition"
-        >
-          새로고침
-        </button>
-      </div>
-    );
-  }
+  // if (isExpired) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-screen text-gray-600 text-xl font-medium gap-4">
+  //       <p>⏰ QR 코드가 만료되었습니다.</p>
+  //       <button
+  //         onClick={() => createPushSession()}
+  //         className="px-5 py-2 bg-boost-blue-light text-white rounded-lg hover:bg-boost-blue transition"
+  //       >
+  //         새로고침
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-row h-screen">
@@ -100,11 +100,11 @@ const AlarmSetupPage = () => {
         <div className="bg-gray-200 p-3 rounded-md">
           {qrData ? <QRCodeSVG value={qrData} size={220} /> : <p>QR 데이터가 없습니다.</p>}
         </div>
-
+        {/* TODO: 만료시간을 어떻게 보여줄 지 논의 후 구 */}
         {/* 남은 시간 표시 */}
-        <p className="text-gray-500 font-semibold text-sm">
+        {/* <p className="text-gray-500 font-semibold text-sm">
           남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
-        </p>
+        </p> */}
 
         {/* 이미지 부분 */}
         <div aria-label="image" className="flex flex-col items-center">
