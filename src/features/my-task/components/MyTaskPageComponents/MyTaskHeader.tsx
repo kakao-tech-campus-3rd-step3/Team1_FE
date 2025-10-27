@@ -8,7 +8,7 @@ const MyTaskHeader = ({ userName }: { userName: string }) => {
   return (
     <Header
       title={`${userName} 님의 할 일`}
-      onTaskCreate={() =>
+      onCreate={() =>
         showCustom({
           title: '할 일 생성',
           size: 'lg',
