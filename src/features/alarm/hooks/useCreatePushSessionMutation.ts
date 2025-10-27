@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { webPushApi } from '../api/webPushApi';
+import { webPushApi } from '@/features/alarm/api/webPushApi';
 import toast from 'react-hot-toast';
 import type { CreatePushSessionResponse } from '@/features/alarm/types/pushApiTypes';
 

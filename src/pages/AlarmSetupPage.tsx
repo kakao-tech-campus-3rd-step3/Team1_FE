@@ -11,13 +11,17 @@ import { useCreatePushSessionMutation } from '@/features/alarm/hooks/useCreatePu
 import toast from 'react-hot-toast';
 import { usePushSessionStatus } from '@/features/alarm/hooks/usePushSessionStatus';
 import { ROUTE_PATH } from '@/app/routes/Router';
+import { useNavigate } from 'react-router-dom';
 
 const AlarmSetupPage = () => {
+  const navigate = useNavigate();
+
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatus(data?.token);
   useEffect(() => {
     if (statusData?.status) {
       toast.success('푸시가 허용되었습니다.');
+      navigate(ROUTE_PATH.MY_TASK)
     } else {
       toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
     }
