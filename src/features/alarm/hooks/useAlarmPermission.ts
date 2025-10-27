@@ -45,7 +45,7 @@ export const useAlarmPermission = (token: string | null) => {
 
   const unregisterPushSubscription = async () => {
     try {
-      await webPushApi.unregisterSubscription(token ?? '');
+      await webPushApi.unregisterSubscription();
       toast('알림을 받지 않기로 선택했습니다.', { icon: '🔕' });
     } catch (error) {
       console.error('[unregisterSubscription error]', error);

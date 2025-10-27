@@ -38,9 +38,7 @@ export const webPushApi = {
   },
   //API 명세서에는 없음
   //  푸시 구독 해제 (알림 거부 시)
-  unregisterSubscription: async (token: string): Promise<void> => {
-    await api.delete('/web-push/subscriptions', {
-      data: { token },
-    });
+  unregisterSubscription: async (): Promise<void> => {
+    await api.delete('/web-push/subscriptions', {});
   },
 };
