@@ -26,10 +26,8 @@ const PDFViewer = ({
     position,
     isDragging,
     start,
-
     pdfDocument,
     pageSize,
-
     setNumPages,
     startDrag,
     updatePosition,
