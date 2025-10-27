@@ -44,7 +44,9 @@ export const ROUTES = {
   PROJECT_MEMO_DETAIL: (projectId: string, memoId: string) =>
     generatePath(ROUTE_PATH.MEMO_DETAIL, { projectId, memoId }),
   PROJECT_MEMO_EDIT: (projectId: string, memoId?: string) =>
-    generatePath(ROUTE_PATH.MEMO_EDIT, { projectId, memoId }),
+    memoId
+      ? generatePath(ROUTE_PATH.MEMO_EDIT, { projectId, memoId })
+      : `/project/${projectId}/memo/edit`,
   PROJECT_BOARD: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_BOARD, { projectId }),
   PROJECT_FILE: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_FILE, { projectId }),
   TASK_DETAIL: (projectId: string, taskId: string) =>
@@ -64,11 +66,11 @@ const PROTECTED_ROUTES = [
     path: ROUTE_PATH.PROJECT,
     element: <ProjectPage />,
     children: [
-      { path: ROUTE_PATH.PROJECT_BOARD, element: <BoardSection type="project" /> },
-      { path: ROUTE_PATH.PROJECT_FILE, element: <FileSection /> },
-      { path: ROUTE_PATH.PROJECT_MEMO, element: <MemoSection /> },
-      { path: ROUTE_PATH.MEMO_EDIT, element: <MemoEditor /> },
-      { path: ROUTE_PATH.MEMO_DETAIL, element: <MemoDetail /> },
+      { path: 'board', element: <BoardSection type="project" /> },
+      { path: 'file', element: <FileSection /> },
+      { path: 'memo', element: <MemoSection /> },
+      { path: 'memo/edit/:memoId?', element: <MemoEditor /> },
+      { path: 'memo/:memoId', element: <MemoDetail /> },
     ],
   },
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
