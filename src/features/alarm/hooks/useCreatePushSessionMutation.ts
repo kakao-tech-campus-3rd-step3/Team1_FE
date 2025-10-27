@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { webPushApi } from '../api/pushApi';
-import type { CreatePushQrResponse } from '../types/pushApiTypes';
+import { webPushApi } from '../api/webPushApi';
 import toast from 'react-hot-toast';
+import type { CreatePushSessionResponse } from '@/features/alarm/types/pushApiTypes';
 
 export const useCreatePushSessionMutation = () => {
-  return useMutation<CreatePushQrResponse>({
-    mutationFn: webPushApi.createQrUrl,
+  return useMutation<CreatePushSessionResponse>({
+    mutationFn: webPushApi.createSession,
     onSuccess: () => {
       console.log('Push session created successfully');
     },
