@@ -18,8 +18,7 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
 
   const handleButtonClick = () => {
     if (location.pathname.includes('/memo')) {
-      navigate(ROUTES.PROJECT_MEMO_EDIT(project.id, ''));
-      navigate(`/project/${project.id}/memo/edit`);
+      navigate(ROUTES.PROJECT_MEMO_EDIT(project.id));
     } else {
       showCustom({
         title: '할 일 생성',

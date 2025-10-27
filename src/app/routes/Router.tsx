@@ -43,7 +43,7 @@ export const ROUTES = {
   PROJECT_MEMO_LIST: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_MEMO, { projectId }),
   PROJECT_MEMO_DETAIL: (projectId: string, memoId: string) =>
     generatePath(ROUTE_PATH.MEMO_DETAIL, { projectId, memoId }),
-  PROJECT_MEMO_EDIT: (projectId: string, memoId: string) =>
+  PROJECT_MEMO_EDIT: (projectId: string, memoId?: string) =>
     generatePath(ROUTE_PATH.MEMO_EDIT, { projectId, memoId }),
   PROJECT_BOARD: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_BOARD, { projectId }),
   PROJECT_FILE: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_FILE, { projectId }),
