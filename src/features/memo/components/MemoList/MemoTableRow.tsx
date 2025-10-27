@@ -35,6 +35,7 @@ const MemoTableRow = ({
         <Checkbox
           checked={selected}
           onCheckedChange={() => onSelectRow(memo.id)}
+          onClick={(e) => e.stopPropagation()}
           aria-label="Select row"
           className="rounded-md"
         />
