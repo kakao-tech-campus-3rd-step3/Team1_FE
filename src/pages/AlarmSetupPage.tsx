@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { AlarmClock, ArrowDown, BellRing, SquareCheck } from 'lucide-react';
@@ -15,17 +15,20 @@ import { useNavigate } from 'react-router-dom';
 
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
+  const hasHandledStatus = useRef(false);
 
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatus(data?.token);
   useEffect(() => {
-    if (statusData?.status) {
+    if (!statusData?.status || hasHandledStatus.current) return;
+    hasHandledStatus.current = true;
+    if (statusData?.status === 'CONNECTED') {
       toast.success('푸시가 허용되었습니다.');
-      navigate(ROUTE_PATH.MY_TASK)
-    } else {
+      navigate(ROUTE_PATH.MY_TASK);
+    } else if (statusData?.status === 'EXPIRED') {
       toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
     }
-  }, [statusData]);
+  }, [statusData, navigate]);
   useEffect(() => {
     createPushSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
