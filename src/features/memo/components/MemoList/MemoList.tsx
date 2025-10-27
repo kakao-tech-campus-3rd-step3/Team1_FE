@@ -40,9 +40,12 @@ const MemoList = ({ projectId, onSelectMemo }: MemoListProps) => {
   };
 
   const handleDeleteSelected = () => {
-    showDeleteMemoModal(Array.from(selectedRows), navigate, (deletedIds) => {
-      if (selectedRows.size === 0) return alert('삭제할 메모를 선택해주세요.');
+    if (selectedRows.size === 0) {
+      alert('삭제할 메모를 선택해주세요.');
+      return;
+    }
 
+    showDeleteMemoModal(Array.from(selectedRows), navigate, (deletedIds) => {
       setSelectedRows((prev) => {
         const newSet = new Set(prev);
         deletedIds.forEach((id) => newSet.delete(id));
