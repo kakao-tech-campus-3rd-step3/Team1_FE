@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
         defaultBoost:
           'bg-boost-blue hover:bg-boost-blue-hover text-white shadow-xs cursor-pointer duration-300',
-        secondoryBoost:
+        secondaryBoost:
           'bg-boost-orange hover:bg-boost-orange-hover text-white shadow-xs cursor-pointer duration-300',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',

@@ -28,7 +28,7 @@ const MemoListHeader = ({
               {selectedRows.size}개 항목 선택됨
             </span>
             <Button
-              variant="secondoryBoost"
+              variant="secondaryBoost"
               size="sm"
               onClick={onDeleteSelected}
               className="text-xs rounded-md px-3"
