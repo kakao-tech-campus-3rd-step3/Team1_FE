@@ -1,44 +1,11 @@
-import { Bell, X, CheckCircle } from 'lucide-react';
+import { X, CheckCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
-import { webPushApi } from '@/features/alarm/api/pushApi';
 import { useSearchParams } from 'react-router-dom';
-import { normalizeSubscription } from '@/features/alarm/utils/normalizeSubscription';
-
-const STATUS_CONTENT = {
-  initial: {
-    icon: Bell,
-    title: '알림을 허용해주세요',
-    message: (
-      <>
-        중요한 소식을 놓치지 않으려면
-        <br />
-        알림 권한을 허용해주세요.
-      </>
-    ),
-    blurClass: 'bg-boost-blue/25',
-    bgClass: 'bg-boost-blue/20',
-    textClass: 'text-boost-blue-pressed',
-  },
-  granted: {
-    icon: CheckCircle,
-    title: '설정 완료!',
-    message: '이제 중요한 알림을 받을 수 있어요.',
-    blurClass: 'bg-green-400/20',
-    bgClass: 'bg-green-50',
-    textClass: 'text-green-500',
-  },
-  denied: {
-    icon: X,
-    title: '알림이 비활성화됨',
-    message: '알림을 받을 수 없습니다.',
-    blurClass: 'bg-red-400/20',
-    bgClass: 'bg-red-50',
-    textClass: 'text-red-500',
-  },
-} as const;
+import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission';
+import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
 
 interface StatusViewProps {
   title: string;
@@ -81,50 +48,24 @@ const AlarmPermissionPage = () => {
   const token = params.get('token');
 
   const [permission, setPermission] = useState<'initial' | 'granted' | 'denied'>('initial');
+  const { registerPushSubscription, unregisterPushSubscription } = useAlarmPermission(token);
+
   if (!token) {
     toast.error('잘못된 QR 입니다');
-    return;
   }
-  const registerPushSubscription = async () => {
-    try {
-      const registration = await navigator.serviceWorker.ready;
-
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
-      });
-      const subscriptionData = normalizeSubscription(subscription.toJSON());
-
-      await webPushApi.registSubscription({ token, subscription: subscriptionData });
-
-      toast.success('푸시 구독에 성공했습니다. ');
-    } catch (error) {
-      console.log(error);
-      toast.error('푸시 구독에 실패했습니다.');
-    }
-  };
   const handleAllow = async () => {
     const result = await Notification.requestPermission();
-
     if (result === 'granted') {
       setPermission('granted');
-      toast.success('알림이 활성화되었습니다!');
       await registerPushSubscription();
     } else {
       setPermission('denied');
-      toast.error('알림 권한이 거부되었습니다.');
     }
   };
-  const handleDeny = async () => {
-    try {
-      setPermission('denied');
-      toast('알림을 받지 않기로 선택했습니다.', { icon: '🔕' });
 
-      await webPushApi.unregisterSubscription(token);
-    } catch (error) {
-      console.error(error);
-      toast.error('푸시 구독 해제에 실패했습니다.');
-    }
+  const handleDeny = async () => {
+    setPermission('denied');
+    await unregisterPushSubscription();
   };
 
   const status = STATUS_CONTENT[permission];
