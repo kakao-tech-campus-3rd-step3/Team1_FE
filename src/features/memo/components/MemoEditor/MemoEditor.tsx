@@ -58,7 +58,9 @@ const MemoEditor = () => {
           isEditMode={isEditMode}
           onCancel={handleCancel}
           handleSave={handleSave}
-          disableSave={!title.trim() || createMutation.isPending || updateMutation.isPending}
+          disableSave={
+            !title.trim() || !content.trim() || createMutation.isPending || updateMutation.isPending
+          }
           isSaving={createMutation.isPending || updateMutation.isPending}
         />
         <MemoEditorTitle title={title} setTitle={setTitle} />
