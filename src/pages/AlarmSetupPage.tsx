@@ -9,10 +9,20 @@ import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
 import { useCreatePushSessionMutation } from '@/features/alarm/hooks/useCreatePushSessionMutation';
 import { useCountdown } from '@/features/alarm/hooks/useCountdown';
+import { useCheckPushStatus } from '@/features/alarm/hooks/useCheckPushStatus';
+import toast from 'react-hot-toast';
 
 const AlarmSetupPage = () => {
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { minutes, seconds, isExpired } = useCountdown(data?.expiredAt ?? null);
+  const { data: status } = useCheckPushStatus(data?.token);
+  useEffect(() => {
+    if (status?.isRegistered) {
+      toast.success('푸시가 허용되었습니다.');
+    } else {
+      toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
+    }
+  }, [status]);
   useEffect(() => {
     createPushSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,7 +38,6 @@ const AlarmSetupPage = () => {
     );
   }
 
-  // QR 만료 시 UI
   if (isExpired) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-gray-600 text-xl font-medium gap-4">
