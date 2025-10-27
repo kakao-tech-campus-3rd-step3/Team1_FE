@@ -33,7 +33,7 @@ export const ROUTE_PATH = {
   TASK_DETAIL: '/project/:projectId/tasks/:taskId',
   MY_INFO: '/my-info',
   ALARM_SETUP: '/alarm/setup',
-  ALARM_SETUP_MOBILE: '/alarm/permission?token',
+  ALARM_SETUP_MOBILE: '/alarm/permission',
   AI_TEST: '/ai-test',
 };
 

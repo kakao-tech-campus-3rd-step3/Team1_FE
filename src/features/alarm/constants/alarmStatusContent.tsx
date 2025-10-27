@@ -24,7 +24,7 @@ export const STATUS_CONTENT = {
     textClass: 'text-green-500',
   },
   denied: {
-    icon:X,
+    icon: X,
     title: '알림이 비활성화됨',
     message: '알림을 받을 수 없습니다.',
     blurClass: 'bg-red-400/20',
