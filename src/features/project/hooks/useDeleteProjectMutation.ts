@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
-import type { Project } from '../types/projectTypes';
+import type { Project } from '@/features/project/types/projectTypes';
 
 // 프로젝트 삭제
 export const useDeleteProjectMutation = () => {

@@ -1,7 +1,7 @@
 import { SidebarMenuButton, SidebarMenuItem } from '@/shared/components/shadcn/sidebar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const AppSidebarMenuItem = ({ item }: { item: SidebarItem }) => {
   return (

@@ -10,17 +10,20 @@ export type ModalButton = {
 
 export type ModalPayload = {
   type: 'confirm' | 'alert' | 'custom' | 'select';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   title: string;
   description?: string;
   content?: ReactNode;
   buttons?: ModalButton[];
   isLoading?: boolean;
   titleAlign?: 'left' | 'center';
+  closeOnOutsideClick?: boolean;
+  showCloseButton?: boolean;
 };
 
 export const ModalSize: Record<string, string> = {
   sm: 'sm:max-w-[300px]',
   md: 'sm:max-w-[500px]',
   lg: 'sm:max-w-[700px]',
+  xl: 'sm:max-w-[900px]',
 };

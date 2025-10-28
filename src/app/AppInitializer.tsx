@@ -1,32 +1,45 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import SplashScreen from '@/pages/SplashScreen';
 
-const AppInitializer = () => {
-  const setAuth = useAuthStore((state) => state.setAuth);
-  const clearAuth = useAuthStore((state) => state.clearAuth);
+interface AppInitializerProps {
+  children: ReactNode;
+}
+
+const AppInitializer = ({ children }: AppInitializerProps) => {
+  const { setAuth, clearAuth, isInitializing, setIsInitializing } = useAuthStore();
 
   useEffect(() => {
     const pathname = window.location.pathname;
     const publicPaths = ['/', '/login', '/error', '/auth/callback'];
     const isPublic = publicPaths.includes(pathname);
+
     if (isPublic) {
+      setIsInitializing(false);
       return;
     }
-    const refreshAccessToken = async () => {
+
+    const init = async () => {
       try {
-        const { newAccessToken } = await fetchRefreshToken();
-        setAuth({ token: newAccessToken });
+        const { accessToken } = await fetchRefreshToken();
+        setAuth({ token: accessToken });
       } catch (error) {
         console.error('Refresh token expired:', error);
         clearAuth();
+      } finally {
+        setIsInitializing(false);
       }
     };
 
-    refreshAccessToken();
-  }, [setAuth, clearAuth]);
+    init();
+  }, [setAuth, clearAuth, setIsInitializing]);
 
-  return null;
+  if (isInitializing) {
+    return <SplashScreen />;
+  }
+
+  return <>{children}</>;
 };
 
 export default AppInitializer;

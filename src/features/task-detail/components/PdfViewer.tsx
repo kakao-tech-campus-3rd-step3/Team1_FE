@@ -1,24 +1,32 @@
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import pdfurl from '@/shared/assets/pdf-example/ppt-sample.pdf';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import Overlay from '@/features/task-detail/components/PdfOverlay';
-import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useRef } from 'react';
 import PdfControlBar from '@/features/task-detail/components/PdfControlBar';
 import { cn } from '@/shared/lib/utils';
+import type { PDFViewerProps } from '@/features/task-detail/types/pdfViewerTypes';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = () => {
+const PDFViewer = ({
+  pdfUrl,
+  fileName,
+  fileId,
+  onClose,
+  setFileInfo,
+  pins,
+  currentPin,
+  setCurrentPin,
+}: PDFViewerProps) => {
   const {
     pageNumber,
     zoom,
     position,
     isDragging,
     start,
-    markers,
+
     pdfDocument,
     pageSize,
 
@@ -26,7 +34,6 @@ const PDFViewer = () => {
     startDrag,
     updatePosition,
     stopDrag,
-    addMarker,
     setPdfDocument,
     updatePageSize,
   } = usePdfStore();
@@ -67,19 +74,22 @@ const PDFViewer = () => {
 
     const pdfX = (x / rect.width) * pageSize.width;
     const pdfY = (1 - y / rect.height) * pageSize.height;
-
-    addMarker({
-      id: uuidv4(),
-      page: pageNumber,
-      x: pdfX,
-      y: pdfY,
-    });
-
-    console.log(`마커 추가됨: ${pageNumber} 페이지의 (${pdfX}, ${pdfY})`);
+    const newPin = { fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY };
+    setCurrentPin(newPin);
+    setFileInfo(newPin);
   };
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
+      <div className="w-full h-12 flex items-center justify-between te bg-white border-b-gray-400 xt-white px-4">
+        <span className="text-sm">{fileName}</span>
+        <button
+          onClick={onClose}
+          className="text-sm bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded-md transition"
+        >
+          ← 뒤로가기
+        </button>
+      </div>
       <div className="flex-1 flex justify-center items-center overflow-hidden">
         <div
           className={cn('relative bg-white', isDragging ? 'cursor-grabbing' : 'cursor-grab')}
@@ -94,7 +104,7 @@ const PDFViewer = () => {
           onMouseLeave={onMouseUp}
         >
           <Document
-            file={pdfurl}
+            file={pdfUrl}
             onLoadSuccess={(pdf) => {
               onDocumentLoadSuccess(pdf);
               setPdfDocument(pdf);
@@ -104,7 +114,8 @@ const PDFViewer = () => {
           </Document>
 
           <Overlay
-            markers={markers}
+            pins={pins}
+            currentPin={currentPin}
             pageNumber={pageNumber}
             zoom={zoom}
             pageSize={pageSize}

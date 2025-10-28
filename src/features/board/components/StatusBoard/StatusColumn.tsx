@@ -1,20 +1,32 @@
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
-import type { Column } from '@/features/task/types/taskTypes';
 import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import { useInfiniteTasksByStatusQuery } from '@/features/task/hooks/useInfiniteTasksByStatusQuery';
+import { type Column } from '@/features/task/types/taskTypes';
+import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
+import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
+import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/useProjectTaskCountByStatusQuery';
+import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 
 interface StatusColumnProps {
   column: Column;
-  projectId: string;
+  projectId?: string;
 }
 
 const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteTasksByStatusQuery(
-    projectId,
-    column.status,
-  );
+  // 📍TODO: 나의 할 일 개수 조회 API 아직 없음. 추후 연동 및 리팩터링 필요.
+  const { data: statusTaskCountList } = useProjectTaskCountByStatusQuery(projectId);
+
+  const projectTasksQuery = useInfiniteProjectTasksByStatusQuery(projectId ?? '', column.status, {
+    enabled: !!projectId,
+  });
+
+  const myTasksQuery = useInfiniteMyTasksByStatusQuery(column.status, {
+    enabled: !projectId,
+  });
+
+  const query = projectId ? projectTasksQuery : myTasksQuery;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
   const tasks = data?.pages.flatMap((page) => page.tasks) || [];
   const sortedTasks = Array.from(new Map(tasks.map((t) => [t.taskId, t])).values()).sort((a, b) =>
@@ -50,7 +62,7 @@ const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
         <div className="flex gap-2 text-gray-600 items-center">
           {column.title}
           <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-full">
-            {sortedTasks.length}
+            {getTaskCountByStatus(column.status, statusTaskCountList)}
           </div>
         </div>
       </div>
@@ -60,7 +72,13 @@ const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
           {sortedTasks.map((task, idx) => {
             const isLast = idx === sortedTasks.length - 1;
             return (
-              <TaskCard key={task.taskId} task={task} draggable ref={isLast ? lastTaskRef : null} />
+              <TaskCard
+                key={task.taskId}
+                task={task}
+                draggable
+                ref={isLast ? lastTaskRef : null}
+                showProjectNameTag={!projectId}
+              />
             );
           })}
           {isFetchingNextPage && (

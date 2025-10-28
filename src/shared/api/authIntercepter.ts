@@ -1,17 +1,14 @@
 import axios, { type AxiosRequestConfig } from 'axios';
 import { handleUnauthorized } from '@/shared/api/errorHandler';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import { apiPublic } from '@/shared/api/axiosInstance';
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
 }
 export const handleUnauthorizedRequest = async (originalRequest: AxiosRequestConfigWithRetry) => {
   originalRequest._retry = true;
   try {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
-      {},
-      { withCredentials: true },
-    );
+    const { data } = await apiPublic.post(`/auth/reissue`, {}, { withCredentials: true });
 
     const newAccessToken = data.accessToken;
     useAuthStore.getState().setAuth({ token: newAccessToken });

@@ -1,3 +1,6 @@
+import type { Member } from '@/features/user/types/userTypes';
+import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
+
 export type Column = {
   status: string;
   title: string;
@@ -35,6 +38,8 @@ type BaseTask = {
   dueDate: string;
   urgent: boolean;
   requiredReviewerCount: number;
+  fileCount: number;
+  commentCount: number;
   tags: string[];
   assignees: Assignee[];
   createdAt: string;
@@ -58,3 +63,43 @@ export type TaskDetail = BaseTask & {
   comments: Comment[];
   files: File[];
 };
+
+// useInfiniteQuery로 반환된 객체를 한 번에 명시하는 타입
+export type TaskQuery = UseInfiniteQueryResult<InfiniteData<TaskListResponse, unknown>, Error>;
+
+// 프로젝트 할 일 목록 조회 (팀원 기준) API 응답 타입
+export type MemberTaskListResponse = {
+  member: Member;
+  tasks: TaskListItem[];
+  count: number;
+  nextCursor?: string;
+  hasNext: boolean;
+};
+
+export interface UseInfiniteTasksOptions {
+  enabled?: boolean;
+}
+
+// 프로젝트 상태별 할 일 개수 API 응답 타입
+export type ProjectTaskCountByStatusResponse = {
+  projectId: string;
+  todo: number;
+  progress: number;
+  review: number;
+  done: number;
+};
+
+// UI나 내부 로직에서 사용하기 위한 상태별 개수 맵 타입
+export type ProjectTaskCountByStatusMap = Record<'todo' | 'progress' | 'review' | 'done', number>;
+
+// 프로젝트 팀원별 할 일 개수 API 응답 타입
+export type ProjectTaskCountByMemberResponse = {
+  projectId: string;
+  memberId: string;
+  todo: number;
+  progress: number;
+  review: number;
+};
+
+// UI나 내부 로직에서 사용하기 위한 팀원별 개수 맵 타입
+export type ProjectTaskCountByMemberMap = Record<'todo' | 'progress' | 'review', number>;

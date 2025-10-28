@@ -1,3 +1,5 @@
+import type { TaskQuery } from '@/features/task/types/taskTypes';
+
 export const columnStatus = [
   { status: 'TODO', title: '진행 전' },
   { status: 'PROGRESS', title: '진행 중' },
@@ -10,3 +12,11 @@ export type Status = (typeof columnStatus)[number]['status'];
 
 // statusList: ['TODO', 'PROGRESS', 'REVIEW', 'DONE']
 export const statusList: Status[] = columnStatus.map((c) => c.status);
+
+// Member Board에서 사용하는 순서 배열 :  ['TODO','PROGRESS','REVIEW']
+export const columnOrder = ['PROGRESS', 'REVIEW', 'TODO'];
+
+export type ColumnData = {
+  status: Status;
+  query: TaskQuery;
+};

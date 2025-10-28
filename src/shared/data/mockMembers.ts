@@ -11,7 +11,7 @@ export interface Member {
 
 export const mockMembers: Member[] = [
   {
-    id: 'bef50c0f-edd7-421c-8509-7c9dc279dfc7',
+    id: 'c8decc22-45e4-4609-a2d8-e2c7446ac99e',
     name: '유다연',
     avatar: AvatarYDY,
     backgroundColor: 'bg-boost-yellow',
@@ -24,12 +24,11 @@ export const mockMembers: Member[] = [
     backgroundColor: 'bg-boost-yellow',
     boostingScore: 120,
   },
-  // 📍TODO: 참여 팀원 목록 조회 API 구현 이전까지 혜민님 ID 넣어서 Test 해주세요!
   {
-    id: '',
+    id: 'ccc87f56-7c1c-42c7-8b82-54d5b2306e0c',
     name: '김혜민',
     avatar: AvatarKHM,
-    backgroundColor: 'bg-boost-yellow',
+    backgroundColor: 'bg-boost-orange',
     boostingScore: 120,
   },
 ];
