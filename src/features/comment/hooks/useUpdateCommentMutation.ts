@@ -20,7 +20,7 @@ export const useUpdateCommentMutation = (projectId: string, taskId: string) => {
       const previousComments = queryClient.getQueryData<CommentType[]>(queryKey);
 
       queryClient.setQueryData<CommentType[]>(queryKey, (old) => {
-        if (!old) return old; 
+        if (!old) return old;
         return old.map((c) => {
           if (c.commentId !== commentId) return c;
           const { fileInfo: nextFileInfo, ...rest } = updatedData;

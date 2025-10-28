@@ -1,41 +1,11 @@
-import { Bell, X, CheckCircle } from 'lucide-react';
+import { X, CheckCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
-
-const STATUS_CONTENT = {
-  initial: {
-    icon: Bell,
-    title: '알림을 허용해주세요',
-    message: (
-      <>
-        중요한 소식을 놓치지 않으려면
-        <br />
-        알림 권한을 허용해주세요.
-      </>
-    ),
-    blurClass: 'bg-boost-blue/25',
-    bgClass: 'bg-boost-blue/20',
-    textClass: 'text-boost-blue-pressed',
-  },
-  granted: {
-    icon: CheckCircle,
-    title: '설정 완료!',
-    message: '이제 중요한 알림을 받을 수 있어요.',
-    blurClass: 'bg-green-400/20',
-    bgClass: 'bg-green-50',
-    textClass: 'text-green-500',
-  },
-  denied: {
-    icon: X,
-    title: '알림이 비활성화됨',
-    message: '알림을 받을 수 없습니다.',
-    blurClass: 'bg-red-400/20',
-    bgClass: 'bg-red-50',
-    textClass: 'text-red-500',
-  },
-} as const;
+import { useSearchParams } from 'react-router-dom';
+import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission';
+import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
 
 interface StatusViewProps {
   title: string;
@@ -74,16 +44,28 @@ const StatusView = ({
 );
 
 const AlarmPermissionPage = () => {
-  const [permission, setPermission] = useState<'initial' | 'granted' | 'denied'>('initial');
+  const [params] = useSearchParams();
+  const token = params.get('token');
 
-  const handleAllow = () => {
-    setPermission('granted');
-    toast.success('알림이 활성화되었습니다!');
+  const [permission, setPermission] = useState<'initial' | 'granted' | 'denied'>('initial');
+  const { registerPushSubscription, unregisterPushSubscription } = useAlarmPermission(token);
+
+  if (!token) {
+    toast.error('잘못된 QR 입니다');
+  }
+  const handleAllow = async () => {
+    const result = await Notification.requestPermission();
+    if (result === 'granted') {
+      setPermission('granted');
+      await registerPushSubscription();
+    } else {
+      setPermission('denied');
+    }
   };
 
-  const handleDeny = () => {
+  const handleDeny = async () => {
     setPermission('denied');
-    toast.error('알림을 받지 않기로 선택했습니다.');
+    await unregisterPushSubscription();
   };
 
   const status = STATUS_CONTENT[permission];

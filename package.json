@@ -40,6 +40,7 @@
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.542.0",
     "pdfjs-dist": "5.4.149",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
