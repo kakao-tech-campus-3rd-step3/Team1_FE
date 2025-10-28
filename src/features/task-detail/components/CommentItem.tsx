@@ -9,8 +9,7 @@ import {
 import { Pin, User, EllipsisVertical } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
-import { useMemo } from 'react';
-import { getAvatarListUtils } from '@/features/avatar-picker/utils/avatarUtils';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
 interface CommentItemProps {
   comment: CommentUIType;
@@ -21,7 +20,6 @@ interface CommentItemProps {
 
 const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
-  const avatarList = useMemo(() => getAvatarListUtils(), []);
 
   return (
     <div className="flex py-3">
@@ -41,7 +39,7 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
                   </AvatarFallback>
                 ) : comment.authorInfo.avatar ? (
                   <AvatarImage
-                    src={avatarList[Number(comment.authorInfo.avatar)]}
+                    src={getAvatarSrc(comment.authorInfo)}
                     alt={comment.authorInfo.name}
                     className="h-7 w-7 object-cover rounded-full mx-auto my-auto"
                   />

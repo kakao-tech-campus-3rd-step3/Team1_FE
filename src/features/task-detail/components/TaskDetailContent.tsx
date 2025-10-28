@@ -4,19 +4,17 @@ import { Badge } from '@/shared/components/shadcn/badge';
 import { User, Calendar, Tag, FileText, ChevronUp } from 'lucide-react';
 import { calculateDDay } from '@/shared/utils/dateUtils';
 import ContentItem from '@/features/task-detail/components/ContentItem';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
-import { getAvatarListUtils } from '@/features/avatar-picker/utils/avatarUtils';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
 interface TaskDetailContentProps {
   task: TaskDetail;
 }
 
 const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
-  const avatarList = useMemo(() => getAvatarListUtils(), []);
-
   const [showAllAssignees, setShowAllAssignees] = useState(false);
   const displayedAssignees = showAllAssignees ? task.assignees : task.assignees.slice(0, 2);
 
@@ -29,13 +27,14 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
           <div className="flex gap-5">
             <div className="grid grid-cols-3 gap-2 overflow-x-auto">
               {displayedAssignees.map((assignee) => {
-                const avatarIndex = Number(assignee.avatar);
-                const avatarSrc = avatarList[avatarIndex] ?? avatarList[0]; // fallback
-
                 return (
                   <div className="flex items-center gap-2" key={assignee.id}>
-                    <Avatar className="w-9 h-9">
-                      <AvatarImage src={avatarSrc} alt={assignee.name} />
+                    <Avatar className="flex items-center justify-center w-9 h-9 bg-boost-yellow">
+                      <AvatarImage
+                        src={getAvatarSrc(assignee)}
+                        alt={assignee.name}
+                        className="w-8 h-8"
+                      />
                       <AvatarFallback>{assignee.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <span className="text-sm">{assignee.name}</span>

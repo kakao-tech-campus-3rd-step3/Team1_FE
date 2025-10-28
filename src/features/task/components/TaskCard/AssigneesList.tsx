@@ -1,31 +1,36 @@
-import { Avatar, AvatarFallback } from '@/shared/components/shadcn/avatar';
-import { AvatarImage } from '@radix-ui/react-avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/components/shadcn/tooltip';
-import { mockMembers } from '@/shared/data/mockMembers';
 import { cn } from '@/shared/lib/utils';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
 interface AssigneeAvatarProps {
+  projectId: string;
   assigneeId: string;
 }
 
-// 📍 TODO: 프로젝트 참여 팀원 조회 API 연동 이후 수정 필요. 현재 mock Data.
-const AssigneesList = ({ assigneeId }: AssigneeAvatarProps) => {
-  const member = mockMembers.find((m) => m.id === assigneeId);
+const AssigneesList = ({ projectId, assigneeId }: AssigneeAvatarProps) => {
+  const { data: projectMembers } = useProjectMembersQuery(projectId);
+  const member = projectMembers?.find((m) => m.id === assigneeId);
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
+          {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
           <Avatar
-            className={cn('w-6 h-6 cursor-pointer ring-1 ring-background', member?.backgroundColor)}
+            className={cn(
+              'flex items-center justify-center w-6 h-6 cursor-pointer ring-1 ring-background',
+              'bg-boost-yellow',
+            )}
           >
             <AvatarFallback>{member?.name[0] ?? '?'}</AvatarFallback>
-            <AvatarImage src={member?.avatar || ''} />
+            <AvatarImage src={getAvatarSrc(member)} className="w-5 h-5" />
           </Avatar>
         </TooltipTrigger>
         <TooltipContent side="top">

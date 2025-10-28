@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib/utils';
 import { useInfiniteProjectTasksByMemberQuery } from '@/features/task/hooks/useInfiniteProjectTasksByMemberQuery';
 import { useVerticalScroll } from '@/features/board/hooks/useVerticalScroll';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import type { Member } from '@/shared/data/mockMembers';
+import type { Member } from '@/features/user/types/userTypes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
@@ -12,6 +12,7 @@ import { columnOrder, columnStatus } from '@/features/board/types/boardTypes';
 import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
 import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/useProjectTaskCountByMemberQuery';
 import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
 interface MemberColumnProps {
   projectId: string;
@@ -80,16 +81,17 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
           }}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
+          {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
           <Avatar
             className={cn(
               'flex items-center justify-center',
-              member.backgroundColor,
+              'bg-boost-yellow',
               isProfileCollapsible ? 'w-23 h-23' : 'w-27 h-27',
             )}
           >
             <AvatarFallback>{member.name[0]}</AvatarFallback>
             <AvatarImage
-              src={member.avatar}
+              src={getAvatarSrc(member)}
               className={cn(isProfileCollapsible ? 'w-20 h-20' : 'w-22 h-22')}
             />
           </Avatar>
@@ -115,7 +117,8 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
               className={cn(isProfileCollapsible ? 'w-5 h-5' : 'w-7 h-7')}
               alt="rocket"
             />
-            <strong>BOOSTING SCORE </strong> {member.boostingScore}
+            {/*📍TODO: 부스팅 점수 로직 추가 이후 보완 필요 */}
+            <strong>BOOSTING SCORE </strong> {120}
           </div>
         </motion.div>
       </motion.div>

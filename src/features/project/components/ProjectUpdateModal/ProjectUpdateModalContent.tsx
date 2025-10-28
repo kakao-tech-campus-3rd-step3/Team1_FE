@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
-import { mockMembers, type Member } from '@/shared/data/mockMembers';
 import ProjectBasicInfo from '@/features/project/components/ProjectUpdateModal/ProjectBasicInfo';
 import ProjectDeleteModalContent from '@/features/project/components/ProjectDeleteModal/ProjectDeleteModalContent';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import ProjectMembers from '@/features/project/components/ProjectUpdateModal/ProjectMembersList';
 import { useUpdateProjectMutation } from '@/features/project/hooks/useUpdateProjectMutation';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 
 interface ProjectUpdateModalProps {
   navigate: NavigateFunction;
@@ -18,8 +17,11 @@ interface ProjectUpdateModalProps {
 
 const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   const { showCustom, resetModal } = useModal();
-  const [members] = useState<Member[]>(mockMembers);
+
   const projectData = useProjectStore((state) => state.projectData);
+  const { data: projectMembers } = useProjectMembersQuery(projectData.id);
+  const members = projectMembers ?? [];
+
   const setProjectData = useProjectStore((state) => state.setProjectData);
   const { mutate: updateProject } = useUpdateProjectMutation();
 
