@@ -80,9 +80,6 @@ const TaskCreateModalContent = ({
     }
   }, [isMyTask, projects, setValue, watch]);
 
-  /* 📍TODO: fallback UI 구현 이후 수정 필요 */
-  if (!propProjectId) return null;
-
   return (
     <>
       <div className="flex flex-col gap-8 py-4 max-h-[400px] overflow-y-auto px-1">
