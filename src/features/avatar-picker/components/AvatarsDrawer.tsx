@@ -24,7 +24,6 @@ const AvatarsDrawer = ({
   selectedAvatar,
   handleAvatarSelect,
 }: AvatarsDrawerProps) => {
-  console.log(avatarList);
   return (
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <DrawerTrigger asChild>
