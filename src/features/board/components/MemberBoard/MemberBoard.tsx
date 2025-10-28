@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import MemberColumn from '@/features/board/components/MemberBoard/MemberColumn';
 import DoneColumn from '@/features/board/components/MemberBoard/DoneColumn';
 import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
 import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
-import { mockMembers } from '@/shared/data/mockMembers';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import type { Member } from '@/features/user/types/userTypes';
 
 interface MemberBoardProps {
   projectId?: string;
@@ -21,11 +22,20 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
     scroll,
   } = useHorizontalScroll<HTMLDivElement>();
 
+  const { data: projectMembers, isLoading } = useProjectMembersQuery(projectId);
   const { data: doneData } = useInfiniteProjectTasksByStatusQuery(projectId ?? '', 'DONE');
   const doneTasks: TaskListItem[] = doneData?.pages.flatMap((page) => page.tasks) ?? [];
 
   const handleMouseEnter = () => setIsBoardHover(true);
   const handleMouseLeave = () => setIsBoardHover(false);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -58,10 +68,9 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
       )}
 
       {/* 멤버 컬럼 */}
-      {/* 📍 TODO: 팀원 목록 조회 API 연동 후 데이터 교체 필요함 */}
       <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden h-full py-2 px-1">
         <div className="flex gap-3 min-w-max h-full items-stretch">
-          {mockMembers.map((member) => (
+          {(projectMembers ?? []).map((member: Member) => (
             <MemberColumn key={member.id} projectId={projectId ?? ''} member={member} />
           ))}
 

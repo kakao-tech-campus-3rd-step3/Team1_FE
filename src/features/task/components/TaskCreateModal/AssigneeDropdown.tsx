@@ -10,20 +10,21 @@ import {
 import { Checkbox } from '@/shared/components/shadcn/checkbox';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { cn } from '@/shared/lib/utils';
-import { mockMembers } from '@/shared/data/mockMembers';
+import type { Member } from '@/features/user/types/userTypes';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
 interface AssigneeDropdownProps {
   assignees: string[];
   toggleAssignee: (name: string) => void;
   disabled?: boolean;
-  members?: typeof mockMembers;
+  members?: Member[];
 }
 
 const AssigneeDropdown = ({
   assignees,
   toggleAssignee,
   disabled,
-  members = mockMembers,
+  members,
 }: AssigneeDropdownProps) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
@@ -45,7 +46,7 @@ const AssigneeDropdown = ({
     <DropdownMenuContent className="min-w-[300px] border-gray-300 shadow-sm">
       <DropdownMenuLabel className="text-xs text-gray-500">팀 멤버</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      {members.map((member) => {
+      {members?.map((member) => {
         const isChecked = assignees.includes(member.name);
         return (
           <DropdownMenuItem
@@ -60,14 +61,16 @@ const AssigneeDropdown = ({
                 'data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue',
               )}
             />
+
+            {/*📍TODO: 배경 색 로직 추가 이후 보완 필요 */}
             <Avatar
               className={cn(
                 'flex items-center h-6 w-6 rounded-full shrink-0 shadow-xs',
-                member.backgroundColor,
+                'bg-boost-yellow',
               )}
             >
               <AvatarImage
-                src={member.avatar}
+                src={getAvatarSrc(member)}
                 className="h-5 w-5 object-cover rounded-full mx-auto my-auto"
               />
             </Avatar>

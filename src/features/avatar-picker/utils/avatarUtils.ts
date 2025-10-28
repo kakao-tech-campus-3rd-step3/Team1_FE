@@ -12,10 +12,20 @@ export const getRandomAvatarId = () => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
   return randomIndex;
 };
+
 export const getAvatarById = (avatarId: string | number) => {
   const targetFileName = `${Number(avatarId)}.png`;
   for (const [path, module] of Object.entries(avatarModules)) {
     if (path.endsWith(targetFileName)) return module.default;
   }
   return undefined;
+};
+
+export const getAvatarSrc = (
+  member: { avatar?: string | number } | undefined,
+  propsAvatarList: string[] = avatarList,
+) => {
+  if (!member) return propsAvatarList[0];
+  const index = Number(member.avatar);
+  return propsAvatarList[index] ?? propsAvatarList[0];
 };

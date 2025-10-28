@@ -6,7 +6,8 @@ interface HeaderProps {
   showProjectActions?: boolean;
   onProjectManageClick?: () => void;
   onProjectJoinCodeClick?: () => void;
-  onTaskCreate: () => void;
+  onCreate: () => void;
+  createLabel?: string;
 }
 
 const Header = ({
@@ -14,7 +15,8 @@ const Header = ({
   showProjectActions = false,
   onProjectManageClick,
   onProjectJoinCodeClick,
-  onTaskCreate,
+  onCreate,
+  createLabel = '할 일 생성',
 }: HeaderProps) => {
   const today = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -52,11 +54,9 @@ const Header = ({
           </>
         )}
 
-        <Button
-          className="text-gray-100 m-2 justify-center bg-boost-blue hover:bg-boost-blue/90 h-8 ml-auto px-3 py-1 rounded"
-          onClick={onTaskCreate}
-        >
-          <PlusCircle />할 일 생성
+        <Button variant="defaultBoost" className="h-8" onClick={onCreate}>
+          <PlusCircle />
+          {createLabel}
         </Button>
       </div>
     </div>

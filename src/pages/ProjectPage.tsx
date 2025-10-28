@@ -31,22 +31,20 @@ const ProjectPage = () => {
     );
 
   return (
-    <div className="flex flex-row flex-1 overflow-x-auto h-screen">
-      <div className="flex-1 flex flex-col min-w-0">
-        <nav aria-label="top-tab">
-          <ProjectTopTab />
-        </nav>
+    <div className="flex flex-col flex-1 h-screen overflow-x-auto">
+      <nav aria-label="top-tab">
+        <ProjectTopTab />
+      </nav>
 
-        <header aria-label="header">
-          <ProjectHeader project={project} />
-        </header>
+      <header aria-label="header">
+        <ProjectHeader project={project} />
+      </header>
 
-        <Separator className="bg-gray-300" />
+      <Separator className="bg-gray-300" />
 
-        <section aria-label="board" className="overflow-x-auto flex-1">
-          <Outlet context={{ projectId }} />
-        </section>
-      </div>
+      <section aria-label="content" className="overflow-x-auto flex-1">
+        <Outlet context={{ projectId }} />
+      </section>
     </div>
   );
 };
