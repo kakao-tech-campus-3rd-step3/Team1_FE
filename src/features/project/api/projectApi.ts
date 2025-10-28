@@ -1,4 +1,5 @@
 import type { Project } from '@/features/project/types/projectTypes';
+import type { Member } from '@/features/user/types/userTypes';
 import api from '@/shared/api/axiosInstance';
 
 export const projectApi = {
@@ -12,6 +13,12 @@ export const projectApi = {
   fetchProject: async (projectId: string): Promise<Project> => {
     const project = await api.get(`/projects/${projectId}`);
     return project.data;
+  },
+
+  // 프로젝트 멤버 조회
+  fetchProjectMembers: async (projectId: string): Promise<Member[]> => {
+    const { data } = await api.get(`/projects/${projectId}/members`);
+    return data;
   },
 
   // 프로젝트 생성
