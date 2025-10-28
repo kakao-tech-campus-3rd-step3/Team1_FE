@@ -17,7 +17,7 @@ const MemoDetailHeader = ({ memo, projectId }: MemoDetailHeaderProps) => {
   const handleBack = () => navigate(ROUTES.PROJECT_MEMO_LIST(projectId));
 
   return (
-    <div className="flex-shrink-0 bg-white rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.1)] p-6 space-y-6">
+    <div className="flex-shrink-0 p-3 pb-4 space-y-6 border-b border-gray-300">
       <div className="flex items-start justify-between gap-5">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="p-1 bg-boost-blue/10 rounded-lg flex-shrink-0">

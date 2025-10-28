@@ -24,8 +24,8 @@ const MemoDetail = () => {
   }
 
   return (
-    <div className="flex flex-col bg-gray-50 border-t border-t-gray-300 h-full overflow-hidden">
-      <div className="flex flex-col h-full p-4 space-y-4 overflow-hidden">
+    <div className="flex flex-col bg-gray-200 border-t border-t-gray-300 h-full overflow-hidden">
+      <div className="flex flex-col h-full bg-gray-100 p-4 space-y-4 overflow-hidden rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)] m-3">
         <MemoDetailHeader memo={memo} projectId={projectId} />
         <MemoDetailContent content={memo.content} />
       </div>
