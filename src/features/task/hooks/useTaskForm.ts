@@ -3,11 +3,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { taskSchema, type CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
-import { mockMembers } from '@/shared/data/mockMembers';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { useProjectStore } from '@/features/project/store/useProjectStore';
 
-export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> | void) => {
+export const useTaskForm = (
+  initialProjectId: string,
+  onConfirm: (data: CreateTaskInput) => Promise<void> | void,
+) => {
   const { resetModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
+  const projectData = useProjectStore((state) => state.projectData);
 
   const form = useForm<CreateTaskInput>({
     resolver: zodResolver(taskSchema),
@@ -15,33 +20,29 @@ export const useTaskForm = (onConfirm: (data: CreateTaskInput) => Promise<void> 
     defaultValues: {
       title: '',
       description: '',
-      requiredReviewerCount: 0,
+      requiredReviewerCount: projectData.defaultReviewerCount,
       assignees: [],
       dueDate: '',
       status: 'TODO',
       tags: [],
       urgent: false,
-      projectId: '',
+      projectId: initialProjectId,
     },
   });
+
+  const selectedProjectId = form.watch('projectId');
+  const { data: projectMembers = [] } = useProjectMembersQuery(selectedProjectId || '');
 
   const handleConfirm = form.handleSubmit(async (data) => {
     setIsLoading(true);
     try {
       const assigneeIds = data.assignees
-        .map((name) => mockMembers.find((m) => m.name === name)?.id)
+        .map((name) => projectMembers.find((m) => m.name === name)?.id)
         .filter(Boolean) as string[];
 
       const payload = {
-        title: data.title,
-        description: data.description,
-        status: data.status,
-        dueDate: data.dueDate,
-        urgent: data.urgent,
-        requiredReviewerCount: data.requiredReviewerCount,
-        tags: data.tags,
+        ...data,
         assignees: assigneeIds,
-        projectId: data.projectId,
       };
 
       await onConfirm(payload);
