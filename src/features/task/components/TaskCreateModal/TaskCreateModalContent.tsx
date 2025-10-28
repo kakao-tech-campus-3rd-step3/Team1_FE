@@ -28,6 +28,7 @@ import { useEffect } from 'react';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
 import toast from 'react-hot-toast';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
@@ -42,14 +43,20 @@ const TaskCreateModalContent = ({
   const { resetModal } = useModal();
   const { data: projects } = useProjectsQuery();
 
-  const { form, handleConfirm, isLoading } = useTaskForm(async (taskData) => {
+  const { form, handleConfirm, isLoading } = useTaskForm(propProjectId ?? '', async (taskData) => {
     if (!selectedProjectId) {
       toast.error('프로젝트를 선택해주세요.');
       return;
     }
-    createTask(taskData);
-    toast.success('할 일이 성공적으로 생성되었습니다!');
-    resetModal();
+
+    try {
+      await createTask(taskData);
+      toast.success('할 일이 성공적으로 생성되었습니다!');
+      resetModal();
+    } catch (err) {
+      console.log(err);
+      toast.error('할 일 생성에 실패했습니다');
+    }
   });
 
   const {
@@ -65,11 +72,16 @@ const TaskCreateModalContent = ({
   const selectedProjectId = watch('projectId') || propProjectId;
   const { mutate: createTask } = useCreateTaskMutation(selectedProjectId ?? '');
 
+  const { data: projectMembers } = useProjectMembersQuery(selectedProjectId);
+
   useEffect(() => {
     if (isMyTask && !watch('projectId') && projects?.length) {
       setValue('projectId', projects[0].id);
     }
   }, [isMyTask, projects, setValue, watch]);
+
+  /* 📍TODO: fallback UI 구현 이후 수정 필요 */
+  if (!propProjectId) return null;
 
   return (
     <>
@@ -113,10 +125,12 @@ const TaskCreateModalContent = ({
           {/* 담당자 */}
           <FormField icon={User} required label="담당자" error={errors.assignees?.message}>
             <AssigneeDropdown
+              disabled={!projectMembers?.length}
               assignees={assignees}
               toggleAssignee={(name) =>
                 setValue('assignees', toggleArrayItem(assignees, name), { shouldValidate: true })
               }
+              members={projectMembers ?? []}
             />
           </FormField>
 
