@@ -3,15 +3,13 @@ import AvatarsDrawer from '@/features/avatar-picker/components/AvatarsDrawer';
 interface AvatarSelectorProps {
   isDrawerOpen: boolean;
   setIsDrawerOpen: (open: boolean) => void;
-  avatarList: string[];
   selectedAvatar: string;
-  handleAvatarSelect: (id: number) => void;
+  handleAvatarSelect: (id: string) => void;
 }
 const AvatarSelector = ({
   isDrawerOpen,
   selectedAvatar,
   setIsDrawerOpen,
-  avatarList,
   handleAvatarSelect,
 }: AvatarSelectorProps) => {
   return (
@@ -22,7 +20,6 @@ const AvatarSelector = ({
         <AvatarsDrawer
           isDrawerOpen={isDrawerOpen}
           setIsDrawerOpen={setIsDrawerOpen}
-          avatarList={avatarList}
           selectedAvatar={selectedAvatar}
           handleAvatarSelect={handleAvatarSelect}
         />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
@@ -9,32 +9,21 @@ import { useAuthStore } from '@/features/auth/store/authStore';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
-import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutaion';
-import { getAvatarListUtils, getRandomAvatarId } from '@/features/avatar-picker/utils/avatarUtils';
+import { getRandomAvatarId } from '@/features/avatar-picker/utils/avatarUtils';
+import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutation';
 
 const AvatarSettingsPage = () => {
-  const avatarList = useMemo(() => getAvatarListUtils(), []);
-  const [selectedAvatarId, setSelectedAvatarId] = useState<number | null>(null);
-  const [selectedAvatarUrl, setSelectedAvatarUrl] = useState<string>('');
+  const [selectedAvatarId, setSelectedAvatarId] = useState<string>(() => getRandomAvatarId());
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
   const { mutate: saveAvatar } = useAvatarSaveMutation();
 
-  useEffect(() => {
-    const randomId = getRandomAvatarId();
-    setSelectedAvatarId(randomId);
-    setSelectedAvatarUrl(avatarList[randomId]);
-  }, [avatarList]);
-
-  const handleAvatarSelect = (id: number) => {
+  const handleAvatarSelect = (id: string) => {
     setSelectedAvatarId(id);
-    setSelectedAvatarUrl(avatarList[id]);
   };
 
   const handleSave = () => {
-    if (selectedAvatarId === null) return;
-
     setAuth({ user: { avatar: String(selectedAvatarId) } });
 
     saveAvatar(String(selectedAvatarId), {
@@ -55,9 +44,8 @@ const AvatarSettingsPage = () => {
         <AvatarHeader />
         <AvatarSelector
           isDrawerOpen={isDrawerOpen}
-          selectedAvatar={selectedAvatarUrl}
+          selectedAvatar={selectedAvatarId}
           setIsDrawerOpen={setIsDrawerOpen}
-          avatarList={avatarList}
           handleAvatarSelect={handleAvatarSelect}
         />
         <AvatarInfo />
