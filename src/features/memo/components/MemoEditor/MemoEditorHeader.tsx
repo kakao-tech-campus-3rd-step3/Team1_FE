@@ -18,7 +18,7 @@ const MemoEditorHeader = ({
   isSaving,
 }: MemoEditorHeaderProps) => {
   return (
-    <div className="flex-shrink-0 bg-white rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.1)] p-6">
+    <div className="flex-shrink-0 border-b border-b-gray-300 p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4 flex-1">
           <div className="p-2 bg-boost-blue/10 rounded-lg mt-0.5">

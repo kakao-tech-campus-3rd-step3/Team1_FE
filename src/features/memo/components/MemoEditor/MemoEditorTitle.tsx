@@ -9,7 +9,7 @@ interface MemoEditorTitleProps {
 
 const MemoEditorTitle = ({ title, setTitle }: MemoEditorTitleProps) => {
   return (
-    <div className="flex-shrink-0 bg-white rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.1)] p-4">
+    <div className="flex-shrink-0 p-4 pb-1">
       <Label className="flex mb-3 items-center label1-bold text-gray-700">
         <Type className="w-4 h-4 text-gray-500" />
         제목
@@ -17,7 +17,7 @@ const MemoEditorTitle = ({ title, setTitle }: MemoEditorTitleProps) => {
       <Input
         type="text"
         placeholder="메모 제목을 입력하세요"
-        className="w-full border-gray-300 focus:ring-transparent"
+        className="w-full h-11 border-gray-300 focus:ring-transparent"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />

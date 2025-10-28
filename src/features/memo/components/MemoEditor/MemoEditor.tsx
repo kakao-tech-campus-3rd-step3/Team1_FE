@@ -52,8 +52,8 @@ const MemoEditor = () => {
   const handleCancel = () => showUnsavedChangesModal(projectId, navigate);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-gray-100 border-t border-gray-300">
-      <div className="flex flex-col gap-4 p-4 h-full overflow-hidden">
+    <div className="flex flex-col h-full overflow-hidden bg-gray-200 border-t border-gray-300">
+      <div className="flex flex-col gap-4 p-1 h-full overflow-hidden bg-gray-100 m-3 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)]">
         <MemoEditorHeader
           isEditMode={isEditMode}
           onCancel={handleCancel}
