@@ -3,35 +3,22 @@ import { useDroppable } from '@dnd-kit/core';
 import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import { type Column } from '@/features/task/types/taskTypes';
-import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
-import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
+import { type TaskQuery } from '@/features/task/types/taskTypes';
 import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/useProjectTaskCountByStatusQuery';
 import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 
 interface StatusColumnProps {
   column: Column;
+  query: TaskQuery;
   projectId?: string;
 }
 
-const StatusColumn = ({ column, projectId }: StatusColumnProps) => {
-  // 📍TODO: 나의 할 일 개수 조회 API 아직 없음. 추후 연동 및 리팩터링 필요.
+const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
   const { data: statusTaskCountList } = useProjectTaskCountByStatusQuery(projectId);
-
-  const projectTasksQuery = useInfiniteProjectTasksByStatusQuery(projectId ?? '', column.status, {
-    enabled: !!projectId,
-  });
-
-  const myTasksQuery = useInfiniteMyTasksByStatusQuery(column.status, {
-    enabled: !projectId,
-  });
-
-  const query = projectId ? projectTasksQuery : myTasksQuery;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
   const tasks = data?.pages.flatMap((page) => page.tasks) || [];
-  const sortedTasks = Array.from(new Map(tasks.map((t) => [t.taskId, t])).values()).sort((a, b) =>
-    b.createdAt.localeCompare(a.createdAt),
-  );
+  const sortedTasks = Array.from(new Map(tasks.map((t) => [t.taskId, t])).values());
   const tasksIds = sortedTasks.map((task) => task.taskId);
 
   const { setNodeRef } = useDroppable({
