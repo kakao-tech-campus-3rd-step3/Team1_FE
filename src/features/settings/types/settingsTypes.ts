@@ -6,8 +6,3 @@ export interface MyInfoResponse {
   createdAt: string;
 }
 
-export interface UpdateMyInfoRequest {
-  name?: string;
-  avatarId?: number;
-}
- 
