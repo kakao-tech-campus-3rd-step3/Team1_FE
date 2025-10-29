@@ -1,9 +1,8 @@
 import { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MessageCircle, Paperclip, TrashIcon } from 'lucide-react';
+import { Calendar, MessageCircle, Paperclip } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useDeleteTaskMutation } from '@/features/task/hooks/useDeleteTaskMutation';
@@ -11,6 +10,9 @@ import { calculateDDay } from '@/shared/utils/dateUtils';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
 import AssigneesList from '@/features/task/components/TaskCard/AssigneesList';
 import { useProjectsStore } from '@/features/project/store/useProjectsStore';
+import TaskControlButtons from '@/features/task/components/TaskCard/TaskControlButtons';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import { ROUTES } from '@/app/routes/Router';
 
 interface TaskCardProps {
   task: TaskListItem;
@@ -23,6 +25,10 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
     const deleteTaskMutation = useDeleteTaskMutation(task.projectId);
 
     const navigate = useNavigate();
+
+    const currentUser = useAuthStore((state) => state.user);
+    const currentUserId = currentUser?.id;
+    const isAssignee = task.assignees?.some((assignee) => assignee.id === currentUserId);
 
     const rawProjectName = useProjectsStore((state) => state.getProjectName(task.projectId));
     const projectName = showProjectNameTag ? rawProjectName : undefined;
@@ -58,17 +64,13 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
       );
     }
 
-    const handleDelete = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      // 📍 TODO: 할 일 삭제 확인용 모달 구현 필요
-      if (window.confirm('정말 이 할 일을 삭제하시겠습니까?')) {
-        deleteTaskMutation.mutate({ taskId: task.taskId, status: task.status });
-      }
+    const handleDelete = () => {
+      deleteTaskMutation.mutate({ taskId: task.taskId, status: task.status });
     };
 
     return (
       <div
-        onClick={() => navigate(`/project/${task.projectId}/tasks/${task.taskId}`)}
+        onClick={() => navigate(ROUTES.TASK_DETAIL(task.projectId, task.taskId))}
         ref={setNodeRef}
         style={style}
         {...attributes}
@@ -82,13 +84,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         {/* 삭제 버튼 + 태그 */}
         <div className="relative flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <Button
-              onClick={handleDelete}
-              className="stroke-gray-100 absolute right-3 top-3 bg-boost-blue p-2 rounded-full opacity-0 group-hover:opacity-80 hover:opacity-100 hover:bg-boost-blue-dark transition-opacity z-10"
-              size="icon"
-            >
-              <TrashIcon />
-            </Button>
+            {isAssignee && <TaskControlButtons onClickDelete={handleDelete} />}
             <TaskTags task={task} projectName={projectName} />
           </div>
         </div>
