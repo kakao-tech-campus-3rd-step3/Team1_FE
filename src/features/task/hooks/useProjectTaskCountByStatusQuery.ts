@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { ProjectTaskCountByStatusMap } from '@/features/task/types/taskTypes';
 
 // 프로젝트 상태별 할 일 개수 조회 (전체)
