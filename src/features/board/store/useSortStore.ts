@@ -26,14 +26,3 @@ export const useSortStore = create<SortState>((set) => ({
       direction: DIRECTION_ASC,
     })),
 }));
-
-export const useSortControls = () => {
-  const { sortBy, direction, setSortBy, toggleDirection, resetSort } = useSortStore();
-  return {
-    sortBy,
-    direction,
-    setSortBy,
-    toggleDirection,
-    resetSort,
-  };
-};

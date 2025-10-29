@@ -6,12 +6,12 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
-import { useSortControls } from '@/features/board/store/useSortStore';
+import { useSortStore } from '@/features/board/store/useSortStore';
 import { useState } from 'react';
 import { DIRECTION_ASC, SORT_OPTIONS } from '@/features/board/constants/sortConstants';
 
 const SortDropDown = () => {
-  const { sortBy, direction, setSortBy, toggleDirection } = useSortControls();
+  const { sortBy, direction, setSortBy, toggleDirection } = useSortStore();
   const [open, setOpen] = useState(false);
 
   const handleItemClick = (value: (typeof SORT_OPTIONS)[number]['value']) => {
