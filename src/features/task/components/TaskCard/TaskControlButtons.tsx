@@ -1,6 +1,6 @@
-import { Pencil, Trash2 } from 'lucide-react';
 import { ButtonGroup } from '@/shared/components/shadcn/button-group';
 import { Button } from '@/shared/components/shadcn/button';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useTaskModals } from '@/features/task/hooks/useTaskModals';
 
 interface TaskControlButtonsProps {
@@ -13,7 +13,7 @@ const TaskControlButtons = ({ onClickDelete }: TaskControlButtonsProps) => {
     'border-boost-blue/50 text-boost-blue/70 hover:text-boost-blue hover:bg-boost-blue/10 w-7 h-7 cursor-pointer rounded-md';
 
   return (
-    <ButtonGroup className="absolute z-10 right-0 top-1">
+    <ButtonGroup className="absolute opacity-0 hover:border-gray-400 group-hover:opacity-80 hover:opacity-100 transition-opacity z-10 right-0 top-1">
       <Button
         variant="outline"
         onClick={(e) => {
