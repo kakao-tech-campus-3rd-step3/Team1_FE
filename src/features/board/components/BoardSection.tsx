@@ -3,8 +3,9 @@ import StatusBoard from '@/features/board/components/StatusBoard/StatusBoard';
 import MemberBoard from '@/features/board/components/MemberBoard/MemberBoard';
 import ProjectFilterTab from '@/features/project/components/ProjectPageComponents/ProjectFilterTab';
 import MyTaskFilterTab from '@/features/my-task/components/MyTaskPageComponents/MyTaskFilterTab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Separator } from '@/shared/components/shadcn/separator';
+import { useSortStore } from '@/features/board/store/useSortStore';
 
 interface BoardSectionProps {
   type: 'project' | 'myTask';
@@ -18,6 +19,11 @@ interface ProjectOutletContext {
 const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
   const context = useOutletContext<ProjectOutletContext | undefined>();
   const projectId = context?.projectId;
+  const resetSort = useSortStore((state) => state.resetSort);
+
+  useEffect(() => {
+    resetSort();
+  }, [resetSort]);
 
   const [boardTab, setBoardTab] = useState<'status' | 'member'>(
     initialTab === 'status' || initialTab === 'member' ? initialTab : 'status',
