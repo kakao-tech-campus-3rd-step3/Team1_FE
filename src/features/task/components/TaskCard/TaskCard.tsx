@@ -13,6 +13,7 @@ import { useProjectsStore } from '@/features/project/store/useProjectsStore';
 import TaskControlButtons from '@/features/task/components/TaskCard/TaskControlButtons';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { ROUTES } from '@/app/routes/Router';
+import { useModal } from '@/shared/hooks/useModal';
 
 interface TaskCardProps {
   task: TaskListItem;
@@ -22,9 +23,10 @@ interface TaskCardProps {
 
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
   ({ task, draggable = false, showProjectNameTag = false }, ref) => {
-    const deleteTaskMutation = useDeleteTaskMutation(task.projectId);
+    const { mutateAsync: deleteTaskMutation } = useDeleteTaskMutation(task.projectId);
 
     const navigate = useNavigate();
+    const { resetModal } = useModal();
 
     const currentUser = useAuthStore((state) => state.user);
     const currentUserId = currentUser?.id;
@@ -64,8 +66,16 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
       );
     }
 
-    const handleDelete = () => {
-      deleteTaskMutation.mutate({ taskId: task.taskId, status: task.status });
+    const handleDelete = async () => {
+      try {
+        await deleteTaskMutation({
+          taskId: task.taskId,
+          status: task.status,
+        });
+        resetModal();
+      } catch (err) {
+        console.error('할 일 삭제 실패:', err);
+      }
     };
 
     return (
