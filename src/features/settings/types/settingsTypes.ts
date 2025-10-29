@@ -5,4 +5,3 @@ export interface MyInfoResponse {
   email: string;
   createdAt: string;
 }
-

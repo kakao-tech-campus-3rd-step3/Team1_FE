@@ -1,0 +1,101 @@
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
+import { Button } from '@/shared/components/shadcn/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/shadcn/card';
+import { Input } from '@/shared/components/shadcn/input';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import { useUpdateNameMutation } from '@/features/settings/hooks/useUpdateNameMutation';
+import toast from 'react-hot-toast';
+
+interface UserInfoProps {
+  name: string;
+  avatar: string;
+}
+
+interface UserInfoComponentProps {
+  member: UserInfoProps;
+  onAvatarEdit?: () => void;
+}
+
+export const UserInfo = ({ member, onAvatarEdit }: UserInfoComponentProps) => {
+  const [isNameEditing, setIsNameEditing] = useState(false);
+  const [newName, setNewName] = useState(member.name);
+  const { mutate: updateName, isPending } = useUpdateNameMutation();
+
+  const handleNameSave = () => {
+    if (!newName.trim()) {
+      toast.error('이름을 입력해주세요.');
+      return;
+    }
+
+    updateName(newName, {
+      onSuccess: () => {
+        toast.success('이름이 변경되었습니다!');
+        setIsNameEditing(false);
+      },
+      onError: () => {
+        toast.error('이름 변경에 실패했습니다.');
+      },
+    });
+  };
+
+  const handleNameCancel = () => {
+    setNewName(member.name);
+    setIsNameEditing(false);
+  };
+
+  return (
+    <Card className="border-none shadow-none border-b border-gray-200">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-gray-800">내 정보</CardTitle>
+      </CardHeader>
+
+      <CardContent className="space-y-6">
+        {/* 프로필 정보 */}
+        <div className="flex items-center gap-4">
+          <Avatar className="w-16 h-16">
+            <AvatarImage src={getAvatarSrc(member)} alt="user avatar" />
+            <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+
+          {/* 이름 수정 영역 */}
+          {isNameEditing ? (
+            <div className="flex items-center gap-2">
+              <Input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                className="w-40"
+              />
+              <Button size="sm" onClick={handleNameSave} disabled={isPending}>
+                {isPending ? '저장 중...' : '저장'}
+              </Button>
+              <Button size="sm" variant="ghost" onClick={handleNameCancel}>
+                취소
+              </Button>
+            </div>
+          ) : (
+            <p className="text-base font-medium text-gray-800">{member.name}</p>
+          )}
+        </div>
+
+        {/* 수정 버튼 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">내 정보 수정</label>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              onClick={() => setIsNameEditing(true)}
+              disabled={isNameEditing}
+            >
+              이름 변경
+            </Button>
+
+            <Button variant="secondary" onClick={onAvatarEdit}>
+              아바타 변경
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
