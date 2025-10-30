@@ -28,8 +28,8 @@ export type File = {
   type: string;
 };
 
-// Task 공통 속성
-type BaseTask = {
+// Task 목록 조회 아이템
+export type TaskListItem = {
   taskId: string;
   projectId: string;
   title: string;
@@ -46,9 +46,6 @@ type BaseTask = {
   updatedAt: string;
 };
 
-// Task 목록에서 쓰이는 Task 타입
-export type TaskListItem = BaseTask;
-
 // Task 목록 조회 API 응답 타입 (커서 기반 페이징 포함)
 export type TaskListResponse = {
   tasks: TaskListItem[];
@@ -58,10 +55,21 @@ export type TaskListResponse = {
 };
 
 // Task 상세 정보 (TaskItem + 추가 정보, Response와 형태 동일)
-export type TaskDetail = BaseTask & {
+export type TaskDetail = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  dueDate: string;
+  urgent: string;
   approvedCount: number;
+  requiredReviewerCount: number;
+  tags: string[];
+  assignees: Member[];
   comments: Comment[];
   files: File[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 // useInfiniteQuery로 반환된 객체를 한 번에 명시하는 타입
