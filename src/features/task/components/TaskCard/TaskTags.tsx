@@ -1,10 +1,10 @@
 import { Badge } from '@/shared/components/shadcn/badge';
 import { cn } from '@/shared/lib/utils';
 import { generateTags, getColorForTag } from '@/shared/utils/tagUtils';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail, TaskListItem } from '@/features/task/types/taskTypes';
 
 interface TaskTagsProps {
-  task: TaskListItem;
+  task: TaskDetail | TaskListItem;
   projectName?: string;
 }
 
