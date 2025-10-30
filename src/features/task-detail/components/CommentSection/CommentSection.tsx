@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
-import CommentItem from '@/features/task-detail/components/CommentItem';
+import CommentItem from '@/features/task-detail/components/CommentSection/CommentItem';
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
@@ -42,6 +42,7 @@ const CommentSection = ({
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
+
   // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
   useEffect(() => {
     if (!onCommentsFetched) return;
