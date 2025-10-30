@@ -4,7 +4,7 @@ import FileItem from '@/features/task-detail/components/FileSection/FileItem';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
 import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuery';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
-import ContentItem from '@/features/task-detail/components/TaskDetailContent/ContentItem';
+import ContentItem from '@/shared/components/ui/ContentItem';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
@@ -41,7 +41,7 @@ const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps
           </div>
         }
       >
-        <div className="flex flex-col gap-2 overflow-y-auto pt-3">
+        <div className="flex flex-col gap-2 overflow-y-auto pt-3 mb-5">
           {uiFiles?.map((item) => (
             <FileItem
               key={item.fileId}

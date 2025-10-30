@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab';
-import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent';
-import FileSection from '@/features/task-detail/components/FileSection';
-import PDFViewer from '@/features/task-detail/components/PdfViewer';
-import CommentSection from '@/features/task-detail/components/CommentSection';
+import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
+import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
+import FileSection from '@/features/task-detail/components/FileSection/FileSection';
+import PDFViewer from '@/features/task-detail/components/PdfViewer/PdfViewer';
+import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
@@ -20,11 +20,13 @@ const TaskDetailPage = () => {
   const [fileName, setFileName] = useState('');
   const [pins, setPins] = useState<FileInfo[]>([]); // 댓글에서 추출한 핀
   const [currentPin, setCurrentPin] = useState<FileInfo | null>(null);
+
   // 댓글을 맨 처음 불러왔을 때 핀 정보를 추출해 pins에 저장
   const handleCommentsFetched = useCallback((comments: CommentUIType[]) => {
     const extractedPins = comments.filter((c) => c.fileInfo).map((c) => c.fileInfo as FileInfo);
     setPins(extractedPins);
   }, []);
+
   // 댓글을 선택하면 PDF 뷰어에서 해당 파일과 핀을 보여줌
   const handleCommentSelect = async (fileInfo: FileInfo | null) => {
     if (!fileInfo?.fileId) return;
