@@ -4,8 +4,8 @@ import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import { type Column } from '@/features/task/types/taskTypes';
 import { type TaskQuery } from '@/features/task/types/taskTypes';
-import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/useProjectTaskCountByStatusQuery';
 import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
+import { useStatusTaskCountQueries } from '@/features/board/hooks/useStatusTaskCountQueries';
 
 interface StatusColumnProps {
   column: Column;
@@ -14,7 +14,7 @@ interface StatusColumnProps {
 }
 
 const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
-  const { data: statusTaskCountList } = useProjectTaskCountByStatusQuery(projectId);
+  const { data: statusTaskCountList } = useStatusTaskCountQueries(projectId);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
   const tasks = data?.pages.flatMap((page) => page.tasks) || [];
