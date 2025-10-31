@@ -11,6 +11,7 @@ import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 interface UserInfoProps {
   name: string;
   avatar: string;
+  backgroundColor:string;
 }
 
 interface UserInfoComponentProps {
@@ -47,7 +48,7 @@ const {openDrawer} = useAvatarStore()
   return (
     <SettingsSectionCard title="내 정보">
       <div className="flex items-center gap-4">
-        <Avatar className="w-16 h-16">
+        <Avatar style={{ backgroundColor: member.backgroundColor }} className="w-20 h-20">
           <AvatarImage src={getAvatarSrc(member)} alt="user avatar" />
           <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
         </Avatar>

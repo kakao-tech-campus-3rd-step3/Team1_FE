@@ -1,5 +1,6 @@
 import api from '@/shared/api/axiosInstance';
 import type { MyInfoResponse } from '@/features/settings/types/settingsTypes';
+import type { AvatarInfo } from '@/features/user/types/userTypes';
 export const settingsApi = {
   // 회원 조회
   getMyInfo: async (): Promise<MyInfoResponse> => {
@@ -11,8 +12,11 @@ export const settingsApi = {
     await api.put('/members/me/name', { name });
   },
   // 아바타 수정
-  updateAvatar: async (avatar: string): Promise<void> => {
-    await api.put('/members/me/avatar', { avatar });
+  updateAvatar: async ({avatar ,backgroundColor}: AvatarInfo): Promise<void>  => {
+    await api.put('/members/me/avatar', {
+      avatar: avatar,
+      backgroundColor:backgroundColor,
+    });
   },
 
   // 회원 탈퇴

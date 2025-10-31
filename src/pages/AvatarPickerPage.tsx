@@ -1,4 +1,3 @@
-import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutation';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
@@ -9,11 +8,12 @@ import AvatarBackgroundDecorations from '@/features/avatar-picker/components/Ava
 import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
+import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
 
 const AvatarSettingsPage = () => {
   const { selectedAvatarId, selectedBgColor } = useAvatarStore();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const { mutate: saveAvatar } = useAvatarSaveMutation();
+  const { mutate: saveAvatar } = useUpdateAvatarMutation();
   const navigate = useNavigate();
 
   const handleSave = () => {
@@ -23,11 +23,11 @@ const AvatarSettingsPage = () => {
     }
 
     const avatarInfo = {
-      avatarId: selectedAvatarId,
+      avatar: selectedAvatarId,
       backgroundColor: selectedBgColor,
     };
 
-    setAuth({ user: { avatar: avatarInfo } });
+    setAuth({ user: avatarInfo });
 
     saveAvatar(avatarInfo, {
       onSuccess: () => {
