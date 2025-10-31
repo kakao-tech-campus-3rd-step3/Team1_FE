@@ -4,7 +4,7 @@ import TaskDeleteModalContent from '@/features/task/components/TaskDeleteModalCo
 
 export const useTaskModals = () => {
   const { showCustom } = useModal();
-  const { projectData } = useProjectStore();
+  const projectData = useProjectStore((state) => state.projectData);
 
   const showDeleteTaskModal = (onClickDelete: () => void) => {
     if (!projectData) return;
