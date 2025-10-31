@@ -3,6 +3,5 @@ export interface MyInfoResponse {
   name: string;
   avatar: string;
   backgroundColor:string
-  email: string;
   createdAt: string;
 }
