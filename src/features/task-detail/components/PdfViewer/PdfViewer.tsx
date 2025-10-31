@@ -2,11 +2,11 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
-import Overlay from '@/features/task-detail/components/PdfOverlay';
 import { useEffect, useRef } from 'react';
-import PdfControlBar from '@/features/task-detail/components/PdfControlBar';
 import { cn } from '@/shared/lib/utils';
 import type { PDFViewerProps } from '@/features/task-detail/types/pdfViewerTypes';
+import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
+import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

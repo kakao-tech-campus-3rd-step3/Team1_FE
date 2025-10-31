@@ -4,7 +4,8 @@ import { arrayMove } from '@dnd-kit/sortable';
 import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskTypes';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import type { Direction, SortBy } from '@/features/board/types/sortTypes';
 
 export type MoveTaskParams = {
   projectId: string;
@@ -13,23 +14,14 @@ export type MoveTaskParams = {
   toStatus: string;
   overId?: string;
   queryIdentifier: string;
+  sortBy: SortBy;
+  direction: Direction;
+  activeTask: TaskListItem;
 };
 
-const createTempTask = (taskId: string, toStatus: string): TaskListItem => ({
-  taskId,
-  projectId: '',
-  title: '',
-  description: '',
+const updateTaskStatus = (task: TaskListItem, toStatus: string): TaskListItem => ({
+  ...task,
   status: toStatus,
-  dueDate: '',
-  urgent: false,
-  requiredReviewerCount: 0,
-  commentCount: 0,
-  fileCount: 0,
-  tags: [],
-  assignees: [],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
 });
 
 export const useMoveTaskMutation = () => {
@@ -46,11 +38,14 @@ export const useMoveTaskMutation = () => {
       overId,
       queryIdentifier,
       projectId,
+      sortBy,
+      direction,
+      activeTask,
     }) => {
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status)
-          : TASK_QUERY_KEYS.project(projectId, status);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
 
       const fromKey = getQueryKey(fromStatus);
       const toKey = getQueryKey(toStatus);
@@ -89,16 +84,17 @@ export const useMoveTaskMutation = () => {
           });
         }
 
-        const tempTask = createTempTask(activeTaskId, toStatus);
+        const movedTask = updateTaskStatus(activeTask, toStatus);
+
         queryClient.setQueryData<InfiniteData<TaskListResponse>>(toKey, (old) => {
           if (!old) {
             return {
               pageParams: [undefined],
-              pages: [{ tasks: [tempTask], count: 1, nextCursor: undefined, hasNext: false }],
+              pages: [{ tasks: [movedTask], count: 1, nextCursor: undefined, hasNext: false }],
             };
           }
           const pages = old.pages.map((page, index) =>
-            index === 0 ? { ...page, tasks: [tempTask, ...page.tasks] } : page,
+            index === 0 ? { ...page, tasks: [movedTask, ...page.tasks] } : page,
           );
           return { ...old, pages };
         });
@@ -108,11 +104,11 @@ export const useMoveTaskMutation = () => {
     },
 
     onError: (error, variables, context) => {
-      const { fromStatus, toStatus, queryIdentifier, projectId } = variables;
+      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status)
-          : TASK_QUERY_KEYS.project(projectId, status);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
 
       if (context?.previousFrom)
         queryClient.setQueryData(getQueryKey(fromStatus), context.previousFrom);
@@ -126,16 +122,19 @@ export const useMoveTaskMutation = () => {
     },
 
     onSettled: (_data, _error, variables) => {
-      const { fromStatus, toStatus, queryIdentifier, projectId } = variables;
+      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status)
-          : TASK_QUERY_KEYS.project(projectId, status);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
 
       queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
       queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.meCountStatus(),
+      });
     },
   });
 };

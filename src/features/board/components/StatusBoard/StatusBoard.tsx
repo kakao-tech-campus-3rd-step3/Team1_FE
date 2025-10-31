@@ -7,7 +7,7 @@ import {
   type DragStartEvent,
   type DragOverEvent,
 } from '@dnd-kit/core';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
@@ -15,6 +15,7 @@ import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
+import { useSortStore } from '@/features/board/store/useSortStore';
 
 interface StatusBoardProps {
   projectId?: string;
@@ -25,6 +26,13 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
   const moveTaskMutation = useMoveTaskMutation();
   const columnsData = useStatusBoardQueries(projectId);
+
+  const { sortBy, direction } = useSortStore();
+  const sortStateRef = useRef({ sortBy, direction });
+
+  useEffect(() => {
+    sortStateRef.current = { sortBy, direction };
+  }, [sortBy, direction]);
 
   const lastMoveRef = useRef<{ activeId: string; toStatus: string } | null>(null);
 
@@ -42,6 +50,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
 
   const onDragOver = ({ active, over }: DragOverEvent) => {
     if (!over) return;
+    const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
 
     const activeTask = active.data.current?.task as TaskListItem | undefined;
     const overData = over.data.current;
@@ -74,6 +83,9 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
       toStatus,
       overId: overData?.type === 'Task' ? (over.id as string) : undefined,
       queryIdentifier: projectId || 'me',
+      sortBy: currentSortBy,
+      direction: currentDirection,
+      activeTask: activeTask,
     });
   };
 
@@ -93,7 +105,9 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
               return <ColumnFallback key={status} status={status} state="error" />;
 
             const column = columnStatus.find((c) => c.status === status)!;
-            return <StatusColumn key={status} column={column} projectId={projectId} />;
+            return (
+              <StatusColumn key={status} column={column} query={query} projectId={projectId} />
+            );
           })}
         </div>
 
