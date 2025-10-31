@@ -1,20 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Switch } from '@/shared/components/shadcn/switch';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { Card } from '@/shared/components/shadcn/card';
 import { cn } from '@/shared/lib/utils';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
-import type { Project } from '@/features/project/types/projectTypes';
 
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);
   const [projectAlarms, setProjectAlarms] = useState<Record<string, boolean>>({});
-  const [projects, setProjects] = useState<Project[]>();
 
   const { data: projectsData } = useProjectsQuery();
-  useEffect(() => {
-    setProjects(projectsData);
-  }, [projectsData]);
+
   // 프로젝트별 알림 토글
   const handleProjectToggle = (projectId: string, value: boolean) => {
     setProjectAlarms((prev) => ({
@@ -58,7 +54,7 @@ const AlarmSettingCard = () => {
           <p className="font-medium text-gray-800">프로젝트별 알림</p>
 
           <div className="border border-gray-100 rounded-md divide-y divide-gray-100">
-            {projects?.map((project) => (
+            {projectsData?.map((project) => (
               <div
                 key={project.id}
                 className="flex items-center justify-between py-2 px-3 bg-white"
