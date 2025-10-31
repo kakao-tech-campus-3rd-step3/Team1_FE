@@ -1,10 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { avatarApi } from '@/features/avatar-picker/api/avatarApi';
+import type { AvatarInfo } from '@/features/user/types/userTypes';
 
 export const useAvatarSaveMutation = () => {
-  return useMutation<void, Error, string>({
-    mutationFn: async (avatar) => {
-      await avatarApi.uploadAvatar(avatar);
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, AvatarInfo>({
+    mutationFn: async ({ avatarId, backgroundColor }) => {
+      console.log(avatarId, backgroundColor);
+      await avatarApi.uploadAvatar({ avatarId: avatarId, backgroundColor });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myInfo'] });
     },
   });
 };
