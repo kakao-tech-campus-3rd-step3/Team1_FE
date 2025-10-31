@@ -48,13 +48,11 @@ const AvatarsDrawer = ({ showEditButton }: AvatarsDrawerProps) => {
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
           <DrawerTitle className="text-3xl font-bold text-gray-800 mb-2">아바타 선택</DrawerTitle>
           <DrawerDescription className="text-gray-600 text-lg">
-            마음에 드는 아바타를 선택해주세요 🎨
-          </DrawerDescription>
+아바타와 배경색상을 골라보세요!          </DrawerDescription>
         </DrawerHeader>
 
         {/* 배경색 그리드 */}
         <div className="px-6 py-6 border-b border-gray-100">
-          <p className="text-sm font-semibold text-gray-700 mb-3 text-center">배경 색상</p>
           <div className="flex justify-center gap-3 flex-wrap max-w-md mx-auto">
             {avatarBgColors.map(({ token, hex }) => (
               <button

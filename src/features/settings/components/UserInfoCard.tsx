@@ -6,6 +6,7 @@ import { useUpdateNameMutation } from '@/features/settings/hooks/useUpdateNameMu
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
+import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 
 interface UserInfoProps {
   name: string;
@@ -20,7 +21,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [newName, setNewName] = useState(member.name);
   const { mutate: updateName, isPending } = useUpdateNameMutation();
-
+const {openDrawer} = useAvatarStore()
   const handleNameSave = () => {
     if (!newName.trim()) {
       toast.error('이름을 입력해주세요.');
@@ -77,7 +78,9 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
             이름 변경
           </Button>
 
-          <Button variant="secondary">아바타 변경</Button>
+          <Button onClick={openDrawer} variant="secondary">
+            아바타 변경
+          </Button>
         </div>
       </div>
     </SettingsSectionCard>
