@@ -47,6 +47,16 @@
   --color-status-warning: #ffc107;
   --color-status-error: #dc3545;
 
+  /* Avatar Colors */
+  ----color-avatar-blue: #D5E3FF;
+  ----color-avatar-orange: #FBE0CB;
+  ----color-avatar-yellow: #FFF5CF;
+  ----color-avatar-red: #FFD1D1;
+  ----color-avatar-pink: #FFE3FD;
+  ----color-avatar-green: #DFF5E6;
+  ----color-avatar-purple: #E9DCFF;
+  ----color-avatar-gray: #DBDBDB;
+
   /* Background Colors */
   --color-background-default: var(--color-gray-100);
   --color-background-secondary: var(--color-gray-200);
