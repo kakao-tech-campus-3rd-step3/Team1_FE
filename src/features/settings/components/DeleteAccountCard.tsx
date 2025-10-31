@@ -1,7 +1,7 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 import toast from 'react-hot-toast';
-import { SettingsSectionCard } from './SettingsSectionCard';
+import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 
 export const DeleteAccountCard = () => {
   const { mutate: deleteAccount, isPending } = useDeleteAccountMutation();

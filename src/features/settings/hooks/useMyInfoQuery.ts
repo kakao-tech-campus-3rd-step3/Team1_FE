@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { settingsApi } from '../api/settingsApi';
+import { settingsApi } from '@/features/settings/api/settingsApi';
 
 export const useMyInfoQuery = () => {
   return useQuery({

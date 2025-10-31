@@ -41,7 +41,7 @@ export default function SettingsPage() {
         handleAvatarSelect={handleAvatarSelect}
       />
       <Separator />
-      <AlarmSettingCard/>
+      <AlarmSettingCard />
       <Separator />
       {/* 회원탈퇴 */}
       <DeleteAccountCard />

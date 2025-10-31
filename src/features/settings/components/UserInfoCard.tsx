@@ -5,7 +5,7 @@ import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { useUpdateNameMutation } from '@/features/settings/hooks/useUpdateNameMutation';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { SettingsSectionCard } from './SettingsSectionCard';
+import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 
 interface UserInfoProps {
   name: string;

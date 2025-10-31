@@ -1,4 +1,4 @@
-import { SettingsSectionCard } from './SettingsSectionCard';
+import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { Link } from 'react-router-dom';
 
 export const LicenseCard = () => (

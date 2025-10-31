@@ -1,5 +1,5 @@
 import api from '@/shared/api/axiosInstance';
-import type { MyInfoResponse } from '../types/settingsTypes';
+import type { MyInfoResponse } from '@/features/settings/types/settingsTypes';
 export const settingsApi = {
   // 회원 조회
   getMyInfo: async (): Promise<MyInfoResponse> => {
