@@ -1,17 +1,19 @@
 import AvatarsDrawer from '@/features/avatar-picker/components/AvatarsDrawer';
-import { UserInfo } from '@/features/settings/components/UserInfo';
+import { DeleteAccountCard } from '@/features/settings/components/DeleteAccountCard';
+import { LicenseCard } from '@/features/settings/components/LicenseCard';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
 import { Separator } from '@/shared/components/shadcn/separator';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import AlarmSettingCard from '@/features/settings/components/AlarmSettingCard';
+import { UserInfoCard } from '@/features/settings/components/UserInfoCard';
 
 export default function SettingsPage() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { data: myInfo, isLoading } = useMyInfoQuery();
   const { mutate: updateAvatar } = useUpdateAvatarMutation();
-  // const { mutate: deleteAccount } = useDeleteAccountMutation();
 
   const handleAvatarSelect = (id: string) => {
     setSelectedAvatar(id);
@@ -25,21 +27,27 @@ export default function SettingsPage() {
       },
     });
   };
-  if (isLoading || !myInfo) return <p>불러오는 중...</p>;
+
+  if (isLoading || !myInfo) return <p className="p-10 text-gray-500">불러오는 중...</p>;
 
   return (
-    <div className="flex flex-col pr-20 pl-20">
+    <div className="flex flex-col pr-10 pl-10 space-y-8">
       {/* 내 정보 */}
-      <UserInfo member={myInfo} />
-
-      <Separator />
+      <UserInfoCard member={myInfo} onAvatarEdit={() => setIsDrawerOpen(true)} />
       <AvatarsDrawer
         isDrawerOpen={isDrawerOpen}
         setIsDrawerOpen={setIsDrawerOpen}
         selectedAvatar={selectedAvatar}
         handleAvatarSelect={handleAvatarSelect}
       />
-   
+      <Separator />
+      <AlarmSettingCard/>
+      <Separator />
+      {/* 회원탈퇴 */}
+      <DeleteAccountCard />
+      <Separator />
+      {/* 라이선스 명시 */}
+      <LicenseCard />
     </div>
   );
 }

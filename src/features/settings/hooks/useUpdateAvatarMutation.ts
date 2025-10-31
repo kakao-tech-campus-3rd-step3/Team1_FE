@@ -7,7 +7,7 @@ export const useUpdateAvatarMutation = () => {
   return useMutation({
     mutationFn: (avatar: string) => settingsApi.updateAvatar(avatar),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['my-info'] });
+      queryClient.invalidateQueries({ queryKey: ['myInfo'] });
     },
   });
 };
