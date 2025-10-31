@@ -16,7 +16,7 @@ export default function SettingsPage() {
     <div className="flex flex-col pr-10 pl-10 space-y-8">
       {/* 내 정보 */}
       <UserInfoCard member={myInfo} />
-      <AvatarsDrawer showEditButton={false} />
+      <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
       <Separator />
       <AlarmSettingCard />
       <Separator />

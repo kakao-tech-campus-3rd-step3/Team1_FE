@@ -12,13 +12,18 @@ import { cn } from '@/shared/lib/utils';
 import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
+import toast from 'react-hot-toast';
+import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
 
 const avatarBgColors = Object.values(AVATAR_BG_COLOR);
 interface AvatarsDrawerProps {
   showEditButton?: boolean;
+  showConfirmButton?: boolean;
 }
 
-const AvatarsDrawer = ({ showEditButton }: AvatarsDrawerProps) => {
+const AvatarsDrawer = ({ showEditButton=true, showConfirmButton }: AvatarsDrawerProps) => {
+  const { mutate: updateAvatar } = useUpdateAvatarMutation();
+
   const {
     selectedAvatarId,
     selectedBgColor,
@@ -28,7 +33,25 @@ const AvatarsDrawer = ({ showEditButton }: AvatarsDrawerProps) => {
     openDrawer,
     closeDrawer,
   } = useAvatarStore();
+  const handleConfirm = () => {
+    if (!selectedAvatarId || !selectedBgColor) {
+      toast.error('아바타와 배경색을 모두 선택해주세요!');
+      return;
+    }
 
+    updateAvatar(
+      { avatar: selectedAvatarId, backgroundColor: selectedBgColor },
+      {
+        onSuccess: () => {
+          toast.success('아바타가 변경되었습니다!');
+          closeDrawer();
+        },
+        onError: () => {
+          toast.error('아바타 변경에 실패했습니다.');
+        },
+      },
+    );
+  };
   return (
     <Drawer open={isDrawerOpen} onOpenChange={(open) => (open ? openDrawer() : closeDrawer())}>
       {showEditButton && (
@@ -48,7 +71,8 @@ const AvatarsDrawer = ({ showEditButton }: AvatarsDrawerProps) => {
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
           <DrawerTitle className="text-3xl font-bold text-gray-800 mb-2">아바타 선택</DrawerTitle>
           <DrawerDescription className="text-gray-600 text-lg">
-아바타와 배경색상을 골라보세요!          </DrawerDescription>
+            아바타와 배경색상을 골라보세요!{' '}
+          </DrawerDescription>
         </DrawerHeader>
 
         {/* 배경색 그리드 */}
@@ -135,6 +159,17 @@ const AvatarsDrawer = ({ showEditButton }: AvatarsDrawerProps) => {
             })}
           </div>
         </div>
+        {showConfirmButton && (selectedAvatarId || selectedBgColor) && (
+          <div className="flex justify-end px-6 py-4 border-t border-gray-100">
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="bg-boost-blue hover:bg-boost-blue-hover text-white font-medium px-6 py-2 rounded-lg shadow-md transition-all disabled:opacity-50"
+            >
+              확인
+            </button>
+          </div>
+        )}
       </DrawerContent>
     </Drawer>
   );
