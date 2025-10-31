@@ -1,12 +1,18 @@
 import { useInfiniteMyTasksByStatusQuery } from '@/features/task/hooks/useInfiniteMyTasksByStatusQuery';
 import type { Status } from '@/features/board/types/boardTypes';
 import type { TaskQuery } from '@/features/task/types/taskTypes';
+import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+import { DIRECTION, SORT_BY } from '@/features/board/constants/sortConstants';
 
-export const useAllMyTasksQueries = (enabled: boolean): Record<Status, TaskQuery> => {
+export const useAllMyTasksQueries = (
+  enabled: boolean,
+  sortBy: SortBy = SORT_BY.CREATED_AT,
+  direction: Direction = DIRECTION.ASC,
+): Record<Status, TaskQuery> => {
   return {
-    TODO: useInfiniteMyTasksByStatusQuery('TODO', { enabled }),
-    PROGRESS: useInfiniteMyTasksByStatusQuery('PROGRESS', { enabled }),
-    REVIEW: useInfiniteMyTasksByStatusQuery('REVIEW', { enabled }),
-    DONE: useInfiniteMyTasksByStatusQuery('DONE', { enabled }),
+    TODO: useInfiniteMyTasksByStatusQuery('TODO', sortBy, direction, { enabled }),
+    PROGRESS: useInfiniteMyTasksByStatusQuery('PROGRESS', sortBy, direction, { enabled }),
+    REVIEW: useInfiniteMyTasksByStatusQuery('REVIEW', sortBy, direction, { enabled }),
+    DONE: useInfiniteMyTasksByStatusQuery('DONE', sortBy, direction, { enabled }),
   };
 };

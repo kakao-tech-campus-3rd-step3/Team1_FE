@@ -5,24 +5,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
-import { useSortStore } from '@/shared/store/sortStore';
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
+import { useSortStore } from '@/features/board/store/useSortStore';
 import { useState } from 'react';
+import { DIRECTION, SORT_OPTIONS } from '@/features/board/constants/sortConstants';
 
 const SortDropDown = () => {
-  const { criteria, setCriteria, order, toggleOrder } = useSortStore();
+  const { sortBy, direction, setSortBy, toggleDirection } = useSortStore();
   const [open, setOpen] = useState(false);
 
-  const options: { label: string; value: 'created' | 'deadline' }[] = [
-    { label: '생성일자순', value: 'created' },
-    { label: '마감일자순', value: 'deadline' },
-  ];
-
-  const handleItemClick = (value: 'created' | 'deadline') => {
-    if (criteria === value) {
-      toggleOrder();
+  const handleItemClick = (value: (typeof SORT_OPTIONS)[number]['value']) => {
+    if (sortBy === value) {
+      toggleDirection();
     } else {
-      setCriteria(value);
+      setSortBy(value);
     }
   };
 
@@ -34,13 +30,12 @@ const SortDropDown = () => {
           className="border-gray-300 focus:border-gray-300 focus:ring-transparent"
           onClick={() => setOpen((prev) => !prev)}
         >
-          <span>{criteria === 'created' ? '생성일자순' : '마감일자순'}</span>
-          <span>{order === 'asc' ? <SortAscIcon size={16} /> : <SortDescIcon size={16} />}</span>
+          {SORT_OPTIONS.find((o) => o.value === sortBy)?.label}
+          {direction === DIRECTION.ASC ? <SortAscIcon size={16} /> : <SortDescIcon size={16} />}
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent className="w-36 border-gray-300" sideOffset={3}>
-        {options.map((opt) => (
+        {SORT_OPTIONS.map((opt) => (
           <DropdownMenuItem
             key={opt.value}
             className="flex items-center justify-between"
@@ -50,11 +45,12 @@ const SortDropDown = () => {
             }}
           >
             <span>{opt.label}</span>
-            {criteria === opt.value && (
-              <span>
-                {order === 'asc' ? <SortAscIcon size={16} /> : <SortDescIcon size={16} />}
-              </span>
-            )}
+            {sortBy === opt.value &&
+              (direction === DIRECTION.ASC ? (
+                <SortAscIcon size={16} />
+              ) : (
+                <SortDescIcon size={16} />
+              ))}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
