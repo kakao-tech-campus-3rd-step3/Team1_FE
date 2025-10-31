@@ -1,21 +1,45 @@
 import { Button } from '@/shared/components/shadcn/button';
-import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 import toast from 'react-hot-toast';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
+import { useModal } from '@/shared/hooks/useModal';
+import DeleteAccountModalContent from './DeleteAccountModalContent';
+import { useDeleteAccountMutation } from '../hooks/useDeleteAccountMutation';
 
 export const DeleteAccountCard = () => {
+  const { showSelect, resetModal } = useModal();
   const { mutate: deleteAccount, isPending } = useDeleteAccountMutation();
 
   const handleDelete = () => {
-    if (confirm('정말로 탈퇴하시겠습니까?')) {
-      deleteAccount(undefined, {
-        onSuccess: () => {
-          toast.success('계정이 삭제되었습니다.');
-          window.location.href = '/';
+    showSelect({
+      title: '계정 탈퇴',
+      description: '정말로 계정을 탈퇴하시겠습니까?',
+      size: 'md',
+      content: <DeleteAccountModalContent />,
+      buttons: [
+        {
+          text: '취소',
+          variant: 'outline',
+          onClick: async () => {
+            resetModal();
+          },
         },
-        onError: () => toast.error('회원 탈퇴에 실패했습니다.'),
-      });
-    }
+        {
+          text: '탈퇴하기',
+          variant: 'destructive',
+          onClick: async () => {
+            deleteAccount(undefined, {
+              onSuccess: () => {
+                toast.success('계정이 성공적으로 삭제되었습니다.');
+                resetModal();
+              },
+              onError: () => {
+                toast.error('계정 삭제 중 오류가 발생했습니다.');
+              },
+            });
+          },
+        },
+      ],
+    });
   };
 
   return (
