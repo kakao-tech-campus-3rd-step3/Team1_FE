@@ -8,7 +8,7 @@ import type {
 } from '@/features/task/types/taskTypes';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
-import { SORT_BY_CREATED_AT, DIRECTION_ASC } from '@/features/board/constants/sortConstants';
+import { SORT_BY, DIRECTION } from '@/features/board/constants/sortConstants';
 import type { Direction, SortBy } from '@/features/board/types/sortTypes';
 
 export const taskApi = {
@@ -17,8 +17,8 @@ export const taskApi = {
     cursor?: string,
     status?: string,
     limit = 10,
-    sortBy: SortBy = SORT_BY_CREATED_AT,
-    direction: Direction = DIRECTION_ASC,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<TaskListResponse> => {
     const res = await api.get<TaskListResponse>('/me/tasks', {
       params: { cursor, limit, status, sortBy, direction },
@@ -32,8 +32,8 @@ export const taskApi = {
     cursor?: string,
     status?: string,
     limit = 10,
-    sortBy: SortBy = SORT_BY_CREATED_AT,
-    direction: Direction = DIRECTION_ASC,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<TaskListResponse> => {
     const res = await api.get<TaskListResponse>(`/projects/${projectId}/tasks`, {
       params: { cursor, limit, status, sortBy, direction },
@@ -47,8 +47,8 @@ export const taskApi = {
     memberId: string,
     cursor?: string,
     limit = 10,
-    sortBy: SortBy = SORT_BY_CREATED_AT,
-    direction: Direction = DIRECTION_ASC,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<MemberTaskListResponse> => {
     const res = await api.get<MemberTaskListResponse>(
       `/projects/${projectId}/members/${memberId}/tasks`,

@@ -8,7 +8,7 @@ import {
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { useState } from 'react';
-import { DIRECTION_ASC, SORT_OPTIONS } from '@/features/board/constants/sortConstants';
+import { DIRECTION, SORT_OPTIONS } from '@/features/board/constants/sortConstants';
 
 const SortDropDown = () => {
   const { sortBy, direction, setSortBy, toggleDirection } = useSortStore();
@@ -31,7 +31,7 @@ const SortDropDown = () => {
           onClick={() => setOpen((prev) => !prev)}
         >
           {SORT_OPTIONS.find((o) => o.value === sortBy)?.label}
-          {direction === DIRECTION_ASC ? <SortAscIcon size={16} /> : <SortDescIcon size={16} />}
+          {direction === DIRECTION.ASC ? <SortAscIcon size={16} /> : <SortDescIcon size={16} />}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-36 border-gray-300" sideOffset={3}>
@@ -46,7 +46,7 @@ const SortDropDown = () => {
           >
             <span>{opt.label}</span>
             {sortBy === opt.value &&
-              (direction === DIRECTION_ASC ? (
+              (direction === DIRECTION.ASC ? (
                 <SortAscIcon size={16} />
               ) : (
                 <SortDescIcon size={16} />
