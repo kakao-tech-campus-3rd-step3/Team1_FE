@@ -2,8 +2,8 @@ import { Button } from '@/shared/components/shadcn/button';
 import toast from 'react-hot-toast';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { useModal } from '@/shared/hooks/useModal';
-import DeleteAccountModalContent from './DeleteAccountModalContent';
-import { useDeleteAccountMutation } from '../hooks/useDeleteAccountMutation';
+import DeleteAccountModalContent from '@/features/settings/components/DeleteAccountModalContent';
+import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 
@@ -17,6 +17,7 @@ export const DeleteAccountCard = () => {
       title: '계정 탈퇴',
       description: '정말로 계정을 탈퇴하시겠습니까?',
       size: 'md',
+      titleAlign: 'center',
       content: <DeleteAccountModalContent />,
       buttons: [
         {
@@ -35,7 +36,6 @@ export const DeleteAccountCard = () => {
                 toast.success('계정이 성공적으로 삭제되었습니다.');
                 resetModal();
                 navigate(ROUTE_PATH.MAIN);
-                
               },
               onError: () => {
                 toast.error('계정 삭제 중 오류가 발생했습니다.');
