@@ -4,10 +4,13 @@ import { SettingsSectionCard } from '@/features/settings/components/SettingsSect
 import { useModal } from '@/shared/hooks/useModal';
 import DeleteAccountModalContent from './DeleteAccountModalContent';
 import { useDeleteAccountMutation } from '../hooks/useDeleteAccountMutation';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 export const DeleteAccountCard = () => {
   const { showSelect, resetModal } = useModal();
   const { mutate: deleteAccount, isPending } = useDeleteAccountMutation();
+  const navitate = useNavigate()
 
   const handleDelete = () => {
     showSelect({
@@ -31,6 +34,8 @@ export const DeleteAccountCard = () => {
               onSuccess: () => {
                 toast.success('계정이 성공적으로 삭제되었습니다.');
                 resetModal();
+                navitate(ROUTE_PATH.MAIN)
+                
               },
               onError: () => {
                 toast.error('계정 삭제 중 오류가 발생했습니다.');
