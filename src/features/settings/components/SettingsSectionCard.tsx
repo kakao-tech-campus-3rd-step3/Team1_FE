@@ -16,7 +16,7 @@ export const SettingsSectionCard = ({
   className,
 }: SettingsSectionCardProps) => {
   return (
-    <Card className={cn('border-none shadow-none border-b border-gray-200', className)}>
+    <Card className={cn('shadow-none border-b border-gray-200', className)}>
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-800">{title}</CardTitle>
         {desc && <p className="text-sm text-gray-500 mt-1 leading-relaxed">{desc}</p>}
