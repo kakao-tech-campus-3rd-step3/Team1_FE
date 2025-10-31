@@ -1,5 +1,6 @@
 import type {
   MemberTaskListResponse,
+  MyTaskCountByStatusResponse,
   ProjectTaskCountByMemberResponse,
   ProjectTaskCountByStatusResponse,
   TaskDetail,
@@ -74,6 +75,12 @@ export const taskApi = {
     const res = await api.get<ProjectTaskCountByMemberResponse[]>(
       `/projects/${projectId}/tasks/members/status-count`,
     );
+    return res.data;
+  },
+
+  // 나의 할 일 개수 조회 (상태 기준)
+  fetchMyTaskCountByStatus: async (): Promise<MyTaskCountByStatusResponse> => {
+    const res = await api.get<MyTaskCountByStatusResponse>(`/me/tasks/status-count`);
     return res.data;
   },
 

@@ -83,6 +83,9 @@ export const useDeleteTaskMutation = (projectId: string) => {
       queryClient.invalidateQueries({
         queryKey: TASK_QUERY_KEYS.projectCountMember(projectId),
       });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.meCountStatus(),
+      });
     },
   });
 };

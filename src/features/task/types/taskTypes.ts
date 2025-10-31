@@ -97,8 +97,17 @@ export type ProjectTaskCountByStatusResponse = {
   done: number;
 };
 
+// 나의 할 일 개수 API 응답 타입
+export type MyTaskCountByStatusResponse = {
+  memberId: string;
+  todo: number;
+  progress: number;
+  review: number;
+  done: number;
+};
+
 // UI나 내부 로직에서 사용하기 위한 상태별 개수 맵 타입
-export type ProjectTaskCountByStatusMap = Record<'todo' | 'progress' | 'review' | 'done', number>;
+export type TaskCountByStatusMap = Record<'todo' | 'progress' | 'review' | 'done', number>;
 
 // 프로젝트 팀원별 할 일 개수 API 응답 타입
 export type ProjectTaskCountByMemberResponse = {
