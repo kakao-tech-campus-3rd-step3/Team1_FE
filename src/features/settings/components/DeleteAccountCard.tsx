@@ -10,7 +10,7 @@ import { ROUTE_PATH } from '@/app/routes/Router';
 export const DeleteAccountCard = () => {
   const { showSelect, resetModal } = useModal();
   const { mutate: deleteAccount, isPending } = useDeleteAccountMutation();
-  const navitate = useNavigate()
+  const navigate = useNavigate()
 
   const handleDelete = () => {
     showSelect({
@@ -34,7 +34,7 @@ export const DeleteAccountCard = () => {
               onSuccess: () => {
                 toast.success('계정이 성공적으로 삭제되었습니다.');
                 resetModal();
-                navitate(ROUTE_PATH.MAIN)
+                navigate(ROUTE_PATH.MAIN);
                 
               },
               onError: () => {
