@@ -1,12 +1,19 @@
-import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+export const SORT_BY = {
+  CREATED_AT: 'CREATED_AT',
+  DUE_DATE: 'DUE_DATE',
+} as const;
 
-export const SORT_BY_CREATED_AT: SortBy = 'CREATED_AT';
-export const SORT_BY_DUE_DATE: SortBy = 'DUE_DATE';
-
-export const DIRECTION_ASC: Direction = 'ASC';
-export const DIRECTION_DESC: Direction = 'DESC';
+export const DIRECTION = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+} as const;
 
 export const SORT_OPTIONS = [
-  { label: '생성일자순', value: SORT_BY_CREATED_AT },
-  { label: '마감일자순', value: SORT_BY_DUE_DATE },
+  { label: '생성일자순', value: SORT_BY.CREATED_AT },
+  { label: '마감일자순', value: SORT_BY.DUE_DATE },
+] as const;
+
+export const DIRECTION_OPTIONS = [
+  { label: '오름차순', value: DIRECTION.ASC },
+  { label: '내림차순', value: DIRECTION.DESC },
 ] as const;
