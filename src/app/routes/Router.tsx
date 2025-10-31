@@ -18,6 +18,7 @@ import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
 import MemoEditor from '@/features/memo/components/MemoEditor/MemoEditor';
 import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
+import SettingsPage from '@/pages/SettingsPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -37,6 +38,7 @@ export const ROUTE_PATH = {
   MY_INFO: '/my-info',
   ALARM_SETUP: '/alarm/setup',
   ALARM_SETUP_MOBILE: '/alarm/permission',
+  SETTINGS: '/my-settings',
 };
 
 export const ROUTES = {
@@ -76,6 +78,7 @@ const PROTECTED_ROUTES = [
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
   { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
+  { path: ROUTE_PATH.SETTINGS, element: <SettingsPage /> },
 ];
 
 const PROTECTED_ROUTES_NO_LAYOUT = [
