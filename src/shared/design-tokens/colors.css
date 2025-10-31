@@ -48,14 +48,14 @@
   --color-status-error: #dc3545;
 
   /* Avatar Colors */
-  ----color-avatar-blue: #D5E3FF;
-  ----color-avatar-orange: #FBE0CB;
-  ----color-avatar-yellow: #FFF5CF;
-  ----color-avatar-red: #FFD1D1;
-  ----color-avatar-pink: #FFE3FD;
-  ----color-avatar-green: #DFF5E6;
-  ----color-avatar-purple: #E9DCFF;
-  ----color-avatar-gray: #DBDBDB;
+  --color-avatar-blue: #d5e3ff;
+  --color-avatar-orange: #fbe0cb;
+  --color-avatar-yellow: #fff5cf;
+  --color-avatar-red: #ffd1d1;
+  --color-avatar-pink: #ffe3fd;
+  --color-avatar-green: #dff5e6;
+  --color-avatar-purple: #e9dcff;
+  --color-avatar-gray: #dbdbdb;
 
   /* Background Colors */
   --color-background-default: var(--color-gray-100);
