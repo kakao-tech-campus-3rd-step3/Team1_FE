@@ -1,39 +1,40 @@
-import { useState } from 'react';
-
-import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
-import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
-import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
-import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
-import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutation';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
-import { getRandomAvatarId } from '@/features/avatar-picker/utils/avatarUtils';
-import { useAvatarSaveMutation } from '@/features/avatar-picker/hooks/useAvatarSaveMutation';
+import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
+import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
+import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
+import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
+import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 
 const AvatarSettingsPage = () => {
-  const [selectedAvatarId, setSelectedAvatarId] = useState<string>(() => getRandomAvatarId());
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const { selectedAvatarId, selectedBgColor } = useAvatarStore();
+  const setAuth = useAuthStore((s) => s.setAuth);
   const { mutate: saveAvatar } = useAvatarSaveMutation();
-
-  const handleAvatarSelect = (id: string) => {
-    setSelectedAvatarId(id);
-  };
+  const navigate = useNavigate();
 
   const handleSave = () => {
-    setAuth({ user: { avatar: String(selectedAvatarId) } });
+    if (!selectedBgColor) {
+      toast.error('배경색을 선택해주세요!');
+      return;
+    }
 
-    saveAvatar(String(selectedAvatarId), {
+    const avatarInfo = {
+      avatarId: selectedAvatarId,
+      backgroundColor: selectedBgColor,
+    };
+
+    setAuth({ user: { avatar: avatarInfo } });
+
+    saveAvatar(avatarInfo, {
       onSuccess: () => {
         toast.success('아바타가 저장되었습니다!');
         navigate(ROUTE_PATH.MY_TASK);
       },
-      onError: () => {
-        toast.error('아바타 저장에 실패했습니다.');
-      },
+      onError: () => toast.error('아바타 저장에 실패했습니다.'),
     });
   };
 
@@ -42,12 +43,7 @@ const AvatarSettingsPage = () => {
       <AvatarBackgroundDecorations />
       <div className="max-w-md mx-auto items-center">
         <AvatarHeader />
-        <AvatarSelector
-          isDrawerOpen={isDrawerOpen}
-          selectedAvatar={selectedAvatarId}
-          setIsDrawerOpen={setIsDrawerOpen}
-          handleAvatarSelect={handleAvatarSelect}
-        />
+        <AvatarSelector />
         <AvatarInfo />
         <AvatarSaveBtn handleSave={handleSave} />
       </div>

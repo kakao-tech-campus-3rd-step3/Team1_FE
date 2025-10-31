@@ -14,10 +14,9 @@ interface UserInfoProps {
 
 interface UserInfoComponentProps {
   member: UserInfoProps;
-  onAvatarEdit?: () => void;
 }
 
-export const UserInfoCard = ({ member, onAvatarEdit }: UserInfoComponentProps) => {
+export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [newName, setNewName] = useState(member.name);
   const { mutate: updateName, isPending } = useUpdateNameMutation();
@@ -78,9 +77,7 @@ export const UserInfoCard = ({ member, onAvatarEdit }: UserInfoComponentProps) =
             이름 변경
           </Button>
 
-          <Button variant="secondary" onClick={onAvatarEdit}>
-            아바타 변경
-          </Button>
+          <Button variant="secondary">아바타 변경</Button>
         </div>
       </div>
     </SettingsSectionCard>
