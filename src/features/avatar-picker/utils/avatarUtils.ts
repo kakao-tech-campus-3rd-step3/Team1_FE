@@ -1,24 +1,31 @@
+import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
+
 type AvatarModule = { default: string };
 
 const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.png', {
   eager: true,
 });
+const sortedAvatars = Object.entries(avatarModules)
+  .sort(([pathA], [pathB]) => {
+    const getNum = (path: string) => {
+      const matches = path.match(/\d+(?=\.png$)/g);
+      return matches ? parseInt(matches[matches.length - 1], 10) : 0;
+    };
 
-export const avatarList = Object.values(avatarModules).map((m) => m.default);
-
+    const numA = getNum(pathA);
+    const numB = getNum(pathB);
+    return numA - numB;
+  })
+  .map(([filePath, module]) => {
+    console.log(filePath);
+    return module.default;
+  });
+export const avatarList = sortedAvatars.slice(1); // 01.png ~ 80.png만 포함
 export const getAvatarListUtils = () => avatarList;
 
 export const getRandomAvatarId = () => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
-  return randomIndex;
-};
-
-export const getAvatarById = (avatarId: string | number) => {
-  const targetFileName = `${Number(avatarId)}.png`;
-  for (const [path, module] of Object.entries(avatarModules)) {
-    if (path.endsWith(targetFileName)) return module.default;
-  }
-  return undefined;
+  return String(randomIndex);
 };
 
 export const getAvatarSrc = (
@@ -28,4 +35,14 @@ export const getAvatarSrc = (
   if (!member) return propsAvatarList[0];
   const index = Number(member.avatar);
   return propsAvatarList[index] ?? propsAvatarList[0];
+};
+
+// 백엔드와 통신할 때 매핑 유틸
+export const getTokenFromHex = (hex: string) => {
+  const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.hex === hex);
+  return entry;
+};
+export const getHexFromToken = (token: string) => {
+  const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.token === token);
+  return entry;
 };

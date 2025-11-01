@@ -13,7 +13,7 @@ const ProjectMemberItem = ({ member }: ProjectMemberItemProps) => {
   return (
     <div className="flex items-center justify-between border border-gray-200 rounded-lg px-3 py-3 hover:border-gray-300 hover:bg-gray-50 transition-all">
       <div className="flex items-center gap-3 flex-1">
-          {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
+        {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
         <div
           className={cn(
             'w-10 h-10 rounded-full flex items-center justify-center text-gray-100 shadow-sm',

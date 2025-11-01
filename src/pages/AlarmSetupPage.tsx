@@ -30,7 +30,13 @@ const AlarmSetupPage = () => {
     }
   }, [statusData, navigate]);
   useEffect(() => {
-    createPushSession();
+    createPushSession(); // 초기 한 번 실행
+
+    const interval = setInterval(() => {
+      createPushSession();
+    }, 30 * 1000);
+
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
