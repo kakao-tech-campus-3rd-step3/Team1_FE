@@ -31,10 +31,8 @@ const AvatarSettingsPage = () => {
 
     saveAvatar(avatarInfo, {
       onSuccess: () => {
-        toast.success('아바타가 저장되었습니다!');
         navigate(ROUTE_PATH.MY_TASK);
       },
-      onError: () => toast.error('아바타 저장에 실패했습니다.'),
     });
   };
 
