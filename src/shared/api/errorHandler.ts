@@ -34,6 +34,10 @@ export const handleGeneralApiError = (error: AxiosError<ApiErrorResponse>) => {
       //500 에러일때 에러바운더리에 걸리게 함
       throw new ApiError(data?.message || '서버 에러가 발생했습니다. ', status, error);
 
+    case 409:
+      // 409 : API 훅에서 필요에 따라 처리
+      throw error;
+
     case 404:
       // 404 : API 훅에서 필요에 따라 처리
       throw error;
