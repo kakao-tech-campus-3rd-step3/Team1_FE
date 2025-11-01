@@ -7,5 +7,6 @@ export const useTaskDetailQuery = (projectId: string, taskId: string) => {
   return useQuery({
     queryKey: TASK_QUERY_KEYS.detail(projectId, taskId),
     queryFn: () => taskApi.fetchTaskDetail(projectId, taskId),
+    enabled: !!projectId && !!taskId,
   });
 };
