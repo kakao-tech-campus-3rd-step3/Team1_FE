@@ -27,11 +27,10 @@ const AvatarSettingsPage = () => {
       backgroundColor: selectedBgColor,
     };
 
-    setAuth({ user: avatarInfo });
-
     saveAvatar(avatarInfo, {
       onSuccess: () => {
         navigate(ROUTE_PATH.MY_TASK);
+        setAuth({ user: avatarInfo });
       },
     });
   };
