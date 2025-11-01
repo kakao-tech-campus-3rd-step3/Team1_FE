@@ -17,7 +17,7 @@ const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: Over
         .filter((m: FileInfo) => m.filePage === pageNumber)
         .map((m) => {
           const left = (m.fileX ? m.fileX / pageSize.width : 0) * 100;
-          const top = (m.fileY ? m.fileY / pageSize.height : 0) * 100;
+          const top = 100- (m.fileY ? m.fileY / pageSize.height : 0) * 100;
 
           return (
             <div
