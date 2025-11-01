@@ -62,12 +62,9 @@ const AssigneeDropdown = ({
               )}
             />
 
-            {/*📍TODO: 배경 색 로직 추가 이후 보완 필요 */}
             <Avatar
-              className={cn(
-                'flex items-center h-6 w-6 rounded-full shrink-0 shadow-xs',
-                'bg-boost-yellow',
-              )}
+              style={{ backgroundColor: member.backgroundColor }}
+              className={cn('flex items-center h-6 w-6 rounded-full shrink-0 shadow-xs')}
             >
               <AvatarImage
                 src={getAvatarSrc(member)}
