@@ -1,6 +1,11 @@
 import api from '@/shared/api/axiosInstance';
-import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
-
+import type { CommentType, FileInfo } from '@/features/comment/types/commentTypes';
+export interface CreateCommentRequest {
+  content: string;
+  persona: 'BOO' | 'USER';
+  isAnonymous: boolean;
+  fileInfo?: FileInfo;
+}
 export const commentApi = {
   // 댓글 목록 조회
   fetchComments: async (projectId: string, taskId: string): Promise<CommentType[]> => {
