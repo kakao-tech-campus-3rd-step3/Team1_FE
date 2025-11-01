@@ -8,7 +8,7 @@ export const useDeleteAccountMutation = () => {
   return useMutation({
     mutationFn: settingsApi.deleteAccount,
     onSuccess: () => {
-      toast.success("")
+      toast.success('');
       clearAuth();
     },
   });

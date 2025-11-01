@@ -11,7 +11,7 @@ import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 interface UserInfoProps {
   name: string;
   avatar: string;
-  backgroundColor:string;
+  backgroundColor: string;
 }
 
 interface UserInfoComponentProps {
@@ -22,7 +22,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [newName, setNewName] = useState(member.name);
   const { mutate: updateName, isPending } = useUpdateNameMutation();
-const {openDrawer} = useAvatarStore()
+  const { openDrawer } = useAvatarStore();
   const handleNameSave = () => {
     if (!newName.trim()) {
       toast.error('이름을 입력해주세요.');

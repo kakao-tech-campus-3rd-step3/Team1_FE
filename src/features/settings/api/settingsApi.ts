@@ -12,10 +12,10 @@ export const settingsApi = {
     await api.put('/members/me/name', { name });
   },
   // 아바타 수정
-  updateAvatar: async ({avatar ,backgroundColor}: AvatarInfo): Promise<void>  => {
+  updateAvatar: async ({ avatar, backgroundColor }: AvatarInfo): Promise<void> => {
     await api.put('/members/me/avatar', {
       avatar: avatar,
-      backgroundColor:backgroundColor,
+      backgroundColor: backgroundColor,
     });
   },
 

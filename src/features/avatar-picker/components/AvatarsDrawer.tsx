@@ -21,7 +21,7 @@ interface AvatarsDrawerProps {
   showConfirmButton?: boolean;
 }
 
-const AvatarsDrawer = ({ showEditButton=true, showConfirmButton }: AvatarsDrawerProps) => {
+const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDrawerProps) => {
   const { mutate: updateAvatar } = useUpdateAvatarMutation();
 
   const {
