@@ -43,11 +43,7 @@ const AvatarsDrawer = ({ showEditButton=true, showConfirmButton }: AvatarsDrawer
       { avatar: selectedAvatarId, backgroundColor: selectedBgColor },
       {
         onSuccess: () => {
-          toast.success('아바타가 변경되었습니다!');
           closeDrawer();
-        },
-        onError: () => {
-          toast.error('아바타 변경에 실패했습니다.');
         },
       },
     );
