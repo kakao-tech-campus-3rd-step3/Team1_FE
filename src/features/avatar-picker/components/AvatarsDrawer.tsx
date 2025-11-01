@@ -74,7 +74,6 @@ const AvatarsDrawer = ({ showEditButton=true, showConfirmButton }: AvatarsDrawer
             아바타와 배경색상을 골라보세요!{' '}
           </DrawerDescription>
         </DrawerHeader>
-
         {/* 배경색 그리드 */}
         <div className="px-6 py-6 border-b border-gray-100">
           <div className="flex justify-center gap-3 flex-wrap max-w-md mx-auto">
@@ -159,7 +158,7 @@ const AvatarsDrawer = ({ showEditButton=true, showConfirmButton }: AvatarsDrawer
             })}
           </div>
         </div>
-        {showConfirmButton && (selectedAvatarId || selectedBgColor) && (
+        {showConfirmButton && selectedAvatarId && selectedBgColor && (
           <div className="flex justify-end px-6 py-4 border-t border-gray-100">
             <button
               type="button"
