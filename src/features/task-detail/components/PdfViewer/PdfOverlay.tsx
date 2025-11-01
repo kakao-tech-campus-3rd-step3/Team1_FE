@@ -1,28 +1,31 @@
-import Profile from '@/shared/assets/images/avatars/78.png';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
-import type { FileInfo } from '@/features/comment/types/commentTypes';
+import type { PinWithAuthor } from '@/features/comment/types/commentTypes';
+import { useTaskDetailStore } from '../../store/useTaskDetailStore';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import { useAuthStore } from '@/features/auth/store/authStore';
 interface OverlayProps {
-  pins: FileInfo[];
-  currentPin: FileInfo | null;
   pageNumber: number;
   zoom: number;
   pageSize: PageSize;
   onClick: (e: React.MouseEvent) => void;
 }
 
-const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
+const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
+  const { pins, currentPin, selectedFile } = useTaskDetailStore();
+  const pinList = pins as PinWithAuthor[];
+  const { user } = useAuthStore();
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>
-      {pins
-        .filter((m: FileInfo) => m.filePage === pageNumber)
+      {pinList
+        .filter((m) => m.fileId === selectedFile?.fileId && m.filePage === pageNumber)
         .map((m) => {
           const left = (m.fileX ? m.fileX / pageSize.width : 0) * 100;
-          const top = (m.fileY ? m.fileY / pageSize.height : 0) * 100;
+          const top = 100 - (m.fileY ? m.fileY / pageSize.height : 0) * 100;
 
           return (
             <div
               key={m.fileId}
-              className="bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer"
+              className="bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-white shadow-md overflow-hidden cursor-pointer"
               style={{
                 left: `${left}%`,
                 top: `${top}%`,
@@ -30,7 +33,7 @@ const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: Over
               }}
             >
               <img
-                src={Profile}
+                src={getAvatarSrc({ avatar: m.author?.avatar })}
                 alt="profile"
                 className="w-full h-full object-cover -rotate-[-45deg]"
               />
@@ -52,8 +55,9 @@ const Overlay = ({ pins, currentPin, pageNumber, zoom, pageSize, onClick }: Over
               }}
             >
               <img
-                src={Profile}
+                src={getAvatarSrc({ avatar: user?.avatar })}
                 alt="current pin"
+                style={{ backgroundColor: user?.backgroundColor }}
                 className="w-full h-full object-cover rotate-[45deg]"
               />
             </div>

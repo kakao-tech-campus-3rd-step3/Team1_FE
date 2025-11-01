@@ -4,22 +4,15 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/utils';
-import type { PDFViewerProps } from '@/features/task-detail/types/pdfViewerTypes';
 import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
 import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
+import { useTaskDetailStore } from '../../store/useTaskDetailStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import type { PinWithAuthor } from '@/features/comment/types/commentTypes';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDFViewer = ({
-  pdfUrl,
-  fileName,
-  fileId,
-  onClose,
-  setFileInfo,
-  pins,
-  currentPin,
-  setCurrentPin,
-}: PDFViewerProps) => {
+const PDFViewer = () => {
   const {
     pageNumber,
     zoom,
@@ -35,9 +28,9 @@ const PDFViewer = ({
     setPdfDocument,
     updatePageSize,
   } = usePdfStore();
-
+  const { setCurrentPin, selectedFile, togglePdf } = useTaskDetailStore();
   const mouseMoved = useRef(false);
-
+  const { user } = useAuthStore();
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
@@ -72,17 +65,28 @@ const PDFViewer = ({
 
     const pdfX = (x / rect.width) * pageSize.width;
     const pdfY = (1 - y / rect.height) * pageSize.height;
-    const newPin = { fileId, filePage: pageNumber, fileX: pdfX, fileY: pdfY };
+    const newPin: PinWithAuthor = {
+      fileId: selectedFile?.fileId ?? '',
+      fileName: selectedFile?.fileName ?? '',
+      filePage: pageNumber,
+      fileX: pdfX,
+      fileY: pdfY,
+      author: {
+        id: user?.id ?? '',
+        name: user?.name ?? '익명',
+        avatar: user?.avatar ?? '0',
+        backgroundColor: user?.backgroundColor ?? '#CCCCCC',
+      },
+    };
     setCurrentPin(newPin);
-    setFileInfo(newPin);
   };
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
       <div className="w-full h-12 flex items-center justify-between te bg-white border-b-gray-400 xt-white px-4">
-        <span className="text-sm">{fileName}</span>
+        <span className="text-sm">{selectedFile?.fileName}</span>
         <button
-          onClick={onClose}
+          onClick={() => togglePdf(false)}
           className="text-sm bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded-md transition"
         >
           ← 뒤로가기
@@ -102,7 +106,7 @@ const PDFViewer = ({
           onMouseLeave={onMouseUp}
         >
           <Document
-            file={pdfUrl}
+            file={selectedFile?.fileUrl}
             onLoadSuccess={(pdf) => {
               onDocumentLoadSuccess(pdf);
               setPdfDocument(pdf);
@@ -112,8 +116,6 @@ const PDFViewer = ({
           </Document>
 
           <Overlay
-            pins={pins}
-            currentPin={currentPin}
             pageNumber={pageNumber}
             zoom={zoom}
             pageSize={pageSize}

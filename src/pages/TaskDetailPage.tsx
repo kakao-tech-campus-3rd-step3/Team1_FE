@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
@@ -6,38 +6,49 @@ import FileSection from '@/features/task-detail/components/FileSection/FileSecti
 import PDFViewer from '@/features/task-detail/components/PdfViewer/PdfViewer';
 import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
-import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
+import type { CommentUIType, FileInfo, PinWithAuthor } from '@/features/comment/types/commentTypes';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import toast from 'react-hot-toast';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
-  const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
-  const [fileInfo, setFileInfo] = useState<FileInfo | null>({});
-  const [isPdfOpen, setIsPdfOpen] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState('');
-  const [fileName, setFileName] = useState('');
-  const [pins, setPins] = useState<FileInfo[]>([]); // 댓글에서 추출한 핀
-  const [currentPin, setCurrentPin] = useState<FileInfo | null>(null);
+  const { selectedFile, setSelectedFile, isPdfOpen, setPins, togglePdf } = useTaskDetailStore();
 
-  // 댓글을 맨 처음 불러왔을 때 핀 정보를 추출해 pins에 저장
-  const handleCommentsFetched = useCallback((comments: CommentUIType[]) => {
-    const extractedPins = comments.filter((c) => c.fileInfo).map((c) => c.fileInfo as FileInfo);
-    setPins(extractedPins);
-  }, []);
+  const handleCommentsFetched = useCallback(
+    (comments: CommentUIType[]) => {
+      const extractedPins = comments
+        .filter((c) => c.fileInfo)
+        .map((c) => ({
+          ...(c.fileInfo as FileInfo),
+          author: {
+            id: c.authorInfo.id,
+            name: c.authorInfo.name,
+            avatar: c.authorInfo.avatar,
+            backgroundColor: c.authorInfo.backgroundColor,
+          },
+        })) as PinWithAuthor[];
 
-  // 댓글을 선택하면 PDF 뷰어에서 해당 파일과 핀을 보여줌
+      setPins(extractedPins);
+    },
+    [setPins],
+  );
   const handleCommentSelect = async (fileInfo: FileInfo | null) => {
     if (!fileInfo?.fileId) return;
     try {
       const downloadResult = await fetchFileDownloadUrl(fileInfo.fileId);
       const clickedFile = task?.files?.find((file) => file.id === fileInfo.fileId);
-      setPdfUrl(downloadResult.url);
-      setFileName(clickedFile ? clickedFile.filename : 'Unknown');
-      setSelectedFileId(fileInfo.fileId);
-      setIsPdfOpen(true);
-      setCurrentPin(fileInfo);
+      if (clickedFile) {
+        setSelectedFile({
+          fileId: clickedFile.id,
+          fileName: clickedFile.filename,
+          fileUrl: downloadResult.url,
+        });
+      } else {
+        setSelectedFile(null);
+      }
+      togglePdf(true);
     } catch (err) {
       console.error('파일 열기 오류:', err);
       toast.error('파일을 여는 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -52,16 +63,7 @@ const TaskDetailPage = () => {
       <div className="flex flex-1 overflow-hidden">
         <div id="left" className="flex flex-col w-6/10 overflow-hidden">
           {isPdfOpen ? (
-            <PDFViewer
-              pdfUrl={pdfUrl}
-              fileId={selectedFileId ?? ''}
-              fileName={fileName}
-              pins={pins}
-              currentPin={currentPin}
-              setCurrentPin={setCurrentPin}
-              setFileInfo={setFileInfo}
-              onClose={() => setIsPdfOpen(false)}
-            />
+            <PDFViewer />
           ) : (
             <>
               <section id="detail" className="h-8/12 overflow-y-scroll">
@@ -73,10 +75,8 @@ const TaskDetailPage = () => {
                   files={task.files}
                   taskId={taskId ?? ''}
                   onOpenPdf={(url, name, id) => {
-                    setPdfUrl(url);
-                    setFileName(name);
-                    setSelectedFileId(id);
-                    setIsPdfOpen(true);
+                    setSelectedFile({ fileId: id, fileName: name, fileUrl: url });
+                    togglePdf(true);
                   }}
                 />
               </section>
@@ -89,8 +89,7 @@ const TaskDetailPage = () => {
             <CommentSection
               projectId={projectId ?? ''}
               taskId={taskId ?? ''}
-              fileInfo={fileInfo}
-              setFileInfo={setFileInfo}
+              fileInfo={selectedFile}
               onCommentsFetched={handleCommentsFetched}
               onCommentSelect={handleCommentSelect}
             />

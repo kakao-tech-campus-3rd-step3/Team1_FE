@@ -5,29 +5,37 @@ export interface FileInfo {
   fileX?: number;
   fileY?: number;
   comments?: Comment[];
-  pdfUrl?:string;
+  fileUrl?: string;
 }
-export type CreateCommentRequest = Omit<
-  CommentType,
-  'commentId' | 'authorInfo' | 'createdAt' | 'updatedAt'
->;
+export interface AuthorInfo {
+  id: string;
+  name: string;
+  avatar: string;
+  backgroundColor: string;
+}
+
 export interface CommentType {
   commentId: string;
   content: string;
   persona: string;
   isAnonymous: boolean;
-  fileInfo: Partial<FileInfo>;
-  authorInfo: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
+  fileInfo?: FileInfo;
+  authorInfo: AuthorInfo;
   createdAt: string;
   updatedAt: string;
 }
-export type CommentUIType = CommentType & {
+export interface CommentUIType extends CommentType {
   author: string;
   fallback: string;
   timeAgo: string;
   isPinned?: boolean;
-};
+}
+
+export interface PinWithAuthor {
+  fileId: string;
+  fileName?: string;
+  filePage?: number;
+  fileX?: number;
+  fileY?: number;
+  author?: AuthorInfo;
+}

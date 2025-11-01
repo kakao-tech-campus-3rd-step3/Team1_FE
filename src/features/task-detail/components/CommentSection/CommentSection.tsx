@@ -13,6 +13,7 @@ import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateComm
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import toast from 'react-hot-toast';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 interface CommentSectionProps {
   projectId: string;
@@ -27,7 +28,6 @@ const CommentSection = ({
   projectId,
   taskId,
   fileInfo,
-  setFileInfo,
   onCommentSelect,
   onCommentsFetched,
 }: CommentSectionProps) => {
@@ -36,7 +36,7 @@ const CommentSection = ({
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editInput, setEditInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-
+  const { setSelectedFile } = useTaskDetailStore();
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
@@ -86,7 +86,7 @@ const CommentSection = ({
     //⚠️ TODO: fileInfo =null 이면 500 에러 발생
     // 댓글 생성 이후 setFileInfo={} 이라
     // CurrentPin 초기화가 되지 않음
-    if (setFileInfo) setFileInfo({});
+    if (setSelectedFile) setSelectedFile({});
 
     setInput('');
   };

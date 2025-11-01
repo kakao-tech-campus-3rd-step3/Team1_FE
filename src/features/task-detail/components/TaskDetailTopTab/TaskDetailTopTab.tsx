@@ -4,6 +4,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { ChevronLeft } from 'lucide-react';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { cn } from '@/shared/lib/utils';
+import { useTaskDetailStore } from '../../store/useTaskDetailStore';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -14,7 +15,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
 
   const [approvedCount, setApprovedCount] = useState(task.approvedCount);
   const [isMyReviewed, setIsMyReviewed] = useState(false);
-
+  const { togglePdf } = useTaskDetailStore();
   const handleReviewComplete = () => {
     if (isMyReviewed) return;
     setApprovedCount((prev) => prev + 1);
@@ -28,7 +29,10 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
           size={30}
           strokeWidth={1}
           className="h-12 ml-1 cursor-pointer"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            togglePdf(false);
+            navigate(-1);
+          }}
         />
         <div>{task.title}</div>
       </div>
