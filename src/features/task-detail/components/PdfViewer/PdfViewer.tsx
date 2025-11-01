@@ -28,7 +28,7 @@ const PDFViewer = () => {
     setPdfDocument,
     updatePageSize,
   } = usePdfStore();
-  const { currentPin,setCurrentPin, selectedFile, togglePdf } = useTaskDetailStore();
+  const { currentPin, setCurrentPin, selectedFile, togglePdf } = useTaskDetailStore();
   const mouseMoved = useRef(false);
   const { user } = useAuthStore();
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
@@ -55,42 +55,41 @@ const PDFViewer = () => {
   const onMouseUp = () => {
     stopDrag();
   };
-const handleOverlayClick = (e: React.MouseEvent) => {
-  if (mouseMoved.current) return;
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (mouseMoved.current) return;
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    const pdfX = (x / rect.width) * pageSize.width;
+    const pdfY = (1 - y / rect.height) * pageSize.height;
 
-  const pdfX = (x / rect.width) * pageSize.width;
-  const pdfY = (1 - y / rect.height) * pageSize.height;
+    if (
+      currentPin &&
+      Math.abs(currentPin.fileX! - pdfX) < 20 &&
+      Math.abs(currentPin.fileY! - pdfY) < 20 &&
+      currentPin.filePage === pageNumber
+    ) {
+      setCurrentPin(null);
+      return;
+    }
 
-  if (
-    currentPin &&
-    Math.abs(currentPin.fileX! - pdfX) < 20 &&
-    Math.abs(currentPin.fileY! - pdfY) < 20 &&
-    currentPin.filePage === pageNumber
-  ) {
-    setCurrentPin(null);
-    return;
-  }
+    const newPin: PinWithAuthor = {
+      fileId: selectedFile?.fileId ?? '',
+      fileName: selectedFile?.fileName ?? '',
+      filePage: pageNumber,
+      fileX: pdfX,
+      fileY: pdfY,
+      author: {
+        id: user?.id ?? '',
+        name: user?.name ?? '익명',
+        avatar: user?.avatar ?? '0',
+        backgroundColor: user?.backgroundColor ?? '#CCCCCC',
+      },
+    };
 
-  const newPin: PinWithAuthor = {
-    fileId: selectedFile?.fileId ?? '',
-    fileName: selectedFile?.fileName ?? '',
-    filePage: pageNumber,
-    fileX: pdfX,
-    fileY: pdfY,
-    author: {
-      id: user?.id ?? '',
-      name: user?.name ?? '익명',
-      avatar: user?.avatar ?? '0',
-      backgroundColor: user?.backgroundColor ?? '#CCCCCC',
-    },
+    setCurrentPin(newPin);
   };
-
-  setCurrentPin(newPin);
-};
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
