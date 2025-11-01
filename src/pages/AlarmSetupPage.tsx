@@ -29,17 +29,16 @@ const AlarmSetupPage = () => {
       toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
     }
   }, [statusData, navigate]);
-useEffect(() => {
-  createPushSession(); // 초기 한 번 실행
+  useEffect(() => {
+    createPushSession(); // 초기 한 번 실행
 
-  const interval = setInterval(() => {
-    createPushSession(); 
-  }, 30 * 1000);
+    const interval = setInterval(() => {
+      createPushSession();
+    }, 30 * 1000);
 
-  return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const qrData = data?.token
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${data.token}`

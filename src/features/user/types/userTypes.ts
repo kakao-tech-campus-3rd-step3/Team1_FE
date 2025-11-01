@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   avatar?: string;
-  backgroundColor?:string;
+  backgroundColor?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
