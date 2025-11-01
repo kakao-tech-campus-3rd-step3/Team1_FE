@@ -14,7 +14,7 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
-  const { selectedFile, setSelectedFile, isPdfOpen, setPins, togglePdf } = useTaskDetailStore();
+  const { setSelectedFile, isPdfOpen, setPins, togglePdf } = useTaskDetailStore();
 
   const handleCommentsFetched = useCallback(
     (comments: CommentUIType[]) => {
@@ -89,7 +89,6 @@ const TaskDetailPage = () => {
             <CommentSection
               projectId={projectId ?? ''}
               taskId={taskId ?? ''}
-              fileInfo={selectedFile}
               onCommentsFetched={handleCommentsFetched}
               onCommentSelect={handleCommentSelect}
             />

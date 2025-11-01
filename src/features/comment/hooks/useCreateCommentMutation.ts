@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { commentApi } from '@/features/comment/api/commentApi';
+import { commentApi, type CreateCommentRequest } from '@/features/comment/api/commentApi';
 import { v4 as uuidv4 } from 'uuid';
-import type { CommentType, CreateCommentRequest } from '@/features/comment/types/commentTypes';
+import type { CommentType } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 // 댓글 생성
@@ -29,6 +29,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
           id: user?.id ?? 'unknown',
           name: commentData.isAnonymous ? '익명' : (user?.name ?? '사용자'),
           avatar: commentData.isAnonymous ? 'default' : (user?.avatar ?? 'default'),
+          backgroundColor: '',
         },
         createdAt: now,
         updatedAt: now,
@@ -50,6 +51,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
           id: res.authorInfo.id,
           name: res.authorInfo.name,
           avatar: res.authorInfo.avatar,
+          backgroundColor: res.authorInfo.avatar,
         },
         createdAt: res.createdAt,
         updatedAt: res.updatedAt,

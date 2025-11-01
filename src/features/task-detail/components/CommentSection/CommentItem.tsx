@@ -28,6 +28,7 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
               <Avatar
+                style={{ backgroundColor: comment.authorInfo.backgroundColor }}
                 className={cn(
                   'h-8 w-8 shrink-0 shadow-xs text-white text-xs',
                   isAnonymous ? 'bg-gray-400' : 'bg-boost-orange',

@@ -6,7 +6,7 @@ import CommentItem from '@/features/task-detail/components/CommentSection/Commen
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
-import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
+import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
@@ -18,32 +18,27 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 interface CommentSectionProps {
   projectId: string;
   taskId: string;
-  fileInfo?: FileInfo | null;
-  setFileInfo?: (fileInfo: FileInfo | null) => void;
-  onCommentSelect?: (fileInfo: FileInfo | null) => void;
   onCommentsFetched?: (comments: CommentUIType[]) => void;
+  onCommentSelect?: (fileInfo: FileInfo | null) => void;
 }
 
 const CommentSection = ({
   projectId,
   taskId,
-  fileInfo,
-  onCommentSelect,
   onCommentsFetched,
+  onCommentSelect,
 }: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editInput, setEditInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { setSelectedFile } = useTaskDetailStore();
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-
-  // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
+  const { selectedFile, setSelectedFile, setCurrentPin } = useTaskDetailStore();
   useEffect(() => {
     if (!onCommentsFetched) return;
     if (
@@ -77,15 +72,15 @@ const CommentSection = ({
 
     const newCommentData = {
       content: input,
-      persona: 'BOO',
+      persona: 'BOO' as const,
       isAnonymous,
-      fileInfo: fileInfo ? { ...fileInfo } : {},
+      fileInfo: selectedFile ? { ...selectedFile } : {},
     };
 
     createComment({ commentData: newCommentData });
     //⚠️ TODO: fileInfo =null 이면 500 에러 발생
-    // 댓글 생성 이후 setFileInfo={} 이라
-    // CurrentPin 초기화가 되지 않음
+    setCurrentPin(null);
+
     if (setSelectedFile) setSelectedFile({});
 
     setInput('');
