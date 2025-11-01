@@ -1,8 +1,11 @@
 export interface FileInfo {
   fileId?: string;
+  fileName?: string;
   filePage?: number;
   fileX?: number;
   fileY?: number;
+  comments?: Comment[];
+  pdfUrl?:string;
 }
 export type CreateCommentRequest = Omit<
   CommentType,
