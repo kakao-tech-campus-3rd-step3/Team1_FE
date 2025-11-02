@@ -45,16 +45,32 @@ const TagManager = ({ projectId, selectedTags, onChangeTags }: TagManagerProps) 
   };
 
   const handleDeleteTagFromProject = (tagId: string) => {
-    deleteTagMutation(tagId);
+    const previous = [...selectedTags];
     handleRemoveTag(tagId);
+    deleteTagMutation(tagId, {
+      onError: () => {
+        onChangeTags(previous);
+      },
+    });
   };
 
   const handleEditTag = (tagId: string, newName: string) => {
+    const previous = [...selectedTags];
     const updated = selectedTags.map((t) => (t.tagId === tagId ? { ...t, name: newName } : t));
     onChangeTags(updated);
 
     if (!tagId.startsWith('temp-')) {
-      updateTagMutation({ tagId, name: newName });
+      updateTagMutation(
+        { tagId, name: newName },
+        {
+          onSuccess: (serverTag) => {
+            onChangeTags(selectedTags.map((t) => (t.tagId === serverTag.tagId ? serverTag : t)));
+          },
+          onError: () => {
+            onChangeTags(previous);
+          },
+        },
+      );
     }
   };
 
