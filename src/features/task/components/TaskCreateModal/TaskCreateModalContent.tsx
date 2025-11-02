@@ -24,7 +24,7 @@ import UrgentToggle from '@/features/task/components/TaskCreateModal/UrgentToggl
 import AssigneeDropdown from '@/features/task/components/TaskCreateModal/AssigneeDropdown';
 import ProjectSelect from '@/features/task/components/TaskCreateModal/ProjectSelect';
 import TagManager from '@/features/task/components/TaskCreateModal/TagInput/TagManager';
-import { useTaskForm } from '@/features/task/hooks/useTaskForm';
+import { useCreateTaskForm } from '@/features/task/hooks/useCreateTaskForm';
 import { statusList } from '@/features/board/types/boardTypes';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
@@ -46,22 +46,25 @@ const TaskCreateModalContent = ({
   const { data: projects } = useProjectsQuery();
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
-  const { form, handleConfirm, isLoading } = useTaskForm(propProjectId ?? '', async (taskData) => {
-    if (!selectedProjectId) {
-      toast.error('프로젝트를 선택해주세요.');
-      return;
-    }
+  const { form, handleConfirm, isLoading } = useCreateTaskForm(
+    propProjectId ?? '',
+    async (taskData) => {
+      if (!selectedProjectId) {
+        toast.error('프로젝트를 선택해주세요.');
+        return;
+      }
 
-    try {
-      const payload = { ...taskData, tags: getTagIds(selectedTags) };
-      await createTask(payload);
-      toast.success('할 일이 성공적으로 생성되었습니다!');
-      resetModal();
-    } catch (err) {
-      console.log(err);
-      toast.error('할 일 생성에 실패했습니다');
-    }
-  });
+      try {
+        const payload = { ...taskData, tags: getTagIds(selectedTags) };
+        await createTask(payload);
+        toast.success('할 일이 성공적으로 생성되었습니다!');
+        resetModal();
+      } catch (err) {
+        console.log(err);
+        toast.error('할 일 생성에 실패했습니다');
+      }
+    },
+  );
 
   const {
     register,

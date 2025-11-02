@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { taskSchema, type CreateTaskInput } from '@/features/task/schemas/taskSchema';
+import { createTaskSchema, type CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 
-export const useTaskForm = (
+export const useCreateTaskForm = (
   initialProjectId: string,
   onConfirm: (data: CreateTaskInput) => Promise<void> | void,
 ) => {
@@ -15,7 +15,7 @@ export const useTaskForm = (
   const projectData = useProjectStore((state) => state.projectData);
 
   const form = useForm<CreateTaskInput>({
-    resolver: zodResolver(taskSchema),
+    resolver: zodResolver(createTaskSchema),
     mode: 'onChange',
     defaultValues: {
       title: '',
@@ -36,9 +36,9 @@ export const useTaskForm = (
   const handleConfirm = form.handleSubmit(async (data) => {
     setIsLoading(true);
     try {
-      const assigneeIds = data.assignees
+      const assigneeIds: string[] = data.assignees
         .map((name) => projectMembers.find((m) => m.name === name)?.id)
-        .filter(Boolean) as string[];
+        .filter((id): id is string => !!id);
 
       const payload = {
         ...data,
