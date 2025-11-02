@@ -39,7 +39,7 @@ const AppSidebar = () => {
       >
         <Avatar
           style={{ backgroundColor: user?.backgroundColor }}
-          className="flex justify-center items-center w-11 h-11  rounded-4xl"
+          className="flex justify-center items-center w-11 h-11"
         >
           {user ? (
             <img

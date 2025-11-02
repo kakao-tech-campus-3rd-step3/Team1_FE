@@ -28,11 +28,13 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
               <Avatar
-                style={{ backgroundColor: comment.authorInfo.backgroundColor }}
                 className={cn(
                   'h-8 w-8 shrink-0 shadow-xs text-white text-xs',
-                  isAnonymous ? 'bg-gray-400' : 'bg-boost-orange',
+                  isAnonymous && 'bg-gray-400',
                 )}
+                style={{
+                  backgroundColor: !isAnonymous ? comment.authorInfo.backgroundColor : undefined,
+                }}
               >
                 {isAnonymous ? (
                   <AvatarFallback className="bg-gray-400 flex items-center justify-center">
