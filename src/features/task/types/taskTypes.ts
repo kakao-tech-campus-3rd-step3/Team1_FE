@@ -1,3 +1,4 @@
+import type { TagList } from '@/features/tag/types/tagTypes';
 import type { Member } from '@/features/user/types/userTypes';
 import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 
@@ -40,7 +41,7 @@ export type TaskListItem = {
   requiredReviewerCount: number;
   fileCount: number;
   commentCount: number;
-  tags: string[];
+  tags: TagList;
   assignees: Assignee[];
   createdAt: string;
   updatedAt: string;
@@ -64,7 +65,7 @@ export type TaskDetail = {
   urgent: string;
   approvedCount: number;
   requiredReviewerCount: number;
-  tags: string[];
+  tags: TagList;
   assignees: Member[];
   comments: Comment[];
   files: File[];
