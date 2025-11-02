@@ -1,11 +1,11 @@
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
 export interface AuthorInfo {
-  id: string;
+  memberId: string;
   name: string;
   avatar: string;
   backgroundColor: string;
-  isAnonymous:boolean
+  isAnonymous: boolean;
 }
 
 export interface CommentType {

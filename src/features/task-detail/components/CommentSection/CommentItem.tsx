@@ -17,7 +17,7 @@ interface CommentItemProps {
 const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
   const { user } = useAuthStore();
-  const isAuthor = user?.id === comment.authorInfo.id;
+  const isAuthor = user?.id === comment.authorInfo.memberId;
   return (
     <div className="flex py-3">
       <div className="flex-1">
@@ -60,12 +60,15 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
               </span>
               {comment.isPinned && <Pin className="h-3.5 w-3.5 text-boost-blue cursor-pointer" />}
             </div>
-            {isAuthor && (
-              <CommentActionsMenu
-                onEdit={() => onEdit?.(comment)}
-                onDelete={() => onDelete?.(comment.commentId)}
-              />
-            )}
+            <div className="flex items-center gap-1">
+              <span className="text-xs text-gray-500">{comment.timeAgo}</span>
+              {isAuthor && (
+                <CommentActionsMenu
+                  onEdit={() => onEdit?.(comment)}
+                  onDelete={() => onDelete?.(comment.commentId)}
+                />
+              )}
+            </div>
           </div>
 
           <p className="mt-1 text-sm text-gray-800">{comment.content}</p>
