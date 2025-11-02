@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
-
 interface TaskDetailState {
   selectedFile: FileInfo | null;
   currentPin: PinWithAuthor | null;

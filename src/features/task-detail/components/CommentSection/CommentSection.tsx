@@ -15,20 +15,16 @@ import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransfo
 import toast from 'react-hot-toast';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
+import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
 
 interface CommentSectionProps {
   projectId: string;
   taskId: string;
   onCommentsFetched?: (comments: CommentUIType[]) => void;
-  onCommentSelect?: (fileInfo: FileInfo | null) => void;
 }
 
-const CommentSection = ({
-  projectId,
-  taskId,
-  onCommentsFetched,
-  onCommentSelect,
-}: CommentSectionProps) => {
+const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSectionProps) => {
   const [input, setInput] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
@@ -39,7 +35,17 @@ const CommentSection = ({
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-const { selectedFile, currentPin, setSelectedFile, setCurrentPin } = useTaskDetailStore();
+  const { selectedFile, currentPin, setSelectedFile, setCurrentPin, pins } =
+    useTaskDetailStore();
+      const { commentSelect } = useCommentSelect();
+
+  const { data: task } = useTaskDetailQuery(projectId, taskId);
+
+  const handlePinClick = (fileInfo: FileInfo | null) => {
+    if (!fileInfo) return;
+    if (!task?.files) return;
+    commentSelect(fileInfo, task.files, pins);
+  };
   useEffect(() => {
     if (!onCommentsFetched) return;
     if (
@@ -79,9 +85,9 @@ const { selectedFile, currentPin, setSelectedFile, setCurrentPin } = useTaskDeta
         ? {
             fileId: selectedFile.fileId,
             fileName: selectedFile.fileName,
-            filePage: currentPin?.filePage ?? undefined, 
-            fileX: currentPin?.fileX ?? undefined, 
-            fileY: currentPin?.fileY ?? undefined, 
+            filePage: currentPin?.filePage ?? undefined,
+            fileX: currentPin?.fileX ?? undefined,
+            fileY: currentPin?.fileY ?? undefined,
           }
         : {},
     };
@@ -159,7 +165,7 @@ const { selectedFile, currentPin, setSelectedFile, setCurrentPin } = useTaskDeta
               comment={c}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              onSelectPin={onCommentSelect}
+              onSelectPin={handlePinClick}
             />
           ),
         )}

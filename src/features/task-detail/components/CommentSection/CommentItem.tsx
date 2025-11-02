@@ -21,7 +21,6 @@ interface CommentItemProps {
 
 const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
-
   return (
     <div className="flex py-3">
       <div className="flex-1">
@@ -60,7 +59,7 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
                   onClick={() => {
                     if (onSelectPin) onSelectPin(comment.fileInfo ?? null);
                   }}
-                  className="h-3.5 w-3.5 text-boost-blue"
+                  className="h-3.5 w-3.5 text-boost-blue cursor-pointer"
                 />
               )}
             </div>

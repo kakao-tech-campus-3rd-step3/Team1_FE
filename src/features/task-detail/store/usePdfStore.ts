@@ -29,6 +29,7 @@ interface PdfState {
   setPdfDocument: (document: PDFDocumentProxy) => void;
   setPageSize: (size: PageSize) => void;
   updatePageSize: (pageNumber: number) => Promise<void>;
+  setPageNumber: (page: number) => void;
 }
 
 export const usePdfStore = create<PdfState>((set, get) => ({
@@ -42,6 +43,7 @@ export const usePdfStore = create<PdfState>((set, get) => ({
   pdfDocument: null,
   pageSize: { width: A4.WIDTH, height: A4.HEIGHT },
 
+  setPageNumber: (page) => set({ pageNumber: page }),
   setNumPages: (num) => set({ numPages: num }),
   goPrevPage: () => set((s) => ({ pageNumber: Math.max(1, s.pageNumber - 1) })),
   goNextPage: () => set((s) => ({ pageNumber: Math.min(s.numPages, s.pageNumber + 1) })),

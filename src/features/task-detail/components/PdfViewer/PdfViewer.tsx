@@ -13,19 +13,12 @@ import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const PDFViewer = () => {
-  const {
-    pageNumber,
-    zoom,
-    position,
-    isDragging,
-    pdfDocument,
-    pageSize,
-  } = usePdfStore();
+  const { pageNumber, zoom, position, isDragging, pdfDocument, pageSize } = usePdfStore();
   const { onMouseDown, onMouseMove, onMouseUp } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
-const { togglePdf, selectedFile } = useTaskDetailStore();
-  
+  const { togglePdf, selectedFile } = useTaskDetailStore();
+
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
       <div className="w-full h-12 flex items-center justify-between te bg-white border-b-gray-400 xt-white px-4">
