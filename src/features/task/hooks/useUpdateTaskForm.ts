@@ -45,8 +45,8 @@ export const useUpdateTaskForm = (
       };
 
       await onConfirm(payload);
+      form.reset(data);
       resetModal();
-      form.reset(payload);
     } finally {
       setIsLoading(false);
     }
