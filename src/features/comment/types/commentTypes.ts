@@ -5,6 +5,7 @@ export interface AuthorInfo {
   name: string;
   avatar: string;
   backgroundColor: string;
+  isAnonymous:boolean
 }
 
 export interface CommentType {
