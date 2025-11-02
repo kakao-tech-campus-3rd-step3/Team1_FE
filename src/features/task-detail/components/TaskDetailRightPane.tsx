@@ -13,7 +13,6 @@ const TaskDetailRightPane = ({
   projectId,
   taskId,
   onCommentsFetched,
-  onCommentSelect,
 }: TaskDetailRightPaneProps) => {
   return (
     <aside
@@ -29,7 +28,6 @@ const TaskDetailRightPane = ({
           projectId={projectId}
           taskId={taskId}
           onCommentsFetched={onCommentsFetched}
-          onCommentSelect={onCommentSelect}
         />
       </section>
     </aside>
