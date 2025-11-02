@@ -3,6 +3,8 @@ import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { User } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
 interface OverlayProps {
   pageNumber: number;
   zoom: number;
@@ -14,6 +16,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
   const { pins, currentPin, selectedFile } = useTaskDetailStore();
   const pinList = pins as PinWithAuthor[];
   const { user } = useAuthStore();
+
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>
       {pinList
@@ -21,22 +24,31 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
         .map((m) => {
           const left = (m.fileX ? m.fileX / pageSize.width : 0) * 100;
           const top = 100 - (m.fileY ? m.fileY / pageSize.height : 0) * 100;
+          const isAnonymous = m.author?.isAnonymous;
 
           return (
             <div
               key={m.fileId}
-              className="bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-white shadow-md overflow-hidden cursor-pointer"
+              className={cn(
+                'flex items-center justify-center bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer',
+                isAnonymous && 'bg-gray-400',
+              )}
               style={{
+                backgroundColor: m.author?.backgroundColor,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
               }}
             >
-              <img
-                src={getAvatarSrc({ avatar: m.author?.avatar })}
-                alt="profile"
-                className="w-full h-full object-cover -rotate-[-45deg]"
-              />
+              {isAnonymous ? (
+                <User className="text-white w-3.5 h-3.5 rotate-[45deg]" />
+              ) : (
+                <img
+                  src={getAvatarSrc({ avatar: m.author?.avatar })}
+                  alt={m.author?.name ?? 'avatar'}
+                  className="w-full h-full object-cover rotate-[45deg]"
+                />
+              )}
             </div>
           );
         })}
