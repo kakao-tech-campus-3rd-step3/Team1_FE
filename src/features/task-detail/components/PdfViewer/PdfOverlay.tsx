@@ -1,8 +1,8 @@
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
-import type { PinWithAuthor } from '@/features/comment/types/commentTypes';
-import { useTaskDetailStore } from '../../store/useTaskDetailStore';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 interface OverlayProps {
   pageNumber: number;
   zoom: number;

@@ -6,9 +6,9 @@ import { useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/utils';
 import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
 import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
-import { useTaskDetailStore } from '../../store/useTaskDetailStore';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import type { PinWithAuthor } from '@/features/comment/types/commentTypes';
+import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

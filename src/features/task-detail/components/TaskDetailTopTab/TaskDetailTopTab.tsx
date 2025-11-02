@@ -4,7 +4,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { ChevronLeft } from 'lucide-react';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { cn } from '@/shared/lib/utils';
-import { useTaskDetailStore } from '../../store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;

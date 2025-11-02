@@ -8,8 +8,9 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { Pin, User, EllipsisVertical } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
+import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
 interface CommentItemProps {
   comment: CommentUIType;

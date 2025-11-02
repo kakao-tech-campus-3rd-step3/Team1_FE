@@ -1,12 +1,5 @@
-export interface FileInfo {
-  fileId?: string;
-  fileName?: string;
-  filePage?: number;
-  fileX?: number;
-  fileY?: number;
-  comments?: Comment[];
-  fileUrl?: string;
-}
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+
 export interface AuthorInfo {
   id: string;
   name: string;
@@ -29,13 +22,4 @@ export interface CommentUIType extends CommentType {
   fallback: string;
   timeAgo: string;
   isPinned?: boolean;
-}
-
-export interface PinWithAuthor {
-  fileId: string;
-  fileName?: string;
-  filePage?: number;
-  fileX?: number;
-  fileY?: number;
-  author?: AuthorInfo;
 }

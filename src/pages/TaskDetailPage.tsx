@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
-import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
-import FileSection from '@/features/task-detail/components/FileSection/FileSection';
-import PDFViewer from '@/features/task-detail/components/PdfViewer/PdfViewer';
+
 import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
-import type { CommentUIType, FileInfo, PinWithAuthor } from '@/features/comment/types/commentTypes';
+import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import toast from 'react-hot-toast';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
+import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
-  const { setSelectedFile, isPdfOpen, setPins, togglePdf } = useTaskDetailStore();
+  const { setSelectedFile, setPins, togglePdf } = useTaskDetailStore();
 
   const handleCommentsFetched = useCallback(
     (comments: CommentUIType[]) => {
@@ -55,40 +55,20 @@ const TaskDetailPage = () => {
     }
   };
 
+  if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
+  if (!taskId) return <div className="p-4">태스크 ID를 찾을 수 없습니다.</div>;
   if (isLoading || !task) return <div>Loading...</div>;
 
   return (
     <div className="flex flex-col h-screen">
       <TaskDetailTopTab task={task} />
       <div className="flex flex-1 overflow-hidden">
-        <div id="left" className="flex flex-col w-6/10 overflow-hidden">
-          {isPdfOpen ? (
-            <PDFViewer />
-          ) : (
-            <>
-              <section id="detail" className="h-8/12 overflow-y-scroll">
-                <TaskDetailContent task={task} />
-              </section>
-
-              <section id="file" className="h-4/12">
-                <FileSection
-                  files={task.files}
-                  taskId={taskId ?? ''}
-                  onOpenPdf={(url, name, id) => {
-                    setSelectedFile({ fileId: id, fileName: name, fileUrl: url });
-                    togglePdf(true);
-                  }}
-                />
-              </section>
-            </>
-          )}
-        </div>
-
+        <TaskDetailLeftPane task={task} taskId={taskId} />
         <div id="right" className="w-4/10 bg-gray-200">
           <section id="comment" className="h-[calc(100vh-4rem)]">
             <CommentSection
-              projectId={projectId ?? ''}
-              taskId={taskId ?? ''}
+              projectId={projectId}
+              taskId={taskId}
               onCommentsFetched={handleCommentsFetched}
               onCommentSelect={handleCommentSelect}
             />

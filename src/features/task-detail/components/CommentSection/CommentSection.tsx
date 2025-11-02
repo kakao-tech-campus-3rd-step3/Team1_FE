@@ -6,7 +6,7 @@ import CommentItem from '@/features/task-detail/components/CommentSection/Commen
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
-import type { CommentUIType, FileInfo } from '@/features/comment/types/commentTypes';
+import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
@@ -14,6 +14,7 @@ import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransfor
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import toast from 'react-hot-toast';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
 interface CommentSectionProps {
   projectId: string;

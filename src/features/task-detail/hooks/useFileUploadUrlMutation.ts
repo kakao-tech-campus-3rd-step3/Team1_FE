@@ -1,15 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileUploadApi } from '@/features/task-detail/api/fileUploadApi';
-import type {
-  FileStatus,
-  TaskDetailFileType,
-} from '@/features/task-detail/types/taskDetailFileType';
 import { uploadToS3 } from '@/features/task-detail/utils/fileUploadUtil';
 import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import { isAxiosError } from 'axios';
+import type { FileItemType } from '@/features/file/types/fileTypes';
+import type { FileStatus } from '@/features/task-detail/types/taskDetailType';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -34,7 +32,7 @@ export const useUploadFileMutation = () => {
         sizeBytes: file.size,
       });
 
-      // 4️⃣ ✅ 다운로드 URL 요청
+      // 4️⃣ 다운로드 URL 요청
       const downloadUrlRes = await fetchFileDownloadUrl(presigned.fileId);
       return { fileId: presigned.fileId, downloadUrl: downloadUrlRes.url };
     },
@@ -42,9 +40,9 @@ export const useUploadFileMutation = () => {
     onMutate: async (variables) => {
       const { taskId } = variables;
       await queryClient.cancelQueries({ queryKey: ['uploadedFile', taskId] });
-      const prevFiles = queryClient.getQueryData<TaskDetailFileType[]>(['uploadedFile', taskId]);
+      const prevFiles = queryClient.getQueryData<FileItemType[]>(['uploadedFile', taskId]);
       const tempId = uuidv4();
-      const newFile: TaskDetailFileType = {
+      const newFile: FileItemType = {
         fileId: tempId,
         fileName: variables.file.name,
         fileUrl: '',
@@ -52,7 +50,7 @@ export const useUploadFileMutation = () => {
         timeLeft: '방금',
         status: 'uploading' as FileStatus,
       };
-      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[] = []) => [
+      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) => [
         ...old,
         newFile,
       ]);
@@ -60,7 +58,7 @@ export const useUploadFileMutation = () => {
     },
 
     onSuccess: (data, { taskId }, context) => {
-      queryClient.setQueryData(['uploadedFile', taskId], (old: TaskDetailFileType[] = []) =>
+      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) =>
         old.map((file) =>
           file.fileId === context?.tempId
             ? {

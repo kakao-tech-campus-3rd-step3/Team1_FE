@@ -1,5 +1,6 @@
 import api from '@/shared/api/axiosInstance';
-import type { CommentType, FileInfo } from '@/features/comment/types/commentTypes';
+import type { CommentType } from '@/features/comment/types/commentTypes';
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 export interface CreateCommentRequest {
   content: string;
   persona: 'BOO' | 'USER';
