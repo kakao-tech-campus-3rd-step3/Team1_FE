@@ -43,7 +43,6 @@ export const useTaskForm = (
       const payload = {
         ...data,
         assignees: assigneeIds,
-        tags: data.tags || [],
       };
 
       await onConfirm(payload);
