@@ -39,7 +39,7 @@ const CommentSection = ({
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-  const { selectedFile, setSelectedFile, setCurrentPin } = useTaskDetailStore();
+const { selectedFile, currentPin, setSelectedFile, setCurrentPin } = useTaskDetailStore();
   useEffect(() => {
     if (!onCommentsFetched) return;
     if (
@@ -75,7 +75,15 @@ const CommentSection = ({
       content: input,
       persona: 'BOO' as const,
       isAnonymous,
-      fileInfo: selectedFile ? { ...selectedFile } : {},
+      fileInfo: selectedFile
+        ? {
+            fileId: selectedFile.fileId,
+            fileName: selectedFile.fileName,
+            filePage: currentPin?.filePage ?? undefined, 
+            fileX: currentPin?.fileX ?? undefined, 
+            fileY: currentPin?.fileY ?? undefined, 
+          }
+        : {},
     };
 
     createComment({ commentData: newCommentData });
