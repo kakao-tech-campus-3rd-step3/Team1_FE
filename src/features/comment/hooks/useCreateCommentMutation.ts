@@ -26,11 +26,11 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
         commentId: tempId,
         ...commentData,
         authorInfo: {
-          id: user?.id ?? 'unknown',
+          memberId: user?.id ?? 'unknown',
           name: commentData.isAnonymous ? '익명' : (user?.name ?? '사용자'),
           avatar: commentData.isAnonymous ? 'default' : (user?.avatar ?? 'default'),
           backgroundColor: '',
-          isAnonymous:commentData.isAnonymous
+          isAnonymous: commentData.isAnonymous,
         },
         createdAt: now,
         updatedAt: now,
@@ -49,7 +49,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
         isAnonymous: res.isAnonymous,
         fileInfo: res.fileInfo,
         authorInfo: {
-          id: res.authorInfo.id,
+          memberId: res.authorInfo.memberId,
           name: res.authorInfo.name,
           avatar: res.authorInfo.avatar,
           backgroundColor: res.authorInfo.backgroundColor,
