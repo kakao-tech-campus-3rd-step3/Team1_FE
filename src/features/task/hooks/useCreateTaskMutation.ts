@@ -5,6 +5,7 @@ import type { TaskListItem, TaskListResponse, Assignee } from '@/features/task/t
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useSortStore } from '@/features/board/store/useSortStore';
+import { createTagObjects } from '@/features/tag/utils/tagUtils';
 
 const createTempTask = (
   taskData: CreateTaskInput,
@@ -12,6 +13,8 @@ const createTempTask = (
   tempId: string,
 ): TaskListItem => {
   const assignees: Assignee[] = taskData.assignees.map((id) => ({ id, name: '' }));
+  const tags = createTagObjects(taskData.tags || []);
+
   return {
     taskId: tempId,
     projectId,
@@ -23,7 +26,7 @@ const createTempTask = (
     requiredReviewerCount: taskData.requiredReviewerCount ?? 0,
     commentCount: 0,
     fileCount: 0,
-    tags: taskData.tags || [],
+    tags,
     assignees,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
