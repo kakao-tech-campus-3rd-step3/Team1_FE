@@ -62,7 +62,7 @@ export type TaskDetail = {
   description: string;
   status: string;
   dueDate: string;
-  urgent: string;
+  urgent: boolean;
   approvedCount: number;
   requiredReviewerCount: number;
   tags: TagList;
