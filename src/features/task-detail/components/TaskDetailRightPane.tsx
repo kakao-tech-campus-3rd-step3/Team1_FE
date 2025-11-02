@@ -17,7 +17,6 @@ const TaskDetailRightPane = ({
       id="right-pane"
       className="w-4/10 bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden"
     >
-
       <section id="comment" className="flex-1 overflow-y-auto">
         <CommentSection
           projectId={projectId}

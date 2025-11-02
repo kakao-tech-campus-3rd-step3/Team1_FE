@@ -29,7 +29,11 @@ const TaskDetailPage = () => {
       <TaskDetailTopTab task={task} />
       <div className="flex flex-1 overflow-hidden">
         <TaskDetailLeftPane task={task} taskId={taskId} />
-        <TaskDetailRightPane projectId={projectId} taskId={taskId} onCommentsFetched={handleCommentsFetched} />
+        <TaskDetailRightPane
+          projectId={projectId}
+          taskId={taskId}
+          onCommentsFetched={handleCommentsFetched}
+        />
       </div>
     </div>
   );

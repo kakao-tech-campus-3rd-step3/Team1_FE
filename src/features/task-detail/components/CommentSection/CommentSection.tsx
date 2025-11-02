@@ -26,7 +26,6 @@ interface CommentSectionProps {
 
 const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSectionProps) => {
   const [input, setInput] = useState('');
-  const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editInput, setEditInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -35,7 +34,8 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-  const { selectedFile, currentPin, setCurrentPin, pins } = useTaskDetailStore();
+  const { selectedFile, currentPin, setCurrentPin, pins, isAnonymous, setIsAnonymous } =
+    useTaskDetailStore();
   const { commentSelect } = useCommentSelect();
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
@@ -72,32 +72,32 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     setOriginalText(input);
     showAiTransformConfirmModal();
   };
-const handleAdd = () => {
-  if (!input.trim()) return;
+  const handleAdd = () => {
+    if (!input.trim()) return;
 
-  const fileInfo = selectedFile?.fileId
-    ? {
-        fileId: selectedFile.fileId,
-        fileName: selectedFile.fileName,
-        filePage: currentPin?.filePage,
-        fileX: currentPin?.fileX,
-        fileY: currentPin?.fileY,
-      }
-    : null;
+    const fileInfo = selectedFile?.fileId
+      ? {
+          fileId: selectedFile.fileId,
+          fileName: selectedFile.fileName,
+          filePage: currentPin?.filePage,
+          fileX: currentPin?.fileX,
+          fileY: currentPin?.fileY,
+        }
+      : null;
 
-  const newCommentData = {
-    content: input,
-    persona: 'BOO' as const,
-    isAnonymous,
-    ...(fileInfo ? { fileInfo } : {}),
+    const newCommentData = {
+      content: input,
+      persona: 'BOO' as const,
+      isAnonymous,
+      ...(fileInfo ? { fileInfo } : {}),
+    };
+
+    createComment({ commentData: newCommentData });
+
+    setCurrentPin(null);
+
+    setInput('');
   };
-
-  createComment({ commentData: newCommentData });
-
-  setCurrentPin(null);
-
-  setInput('');
-};
 
   const handleEdit = (comment: CommentUIType) => {
     setEditingCommentId(comment.commentId);
