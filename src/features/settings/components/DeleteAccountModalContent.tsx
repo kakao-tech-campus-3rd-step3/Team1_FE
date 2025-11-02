@@ -1,8 +1,8 @@
+import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 import cryingBoo from '@/shared/assets/images/boost/boo-crying.png';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
 import { motion } from 'framer-motion';
-import { useDeleteAccountMutation } from '../hooks/useDeleteAccountMutation';
 
 const DeleteAccountModalContent = () => {
   const { resetModal } = useModal();

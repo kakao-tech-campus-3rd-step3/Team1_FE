@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
-
 import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
@@ -9,31 +8,21 @@ import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import toast from 'react-hot-toast';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
-import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
   const { setSelectedFile, setPins, togglePdf } = useTaskDetailStore();
 
-  const handleCommentsFetched = useCallback(
-    (comments: CommentUIType[]) => {
-      const extractedPins = comments
-        .filter((c) => c.fileInfo)
-        .map((c) => ({
-          ...(c.fileInfo as FileInfo),
-          author: {
-            id: c.authorInfo.id,
-            name: c.authorInfo.name,
-            avatar: c.authorInfo.avatar,
-            backgroundColor: c.authorInfo.backgroundColor,
-          },
-        })) as PinWithAuthor[];
-
-      setPins(extractedPins);
-    },
-    [setPins],
-  );
+    const handleCommentsFetched = useCallback(
+      (comments: CommentUIType[]) => {
+        const extractedPins = extractPinsFromComments(comments); 
+        setPins(extractedPins);
+      },
+      [setPins],
+    );
   const handleCommentSelect = async (fileInfo: FileInfo | null) => {
     if (!fileInfo?.fileId) return;
     try {
