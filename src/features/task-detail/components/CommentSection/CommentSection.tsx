@@ -35,9 +35,8 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-  const { selectedFile, currentPin, setSelectedFile, setCurrentPin, pins } =
-    useTaskDetailStore();
-      const { commentSelect } = useCommentSelect();
+  const { selectedFile, currentPin, setSelectedFile, setCurrentPin, pins } = useTaskDetailStore();
+  const { commentSelect } = useCommentSelect();
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
 
