@@ -17,8 +17,6 @@ interface AssigneeAvatarProps {
 const AssigneesList = ({ projectId, assigneeId }: AssigneeAvatarProps) => {
   const { data: projectMembers } = useProjectMembersQuery(projectId);
   const member = projectMembers?.find((m) => m.id === assigneeId);
-
-  console.log(member);
   return (
     <TooltipProvider>
       <Tooltip>
