@@ -1,17 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuGroup,
-} from '@/shared/components/shadcn/dropdown-menu';
-import { Pin, User, EllipsisVertical } from 'lucide-react';
+import { Pin, User } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
 
 interface CommentItemProps {
   comment: CommentUIType;
@@ -66,47 +60,11 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
               </span>
               {comment.isPinned && <Pin className="h-3.5 w-3.5 text-boost-blue cursor-pointer" />}
             </div>
-            {isAuthor ? (
-              <div className="flex items-center gap-1">
-                <span className="text-xs text-gray-500">{comment.timeAgo}</span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="p-1 hover:bg-gray-100 rounded-md"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <EllipsisVertical className="w-4 h-4 text-gray-600" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    className="w-32 bg-white rounded-lg shadow-md border border-gray-200"
-                  >
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEdit?.(comment);
-                        }}
-                        className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                      >
-                        수정
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDelete?.(comment.commentId);
-                        }}
-                        className="px-3 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
-                      >
-                        삭제
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            ) : (
-              <span className="text-xs text-gray-500">{comment.timeAgo}</span>
+            {isAuthor && (
+              <CommentActionsMenu
+                onEdit={() => onEdit?.(comment)}
+                onDelete={() => onDelete?.(comment.commentId)}
+              />
             )}
           </div>
 
