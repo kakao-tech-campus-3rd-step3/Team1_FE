@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
-import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
+import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -29,15 +29,7 @@ const TaskDetailPage = () => {
       <TaskDetailTopTab task={task} />
       <div className="flex flex-1 overflow-hidden">
         <TaskDetailLeftPane task={task} taskId={taskId} />
-        <div id="right" className="w-4/10 bg-gray-200">
-          <section id="comment" className="h-[calc(100vh-4rem)]">
-            <CommentSection
-              projectId={projectId}
-              taskId={taskId}
-              onCommentsFetched={handleCommentsFetched}
-            />
-          </section>
-        </div>
+        <TaskDetailRightPane projectId={projectId} taskId={taskId} onCommentsFetched={handleCommentsFetched} />
       </div>
     </div>
   );
