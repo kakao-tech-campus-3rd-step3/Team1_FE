@@ -4,6 +4,7 @@ import { useAuthStore } from '@/features/auth/store/authStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { User } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 import { cn } from '@/shared/lib/utils';
 interface OverlayProps {
   pageNumber: number;
@@ -28,7 +29,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
 
           return (
             <div
-              key={m.fileId}
+              key={(uuidv4())}
               className={cn(
                 'flex items-center justify-center bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer',
                 isAnonymous && 'bg-gray-400',

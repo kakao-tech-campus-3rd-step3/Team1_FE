@@ -7,7 +7,7 @@ import { useAuthStore } from '@/features/auth/store/authStore';
 export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => {
   const mouseMoved = useRef(false);
   const { user } = useAuthStore();
-  const { currentPin, setCurrentPin, selectedFile } = useTaskDetailStore();
+  const { currentPin, setCurrentPin, selectedFile, isAnonymous } = useTaskDetailStore();
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
@@ -36,10 +36,11 @@ export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => 
       fileX: pdfX,
       fileY: pdfY,
       author: {
-        id: user?.id ?? '',
+        memberId: user?.id ?? '',
         name: user?.name ?? '익명',
         avatar: user?.avatar ?? '0',
         backgroundColor: user?.backgroundColor ?? '#CCCCCC',
+        isAnonymous: isAnonymous,
       },
     };
 
