@@ -1,9 +1,10 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskListItem, TaskDetail } from '@/features/task/types/taskTypes';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { UpdateTaskInput } from '@/features/task/schemas/taskSchema';
+import { mapTaskListItemToDetail } from '@/features/task/utils/taskUtils';
 
 export const useUpdateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
@@ -12,12 +13,12 @@ export const useUpdateTaskMutation = (projectId: string) => {
     TaskListItem,
     Error,
     { taskId: string; taskData: UpdateTaskInput },
-    { previousTask?: TaskListItem }
+    { previousTask?: TaskDetail }
   >({
     mutationFn: ({ taskId, taskData }) => taskApi.updateTask(projectId, taskId, taskData),
 
-    onMutate: async ({ taskId, taskData }) => {
-      const previousTask = queryClient.getQueryData<TaskListItem>(
+    onMutate: ({ taskId, taskData }) => {
+      const previousTask = queryClient.getQueryData<TaskDetail>(
         TASK_QUERY_KEYS.detail(projectId, taskId),
       );
 
@@ -28,6 +29,10 @@ export const useUpdateTaskMutation = (projectId: string) => {
           assignees: previousTask.assignees,
           tags: previousTask.tags,
           updatedAt: new Date().toISOString(),
+          id: previousTask.id,
+          comments: previousTask.comments,
+          files: previousTask.files,
+          approvedCount: previousTask.approvedCount,
         });
       }
 
@@ -45,7 +50,19 @@ export const useUpdateTaskMutation = (projectId: string) => {
     },
 
     onSuccess: (updatedTask) => {
-      queryClient.setQueryData(TASK_QUERY_KEYS.detail(projectId, updatedTask.taskId), updatedTask);
+      queryClient.setQueryData(
+        TASK_QUERY_KEYS.detail(projectId, updatedTask.taskId),
+        (oldData: TaskDetail) => {
+          if (oldData) {
+            return {
+              ...oldData,
+              ...updatedTask,
+              id: updatedTask.taskId,
+            };
+          }
+          return mapTaskListItemToDetail(updatedTask);
+        },
+      );
     },
   });
 };

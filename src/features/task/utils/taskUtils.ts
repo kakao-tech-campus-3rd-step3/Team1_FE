@@ -44,24 +44,21 @@ export const getTaskCountByMember = (
   }
 };
 
-export const detailToListItem = (task: TaskDetail, projectId: string): TaskListItem => ({
-  taskId: task.id,
-  projectId,
-  title: task.title,
-  description: task.description,
-  status: task.status,
-  dueDate: task.dueDate,
-  urgent: task.urgent,
-  requiredReviewerCount: task.requiredReviewerCount,
-  // 📍TODO: 할 일 상세 조회에서 comments, files 필드 수정 완료되면 개선 필요함
-  fileCount: task.files.length,
-  commentCount: task.comments.length,
-  tags: task.tags,
-  assignees: task.assignees.map((m) => ({
-    id: m.id,
-    name: m.name,
-    avatar: m.avatar,
-  })),
-  createdAt: task.createdAt,
-  updatedAt: task.updatedAt,
-});
+export const mapTaskListItemToDetail = (task: TaskListItem): TaskDetail => {
+  return {
+    id: task.taskId,
+    title: task.title,
+    description: task.description,
+    status: task.status,
+    dueDate: task.dueDate,
+    urgent: task.urgent,
+    requiredReviewerCount: task.requiredReviewerCount,
+    tags: task.tags,
+    assignees: task.assignees,
+    approvedCount: 0,
+    comments: [],
+    files: [],
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+  };
+};
