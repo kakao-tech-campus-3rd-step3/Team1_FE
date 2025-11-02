@@ -3,7 +3,6 @@ import {
   getColorStyleForTag,
   generatePastelColor,
 } from '@/features/tag/utils/tagUtils';
-import { cn } from '@/shared/lib/utils';
 import { Badge } from '@/shared/components/shadcn/badge';
 import type { TaskDetail, TaskListItem } from '@/features/task/types/taskTypes';
 
@@ -25,7 +24,7 @@ const TaskTags = ({ task, projectName }: TaskTagsProps) => {
           className="rounded-full"
           style={{
             ...projectTagStyle,
-            border: cn('1px solid', projectTagStyle.borderColor),
+            border: `1px solid ${projectTagStyle.borderColor}`,
           }}
         >
           {projectName}
