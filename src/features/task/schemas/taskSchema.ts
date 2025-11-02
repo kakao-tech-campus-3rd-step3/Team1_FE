@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const taskSchema = z.object({
+export const createTaskSchema = z.object({
   projectId: z.string(),
   title: z.string().min(1, '제목은 필수입니다.'),
   description: z.string().optional(),
@@ -15,4 +15,10 @@ export const taskSchema = z.object({
   urgent: z.boolean().optional(),
 });
 
-export type CreateTaskInput = z.infer<typeof taskSchema>;
+export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+
+export const updateTaskSchema = createTaskSchema.extend({
+  projectId: z.string().optional(),
+});
+
+export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
