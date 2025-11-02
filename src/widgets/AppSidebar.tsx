@@ -16,16 +16,13 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import { getAvatarListUtils } from '@/features/avatar-picker/utils/avatarUtils';
-import { useMemo } from 'react';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import { Avatar } from '@/shared/components/shadcn/avatar';
 
 const AppSidebar = () => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const { mutate: LogoutMutaion } = useLogoutMutation();
-  const avatarList = useMemo(() => getAvatarListUtils(), []);
-  const userAvatar = user?.avatar !== undefined && avatarList[Number(user.avatar)];
-
   const handleHeaderClick = () => {
     navigate(ROUTE_PATH.MY_INFO);
   };
@@ -40,13 +37,20 @@ const AppSidebar = () => {
         onClick={handleHeaderClick}
         className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer"
       >
-        <a className="flex justify-center items-center w-11 h-11 bg-boost-orange rounded-4xl">
-          {user && userAvatar ? (
-            <img src={userAvatar} alt="user avatar" className="w-8 h-8 object-cover" />
+        <Avatar
+          style={{ backgroundColor: user?.backgroundColor }}
+          className="flex justify-center items-center w-11 h-11"
+        >
+          {user ? (
+            <img
+              src={getAvatarSrc({ avatar: user?.avatar })}
+              alt="user avatar"
+              className="w-8 h-8 object-cover"
+            />
           ) : (
             <User className="w-6 h-6 text-white" strokeWidth={2} />
           )}
-        </a>
+        </Avatar>
       </SidebarHeader>
 
       <SidebarContent className=" pl-3 pr-3 bg-white">

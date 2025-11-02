@@ -17,16 +17,14 @@ interface AssigneeAvatarProps {
 const AssigneesList = ({ projectId, assigneeId }: AssigneeAvatarProps) => {
   const { data: projectMembers } = useProjectMembersQuery(projectId);
   const member = projectMembers?.find((m) => m.id === assigneeId);
-
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
           <Avatar
+            style={{ backgroundColor: member?.backgroundColor }}
             className={cn(
               'flex items-center justify-center w-6 h-6 cursor-pointer ring-1 ring-background',
-              'bg-boost-yellow',
             )}
           >
             <AvatarFallback>{member?.name[0] ?? '?'}</AvatarFallback>

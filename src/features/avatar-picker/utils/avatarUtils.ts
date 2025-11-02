@@ -16,8 +16,8 @@ const sortedAvatars = Object.entries(avatarModules)
     const numB = getNum(pathB);
     return numA - numB;
   })
-  .map(([filePath, module]) => {
-    console.log(filePath);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  .map(([_, module]) => {
     return module.default;
   });
 export const avatarList = sortedAvatars.slice(1); // 01.png ~ 80.png만 포함

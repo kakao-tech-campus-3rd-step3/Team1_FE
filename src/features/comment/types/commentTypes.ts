@@ -1,30 +1,26 @@
-export interface FileInfo {
-  fileId?: string;
-  filePage?: number;
-  fileX?: number;
-  fileY?: number;
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+
+export interface AuthorInfo {
+  memberId: string;
+  name: string;
+  avatar: string;
+  backgroundColor: string;
+  isAnonymous: boolean;
 }
-export type CreateCommentRequest = Omit<
-  CommentType,
-  'commentId' | 'authorInfo' | 'createdAt' | 'updatedAt'
->;
+
 export interface CommentType {
   commentId: string;
   content: string;
   persona: string;
   isAnonymous: boolean;
-  fileInfo: Partial<FileInfo>;
-  authorInfo: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
+  fileInfo?: FileInfo;
+  authorInfo: AuthorInfo;
   createdAt: string;
   updatedAt: string;
 }
-export type CommentUIType = CommentType & {
+export interface CommentUIType extends CommentType {
   author: string;
   fallback: string;
   timeAgo: string;
   isPinned?: boolean;
-};
+}

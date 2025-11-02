@@ -9,28 +9,23 @@ import toast from 'react-hot-toast';
 export const useKakaoLoginMutation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setAuth } = useAuthStore();
   const savedFrom = localStorage.getItem('login_from');
   const from = location.state?.from || savedFrom;
 
   return useMutation({
     mutationFn: async (data: KakaoLoginRequest) => {
       const loginData: KakaoLoginResponse = await fetchKaKaoLogin(data);
-      const { setAuth } = useAuthStore.getState();
       setAuth({ token: loginData.accessToken, user: loginData.memberResponseDto });
       return loginData.isNewUser;
     },
     onSuccess: (isNewUser) => {
       toast.success('로그인이 완료되었습니다.');
-
-      if (from) {
-        navigate(from, { replace: true });
-      } else if (isNewUser) navigate(ROUTE_PATH.AVATAR);
+      if (from) navigate(from, { replace: true });
+      else if (isNewUser) navigate(ROUTE_PATH.AVATAR);
       else navigate(ROUTE_PATH.MY_TASK);
       localStorage.removeItem('login_from');
     },
-    onError: (err) => {
-      console.dir(err);
-      toast.error('로그인 중 오류가 발생했습니다 😢');
-    },
+    onError: () => toast.error('로그인 중 오류가 발생했습니다 😢'),
   });
 };

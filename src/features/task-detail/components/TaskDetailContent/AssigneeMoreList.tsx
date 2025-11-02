@@ -6,7 +6,7 @@ import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/taskDetailConstants';
 
 interface AssigneeMoreListProps {
-  assignees: { id: string; name: string; avatar?: string }[];
+  assignees: { id: string; name: string; avatar?: string; backgroundColor?: string }[];
 }
 
 const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
@@ -22,9 +22,15 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
             key={assignee.id}
             className="flex items-center gap-2 hover:bg-gray-50 transition-colors rounded-lg pr-2 py-1.5"
           >
-            <Avatar className="w-9 h-9 border border-gray-200 bg-boost-yellow flex items-center justify-center shadow-sm">
+            <Avatar
+              style={{ backgroundColor: assignee.backgroundColor }}
+              className="w-9 h-9 border border-gray-200  flex items-center justify-center shadow-sm"
+            >
               <AvatarImage src={getAvatarSrc(assignee)} alt={assignee.name} className="w-8 h-8" />
-              <AvatarFallback className="bg-boost-yellow body2-regular">
+              <AvatarFallback
+                style={{ backgroundColor: assignee.backgroundColor }}
+                className=" body2-regular"
+              >
                 {assignee.name.charAt(0)}
               </AvatarFallback>
             </Avatar>

@@ -1,7 +1,6 @@
-import type { FileType } from '@/features/file/types/fileTypes';
 import examplePdfUrl from '@/shared/assets/pdf-example/sample.pdf';
 
-export const mockAllFiles: FileType[] = [
+export const mockAllFiles = [
   {
     id: '1',
     name: 'Wireframe_8.pdf',
