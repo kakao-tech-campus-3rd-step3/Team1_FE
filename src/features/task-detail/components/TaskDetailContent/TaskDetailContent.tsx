@@ -10,6 +10,8 @@ import AssigneeSection from '@/features/task-detail/components/TaskDetailContent
 import DueDateSection from '@/features/task-detail/components/TaskDetailContent/DueDateInfo';
 import TagSection from '@/features/task-detail/components/TaskDetailContent/TagList';
 import TaskControlDropdown from '@/features/task-detail/components/TaskDetailContent/TaskControlDropdown';
+import TaskUpdateModalContent from '@/features/task/components/TaskUpdateModal/TaskUpdateModalContent';
+import { detailToListItem } from '@/features/task/utils/taskUtils';
 
 interface TaskDetailContentProps {
   task: TaskDetail;
@@ -18,11 +20,16 @@ interface TaskDetailContentProps {
 const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
+  const { showCustom, resetModal } = useModal();
 
-  const { mutateAsync: deleteTaskMutation } = useDeleteTaskMutation(projectId!);
-  const { resetModal } = useModal();
-
+  const { mutateAsync: deleteTaskMutation } = useDeleteTaskMutation(projectId || '');
   const currentUser = useAuthStore((state) => state.user);
+
+  if (!projectId) {
+    console.error('Project ID가 없습니다!');
+    return null;
+  }
+
   const currentUserId = currentUser?.id;
   const isAssignee = task.assignees?.some((assignee) => assignee.id === currentUserId);
 
@@ -30,15 +37,24 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
     try {
       await deleteTaskMutation({ taskId: task.id, status: task.status });
       resetModal();
-      navigate(ROUTES.PROJECT_BOARD(projectId!));
+      navigate(ROUTES.PROJECT_BOARD(projectId));
     } catch (err) {
       console.error('할 일 삭제 실패:', err);
     }
   };
 
+  const handleEdit = () => {
+    showCustom({
+      title: '할 일 수정',
+      size: 'lg',
+      description: '할 일을 수정합니다.',
+      content: <TaskUpdateModalContent task={detailToListItem(task, projectId)} />,
+    });
+  };
+
   return (
     <div className="relative flex flex-col h-full overflow-hidden bg-gray-100">
-      {isAssignee && <TaskControlDropdown onClickDelete={handleDelete} />}
+      {isAssignee && <TaskControlDropdown onClickDelete={handleDelete} onEdit={handleEdit} />}
 
       <div className="flex flex-col flex-1 p-4 gap-4 overflow-hidden">
         <div className="px-2.5">
