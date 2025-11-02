@@ -31,7 +31,7 @@ const TaskUpdateModalContent = ({ projectId, task }: TaskUpdateModalContentProps
   const [selectedTags, setSelectedTags] = useState<Tag[]>(task.tags ?? []);
   const { resetModal } = useModal();
 
-  const { mutate: updateTask, isPending } = useUpdateTaskMutation(projectId);
+  const { mutateAsync: updateTask, isPending } = useUpdateTaskMutation(projectId);
   const { data: projectMembers } = useProjectMembersQuery(projectId);
 
   const { form, handleConfirm } = useUpdateTaskForm(projectId, task, async (taskData) => {
