@@ -8,6 +8,7 @@ import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
 import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import { usePdfDrag } from '@/features/task-detail/hooks/usePdfDrag';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -18,43 +19,29 @@ const PDFViewer = () => {
     zoom,
     position,
     isDragging,
-    start,
     pdfDocument,
     pageSize,
     setNumPages,
-    startDrag,
-    updatePosition,
-    stopDrag,
     setPdfDocument,
     updatePageSize,
   } = usePdfStore();
   const { currentPin, setCurrentPin, selectedFile, togglePdf } = useTaskDetailStore();
   const mouseMoved = useRef(false);
   const { user } = useAuthStore();
+  const { onMouseDown, onMouseMove, onMouseUp } = usePdfDrag();
+
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
 
   useEffect(() => {
+
     if (pdfDocument && pageNumber) {
       updatePageSize(pageNumber);
     }
   }, [pdfDocument, pageNumber, updatePageSize]);
 
-  const onMouseDown = (e: React.MouseEvent) => {
-    startDrag({ x: e.clientX - position.x, y: e.clientY - position.y });
-    mouseMoved.current = false;
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    updatePosition({ x: e.clientX - start.x, y: e.clientY - start.y });
-    mouseMoved.current = true;
-  };
-
-  const onMouseUp = () => {
-    stopDrag();
-  };
+ 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
     const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
