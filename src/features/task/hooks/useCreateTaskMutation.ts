@@ -1,18 +1,19 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem, TaskListResponse, Assignee } from '@/features/task/types/taskTypes';
+import type { TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { createTagObjects } from '@/features/tag/utils/tagUtils';
+import type { Member } from '@/features/user/types/userTypes';
 
 const createTempTask = (
   taskData: CreateTaskInput,
   projectId: string,
   tempId: string,
 ): TaskListItem => {
-  const assignees: Assignee[] = taskData.assignees.map((id) => ({ id, name: '' }));
+  const assignees: Member[] = taskData.assignees.map((id) => ({ id, name: '' }));
   const tags = createTagObjects(taskData.tags || []);
 
   return {
