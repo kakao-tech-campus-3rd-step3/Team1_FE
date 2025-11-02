@@ -17,23 +17,26 @@ import { useUpdateTaskMutation } from '@/features/task/hooks/useUpdateTaskMutati
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useUpdateTaskForm } from '@/features/task/hooks/useUpdateTaskForm';
+import { useModal } from '@/shared/hooks/useModal';
 
 interface TaskUpdateModalContentProps {
-  task: TaskListItem;
+  projectId: string;
+  task: TaskDetail;
 }
 
-const TaskUpdateModalContent = ({ task }: TaskUpdateModalContentProps) => {
+const TaskUpdateModalContent = ({ projectId, task }: TaskUpdateModalContentProps) => {
   const inputClasses = 'hover:bg-gray-200 focus:ring-transparent h-11 label2-regular';
   const [selectedTags, setSelectedTags] = useState<Tag[]>(task.tags ?? []);
+  const { resetModal } = useModal();
 
-  const { mutate: updateTask, isPending } = useUpdateTaskMutation(task.projectId);
-  const { data: projectMembers } = useProjectMembersQuery(task.projectId);
+  const { mutate: updateTask, isPending } = useUpdateTaskMutation(projectId);
+  const { data: projectMembers } = useProjectMembersQuery(projectId);
 
-  const { form, handleConfirm } = useUpdateTaskForm(task, async (taskData) => {
+  const { form, handleConfirm } = useUpdateTaskForm(projectId, task, async (taskData) => {
     await updateTask({
-      taskId: task.taskId,
+      taskId: task.id,
       taskData: { ...taskData, tags: getTagIds(selectedTags) },
     });
     toast.success('할 일이 성공적으로 수정되었습니다!');
@@ -91,7 +94,7 @@ const TaskUpdateModalContent = ({ task }: TaskUpdateModalContentProps) => {
 
         <FormField icon={TagIcon} label="태그" error={errors.tags?.message}>
           <TagManager
-            projectId={task.projectId}
+            projectId={projectId}
             selectedTags={selectedTags}
             onChangeTags={setSelectedTags}
           />
@@ -121,7 +124,10 @@ const TaskUpdateModalContent = ({ task }: TaskUpdateModalContentProps) => {
 
       <DialogFooter className="gap-2 pt-4 border-t border-gray-300">
         <Button
-          onClick={() => form.reset()}
+          onClick={() => {
+            form.reset();
+            resetModal();
+          }}
           variant="outline"
           disabled={isPending}
           className="px-6 border-gray-400"
