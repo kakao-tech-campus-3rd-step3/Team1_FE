@@ -4,17 +4,18 @@ import { useState } from 'react';
 import { updateTaskSchema, type UpdateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/taskTypes';
 import type { Status } from '@/features/board/types/boardTypes';
 
 export const useUpdateTaskForm = (
-  task: TaskListItem,
+  projectId: string,
+  task: TaskDetail,
   onConfirm: (data: UpdateTaskInput) => Promise<void> | void,
 ) => {
   const { resetModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: projectMembers = [] } = useProjectMembersQuery(task.projectId);
+  const { data: projectMembers = [] } = useProjectMembersQuery(projectId);
 
   const form = useForm<UpdateTaskInput>({
     resolver: zodResolver(updateTaskSchema),

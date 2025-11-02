@@ -11,7 +11,6 @@ import DueDateSection from '@/features/task-detail/components/TaskDetailContent/
 import TagSection from '@/features/task-detail/components/TaskDetailContent/TagList';
 import TaskControlDropdown from '@/features/task-detail/components/TaskDetailContent/TaskControlDropdown';
 import TaskUpdateModalContent from '@/features/task/components/TaskUpdateModal/TaskUpdateModalContent';
-import { detailToListItem } from '@/features/task/utils/taskUtils';
 
 interface TaskDetailContentProps {
   task: TaskDetail;
@@ -48,7 +47,7 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
       title: '할 일 수정',
       size: 'lg',
       description: '할 일을 수정합니다.',
-      content: <TaskUpdateModalContent task={detailToListItem(task, projectId)} />,
+      content: <TaskUpdateModalContent projectId={projectId} task={task} />,
     });
   };
 
