@@ -35,7 +35,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-  const { selectedFile, currentPin, setSelectedFile, setCurrentPin, pins } = useTaskDetailStore();
+  const { selectedFile, currentPin, setCurrentPin, pins } = useTaskDetailStore();
   const { commentSelect } = useCommentSelect();
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
@@ -72,33 +72,32 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     setOriginalText(input);
     showAiTransformConfirmModal();
   };
+const handleAdd = () => {
+  if (!input.trim()) return;
 
-  const handleAdd = () => {
-    if (!input.trim()) return;
+  const fileInfo = selectedFile?.fileId
+    ? {
+        fileId: selectedFile.fileId,
+        fileName: selectedFile.fileName,
+        filePage: currentPin?.filePage,
+        fileX: currentPin?.fileX,
+        fileY: currentPin?.fileY,
+      }
+    : null;
 
-    const newCommentData = {
-      content: input,
-      persona: 'BOO' as const,
-      isAnonymous,
-      fileInfo: selectedFile
-        ? {
-            fileId: selectedFile.fileId,
-            fileName: selectedFile.fileName,
-            filePage: currentPin?.filePage ?? undefined,
-            fileX: currentPin?.fileX ?? undefined,
-            fileY: currentPin?.fileY ?? undefined,
-          }
-        : {},
-    };
-
-    createComment({ commentData: newCommentData });
-    //⚠️ TODO: fileInfo =null 이면 500 에러 발생
-    setCurrentPin(null);
-
-    if (setSelectedFile) setSelectedFile({});
-
-    setInput('');
+  const newCommentData = {
+    content: input,
+    persona: 'BOO' as const,
+    isAnonymous,
+    ...(fileInfo ? { fileInfo } : {}),
   };
+
+  createComment({ commentData: newCommentData });
+
+  setCurrentPin(null);
+
+  setInput('');
+};
 
   const handleEdit = (comment: CommentUIType) => {
     setEditingCommentId(comment.commentId);

@@ -7,7 +7,7 @@ export const extractPinsFromComments = (comments: CommentUIType[]): PinWithAutho
     .map((c) => ({
       ...(c.fileInfo as FileInfo),
       author: {
-        id: c.authorInfo.id,
+        memberId: c.authorInfo.memberId,
         name: c.authorInfo.name,
         avatar: c.authorInfo.avatar,
         backgroundColor: c.authorInfo.backgroundColor,
