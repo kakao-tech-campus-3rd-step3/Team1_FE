@@ -6,7 +6,7 @@ interface MemoDetailContentProps {
 
 const MemoDetailContent = ({ content }: MemoDetailContentProps) => {
   return (
-    <div className="flex-1 p-4 overflow-auto">
+    <div className="flex-1 p-4 overflow-auto" data-color-mode="light">
       <MDEditor.Markdown source={content} className="prose max-w-none" />
     </div>
   );
