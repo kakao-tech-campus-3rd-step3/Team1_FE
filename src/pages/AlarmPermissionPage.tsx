@@ -1,11 +1,13 @@
-import { X, CheckCircle } from 'lucide-react';
-import React, { useState } from 'react';
+import { CheckCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
-import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission';
+import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission.ts';
 import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
+import type { WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
+import { useConnectPushSessionMutation } from '@/features/alarm/hooks/useConnectPushSessionMutation';
 
 interface StatusViewProps {
   title: string;
@@ -45,31 +47,40 @@ const StatusView = ({
 
 const AlarmPermissionPage = () => {
   const [params] = useSearchParams();
-  const token = params.get('token');
+  const qrToken = params.get('token');
+  const { mutate: connectPushSession } = useConnectPushSessionMutation();
+  const [permission, setPermission] = useState<WebPushStatusType>('CREATED');
+  const { registerPushSubscription } = useAlarmPermission(qrToken);
 
-  const [permission, setPermission] = useState<'initial' | 'granted' | 'denied'>('initial');
-  const { registerPushSubscription, unregisterPushSubscription } = useAlarmPermission(token);
+  useEffect(() => {
+    if (!qrToken) {
+      toast.error('잘못된 QR 입니다');
+      return;
+    }
 
-  if (!token) {
-    toast.error('잘못된 QR 입니다');
-  }
+    const deviceInfo = navigator.userAgent;
+
+    connectPushSession({ token: qrToken, deviceInfo });
+  }, [qrToken, connectPushSession]);
+
   const handleAllow = async () => {
+    if (!qrToken) {
+      toast.error('QR 토큰이 유효하지 않습니다.');
+      return;
+    }
+
     const result = await Notification.requestPermission();
+
     if (result === 'granted') {
-      setPermission('granted');
       await registerPushSubscription();
+      setPermission('REGISTERED');
+      toast.success('알림이 활성화되었습니다!');
     } else {
-      setPermission('denied');
+      toast.error('알림 허용이 필요합니다.');
     }
   };
 
-  const handleDeny = async () => {
-    setPermission('denied');
-    await unregisterPushSubscription();
-  };
-
   const status = STATUS_CONTENT[permission];
-
   return (
     <StatusView
       icon={status.icon}
@@ -79,7 +90,7 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {permission === 'initial' && (
+      {permission === 'CREATED' && (
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
             onClick={handleAllow}
@@ -87,14 +98,6 @@ const AlarmPermissionPage = () => {
           >
             <CheckCircle className="w-4 h-4" />
             허용
-          </Button>
-
-          <Button
-            onClick={handleDeny}
-            className="w-full py-2.5 px-4 bg-gray-100 text-gray-500 title2-regular hover:bg-gray-100 hover:text-gray-700 hover:font-bold active:text-gray-700 duration-300 cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-            알림을 받지 않을래요
           </Button>
         </div>
       )}

@@ -12,7 +12,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const publicPaths = ['/', '/login', '/error', '/auth/callback'];
+    const publicPaths = ['/', '/login', '/error', '/auth/callback', '/alarm/permission'];
     const isPublic = publicPaths.includes(pathname);
 
     if (isPublic) {

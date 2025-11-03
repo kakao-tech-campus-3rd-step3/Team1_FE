@@ -12,7 +12,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    host: true,
     proxy: {
       '/api': {
         target: 'https://api.boost.ai.kr',

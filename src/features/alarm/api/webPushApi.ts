@@ -1,4 +1,4 @@
-import api from '@/shared/api/axiosInstance';
+import api, { apiPublic } from '@/shared/api/axiosInstance';
 import type {
   CreatePushSessionResponse,
   GetPushSessionStatusResponse,
@@ -18,7 +18,6 @@ export const webPushApi = {
   //  웹푸시 상태 조회 (polling으로 연결 상태 확인)
   getSessionStatus: async (token: string): Promise<GetPushSessionStatusResponse> => {
     const { data } = await api.get(`/web-push/sessions/${token}`);
-    console.log(data);
     return data;
   },
 
@@ -26,7 +25,7 @@ export const webPushApi = {
   connectSession: async (
     payload: ConnectPushSessionRequest,
   ): Promise<ConnectPushSessionResponse> => {
-    const { data } = await api.post('/web-push/sessions/connect', payload);
+    const { data } = await apiPublic.post('/web-push/sessions/connect', payload);
     return data;
   },
 
@@ -34,7 +33,7 @@ export const webPushApi = {
   registerSubscription: async (
     payload: PushSubscriptionRequest,
   ): Promise<PushSubscriptionResponse> => {
-    const { data } = await api.post('/web-push/subscriptions', payload);
+    const { data } = await apiPublic.post('/web-push/subscriptions', payload);
     return data;
   },
 };

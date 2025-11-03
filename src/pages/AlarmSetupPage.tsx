@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { AlarmClock, ArrowDown, BellRing, SquareCheck } from 'lucide-react';
@@ -9,61 +9,58 @@ import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
 import { useCreatePushSessionMutation } from '@/features/alarm/hooks/useCreatePushSessionMutation';
 import toast from 'react-hot-toast';
-import { usePushSessionStatus } from '@/features/alarm/hooks/usePushSessionStatus';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
+import { usePushSessionStatusQuery } from '@/features/alarm/hooks/usePushSessionStatusQuery';
 
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
   const hasHandledStatus = useRef(false);
 
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
-  const { data: statusData } = usePushSessionStatus(data?.token);
+  const { data: statusData } = usePushSessionStatusQuery(data?.token);
+  const [qrToken, setQrToken] = useState<string | null>(null);
+  if (qrToken) {
+    console.dir(`http://192.168.60.1:5173/alarm/permission?token=${qrToken}`);
+  }
+  useEffect(() => {
+    if (data?.token && !qrToken) {
+      setQrToken(data.token);
+    }
+  }, [data, qrToken]);
+
+  const qrData = qrToken
+    ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
+    : '';
   useEffect(() => {
     if (!statusData?.status || hasHandledStatus.current) return;
     hasHandledStatus.current = true;
     if (statusData?.status === 'CONNECTED') {
       toast.success('푸시가 허용되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);
-    } else if (statusData?.status === 'EXPIRED') {
-      toast.success('푸시가 거부되었습니다. 설정페이지에서 다시 푸시 알림을 설정할 수 있습니다.');
     }
   }, [statusData, navigate]);
   useEffect(() => {
-    createPushSession(); // 초기 한 번 실행
+    console.log('[Effect] 🔹 mount: createPushSession called');
+    createPushSession();
 
-    const interval = setInterval(() => {
-      createPushSession();
-    }, 30 * 1000);
+    // const interval = setInterval(() => {
+    //   createPushSession();
+    // }, 30 * 1000); // 30초 간격으로 실행
 
-    return () => clearInterval(interval);
+    // return () => {
+    //   clearInterval(interval);
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const qrData = data?.token
-    ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${data.token}`
-    : '';
-  if (isPending) {
+  if (isPending && !data) {
     return (
       <div className="flex items-center justify-center h-screen text-gray-600 text-xl font-medium">
         QR 코드 생성 중...
       </div>
     );
   }
-
-  // if (isExpired) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center h-screen text-gray-600 text-xl font-medium gap-4">
-  //       <p>⏰ QR 코드가 만료되었습니다.</p>
-  //       <button
-  //         onClick={() => createPushSession()}
-  //         className="px-5 py-2 bg-boost-blue-light text-white rounded-lg hover:bg-boost-blue transition"
-  //       >
-  //         새로고침
-  //       </button>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="flex flex-row h-screen">
