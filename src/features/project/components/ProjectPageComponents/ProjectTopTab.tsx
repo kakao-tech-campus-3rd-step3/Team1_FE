@@ -1,30 +1,30 @@
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import TopTab from '@/widgets/TopTab';
+import { ROUTES } from '@/app/routes/Router';
 
 const ProjectTopTab = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentPath = location.pathname.split('/').pop();
-  const [activeTab, setActiveTab] = useState<'보드' | '파일' | '메모'>(
-    currentPath === 'file' ? '파일' : currentPath === 'memo' ? '메모' : '보드',
-  );
+  if (!projectId)
+    return <div className="flex justify-center items-center h-full">프로젝트 ID가 없습니다.</div>;
+
+  const currentPath = location.pathname;
+
+  let activeTab: '보드' | '파일' | '메모' = '보드';
+  if (currentPath.includes('/file')) activeTab = '파일';
+  else if (currentPath.includes('/memo')) activeTab = '메모';
 
   const handleChangeTab = (tab: '보드' | '파일' | '메모') => {
-    setActiveTab(tab);
-    if (tab === '보드') navigate(`/project/${projectId}/board`);
-    if (tab === '파일') navigate(`/project/${projectId}/file`);
-    if (tab === '메모') navigate(`/project/${projectId}/memo`);
+    if (tab === '보드') navigate(ROUTES.PROJECT_BOARD(projectId));
+    if (tab === '파일') navigate(ROUTES.PROJECT_FILE(projectId));
+    if (tab === '메모') navigate(ROUTES.PROJECT_MEMO_LIST(projectId));
   };
 
-  // 초기 redirect 처리
-  useEffect(() => {
-    if (location.pathname === `/project/${projectId}`) {
-      navigate(`/project/${projectId}/board`, { replace: true });
-    }
-  }, [location.pathname, projectId, navigate]);
+  if (currentPath === `/project/${projectId}`) {
+    navigate(ROUTES.PROJECT_BOARD(projectId), { replace: true });
+  }
 
   return <TopTab activeTab={activeTab} onChangeTab={handleChangeTab} showTabs={true} />;
 };

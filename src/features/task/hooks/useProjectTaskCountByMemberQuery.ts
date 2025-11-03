@@ -4,7 +4,7 @@ import type {
   ProjectTaskCountByMemberMap,
   ProjectTaskCountByMemberResponse,
 } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 
 export const useProjectTaskCountByMemberQuery = (projectId?: string) => {
   return useQuery<Record<string, ProjectTaskCountByMemberMap>, Error>({

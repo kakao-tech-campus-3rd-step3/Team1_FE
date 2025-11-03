@@ -42,6 +42,10 @@ export const handleGeneralApiError = (error: AxiosError<ApiErrorResponse>) => {
       // 403 : API 훅에서 필요에 따라 처리
       throw error;
 
+    case 400:
+      // 400 : API 훅에서 필요에 따라 처리
+      throw error;
+
     default:
       alert(data.message || '알 수 없는 오류가 발생했습니다.');
   }

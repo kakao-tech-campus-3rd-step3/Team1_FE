@@ -1,0 +1,57 @@
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
+import { User, ChevronLeft, ChevronRight } from 'lucide-react';
+import ContentItem from '@/shared/components/ui/ContentItem';
+import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/taskDetailConstants';
+
+interface AssigneeMoreListProps {
+  assignees: { id: string; name: string; avatar?: string }[];
+}
+
+const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
+  const [showAll, setShowAll] = useState(false);
+  const displayedAssignees = showAll ? assignees : assignees.slice(0, MAX_DISPLAY_ASSIGNEES);
+  const hasMore = assignees.length > MAX_DISPLAY_ASSIGNEES;
+
+  return (
+    <ContentItem icon={User} title="담당자">
+      <div className="flex flex-wrap gap-2.5">
+        {displayedAssignees.map((assignee) => (
+          <div
+            key={assignee.id}
+            className="flex items-center gap-2 hover:bg-gray-50 transition-colors rounded-lg pr-2 py-1.5"
+          >
+            <Avatar className="w-9 h-9 border border-gray-200 bg-boost-yellow flex items-center justify-center shadow-sm">
+              <AvatarImage src={getAvatarSrc(assignee)} alt={assignee.name} className="w-8 h-8" />
+              <AvatarFallback className="bg-boost-yellow body2-regular">
+                {assignee.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="body2-regular text-gray-700">{assignee.name}</span>
+          </div>
+        ))}
+
+        {hasMore && (
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors body2-regular text-gray-600 border border-gray-200"
+          >
+            {showAll ? (
+              <>
+                접기 <ChevronLeft className="w-3.5 h-3.5" />
+              </>
+            ) : (
+              <>
+                +{assignees.length - MAX_DISPLAY_ASSIGNEES}명{' '}
+                <ChevronRight className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        )}
+      </div>
+    </ContentItem>
+  );
+};
+
+export default AssigneeMoreList;

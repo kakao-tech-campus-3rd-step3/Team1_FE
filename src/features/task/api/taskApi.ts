@@ -1,5 +1,6 @@
 import type {
   MemberTaskListResponse,
+  MyTaskCountByStatusResponse,
   ProjectTaskCountByMemberResponse,
   ProjectTaskCountByStatusResponse,
   TaskDetail,
@@ -8,6 +9,8 @@ import type {
 } from '@/features/task/types/taskTypes';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
+import { SORT_BY, DIRECTION } from '@/features/board/constants/sortConstants';
+import type { Direction, SortBy } from '@/features/board/types/sortTypes';
 
 export const taskApi = {
   // 나의 할 일 목록 조회 (상태 기준)
@@ -15,8 +18,12 @@ export const taskApi = {
     cursor?: string,
     status?: string,
     limit = 10,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<TaskListResponse> => {
-    const res = await api.get<TaskListResponse>(`/me/tasks`, { params: { cursor, limit, status } });
+    const res = await api.get<TaskListResponse>('/me/tasks', {
+      params: { cursor, limit, status, sortBy, direction },
+    });
     return res.data;
   },
 
@@ -26,9 +33,11 @@ export const taskApi = {
     cursor?: string,
     status?: string,
     limit = 10,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<TaskListResponse> => {
     const res = await api.get<TaskListResponse>(`/projects/${projectId}/tasks`, {
-      params: { cursor, limit, status },
+      params: { cursor, limit, status, sortBy, direction },
     });
     return res.data;
   },
@@ -39,10 +48,12 @@ export const taskApi = {
     memberId: string,
     cursor?: string,
     limit = 10,
+    sortBy: SortBy = SORT_BY.CREATED_AT,
+    direction: Direction = DIRECTION.ASC,
   ): Promise<MemberTaskListResponse> => {
     const res = await api.get<MemberTaskListResponse>(
       `/projects/${projectId}/members/${memberId}/tasks`,
-      { params: { cursor, limit } },
+      { params: { cursor, limit, sortBy, direction } },
     );
     return res.data;
   },
@@ -64,6 +75,12 @@ export const taskApi = {
     const res = await api.get<ProjectTaskCountByMemberResponse[]>(
       `/projects/${projectId}/tasks/members/status-count`,
     );
+    return res.data;
+  },
+
+  // 나의 할 일 개수 조회 (상태 기준)
+  fetchMyTaskCountByStatus: async (): Promise<MyTaskCountByStatusResponse> => {
+    const res = await api.get<MyTaskCountByStatusResponse>(`/me/tasks/status-count`);
     return res.data;
   },
 

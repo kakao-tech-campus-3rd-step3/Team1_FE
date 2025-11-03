@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/api/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { TaskListResponse } from '@/features/task/types/taskTypes';
+import { useSortStore } from '@/features/board/store/useSortStore';
 
 interface DeleteTaskMutationVars {
   taskId: string;
@@ -10,6 +11,7 @@ interface DeleteTaskMutationVars {
 
 export const useDeleteTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
+  const { sortBy, direction } = useSortStore();
 
   return useMutation<
     { success: boolean },
@@ -20,8 +22,8 @@ export const useDeleteTaskMutation = (projectId: string) => {
     mutationFn: ({ taskId }) => taskApi.deleteTask(projectId, taskId),
 
     onMutate: async ({ taskId, status }) => {
-      const projectKey = TASK_QUERY_KEYS.project(projectId, status);
-      const meKey = TASK_QUERY_KEYS.meStatus(status);
+      const projectKey = TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
+      const meKey = TASK_QUERY_KEYS.meStatus(status, sortBy, direction);
 
       await Promise.all([
         queryClient.cancelQueries({ queryKey: projectKey }),
@@ -52,7 +54,7 @@ export const useDeleteTaskMutation = (projectId: string) => {
       projectData?.pages.forEach((page) => {
         const targetTask = page.tasks.find((task) => task.taskId === taskId);
         targetTask?.assignees.forEach((assignee) => {
-          const memberKey = TASK_QUERY_KEYS.member(projectId, assignee.id);
+          const memberKey = TASK_QUERY_KEYS.member(projectId, assignee.id, sortBy, direction);
           queryClient.cancelQueries({ queryKey: memberKey });
 
           const memberData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(memberKey);
@@ -75,8 +77,15 @@ export const useDeleteTaskMutation = (projectId: string) => {
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
-      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.projectCountMember(projectId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.meCountStatus(),
+      });
     },
   });
 };

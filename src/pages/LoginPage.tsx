@@ -1,11 +1,15 @@
 import LeftInfoSection from '@/features/auth/components/LeftInfoSection';
 import RightLoginSection from '@/features/auth/components/RightLoginSection';
+import { useLocation } from 'react-router-dom';
 
 const LoginPage = () => {
   const redirectUri = import.meta.env.VITE_REDIRECT_URI;
   const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+  const location = useLocation();
 
   const handleKakaoLogin = () => {
+    const from = location.state?.from || '/my-task';
+    localStorage.setItem('login_from', from);
     const encodedRedirectUri = encodeURIComponent(redirectUri);
     const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
     window.location.href = kakaoUrl;

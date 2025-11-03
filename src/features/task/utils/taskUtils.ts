@@ -1,12 +1,12 @@
 import type {
   Column,
   ProjectTaskCountByMemberMap,
-  ProjectTaskCountByStatusMap,
+  TaskCountByStatusMap,
 } from '@/features/task/types/taskTypes';
 
 export const getTaskCountByStatus = (
   columnStatus: Column['status'],
-  taskCountList?: ProjectTaskCountByStatusMap,
+  taskCountList?: TaskCountByStatusMap,
 ) => {
   if (!taskCountList) return 0;
 
