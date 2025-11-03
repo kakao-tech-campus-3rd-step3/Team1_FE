@@ -33,9 +33,9 @@ const AlarmSetupPage = () => {
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
     : '';
   useEffect(() => {
-    if (!statusData?.status || hasHandledStatus.current) return;
-    hasHandledStatus.current = true;
-    if (statusData?.status === 'CONNECTED') {
+    if (!statusData?.status) return;
+    if (statusData.status === 'CONNECTED' && !hasHandledStatus.current) {
+      hasHandledStatus.current = true;
       toast.success('푸시가 허용되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);
     }

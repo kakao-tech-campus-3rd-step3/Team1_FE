@@ -1,5 +1,5 @@
 import { CheckCircle } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
@@ -50,17 +50,26 @@ const AlarmPermissionPage = () => {
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
   const [permission, setPermission] = useState<WebPushStatusType>('CREATED');
-  const { registerPushSubscription } = useAlarmPermission(qrToken);
+  const { registerPushSubscription } = useAlarmPermission(qrToken!);
+
+  const hasShownError = useRef(false);
 
   useEffect(() => {
-    if (!qrToken) {
+    if (!qrToken && !hasShownError.current) {
       toast.error('잘못된 QR 입니다');
+      hasShownError.current = true;
       return;
     }
 
-    const deviceInfo = navigator.userAgent;
+    if (!('serviceWorker' in navigator && 'PushManager' in window)) {
+      toast.error('지원하지 않는 브라우저입니다.');
+      return;
+    }
 
-    connectPushSession({ token: qrToken, deviceInfo });
+    if (qrToken) {
+      const deviceInfo = navigator.userAgent;
+      connectPushSession({ token: qrToken, deviceInfo });
+    }
   }, [qrToken, connectPushSession]);
 
   const handleAllow = async () => {

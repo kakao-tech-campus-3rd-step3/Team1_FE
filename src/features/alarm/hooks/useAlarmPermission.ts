@@ -12,15 +12,7 @@ const urlBase64ToUint8Array = (base64String: string) => {
 export const useAlarmPermission = (token: string | null) => {
   const registerPushSubscription = async () => {
     try {
-      if (!('serviceWorker' in navigator)) {
-        toast.error('지원하지 않는 브라우저입니다.');
-        return;
-      }
-
-      if (!token) {
-        toast.error('로그인 후 이용 가능합니다.');
-        return;
-      }
+      if (!token) return;
 
       const registration = await navigator.serviceWorker.ready;
       const existing = await registration.pushManager.getSubscription();
