@@ -20,9 +20,7 @@ const AlarmSetupPage = () => {
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
-  if (qrToken) {
-    console.dir(`http://192.168.60.1:5173/alarm/permission?token=${qrToken}`);
-  }
+
   useEffect(() => {
     if (data?.token && !qrToken) {
       setQrToken(data.token);
