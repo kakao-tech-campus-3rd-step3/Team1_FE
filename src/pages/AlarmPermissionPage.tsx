@@ -50,7 +50,7 @@ const AlarmPermissionPage = () => {
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
   const [permission, setPermission] = useState<WebPushStatusType>('CREATED');
-  const { registerPushSubscription } = useAlarmPermission(qrToken!);
+  const { registerPushSubscription } = useAlarmPermission(qrToken);
 
   const hasShownError = useRef(false);
 
