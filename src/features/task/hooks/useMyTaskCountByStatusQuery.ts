@@ -3,11 +3,13 @@ import { taskApi } from '@/features/task/api/taskApi';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { TaskCountByStatusMap } from '@/features/task/types/taskTypes';
 
-// 나의 할 일 개수 조회 (전체)
-export const useMyTaskCountByStatusQuery = (enabled = true) => {
+export const useMyTaskCountByStatusQuery = (enabled = true, search?: string) => {
+  const baseKey = TASK_QUERY_KEYS.meCountStatus();
+  const queryKey = search ? [...baseKey, search] : baseKey;
+
   return useQuery<TaskCountByStatusMap, Error>({
-    queryKey: TASK_QUERY_KEYS.meCountStatus(),
-    queryFn: () => taskApi.fetchMyTaskCountByStatus(),
+    queryKey, // 배열로 전달
+    queryFn: () => taskApi.fetchMyTaskCountByStatus(search),
     enabled,
   });
 };
