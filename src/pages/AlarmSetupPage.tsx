@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { AlarmClock, ArrowDown, BellRing, SquareCheck } from 'lucide-react';
-
 import BooAlarmClick from '@/shared/assets/images/boost/boo-with-alarm.png';
 import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
@@ -13,25 +12,31 @@ import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
 import { usePushSessionStatusQuery } from '@/features/alarm/hooks/usePushSessionStatusQuery';
 
+const INTERVAL_MS = 30 * 1000; // 30초
+
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
   const hasHandledStatus = useRef(false);
-
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
-  if (qrToken) {
-    console.dir(`http://192.168.60.1:5173/alarm/permission?token=${qrToken}`);
-  }
+
+  // 남은 시간 표시용 state
+  const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
+
+  // 토큰 설정
   useEffect(() => {
     if (data?.token && !qrToken) {
       setQrToken(data.token);
     }
   }, [data, qrToken]);
 
+  // QR 데이터 URL 생성
   const qrData = qrToken
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
     : '';
+
+  // 상태 변경 감지: CONNECTED → 리디렉션
   useEffect(() => {
     if (!statusData?.status) return;
     if (statusData.status === 'CONNECTED' && !hasHandledStatus.current) {
@@ -40,17 +45,26 @@ const AlarmSetupPage = () => {
       navigate(ROUTE_PATH.MY_TASK);
     }
   }, [statusData, navigate]);
+
+  // 세션 생성 + 30초마다 재생성 + 카운트다운
   useEffect(() => {
     console.log('[Effect] 🔹 mount: createPushSession called');
     createPushSession();
+    setRemainingTime(INTERVAL_MS / 1000);
 
-    // const interval = setInterval(() => {
-    //   createPushSession();
-    // }, 30 * 1000); // 30초 간격으로 실행
+    const interval = setInterval(() => {
+      createPushSession();
+      setRemainingTime(INTERVAL_MS / 1000); // 30초로 리셋
+    }, INTERVAL_MS);
 
-    // return () => {
-    //   clearInterval(interval);
-    // };
+    const countdown = setInterval(() => {
+      setRemainingTime((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(countdown);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,6 +75,9 @@ const AlarmSetupPage = () => {
       </div>
     );
   }
+
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
 
   return (
     <div className="flex flex-row h-screen">
@@ -110,13 +127,13 @@ const AlarmSetupPage = () => {
         <div className="bg-gray-200 p-3 rounded-md">
           {qrData ? <QRCodeSVG value={qrData} size={220} /> : <p>QR 데이터가 없습니다.</p>}
         </div>
-        {/* TODO: 만료시간을 어떻게 보여줄 지 논의 후 구 */}
-        {/* 남은 시간 표시 */}
-        {/* <p className="text-gray-500 font-semibold text-sm">
-          남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
-        </p> */}
 
-        {/* 이미지 부분 */}
+        {/* 남은 시간 표시 */}
+        <p className="text-gray-500 font-semibold text-sm">
+          QR 갱신까지 남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
+        </p>
+
+        {/* 이미지 영역 */}
         <div aria-label="image" className="flex flex-col items-center">
           <div aria-label="mockup" className="relative w-[640px] mt-1">
             <motion.img
