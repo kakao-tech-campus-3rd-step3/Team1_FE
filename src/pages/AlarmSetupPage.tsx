@@ -20,8 +20,6 @@ const AlarmSetupPage = () => {
   const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
-
-  // 남은 시간 표시용 state
   const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
 
   // 토큰 설정
@@ -36,7 +34,7 @@ const AlarmSetupPage = () => {
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
     : '';
 
-  // 상태 변경 감지: CONNECTED → 리디렉션
+  // CONNECTED → 리디렉션
   useEffect(() => {
     if (!statusData?.status) return;
     if (statusData.status === 'CONNECTED' && !hasHandledStatus.current) {
@@ -46,15 +44,14 @@ const AlarmSetupPage = () => {
     }
   }, [statusData, navigate]);
 
-  // 세션 생성 + 30초마다 재생성 + 카운트다운
+  // 세션 생성 + 30초마다 갱신 + 카운트다운
   useEffect(() => {
-    console.log('[Effect] 🔹 mount: createPushSession called');
     createPushSession();
     setRemainingTime(INTERVAL_MS / 1000);
 
     const interval = setInterval(() => {
       createPushSession();
-      setRemainingTime(INTERVAL_MS / 1000); // 30초로 리셋
+      setRemainingTime(INTERVAL_MS / 1000);
     }, INTERVAL_MS);
 
     const countdown = setInterval(() => {
@@ -80,11 +77,11 @@ const AlarmSetupPage = () => {
   const seconds = remainingTime % 60;
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen overflow-hidden">
       {/* 왼쪽 알림 예시 */}
       <section
         aria-label="Notification examples"
-        className="flex flex-col justify-between items-center w-[25%] h-full pl-20 py-22 mr-5"
+        className="flex flex-col justify-between items-center w-[25%] h-full pl-20 py-24 mr-5 box-border"
       >
         <CircleBox
           className="mr-14 bg-boost-yellow"
@@ -97,6 +94,7 @@ const AlarmSetupPage = () => {
             할 일이 <br /> 생겼어요!
           </p>
         </CircleBox>
+
         <CircleBox
           className="ml-24 mb-10 bg-boost-blue-light"
           variants={floatVariant}
@@ -111,29 +109,34 @@ const AlarmSetupPage = () => {
       {/* 중앙 QR 영역 */}
       <section
         aria-label="QR code setup instructions"
-        className="flex flex-col items-center justify-between gap-4 w-[50%] pt-10"
+        className="flex flex-col items-center justify-between gap-6 w-[50%] pt-10 box-border"
       >
+        {/* 상단 텍스트 */}
         <div aria-label="text" className="flex flex-col items-center gap-3">
-          <div className="text-4xl font-semibold">
+          <div className="text-4xl font-semibold text-center">
             <span className="text-boost-blue-light">알림</span>을 허용해보세요!
           </div>
-          <div className="text-gray-600 subtitle1-bold">
+          <div className="text-gray-600 subtitle1-bold text-center">
             모바일로 하단의 QR 코드를 스캔해주세요!
           </div>
           <ArrowDown className="text-boost-blue-light" />
         </div>
 
         {/* QR 코드 */}
-        <div className="bg-gray-200 p-3 rounded-md">
-          {qrData ? <QRCodeSVG value={qrData} size={220} /> : <p>QR 데이터가 없습니다.</p>}
+        <div className="p-4 shadow-md rounded-md bg-white">
+          {qrData ? (
+            <QRCodeSVG value={qrData} className="w-40 h-40" />
+          ) : (
+            <p>QR 데이터가 없습니다.</p>
+          )}
         </div>
 
-        {/* 남은 시간 표시 */}
+        {/* 남은 시간 */}
         <p className="text-gray-500 font-semibold text-sm">
           QR 갱신까지 남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
         </p>
 
-        {/* 이미지 영역 */}
+        {/* 중앙 이미지 */}
         <div aria-label="image" className="flex flex-col items-center">
           <div aria-label="mockup" className="relative w-[640px] mt-1">
             <motion.img
@@ -143,14 +146,15 @@ const AlarmSetupPage = () => {
               variants={shakeVariant}
               animate="animate"
             />
-            <img src={BooAlarmClick} alt="alarm-mockup" />
+            <img src={BooAlarmClick} alt="alarm-mockup" className="select-none" />
           </div>
         </div>
       </section>
 
+      {/* 오른쪽 알림 예시 */}
       <section
         aria-label="Notification examples"
-        className="flex flex-col justify-center items-center ml-5 w-[25%] h-full px-10 pr-30 py-20 pt-10"
+        className="flex flex-col justify-center items-center w-[25%] h-full px-10 py-20 box-border"
       >
         <CircleBox
           className="mr-14 bg-boost-orange"
