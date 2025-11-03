@@ -28,3 +28,16 @@ export const calculateDDay = (
 
   return diff;
 };
+
+export const formatShortDateTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  const options: Intl.DateTimeFormatOptions = {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Seoul',
+  };
+  return new Intl.DateTimeFormat('ko-KR', options).format(date).replace('.', '').replace('.', '.');
+};
