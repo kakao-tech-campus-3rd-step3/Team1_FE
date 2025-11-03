@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
-import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission.ts';
+import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission';
 import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
 import type { WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/alarm/hooks/useConnectPushSessionMutation';
