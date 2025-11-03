@@ -3,5 +3,7 @@ export interface MyInfoResponse {
   name: string;
   avatar: string;
   backgroundColor: string;
+  notificationEnabled: boolean;
   createdAt: string;
+  updatedAt: string;
 }
