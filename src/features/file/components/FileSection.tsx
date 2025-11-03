@@ -1,92 +1,60 @@
+import { useParams } from 'react-router-dom';
+import { useProjectFilesQuery } from '@/features/file/hooks/useProjectFilesQuery';
+import FileHeader from '@/features/file/components/FileHeader';
+import FileList from '@/features/file/components/FileList';
+import { Loader2, ChevronDown } from 'lucide-react';
 import { Button } from '@/shared/components/shadcn/button';
-import { ChevronRight, Download } from 'lucide-react';
-import { mockAllFiles } from '@/shared/data/mockAllFiles';
-import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components/shadcn/dropdown-menu';
-import { formatBytes, getFileIcon, getTotalFileSize } from '@/features/file/utils/fileUtils';
-import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
-import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 
-const FilePage = () => {
-  const files = mockAllFiles;
-  const navigate = useNavigate();
-  const { mutate: downloadFile } = useFileDownloadMutation();
+const FileSection = () => {
+  const { projectId } = useParams<{ projectId: string }>();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
+    useProjectFilesQuery(projectId!);
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-center">파일을 불러오지 못했습니다.</p>;
+  }
+
+  const allFiles = data?.pages.flatMap((page) => page.files) ?? [];
+  console.log(allFiles);
   return (
-    <div className="p-6  bg-gray-50">
-      <div>
-        <div className=" mx-auto">
-          <div className="mb-8">
-            <p className="font-bold text-gray-700">프로젝트 중 업로드한 작업물을 관리하세요</p>
-          </div>
-          {/* 헤더 */}
-          <div className="flex ml-24 pr-13 items-center justify-between px-4 py-2 text-sm font-semibold text-gray-500">
-            <span className="">파일명</span>
-            <span className=" text-center pl-12">할 일</span>
-            <span>다운로드</span>
-          </div>
-          {/* File List */}
-          <div className="flex flex-col gap-4">
-            {files.map((file) => (
-              <div key={file.id} className="p-4 bg-white rounded-xl">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-6 ">
-                    <div className="w-10 h-10  flex items-center justify-center flex-shrink-0">
-                      <img src={getFileIcon(file.type)} alt="" />{' '}
-                    </div>
+    <div className="flex min-h-screen flex-col space-y-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+      <FileHeader />
 
-                    <div className=" min-w-0">
-                      <h3 className="font-medium text-gray-900 ">{file.name}</h3>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {formatBytes(file.sizeBytes)} · {file.date}
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    onClick={() => {
-                      navigate(ROUTE_PATH.TASK_DETAIL);
-                    }}
-                    variant="outline"
-                    size="sm"
-                    className="text-sm border-gray-400"
-                  >
-                    {file.taskName}
-                  </Button>
+      <FileList files={allFiles} />
 
-                  <div className="flex items-center gap-3">
-                    <Button
-                      onClick={() => downloadFile({ fileId: file.id, fileName: file.name })}
-                      variant="ghost"
-                      size="sm"
-                      className="w-9 h-9 p-0"
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="w-9 h-9 p-0">
-                          <ChevronRight />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      {/* <DropdownMenuContent align="end"> */}
-                      {/* <DropdownMenuItem>이름 변경</DropdownMenuItem> */}
-                      {/* </DropdownMenuContent> */}
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Footer Info */}
-          <div className="mt-6 flex items-center justify-between text-sm text-gray-500">
-            <p>총 {files.length}개 파일</p>
-            <p>전체 용량 : {getTotalFileSize(files)}</p>
+      {isFetchingNextPage && (
+        <div className="flex justify-center py-4">
+          <div className="flex items-center gap-2 text-gray-600 bg-white px-6 py-2.5 rounded-full shadow-sm">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm font-medium">불러오는 중...</span>
           </div>
         </div>
-      </div>
+      )}
+
+      {hasNextPage && !isFetchingNextPage && (
+        <div className="flex justify-center  pt-3 pb-7">
+          <Button
+            onClick={() => fetchNextPage()}
+            variant="outline"
+            className="group relative px-6 py-5 rounded-full shadow-sm hover:shadow-md transition-all duration-200 bg-white hover:bg-gray-50 border-gray-200"
+          >
+            <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              더보기
+              <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-200" />
+            </span>
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default FilePage;
+export default FileSection;
