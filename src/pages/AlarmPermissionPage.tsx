@@ -4,9 +4,9 @@ import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
-import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission';
+import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission.ts';
 import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
-import type { WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
+import { WebPushStatus, type WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/alarm/hooks/useConnectPushSessionMutation';
 
 interface StatusViewProps {
@@ -49,8 +49,8 @@ const AlarmPermissionPage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
-  const [permission, setPermission] = useState<WebPushStatusType>('CREATED');
-  const { registerPushSubscription } = useAlarmPermission(qrToken);
+  const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
+  const { registerPushSubscription } = useAlarmPermission(qrToken!);
 
   const hasShownError = useRef(false);
 
@@ -82,7 +82,7 @@ const AlarmPermissionPage = () => {
 
     if (result === 'granted') {
       await registerPushSubscription();
-      setPermission('REGISTERED');
+      setPermission(WebPushStatus.REGISTERED);
       toast.success('알림이 활성화되었습니다!');
     } else {
       toast.error('알림 허용이 필요합니다.');
@@ -99,7 +99,7 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {permission === 'CREATED' && (
+      {permission === WebPushStatus.CONNECTED && (
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
             onClick={handleAllow}
