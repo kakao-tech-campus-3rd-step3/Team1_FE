@@ -14,7 +14,6 @@ interface TagColorStyle {
 }
 
 const tagColorMap: Record<string, TagColorStyle> = {
-  긴급: { backgroundColor: '#fee2e2', color: '#991b1b' },
   검토필요: { backgroundColor: '#dcfce7', color: '#166534' },
   검토완료: { backgroundColor: '#dbeafe', color: '#1e40af' },
   마감일: { backgroundColor: '#dbeafe', color: '#1e40af' },
@@ -53,7 +52,6 @@ export function getColorStyleForTag(tag: Tag | string, withBorder = false): TagC
 export function generateTags(task: TaskDetail | TaskListItem): TagList {
   const tags: TagList = [];
 
-  if (task.urgent) tags.push({ tagId: 'system-urgent', name: '긴급' });
   if (task.requiredReviewerCount && task.requiredReviewerCount > 0)
     tags.push({ tagId: 'system-review', name: '검토필요' });
 
