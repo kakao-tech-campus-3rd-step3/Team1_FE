@@ -1,4 +1,4 @@
-import { useMyTaskCountByStatusQuery } from '@/features/task/hooks/useMyTaskCountByStatus';
+import { useMyTaskCountByStatusQuery } from '@/features/task/hooks/useMyTaskCountByStatusQuery';
 import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/useProjectTaskCountByStatusQuery';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 import { BOARD_KEYS } from '@/features/board/constants/boardConstants';

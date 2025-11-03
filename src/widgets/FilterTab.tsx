@@ -1,7 +1,7 @@
 import SearchInput from '@/shared/components/ui/SearchInput';
 import FilterToggle from '@/shared/components/ui/FilterToggle';
 import SortDropDown from '@/shared/components/ui/SortDropDown';
-import type { BoardKey } from '@/features/board/constants/boardConstants';
+import type { BoardKey } from '@/features/board/types/boardTypes';
 
 interface FilterTabProps {
   boardKey: BoardKey;

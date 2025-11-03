@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { BOARD_KEYS, type BoardKey } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import type { BoardKey } from '@/features/board/types/boardTypes';
 
 interface BoardSearchState {
   searchMap: Record<BoardKey, string>;

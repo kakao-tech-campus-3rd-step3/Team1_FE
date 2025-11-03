@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { BoardKey } from '@/features/board/constants/boardConstants';
+import type { BoardKey } from '@/features/board/types/boardTypes';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 import { Input } from '@/shared/components/shadcn/input';
 import { Search } from 'lucide-react';
