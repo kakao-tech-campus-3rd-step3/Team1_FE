@@ -11,7 +11,7 @@ export const useInfiniteProjectTasksByStatusQuery = (
   status: string,
   sortBy: SortBy = SORT_BY.CREATED_AT,
   direction: Direction = DIRECTION.ASC,
-  search: string,
+  search: string = '',
   options?: UseInfiniteTasksOptions,
 ) => {
   return useInfiniteQuery<TaskListResponse, Error>({
