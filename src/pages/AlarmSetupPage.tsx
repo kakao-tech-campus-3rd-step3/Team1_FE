@@ -32,14 +32,13 @@ const AlarmSetupPage = () => {
     : '';
   useEffect(() => {
     if (!statusData?.status) return;
-    if (statusData.status === 'CONNECTED' && !hasHandledStatus.current) {
+    if (statusData.status === 'REGISTERED' && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
       toast.success('푸시가 허용되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);
     }
   }, [statusData, navigate]);
   useEffect(() => {
-    console.log('[Effect] 🔹 mount: createPushSession called');
     createPushSession();
 
     // const interval = setInterval(() => {
