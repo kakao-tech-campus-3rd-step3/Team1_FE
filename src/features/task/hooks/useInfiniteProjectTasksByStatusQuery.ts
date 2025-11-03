@@ -11,10 +11,11 @@ export const useInfiniteProjectTasksByStatusQuery = (
   status: string,
   sortBy: SortBy = SORT_BY.CREATED_AT,
   direction: Direction = DIRECTION.ASC,
+  search: string,
   options?: UseInfiniteTasksOptions,
 ) => {
   return useInfiniteQuery<TaskListResponse, Error>({
-    queryKey: TASK_QUERY_KEYS.project(projectId, status, sortBy, direction),
+    queryKey: TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search),
     queryFn: ({ pageParam }) =>
       taskApi.fetchProjectTasksByStatus(
         projectId,
@@ -23,6 +24,7 @@ export const useInfiniteProjectTasksByStatusQuery = (
         10,
         sortBy,
         direction,
+        search,
       ),
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
     initialPageParam: undefined,

@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import { useSortStore } from '@/features/board/store/useSortStore';
+import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
+import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
 import type {
   MemberTaskListResponse,
   UseInfiniteTasksOptions,
@@ -14,9 +16,10 @@ export const useInfiniteProjectTasksByMemberQuery = (
   options?: UseInfiniteTasksOptions,
 ) => {
   const { sortBy, direction } = useSortStore();
+  const search = useBoardSearchStore((state) => state.searchMap[BOARD_KEYS.PROJECT_MEMBER]);
 
   return useInfiniteQuery<MemberTaskListResponse, Error>({
-    queryKey: TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction),
+    queryKey: TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction, search),
     queryFn: ({ pageParam }) =>
       taskApi.fetchProjectTasksByMember(
         projectId,
@@ -25,6 +28,7 @@ export const useInfiniteProjectTasksByMemberQuery = (
         10,
         sortBy,
         direction,
+        search,
       ),
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
     initialPageParam: undefined,
