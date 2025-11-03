@@ -7,14 +7,6 @@ export type Column = {
   title: string;
 };
 
-export type Assignee = {
-  id: string;
-  name: string;
-  avatar?: string;
-  createdAt?: string;
-  updatedAt?: string;
-};
-
 export type Comment = {
   id: string;
   content: string;
@@ -42,7 +34,7 @@ export type TaskListItem = {
   fileCount: number;
   commentCount: number;
   tags: TagList;
-  assignees: Assignee[];
+  assignees: Member[];
   createdAt: string;
   updatedAt: string;
 };

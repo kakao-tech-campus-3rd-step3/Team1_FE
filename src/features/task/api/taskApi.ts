@@ -7,7 +7,7 @@ import type {
   TaskListItem,
   TaskListResponse,
 } from '@/features/task/types/taskTypes';
-import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
+import type { CreateTaskInput, UpdateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
 import { SORT_BY, DIRECTION } from '@/features/board/constants/sortConstants';
 import type { Direction, SortBy } from '@/features/board/types/sortTypes';
@@ -93,6 +93,16 @@ export const taskApi = {
   // 할 일 생성
   createTask: async (projectId: string, taskData: CreateTaskInput): Promise<TaskListItem> => {
     const res = await api.post<TaskListItem>(`/projects/${projectId}/tasks`, taskData);
+    return res.data;
+  },
+
+  // 할 일 수정
+  updateTask: async (
+    projectId: string,
+    taskId: string,
+    taskData: UpdateTaskInput,
+  ): Promise<TaskListItem> => {
+    const res = await api.put<TaskListItem>(`/projects/${projectId}/tasks/${taskId}`, taskData);
     return res.data;
   },
 
