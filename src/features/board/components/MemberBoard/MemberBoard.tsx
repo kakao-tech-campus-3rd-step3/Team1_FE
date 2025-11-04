@@ -6,7 +6,8 @@ import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useI
 import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
-import type { Member } from '@/features/user/types/userTypes';
+import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
+import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 
 interface MemberBoardProps {
   projectId?: string;
@@ -23,6 +24,19 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
   } = useHorizontalScroll<HTMLDivElement>();
 
   const { data: projectMembers, isLoading } = useProjectMembersQuery(projectId);
+  const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectId);
+
+  const projectMembersWithBoostingScore = (projectMembers ?? []).map((member) => {
+    const boosting = projectBoostingScores?.find((b) => b.memberId === member.id);
+
+    return {
+      ...member,
+      totalScore: boosting?.totalScore ?? 0,
+      rank: boosting?.rank ?? 0,
+      calculatedAt: boosting?.calculatedAt ?? '',
+    };
+  });
+
   const { data: doneData } = useInfiniteProjectTasksByStatusQuery(projectId ?? '', 'DONE');
   const doneTasks: TaskListItem[] = doneData?.pages.flatMap((page) => page.tasks) ?? [];
 
@@ -70,7 +84,7 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
       {/* 멤버 컬럼 */}
       <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden h-full py-2 px-1">
         <div className="flex gap-3 min-w-max h-full items-stretch">
-          {(projectMembers ?? []).map((member: Member) => (
+          {(projectMembersWithBoostingScore ?? []).map((member: MemberWithBoosting) => (
             <MemberColumn key={member.id} projectId={projectId ?? ''} member={member} />
           ))}
 

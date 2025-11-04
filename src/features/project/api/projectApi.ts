@@ -1,4 +1,4 @@
-import type { Project } from '@/features/project/types/projectTypes';
+import type { Project, ProjectBoostingScores } from '@/features/project/types/projectTypes';
 import type { Member } from '@/features/user/types/userTypes';
 import api from '@/shared/api/axiosInstance';
 
@@ -18,6 +18,12 @@ export const projectApi = {
   // 프로젝트 멤버 조회
   fetchProjectMembers: async (projectId: string): Promise<Member[]> => {
     const { data } = await api.get(`/projects/${projectId}/members`);
+    return data;
+  },
+
+  // 프로젝트 멤버 공헌도 점수 조회
+  fetchProjectBoostingScores: async (projectId: string): Promise<ProjectBoostingScores> => {
+    const { data } = await api.get(`/projects/${projectId}/boosting-scores`);
     return data;
   },
 

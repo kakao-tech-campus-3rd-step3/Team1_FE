@@ -1,5 +1,6 @@
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
+/* TODO: 댓글 목록 조회 응답 필드 확인 필요 */
 export interface AuthorInfo {
   memberId: string;
   name: string;

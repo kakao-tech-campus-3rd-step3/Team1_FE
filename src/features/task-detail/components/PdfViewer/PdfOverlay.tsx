@@ -27,15 +27,18 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           const top = 100 - (m.fileY ? m.fileY / pageSize.height : 0) * 100;
           const isAnonymous = m.author?.isAnonymous;
 
+
           return (
             <div
               key={uuidv4()}
               className={cn(
-                'flex items-center justify-center bg-boost-orange absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer',
+                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer',
                 isAnonymous && 'bg-gray-400',
               )}
+              /* TODO: 댓글 목록 조회 응답 필드 확인 필요 */
               style={{
                 backgroundColor: m.author?.backgroundColor,
+                borderColor: m.author?.backgroundColor,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
@@ -46,8 +49,9 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
               ) : (
                 <img
                   src={getAvatarSrc({ avatar: m.author?.avatar })}
+                  style={{ backgroundColor: user?.backgroundColor }}
                   alt={m.author?.name ?? 'avatar'}
-                  className="w-full h-full object-cover rotate-[45deg]"
+                  className="w-6 h-6 object-cover rotate-[45deg]"
                 />
               )}
             </div>
@@ -60,8 +64,10 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
           return (
             <div
-              className="absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 border-boost-orange shadow-md overflow-hidden cursor-pointer bg-boost-orange  transition-all duration-300 ease-in-out"
+              className="absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out"
               style={{
+                backgroundColor: user?.backgroundColor,
+                borderColor: user?.backgroundColor,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
@@ -71,7 +77,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
                 src={getAvatarSrc({ avatar: user?.avatar })}
                 alt="current pin"
                 style={{ backgroundColor: user?.backgroundColor }}
-                className="w-full h-full object-cover rotate-[45deg]"
+                className="w-6 h-6 object-cover rotate-[45deg]"
               />
             </div>
           );

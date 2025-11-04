@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { webPushApi } from '@/features/alarm/api/webPushApi';
 
-export const usePushSessionStatus = (token?: string) => {
+export const usePushSessionStatusQuery = (token?: string) => {
   return useQuery({
     queryKey: ['pushStatus', token],
     queryFn: async () => {
