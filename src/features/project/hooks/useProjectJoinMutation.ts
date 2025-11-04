@@ -31,6 +31,7 @@ export const useJoinProjectMutation = () => {
         id: joinedProject.projectId,
         name: joinedProject.name || '',
         defaultReviewerCount: joinedProject.defaultReviewerCount ?? 0,
+        role: joinedProject.role,
       };
 
       queryClient.setQueryData<Project[]>(['projects', 'me'], (old) =>
