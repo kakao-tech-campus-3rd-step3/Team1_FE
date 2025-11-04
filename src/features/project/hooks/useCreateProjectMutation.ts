@@ -3,6 +3,7 @@ import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import { ROLES } from '@/features/project/constants/projectConstants';
 
 // 프로젝트 생성
 export const useCreateProjectMutation = () => {
@@ -22,6 +23,7 @@ export const useCreateProjectMutation = () => {
         id: tempId,
         name: projectName,
         defaultReviewerCount: 2,
+        role: ROLES.MEMBER,
       };
 
       queryClient.setQueryData(['projects', 'me'], (old: Project[] | undefined) => [

@@ -4,13 +4,14 @@ import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
-import ProjectBasicInfo from '@/features/project/components/ProjectUpdateModal/ProjectBasicInfo';
+import ProjectBasicInfo from '@/features/project/components/ProjectManageModal/ProjectManageBasicInfo';
 import ProjectDeleteModalContent from '@/features/project/components/ProjectDeleteModal/ProjectDeleteModalContent';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import ProjectMembers from '@/features/project/components/ProjectUpdateModal/ProjectMembersList';
+import ProjectMembers from '@/features/project/components/ProjectMembersList';
 import { useUpdateProjectMutation } from '@/features/project/hooks/useUpdateProjectMutation';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
+import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
 interface ProjectUpdateModalProps {
   navigate: NavigateFunction;
@@ -23,16 +24,10 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   const { data: projectMembers } = useProjectMembersQuery(projectData.id);
   const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectData.id);
 
-  const projectMembersWithBoostingScore = (projectMembers ?? []).map((member) => {
-    const boosting = projectBoostingScores?.find((b) => b.memberId === member.id);
-
-    return {
-      ...member,
-      totalScore: boosting?.totalScore ?? 0,
-      rank: boosting?.rank ?? 0,
-      calculatedAt: boosting?.calculatedAt ?? '',
-    };
-  });
+  const projectMembersWithBoosting = combineMembersWithBoostingScores(
+    projectMembers,
+    projectBoostingScores,
+  );
 
   const setProjectData = useProjectStore((state) => state.setProjectData);
   const { mutate: updateProject } = useUpdateProjectMutation();
@@ -40,8 +35,9 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   const handleProjectDeleteClick = () => {
     showCustom({
       title: '프로젝트 삭제',
+      titleAlign: 'center',
       description: '정말로 프로젝트를 삭제하시나요? 🥹',
-      size: 'md',
+      size: 'sm',
       content: <ProjectDeleteModalContent navigate={navigate} />,
     });
   };
@@ -69,7 +65,7 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   return (
     <>
       <div className="flex flex-row gap-8 py-4 max-h-[400px] px-1 ">
-        <ProjectMembers members={projectMembersWithBoostingScore} />
+        <ProjectMembers members={projectMembersWithBoosting} />
         <ProjectBasicInfo />
       </div>
 

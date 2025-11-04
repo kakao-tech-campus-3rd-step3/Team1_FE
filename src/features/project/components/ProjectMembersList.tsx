@@ -1,4 +1,4 @@
-import ProjectMemberItem from '@/features/project/components/ProjectUpdateModal/ProjectMemberItem';
+import ProjectMemberItem from '@/features/project/components/ProjectMemberItem';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 
 interface ProjectMembersProps {
