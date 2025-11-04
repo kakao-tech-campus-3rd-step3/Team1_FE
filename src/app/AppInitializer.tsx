@@ -1,7 +1,9 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import SplashScreen from '@/pages/SplashScreen';
+import type { User } from '@/features/user/types/userTypes';
 
 interface AppInitializerProps {
   children: ReactNode;
@@ -9,8 +11,13 @@ interface AppInitializerProps {
 
 const AppInitializer = ({ children }: AppInitializerProps) => {
   const { setAuth, clearAuth, isInitializing, setIsInitializing } = useAuthStore();
+  const hasInit = useRef(false);
+  const { refetch: refetchUser } = useMyInfoQuery();
 
   useEffect(() => {
+    if (hasInit.current) return;
+    hasInit.current = true;
+
     const pathname = window.location.pathname;
     const publicPaths = ['/', '/login', '/error', '/auth/callback', '/alarm/permission'];
     const isPublic = publicPaths.includes(pathname);
@@ -24,8 +31,20 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
       try {
         const { accessToken } = await fetchRefreshToken();
         setAuth({ token: accessToken });
+
+        const userResponse = await refetchUser();
+
+        if (userResponse.data) {
+          const apiUser = userResponse.data;
+          const user: Partial<User> = {
+            ...apiUser,
+            createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : undefined,
+            updatedAt: apiUser.updatedAt ? new Date(apiUser.updatedAt) : undefined,
+          };
+          setAuth({ user });
+        }
       } catch (error) {
-        console.error('Refresh token expired:', error);
+        console.error('리프레시 토큰 만료 또는 사용자 정보 조회 실패:', error);
         clearAuth();
       } finally {
         setIsInitializing(false);
@@ -33,7 +52,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
     };
 
     init();
-  }, [setAuth, clearAuth, setIsInitializing]);
+  }, [setAuth, clearAuth, setIsInitializing, refetchUser]);
 
   if (isInitializing) {
     return <SplashScreen />;

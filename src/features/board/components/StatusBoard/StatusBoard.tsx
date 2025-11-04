@@ -16,6 +16,7 @@ import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
 import { useSortStore } from '@/features/board/store/useSortStore';
+import { ColumnFallback } from '@/features/board/components/StatusBoard/ColumnFallback';
 
 interface StatusBoardProps {
   projectId?: string;
@@ -118,18 +119,6 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
           document.body,
         )}
       </DndContext>
-    </div>
-  );
-};
-
-const ColumnFallback = ({ status, state }: { status: string; state: 'loading' | 'error' }) => {
-  const message = state === 'loading' ? '로딩 중...' : '불러오기 실패';
-  return (
-    <div
-      key={status}
-      className="flex-1 min-w-[300px] flex items-center justify-center bg-gray-50 rounded-lg text-gray-500"
-    >
-      {message}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import type { TaskQuery } from '@/features/task/types/taskTypes';
+import type { BOARD_KEYS } from '@/features/board/constants/boardConstants';
 
 export const columnStatus = [
   { status: 'TODO', title: '진행 전' },
@@ -20,3 +21,5 @@ export type ColumnData = {
   status: Status;
   query: TaskQuery;
 };
+
+export type BoardKey = (typeof BOARD_KEYS)[keyof typeof BOARD_KEYS];
