@@ -4,26 +4,22 @@ import FileHeader from '@/features/file/components/FileHeader';
 import FileList from '@/features/file/components/FileList';
 import { Loader2, ChevronDown } from 'lucide-react';
 import { Button } from '@/shared/components/shadcn/button';
+import FileListSkeleton from '@/features/file/components/FileListSkeleton';
 
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
     useProjectFilesQuery(projectId!);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-40">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
-  }
+   if (isLoading) {
+     return <FileListSkeleton />;
+   }
 
   if (error) {
     return <p className="text-red-500 text-center">파일을 불러오지 못했습니다.</p>;
   }
 
   const allFiles = data?.pages.flatMap((page) => page.files) ?? [];
-  console.log(allFiles);
   return (
     <div className="flex min-h-screen flex-col space-y-4 p-4 bg-gray-50 rounded-lg shadow-sm">
       <FileHeader />
