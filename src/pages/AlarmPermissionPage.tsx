@@ -4,10 +4,10 @@ import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
-import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission.ts';
-import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
-import { WebPushStatus, type WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
-import { useConnectPushSessionMutation } from '@/features/alarm/hooks/useConnectPushSessionMutation';
+import { useAlarmPermission } from '@/features/notifications/hooks/useAlarmPermission';
+import { STATUS_CONTENT } from '@/features/notifications/constants/alarmStatusContent';
+import { WebPushStatus, type WebPushStatusType } from '@/features/notifications/types/pushApiTypes';
+import { useConnectPushSessionMutation } from '@/features/notifications/hooks/useConnectPushSessionMutation';
 
 interface StatusViewProps {
   title: string;
@@ -97,15 +97,15 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-        <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
-          <Button
-            onClick={handleAllow}
-            className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer"
-          >
-            <CheckCircle className="w-4 h-4" />
-            허용
-          </Button>
-        </div>
+      <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
+        <Button
+          onClick={handleAllow}
+          className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer"
+        >
+          <CheckCircle className="w-4 h-4" />
+          허용
+        </Button>
+      </div>
     </StatusView>
   );
 };
