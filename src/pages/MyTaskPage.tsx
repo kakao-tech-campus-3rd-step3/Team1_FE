@@ -25,6 +25,7 @@ const MyTaskPage = () => {
         projects.map((p) => ({
           id: p.id,
           name: p.name,
+          role: p.role,
           defaultReviewerCount: p.defaultReviewerCount,
         })),
       );
