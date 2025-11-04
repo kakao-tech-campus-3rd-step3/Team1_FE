@@ -8,6 +8,7 @@ import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
+import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
 interface MemberBoardProps {
   projectId?: string;
@@ -26,16 +27,10 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
   const { data: projectMembers, isLoading } = useProjectMembersQuery(projectId);
   const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectId);
 
-  const projectMembersWithBoostingScore = (projectMembers ?? []).map((member) => {
-    const boosting = projectBoostingScores?.find((b) => b.memberId === member.id);
-
-    return {
-      ...member,
-      totalScore: boosting?.totalScore ?? 0,
-      rank: boosting?.rank ?? 0,
-      calculatedAt: boosting?.calculatedAt ?? '',
-    };
-  });
+  const projectMembersWithBoosting = combineMembersWithBoostingScores(
+    projectMembers,
+    projectBoostingScores,
+  );
 
   const { data: doneData } = useInfiniteProjectTasksByStatusQuery(projectId ?? '', 'DONE');
   const doneTasks: TaskListItem[] = doneData?.pages.flatMap((page) => page.tasks) ?? [];
@@ -84,7 +79,7 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
       {/* 멤버 컬럼 */}
       <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden h-full py-2 px-1">
         <div className="flex gap-3 min-w-max h-full items-stretch">
-          {(projectMembersWithBoostingScore ?? []).map((member: MemberWithBoosting) => (
+          {(projectMembersWithBoosting ?? []).map((member: MemberWithBoosting) => (
             <MemberColumn key={member.id} projectId={projectId ?? ''} member={member} />
           ))}
 
