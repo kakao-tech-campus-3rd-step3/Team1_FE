@@ -4,7 +4,6 @@ import { cn } from '@/shared/lib/utils';
 import { useInfiniteProjectTasksByMemberQuery } from '@/features/task/hooks/useInfiniteProjectTasksByMemberQuery';
 import { useVerticalScroll } from '@/features/board/hooks/useVerticalScroll';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import type { Member } from '@/features/user/types/userTypes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
@@ -13,10 +12,12 @@ import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll'
 import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/useProjectTaskCountByMemberQuery';
 import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
+import Crown from '@/shared/assets/images/boost/crown.png';
 
 interface MemberColumnProps {
   projectId: string;
-  member: Member;
+  member: MemberWithBoosting;
 }
 
 const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
@@ -74,13 +75,25 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <motion.div
-          className={cn('flex items-center mt-5', { 'ml-[12px]': isProfileCollapsible })}
+          className={cn('relative flex items-center mt-6', { 'ml-[12px]': isProfileCollapsible })}
           animate={{
             marginTop: isProfileCollapsible ? '0px' : '20px',
             scale: isProfileCollapsible ? 0.8 : 1,
           }}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
+          {member.rank === 1 && (
+            <motion.img
+              src={Crown}
+              alt="1st"
+              className={cn(
+                'absolute w-9 h-9 z-10',
+                isProfileCollapsible ? 'top-[-20px] left-7' : 'top-[-18px] left-9',
+              )}
+              animate={{ y: [0, -1.5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          )}
           <Avatar
             className={cn(
               'flex items-center justify-center shadow-sm',
@@ -99,7 +112,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
         <motion.div
           className={cn(
             'flex flex-col',
-            isProfileCollapsible ? `gap-1 items-start mr-5 mb-2` : 'gap-4 items-center',
+            isProfileCollapsible ? 'gap-1 items-start mr-5 mb-2' : 'gap-4 items-center',
           )}
         >
           <div className={cn(isProfileCollapsible ? 'title2-bold ml-1.5' : 'title1-bold')}>
@@ -108,7 +121,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
           <div
             className={cn(
               'flex flex-row items-center gap-1 bg-red-400 rounded-full text-gray-100',
-              isProfileCollapsible ? 'px-1 pr-2 py-0.5 text-xs' : 'px-2 pr-4 py-1 text-sm',
+              isProfileCollapsible ? 'px-1 pr-3 py-0.5 text-xs' : 'px-2 pr-4 py-1 text-sm',
             )}
           >
             <img
@@ -116,8 +129,8 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
               className={cn(isProfileCollapsible ? 'w-5 h-5' : 'w-7 h-7')}
               alt="rocket"
             />
-            {/*📍TODO: 부스팅 점수 로직 추가 이후 보완 필요 */}
-            <strong>BOOSTING SCORE </strong> {120}
+            <strong className="mr-1">BOOSTING SCORE</strong>
+            {member.totalScore}
           </div>
         </motion.div>
       </motion.div>
