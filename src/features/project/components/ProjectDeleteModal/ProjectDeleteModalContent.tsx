@@ -34,7 +34,7 @@ const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps)
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <MovingBoo size={30} />
+      <MovingBoo size={28} />
       <ProjectDeleteRotatingText />
       <div className="flex gap-2 mt-2 w-full">
         <Button
