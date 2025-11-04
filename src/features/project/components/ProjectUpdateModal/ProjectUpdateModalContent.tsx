@@ -10,6 +10,7 @@ import { useProjectStore } from '@/features/project/store/useProjectStore';
 import ProjectMembers from '@/features/project/components/ProjectUpdateModal/ProjectMembersList';
 import { useUpdateProjectMutation } from '@/features/project/hooks/useUpdateProjectMutation';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
 
 interface ProjectUpdateModalProps {
   navigate: NavigateFunction;
@@ -20,7 +21,18 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
 
   const projectData = useProjectStore((state) => state.projectData);
   const { data: projectMembers } = useProjectMembersQuery(projectData.id);
-  const members = projectMembers ?? [];
+  const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectData.id);
+
+  const projectMembersWithBoostingScore = (projectMembers ?? []).map((member) => {
+    const boosting = projectBoostingScores?.find((b) => b.memberId === member.id);
+
+    return {
+      ...member,
+      totalScore: boosting?.totalScore ?? 0,
+      rank: boosting?.rank ?? 0,
+      calculatedAt: boosting?.calculatedAt ?? '',
+    };
+  });
 
   const setProjectData = useProjectStore((state) => state.setProjectData);
   const { mutate: updateProject } = useUpdateProjectMutation();
@@ -57,7 +69,7 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   return (
     <>
       <div className="flex flex-row gap-8 py-4 max-h-[400px] px-1 ">
-        <ProjectMembers members={members} />
+        <ProjectMembers members={projectMembersWithBoostingScore} />
         <ProjectBasicInfo />
       </div>
 
