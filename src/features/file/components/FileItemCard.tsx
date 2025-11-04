@@ -12,7 +12,7 @@ interface FileItemCardProps {
     sizeBytes: number;
     completedAt: string;
     taskName: string;
-    taskId:string
+    taskId: string;
   };
 }
 
@@ -44,7 +44,7 @@ const FileItemCard = ({ file }: FileItemCardProps) => {
         {/* 할 일 태그 */}
         <div className="flex justify-center items-center text-center">
           <Button
-          //TODO:API 연동 후 할 일로의 라우팅 추가 
+            //TODO:API 연동 후 할 일로의 라우팅 추가
             variant="outline"
             size="sm"
             className="flex items-center gap-1.5 text-sm font-medium text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"

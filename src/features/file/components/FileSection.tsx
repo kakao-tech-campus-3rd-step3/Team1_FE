@@ -11,9 +11,9 @@ const FileSection = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
     useProjectFilesQuery(projectId!);
 
-   if (isLoading) {
-     return <FileListSkeleton />;
-   }
+  if (isLoading) {
+    return <FileListSkeleton />;
+  }
 
   if (error) {
     return <p className="text-red-500 text-center">파일을 불러오지 못했습니다.</p>;

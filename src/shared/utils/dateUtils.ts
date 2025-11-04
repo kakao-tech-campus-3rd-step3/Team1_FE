@@ -35,7 +35,7 @@ export const formatDateTime = (isoString: string): string => {
   const date = new Date(isoString);
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
-    month: 'long', 
+    month: 'long',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',

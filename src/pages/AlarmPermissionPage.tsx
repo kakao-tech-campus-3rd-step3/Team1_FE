@@ -97,15 +97,15 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-        <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
-          <Button
-            onClick={handleAllow}
-            className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer"
-          >
-            <CheckCircle className="w-4 h-4" />
-            허용
-          </Button>
-        </div>
+      <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
+        <Button
+          onClick={handleAllow}
+          className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer"
+        >
+          <CheckCircle className="w-4 h-4" />
+          허용
+        </Button>
+      </div>
     </StatusView>
   );
 };

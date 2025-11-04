@@ -6,7 +6,7 @@ interface FileListProps {
 }
 
 const FileList = ({ files }: FileListProps) => {
-    const validFiles = files.filter((file) => file.id && file.filename);
+  const validFiles = files.filter((file) => file.id && file.filename);
 
   return (
     <div className="flex flex-col gap-4">
@@ -19,8 +19,8 @@ const FileList = ({ files }: FileListProps) => {
             contentType: file.contentType,
             sizeBytes: file.sizeBytes,
             completedAt: file.completedAt,
-            taskId:file.taskId,
-            taskName:file.taskName
+            taskId: file.taskId,
+            taskName: file.taskName,
           }}
         />
       ))}
