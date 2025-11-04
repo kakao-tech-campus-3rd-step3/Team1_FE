@@ -12,7 +12,7 @@ interface ProjectLeaveModalContentProps {
 }
 
 const ProjectLeaveModalContent = ({ navigate }: ProjectLeaveModalContentProps) => {
-  const { projectData } = useProjectStore();
+  const projectData = useProjectStore((state) => state.projectData);
   const { resetModal, backModal } = useModal();
   const { mutateAsync: leaveMutation } = useLeaveProjectMutation();
 

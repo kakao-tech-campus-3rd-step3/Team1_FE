@@ -13,7 +13,7 @@ interface ProjectDeleteModalContentProps {
 }
 
 const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps) => {
-  const { projectData } = useProjectStore();
+  const projectData = useProjectStore((state) => state.projectData);
   const { resetModal, backModal } = useModal();
   const { mutateAsync: deleteProject } = useDeleteProjectMutation();
 

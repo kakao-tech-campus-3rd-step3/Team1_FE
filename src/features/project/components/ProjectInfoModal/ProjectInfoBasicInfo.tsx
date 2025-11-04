@@ -1,7 +1,7 @@
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 const ProjectInfoBasicInfo = () => {
-  const { projectData } = useProjectStore();
+  const projectData = useProjectStore((state) => state.projectData);
 
   return (
     <div className="flex-1 bg-gray-50 rounded-xl p-1 space-y-10">
