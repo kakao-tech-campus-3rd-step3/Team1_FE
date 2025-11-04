@@ -6,14 +6,14 @@ import BooAlarmClick from '@/shared/assets/images/boost/boo-with-alarm.png';
 import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
-import { useCreatePushSessionMutation } from '@/features/alarm/hooks/useCreatePushSessionMutation';
+import { useCreatePushSessionMutation } from '@/features/notifications/hooks/useCreatePushSessionMutation';
 import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
-import { usePushSessionStatusQuery } from '@/features/alarm/hooks/usePushSessionStatusQuery';
-import { WebPushStatus } from '@/features/alarm/types/pushApiTypes';
+import { usePushSessionStatusQuery } from '@/features/notifications/hooks/usePushSessionStatusQuery';
+import { WebPushStatus } from '@/features/notifications/types/pushApiTypes';
 
-const INTERVAL_MS = 30 * 1000; // 30초
+const INTERVAL_MS = 30 * 10000;
 
 const AlarmSetupPage = () => {
   const navigate = useNavigate();

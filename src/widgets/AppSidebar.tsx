@@ -11,7 +11,7 @@ import { items } from '@/features/sidebar/data/menuData';
 import { LogOut, User } from 'lucide-react';
 import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
-import AppSidebarAlarmMenuItem from '@/features/alarm/components/AppSidebarAlarmMenuItem';
+import AppSidebarAlarmMenuItem from '@/features/notifications/components/AppSidebarNotificationMenuItem';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';

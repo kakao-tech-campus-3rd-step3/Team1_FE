@@ -4,10 +4,10 @@ import toast from 'react-hot-toast';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
-import { useAlarmPermission } from '@/features/alarm/hooks/useAlarmPermission.ts';
-import { STATUS_CONTENT } from '@/features/alarm/constants/alarmStatusContent';
-import { WebPushStatus, type WebPushStatusType } from '@/features/alarm/types/pushApiTypes';
-import { useConnectPushSessionMutation } from '@/features/alarm/hooks/useConnectPushSessionMutation';
+import { useAlarmPermission } from '@/features/notifications/hooks/useAlarmPermission';
+import { STATUS_CONTENT } from '@/features/notifications/constants/alarmStatusContent';
+import { WebPushStatus, type WebPushStatusType } from '@/features/notifications/types/pushApiTypes';
+import { useConnectPushSessionMutation } from '@/features/notifications/hooks/useConnectPushSessionMutation';
 
 interface StatusViewProps {
   title: string;
