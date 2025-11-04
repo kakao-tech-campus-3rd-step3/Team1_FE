@@ -59,7 +59,6 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
-
 ];
 
 const PROTECTED_ROUTES = [
