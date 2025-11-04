@@ -19,7 +19,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
     hasInit.current = true;
 
     const pathname = window.location.pathname;
-    const publicPaths = ['/', '/login', '/error', '/auth/callback'];
+    const publicPaths = ['/', '/login', '/error', '/auth/callback', '/alarm/permission'];
     const isPublic = publicPaths.includes(pathname);
 
     if (isPublic) {

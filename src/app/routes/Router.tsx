@@ -58,6 +58,8 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
+
 ];
 
 const PROTECTED_ROUTES = [
@@ -81,7 +83,6 @@ const PROTECTED_ROUTES = [
 const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
 ];
 
 export const router = createBrowserRouter([
