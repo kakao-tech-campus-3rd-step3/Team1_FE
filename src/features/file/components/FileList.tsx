@@ -6,19 +6,21 @@ interface FileListProps {
 }
 
 const FileList = ({ files }: FileListProps) => {
-  console.log(files);
+    const validFiles = files.filter((file) => file.id && file.filename);
+
   return (
     <div className="flex flex-col gap-4">
-      {files.map((file) => (
+      {validFiles.map((file) => (
         <FileItemCard
           key={file.id}
           file={{
             id: file.id,
-            filename: file.filename ?? '이름 없는 파일',
-            contentType: file.type ?? 'unknown',
-            sizeBytes: file.sizeBytes ?? 0,
-            completedAt: file.completedAt ?? '',
-            taskName: file.taskName ?? '',
+            filename: file.filename,
+            contentType: file.contentType,
+            sizeBytes: file.sizeBytes,
+            completedAt: file.completedAt,
+            taskId:file.taskId,
+            taskName:file.taskName
           }}
         />
       ))}

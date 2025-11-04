@@ -15,8 +15,8 @@ export interface ProjectFile {
   completedAt: string;
   sizeBytes: number;
   // 🔜 서버에서 추후 내려올 예정인 필드
-  taskId?: string;
-  taskName?: string;
+  taskId: string;
+  taskName: string;
 }
 
 export interface ProjectFilesResponse {
