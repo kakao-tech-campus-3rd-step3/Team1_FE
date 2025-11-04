@@ -6,6 +6,8 @@ import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
+import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
 
 export type MoveTaskParams = {
   projectId: string;
@@ -26,26 +28,34 @@ const updateTaskStatus = (task: TaskListItem, toStatus: string): TaskListItem =>
 
 export const useMoveTaskMutation = () => {
   const queryClient = useQueryClient();
+  const searchMap = useBoardSearchStore((state) => state.searchMap);
 
   return useMutation({
     mutationFn: ({ projectId, activeTaskId, toStatus }: MoveTaskParams) =>
       taskApi.moveTask(projectId, activeTaskId, toStatus),
 
-    onMutate: async ({
-      activeTaskId,
-      fromStatus,
-      toStatus,
-      overId,
-      queryIdentifier,
-      projectId,
-      sortBy,
-      direction,
-      activeTask,
-    }) => {
+    onMutate: async (variables) => {
+      const {
+        activeTaskId,
+        fromStatus,
+        toStatus,
+        overId,
+        queryIdentifier,
+        projectId,
+        sortBy,
+        direction,
+        activeTask,
+      } = variables;
+
+      const search =
+        queryIdentifier === 'me'
+          ? searchMap[BOARD_KEYS.MY_TASKS]
+          : searchMap[BOARD_KEYS.PROJECT_STATUS];
+
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
 
       const fromKey = getQueryKey(fromStatus);
       const toKey = getQueryKey(toStatus);
@@ -105,10 +115,16 @@ export const useMoveTaskMutation = () => {
 
     onError: (error, variables, context) => {
       const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
+
+      const search =
+        queryIdentifier === 'me'
+          ? searchMap[BOARD_KEYS.MY_TASKS]
+          : searchMap[BOARD_KEYS.PROJECT_STATUS];
+
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
 
       if (context?.previousFrom)
         queryClient.setQueryData(getQueryKey(fromStatus), context.previousFrom);
@@ -123,18 +139,22 @@ export const useMoveTaskMutation = () => {
 
     onSettled: (_data, _error, variables) => {
       const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
+
+      const search =
+        queryIdentifier === 'me'
+          ? searchMap[BOARD_KEYS.MY_TASKS]
+          : searchMap[BOARD_KEYS.PROJECT_STATUS];
+
       const getQueryKey = (status: string) =>
         queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction);
+          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
+          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
 
       queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
       queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
-      queryClient.invalidateQueries({
-        queryKey: TASK_QUERY_KEYS.meCountStatus(),
-      });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.meCountStatus() });
     },
   });
 };

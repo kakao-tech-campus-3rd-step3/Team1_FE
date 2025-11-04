@@ -9,15 +9,25 @@ export const useAllProjectTasksQueries = (
   enabled: boolean,
   sortBy: SortBy = SORT_BY.CREATED_AT,
   direction: Direction = DIRECTION.ASC,
+  search: string,
 ): Record<Status, TaskQuery> => {
   return {
-    TODO: useInfiniteProjectTasksByStatusQuery(projectId, 'TODO', sortBy, direction, { enabled }),
-    PROGRESS: useInfiniteProjectTasksByStatusQuery(projectId, 'PROGRESS', sortBy, direction, {
+    TODO: useInfiniteProjectTasksByStatusQuery(projectId, 'TODO', sortBy, direction, search, {
       enabled,
     }),
-    REVIEW: useInfiniteProjectTasksByStatusQuery(projectId, 'REVIEW', sortBy, direction, {
+    PROGRESS: useInfiniteProjectTasksByStatusQuery(
+      projectId,
+      'PROGRESS',
+      sortBy,
+      direction,
+      search,
+      { enabled },
+    ),
+    REVIEW: useInfiniteProjectTasksByStatusQuery(projectId, 'REVIEW', sortBy, direction, search, {
       enabled,
     }),
-    DONE: useInfiniteProjectTasksByStatusQuery(projectId, 'DONE', sortBy, direction, { enabled }),
+    DONE: useInfiniteProjectTasksByStatusQuery(projectId, 'DONE', sortBy, direction, search, {
+      enabled,
+    }),
   };
 };
