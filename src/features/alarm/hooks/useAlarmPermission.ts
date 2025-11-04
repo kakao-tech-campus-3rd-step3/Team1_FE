@@ -13,8 +13,14 @@ export const useAlarmPermission = (token: string | null) => {
   const registerPushSubscription = async () => {
     try {
       if (!token) return;
+      const registration = await navigator.serviceWorker
+        .register('/service-worker.js')
+        .catch((err) => {
+          console.error('❌ Service Worker registration failed:', err);
+          toast.error('서비스 워커 등록에 실패했습니다.');
+          throw err;
+        });
 
-      const registration = await navigator.serviceWorker.ready;
       const existing = await registration.pushManager.getSubscription();
       if (existing) {
         toast('이미 푸시 구독이 활성화되어 있습니다.');

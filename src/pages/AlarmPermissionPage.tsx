@@ -60,15 +60,10 @@ const AlarmPermissionPage = () => {
       hasShownError.current = true;
       return;
     }
-if (!('serviceWorker' in navigator)) {
-  toast.error('이 브라우저는 Service Worker를 지원하지 않습니다.');
-  return;
-}
-if (!('PushManager' in window)) {
-  toast.error('이 브라우저는 웹 푸시 알림을 지원하지 않습니다. Chrome 또는 Edge를 이용해주세요.');
-  return;
-}
-
+    if (!('serviceWorker' in navigator)) {
+      toast.error('이 브라우저는 Service Worker를 지원하지 않습니다.');
+      return;
+    }
     if (qrToken) {
       const deviceInfo = navigator.userAgent;
       connectPushSession({ token: qrToken, deviceInfo });
