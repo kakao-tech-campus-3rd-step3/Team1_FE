@@ -1,14 +1,21 @@
+export const WebPushStatus = {
+  CREATED: 'CREATED',
+  CONNECTED: 'CONNECTED',
+  REGISTERED: 'REGISTERED',
+} as const;
+
+export type WebPushStatusType = (typeof WebPushStatus)[keyof typeof WebPushStatus];
+
 // 웹 푸시 세션 생성
 export interface CreatePushSessionResponse {
   token: string;
-  status: 'CREATED' | 'CONNECTED' | 'EXPIRED';
+  status: WebPushStatusType;
 }
 
 // 세션 상태 조회
 export interface GetPushSessionStatusResponse {
   token: string;
-  //TODO : 어떤 status 가 있는지 확인 필요!
-  status: 'CREATED' | 'CONNECTED' | 'EXPIRED' | 'NOT_FOUND';
+  status: WebPushStatusType;
 }
 
 // 웹푸시 세션 연결 (디바이스 연결)
@@ -16,8 +23,9 @@ export interface ConnectPushSessionRequest {
   token: string;
   deviceInfo: string;
 }
+// 웹푸시 세션 연결 응답
 export interface ConnectPushSessionResponse {
-  status: 'CONNECTED' | 'FAILED';
+  status: WebPushStatusType;
 }
 
 // 웹푸시 구독 등록
@@ -27,8 +35,8 @@ export interface PushSubscriptionRequest {
   publicKey: string;
   authKey: string;
 }
-// TODO: API 확인 필요
+// 웹푸시 구독 등록 응답
 export interface PushSubscriptionResponse {
-  success: boolean;
-  message?: string;
+  token: string;
+  status: WebPushStatusType;
 }

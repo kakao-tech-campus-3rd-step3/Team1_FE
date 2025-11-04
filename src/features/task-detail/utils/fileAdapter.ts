@@ -1,11 +1,11 @@
 import { formatBytes } from '@/features/file/utils/fileUtils';
-import type { TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
+import type { FileItemType } from '@/features/file/types/fileTypes';
 
 export const mapToTaskDetailFileType = async (
   serverFile: ServerFileType,
-): Promise<TaskDetailFileType> => {
+): Promise<FileItemType> => {
   const downloadRes = await fetchFileDownloadUrl(serverFile.id);
   return {
     fileId: serverFile.id,

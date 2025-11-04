@@ -14,7 +14,7 @@ const MemoEditorContent = ({ content, setContent }: MemoEditorContentProps) => {
         <FileText className="w-4 h-4 text-gray-500" />
         내용
       </Label>
-      <div className="h-[calc(100%-2rem)]">
+      <div className="h-[calc(100%-2rem)]" data-color-mode="light">
         <MDEditor value={content} onChange={(val) => setContent(val || '')} height="100%" />
       </div>
     </div>

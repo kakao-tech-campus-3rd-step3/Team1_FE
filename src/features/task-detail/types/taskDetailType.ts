@@ -1,0 +1,20 @@
+import type { AuthorInfo } from '@/features/comment/types/commentTypes';
+
+export interface FileInfo {
+  fileId?: string;
+  fileName?: string;
+  filePage?: number;
+  fileX?: number;
+  fileY?: number;
+  fileUrl?: string;
+}
+
+export interface PinWithAuthor {
+  fileId: string;
+  fileName?: string;
+  filePage?: number;
+  fileX?: number;
+  fileY?: number;
+  author?: AuthorInfo;
+}
+export type FileStatus = 'uploading' | 'success';

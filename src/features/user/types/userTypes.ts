@@ -3,18 +3,22 @@ export interface User {
   name: string;
   avatar?: string;
   backgroundColor?: string;
+  notificationEnabled?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
-export interface AvatarInfo {
-  avatar: string;
-  backgroundColor: string;
-}
+
 export interface Member {
   id: string;
   name: string;
   avatar?: string;
   backgroundColor?: string;
+  notificationEnabled?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface AvatarInfo {
+  avatar: string;
+  backgroundColor: string;
 }

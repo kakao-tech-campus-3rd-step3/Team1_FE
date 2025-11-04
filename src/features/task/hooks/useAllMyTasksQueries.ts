@@ -8,11 +8,12 @@ export const useAllMyTasksQueries = (
   enabled: boolean,
   sortBy: SortBy = SORT_BY.CREATED_AT,
   direction: Direction = DIRECTION.ASC,
+  search: string,
 ): Record<Status, TaskQuery> => {
   return {
-    TODO: useInfiniteMyTasksByStatusQuery('TODO', sortBy, direction, { enabled }),
-    PROGRESS: useInfiniteMyTasksByStatusQuery('PROGRESS', sortBy, direction, { enabled }),
-    REVIEW: useInfiniteMyTasksByStatusQuery('REVIEW', sortBy, direction, { enabled }),
-    DONE: useInfiniteMyTasksByStatusQuery('DONE', sortBy, direction, { enabled }),
+    TODO: useInfiniteMyTasksByStatusQuery('TODO', sortBy, direction, search, { enabled }),
+    PROGRESS: useInfiniteMyTasksByStatusQuery('PROGRESS', sortBy, direction, search, { enabled }),
+    REVIEW: useInfiniteMyTasksByStatusQuery('REVIEW', sortBy, direction, search, { enabled }),
+    DONE: useInfiniteMyTasksByStatusQuery('DONE', sortBy, direction, search, { enabled }),
   };
 };

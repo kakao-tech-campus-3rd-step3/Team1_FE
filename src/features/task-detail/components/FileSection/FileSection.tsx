@@ -1,10 +1,9 @@
-import { useDropzone } from 'react-dropzone';
 import { Link, Upload } from 'lucide-react';
 import FileItem from '@/features/task-detail/components/FileSection/FileItem';
-import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
 import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuery';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import ContentItem from '@/shared/components/ui/ContentItem';
+import { useFileUploader } from '@/features/task-detail/hooks/useFileUploader';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
@@ -13,15 +12,8 @@ interface FileSectionProps {
 }
 
 const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps) => {
-  const fileUploadUrlMutation = useUploadFileMutation();
   const { data: uiFiles } = useTaskFilesQuery(serverFiles, taskId);
-
-  const onDrop = (acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      fileUploadUrlMutation.mutate({ file, taskId });
-    });
-  };
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useFileUploader(taskId);
 
   const handleDelete = (fileId: string) => {
     console.log(fileId);

@@ -2,6 +2,8 @@ import type {
   Column,
   ProjectTaskCountByMemberMap,
   TaskCountByStatusMap,
+  TaskDetail,
+  TaskListItem,
 } from '@/features/task/types/taskTypes';
 
 export const getTaskCountByStatus = (
@@ -40,4 +42,23 @@ export const getTaskCountByMember = (
     default:
       return 0;
   }
+};
+
+export const mapTaskListItemToDetail = (task: TaskListItem): TaskDetail => {
+  return {
+    id: task.taskId,
+    title: task.title,
+    description: task.description,
+    status: task.status,
+    dueDate: task.dueDate,
+    urgent: task.urgent,
+    requiredReviewerCount: task.requiredReviewerCount,
+    tags: task.tags,
+    assignees: task.assignees,
+    approvedCount: 0,
+    comments: [],
+    files: [],
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+  };
 };

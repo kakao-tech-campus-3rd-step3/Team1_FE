@@ -10,7 +10,6 @@ import ServerErrorPage from '@/pages/ServerErrorPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
-import ApiHealthCheck from '@/features/health-check/ApiHealthCheck';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmPermissionPage from '@/pages/AlarmPermissionPage';
 import BoardSection from '@/features/board/components/BoardSection';
@@ -33,7 +32,6 @@ export const ROUTE_PATH = {
   ERROR: '/error',
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
-  API_CHECK: '/health',
   TASK_DETAIL: '/project/:projectId/tasks/:taskId',
   MY_INFO: '/my-info',
   ALARM_SETUP: '/alarm/setup',
@@ -60,7 +58,8 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
-  { path: ROUTE_PATH.API_CHECK, element: <ApiHealthCheck /> },
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
+
 ];
 
 const PROTECTED_ROUTES = [
@@ -84,7 +83,6 @@ const PROTECTED_ROUTES = [
 const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.AVATAR, element: <AvatarPickerPage /> },
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
 ];
 
 export const router = createBrowserRouter([

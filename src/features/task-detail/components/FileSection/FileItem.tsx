@@ -1,6 +1,5 @@
 import fileIcon from '@/shared/assets/images/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
-import { type TaskDetailFileType } from '@/features/task-detail/types/taskDetailFileType';
 import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
   DropdownMenu,
@@ -10,7 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
-interface FileItemProps extends TaskDetailFileType {
+import type { FileItemType } from '@/features/file/types/fileTypes';
+interface FileItemProps extends FileItemType {
   onOpenPdf: (fileUrl: string) => void;
   onDelete: () => void;
   onDownload?: () => void;

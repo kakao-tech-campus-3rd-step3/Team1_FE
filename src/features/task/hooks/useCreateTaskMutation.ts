@@ -1,17 +1,22 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem, TaskListResponse, Assignee } from '@/features/task/types/taskTypes';
+import type { TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useSortStore } from '@/features/board/store/useSortStore';
+import { createTagObjects } from '@/features/tag/utils/tagUtils';
+import type { Member } from '@/features/user/types/userTypes';
+import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 
 const createTempTask = (
   taskData: CreateTaskInput,
   projectId: string,
   tempId: string,
 ): TaskListItem => {
-  const assignees: Assignee[] = taskData.assignees.map((id) => ({ id, name: '' }));
+  const assignees: Member[] = taskData.assignees.map((id) => ({ id, name: '' }));
+  const tags = createTagObjects(taskData.tags || []);
+
   return {
     taskId: tempId,
     projectId,
@@ -23,7 +28,7 @@ const createTempTask = (
     requiredReviewerCount: taskData.requiredReviewerCount ?? 0,
     commentCount: 0,
     fileCount: 0,
-    tags: taskData.tags || [],
+    tags,
     assignees,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -33,6 +38,8 @@ const createTempTask = (
 export const useCreateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
   const { sortBy, direction } = useSortStore();
+  const searchMap = useBoardSearchStore((state) => state.searchMap);
+  const activeSearch = Object.values(searchMap).find((s) => s) ?? '';
 
   return useMutation<
     TaskListItem,
@@ -46,10 +53,16 @@ export const useCreateTaskMutation = (projectId: string) => {
     mutationFn: (taskData) => taskApi.createTask(projectId, taskData),
 
     onMutate: async (taskData) => {
-      const projectKey = TASK_QUERY_KEYS.project(projectId, taskData.status, sortBy, direction);
-      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction);
+      const projectKey = TASK_QUERY_KEYS.project(
+        projectId,
+        taskData.status,
+        sortBy,
+        direction,
+        activeSearch,
+      );
+      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction, activeSearch);
       const memberKeys = taskData.assignees.map((memberId) =>
-        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction),
+        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction, activeSearch),
       );
 
       await Promise.all([
@@ -74,14 +87,7 @@ export const useCreateTaskMutation = (projectId: string) => {
         if (!oldData) {
           return {
             pageParams: [undefined],
-            pages: [
-              {
-                tasks: [tempTask],
-                count: 1,
-                nextCursor: undefined,
-                hasNext: false,
-              },
-            ],
+            pages: [{ tasks: [tempTask], count: 1, nextCursor: undefined, hasNext: false }],
           };
         }
         return {
@@ -106,10 +112,16 @@ export const useCreateTaskMutation = (projectId: string) => {
     },
 
     onSuccess: (createdTask, taskData, context) => {
-      const projectKey = TASK_QUERY_KEYS.project(projectId, taskData.status, sortBy, direction);
-      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction);
+      const projectKey = TASK_QUERY_KEYS.project(
+        projectId,
+        taskData.status,
+        sortBy,
+        direction,
+        activeSearch,
+      );
+      const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction, activeSearch);
       const memberKeys = taskData.assignees.map((memberId) =>
-        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction),
+        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction, activeSearch),
       );
 
       const replaceTempTask = (oldData?: InfiniteData<TaskListResponse>) => {
@@ -127,15 +139,9 @@ export const useCreateTaskMutation = (projectId: string) => {
       queryClient.setQueryData(meKey, replaceTempTask);
       memberKeys.forEach((key) => queryClient.setQueryData(key, replaceTempTask));
 
-      queryClient.invalidateQueries({
-        queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: TASK_QUERY_KEYS.projectCountMember(projectId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: TASK_QUERY_KEYS.meCountStatus(),
-      });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
+      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.meCountStatus() });
     },
   });
 };

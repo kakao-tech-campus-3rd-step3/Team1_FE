@@ -81,13 +81,12 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
           }}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {/*📍TODO: 배경색 로직 추가 이후 보완 필요 */}
           <Avatar
             className={cn(
-              'flex items-center justify-center',
-              'bg-boost-yellow',
+              'flex items-center justify-center shadow-sm',
               isProfileCollapsible ? 'w-23 h-23' : 'w-27 h-27',
             )}
+            style={{ backgroundColor: member.backgroundColor }}
           >
             <AvatarFallback>{member.name[0]}</AvatarFallback>
             <AvatarImage

@@ -23,6 +23,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   const [newName, setNewName] = useState(member.name);
   const { mutate: updateName, isPending } = useUpdateNameMutation();
   const { openDrawer } = useAvatarStore();
+
   const handleNameSave = () => {
     if (!newName.trim()) {
       toast.error('이름을 입력해주세요.');
@@ -31,11 +32,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
 
     updateName(newName, {
       onSuccess: () => {
-        toast.success('이름이 변경되었습니다!');
         setIsNameEditing(false);
-      },
-      onError: () => {
-        toast.error('이름 변경에 실패했습니다.');
       },
     });
   };
@@ -49,7 +46,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
     <SettingsSectionCard title="내 정보">
       <div className="flex items-center gap-4">
         <Avatar style={{ backgroundColor: member.backgroundColor }} className="w-20 h-20">
-          <AvatarImage className='p-2' src={getAvatarSrc(member)} alt="user avatar" />
+          <AvatarImage className="p-2" src={getAvatarSrc(member)} alt="user avatar" />
           <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
         </Avatar>
 

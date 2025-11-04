@@ -4,6 +4,7 @@ import { Calendar, MessageCircle, Paperclip } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/shared/lib/utils';
+import Siren from '@/shared/assets/images/boost/siren.png';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { calculateDDay } from '@/shared/utils/dateUtils';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
@@ -50,7 +51,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         <div
           ref={setNodeRef}
           style={style}
-          className="opacity-50 bg-gray-100 p-3 min-h-[180px] flex flex-col rounded-xl border-2 border-boost-blue cursor-grab relative"
+          className="opacity-50 bg-gray-100 p-3 min-h-[165px] flex flex-col rounded-xl border-2 border-boost-blue cursor-grab relative"
         />
       );
     }
@@ -63,16 +64,17 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         {...attributes}
         {...listeners}
         className={cn(
-          'bg-gray-100 shadow-sm p-3 min-h-[165px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
+          'bg-gray-100 flex-shrink-0 shadow-sm p-3 min-h-[150px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
           'hover:shadow-md',
           draggable ? 'cursor-grab' : 'cursor-default',
         )}
       >
-        {/* 삭제 버튼 + 태그 */}
-        <div className="relative flex flex-col gap-1">
+        {/* 태그, 긴급 */}
+        <div className="flex flex-row justify-between">
           <div className="flex items-center gap-2">
             <TaskTags task={task} projectName={projectName} />
           </div>
+          {task.urgent && <img src={Siren} alt="urgent-siren" className="w-6 h-6" />}
         </div>
 
         {/* 할 일 제목 */}

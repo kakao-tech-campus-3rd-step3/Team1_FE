@@ -1,3 +1,16 @@
+import {
+  Calendar,
+  User,
+  Siren,
+  FileText,
+  Loader,
+  Check,
+  NotebookPen,
+  Folder,
+  TagIcon,
+} from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Input } from '@/shared/components/shadcn/input';
@@ -6,29 +19,18 @@ import { FormField } from '@/shared/components/ui/Form/FormField';
 import { useModal } from '@/shared/hooks/useModal';
 import { toggleArrayItem } from '@/shared/utils/arrayUtils';
 import { cn } from '@/shared/lib/utils';
-import {
-  Calendar,
-  User,
-  Tag,
-  Siren,
-  FileText,
-  Loader,
-  Check,
-  NotebookPen,
-  Folder,
-} from 'lucide-react';
 import StatusButtons from '@/features/task/components/TaskCreateModal/StatusButtons';
 import UrgentToggle from '@/features/task/components/TaskCreateModal/UrgentToggle';
 import AssigneeDropdown from '@/features/task/components/TaskCreateModal/AssigneeDropdown';
-import TagInput from '@/features/task/components/TaskCreateModal/TagInput';
-import ProjectDropdown from '@/features/task/components/TaskCreateModal/ProjectSelect';
-import { useTaskForm } from '@/features/task/hooks/useTaskForm';
+import ProjectSelect from '@/features/task/components/TaskCreateModal/ProjectSelect';
+import TagManager from '@/features/task/components/TaskCreateModal/TagInput/TagManager';
+import { useCreateTaskForm } from '@/features/task/hooks/useCreateTaskForm';
 import { statusList } from '@/features/board/types/boardTypes';
-import { useEffect } from 'react';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutation';
-import toast from 'react-hot-toast';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import type { Tag } from '@/features/tag/types/tagTypes';
+import { getTagIds } from '@/features/tag/utils/tagUtils';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
@@ -42,22 +44,27 @@ const TaskCreateModalContent = ({
   const inputClasses = 'hover:bg-gray-200 focus:ring-transparent h-11 label2-regular';
   const { resetModal } = useModal();
   const { data: projects } = useProjectsQuery();
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
-  const { form, handleConfirm, isLoading } = useTaskForm(propProjectId ?? '', async (taskData) => {
-    if (!selectedProjectId) {
-      toast.error('프로젝트를 선택해주세요.');
-      return;
-    }
+  const { form, handleConfirm, isLoading } = useCreateTaskForm(
+    propProjectId ?? '',
+    async (taskData) => {
+      if (!selectedProjectId) {
+        toast.error('프로젝트를 선택해주세요.');
+        return;
+      }
 
-    try {
-      await createTask(taskData);
-      toast.success('할 일이 성공적으로 생성되었습니다!');
-      resetModal();
-    } catch (err) {
-      console.log(err);
-      toast.error('할 일 생성에 실패했습니다');
-    }
-  });
+      try {
+        const payload = { ...taskData, tags: getTagIds(selectedTags) };
+        await createTask(payload);
+        toast.success('할 일이 성공적으로 생성되었습니다!');
+        resetModal();
+      } catch (err) {
+        console.log(err);
+        toast.error('할 일 생성에 실패했습니다');
+      }
+    },
+  );
 
   const {
     register,
@@ -66,12 +73,11 @@ const TaskCreateModalContent = ({
     formState: { errors },
   } = form;
   const assignees = watch('assignees');
-  const tags = watch('tags') || [];
   const status = watch('status');
   const urgent = watch('urgent') || false;
   const selectedProjectId = watch('projectId') || propProjectId;
-  const { mutate: createTask } = useCreateTaskMutation(selectedProjectId ?? '');
 
+  const { mutate: createTask } = useCreateTaskMutation(selectedProjectId ?? '');
   const { data: projectMembers } = useProjectMembersQuery(selectedProjectId);
 
   useEffect(() => {
@@ -83,9 +89,10 @@ const TaskCreateModalContent = ({
   return (
     <>
       <div className="flex flex-col gap-8 py-4 max-h-[400px] overflow-y-auto px-1">
+        {/* 프로젝트 선택 */}
         {isMyTask && (
           <FormField icon={Folder} required label="프로젝트" error={errors.projectId?.message}>
-            <ProjectDropdown
+            <ProjectSelect
               selectedProjectId={watch('projectId')}
               projects={projects || []}
               onProjectSelect={(id) => setValue('projectId', id, { shouldValidate: true })}
@@ -137,6 +144,15 @@ const TaskCreateModalContent = ({
           </FormField>
         </div>
 
+        {/* 태그 */}
+        <FormField icon={TagIcon} label="태그" error={errors.tags?.message}>
+          <TagManager
+            projectId={selectedProjectId ?? ''}
+            selectedTags={selectedTags}
+            onChangeTags={setSelectedTags}
+          />
+        </FormField>
+
         {/* 필요한 검토 수 */}
         <FormField
           icon={Check}
@@ -159,14 +175,6 @@ const TaskCreateModalContent = ({
             className={cn('!h-25', inputClasses)}
           />
         </FormField>
-
-        {/* 태그 */}
-        <FormField icon={Tag} label="태그" error={errors.tags?.message}>
-          <TagInput
-            tags={tags}
-            setTags={(tags) => setValue('tags', tags, { shouldValidate: true })}
-          />
-        </FormField>
       </div>
 
       {/* 하단 버튼 영역 (취소, 생성) */}
@@ -179,7 +187,11 @@ const TaskCreateModalContent = ({
         >
           취소
         </Button>
-        <Button onClick={handleConfirm} className="px-6 bg-boost-blue hover:boost-blue-hover">
+        <Button
+          variant="defaultBoost"
+          onClick={handleConfirm}
+          className="px-6 bg-boost-blue hover:boost-blue-hover"
+        >
           {isLoading ? '생성 중...' : '할 일 생성'}
         </Button>
       </DialogFooter>

@@ -6,44 +6,45 @@ import CommentItem from '@/features/task-detail/components/CommentSection/Commen
 import Boo from '@/shared/assets/images/boost/boo.png';
 import { SendIcon } from 'lucide-react';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
-import type { FileInfo, CommentUIType } from '@/features/comment/types/commentTypes';
+import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import toast from 'react-hot-toast';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
+import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
 
 interface CommentSectionProps {
   projectId: string;
   taskId: string;
-  fileInfo?: FileInfo | null;
-  setFileInfo?: (fileInfo: FileInfo | null) => void;
-  onCommentSelect?: (fileInfo: FileInfo | null) => void;
   onCommentsFetched?: (comments: CommentUIType[]) => void;
 }
 
-const CommentSection = ({
-  projectId,
-  taskId,
-  fileInfo,
-  setFileInfo,
-  onCommentSelect,
-  onCommentsFetched,
-}: CommentSectionProps) => {
+const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSectionProps) => {
   const [input, setInput] = useState('');
-  const [isAnonymous, setIsAnonymous] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editInput, setEditInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
+  const { selectedFile, currentPin, setCurrentPin, pins, isAnonymous, setIsAnonymous } =
+    useTaskDetailStore();
+  const { commentSelect } = useCommentSelect();
 
-  // 댓글이 처음 불러와질 때 onCommentsFetched 콜백 실행
+  const { data: task } = useTaskDetailQuery(projectId, taskId);
+
+  const handlePinClick = (fileInfo: FileInfo | null) => {
+    if (!fileInfo) return;
+    if (!task?.files) return;
+    commentSelect(fileInfo, task.files, pins);
+  };
   useEffect(() => {
     if (!onCommentsFetched) return;
     if (
@@ -71,22 +72,29 @@ const CommentSection = ({
     setOriginalText(input);
     showAiTransformConfirmModal();
   };
-
   const handleAdd = () => {
     if (!input.trim()) return;
 
+    const fileInfo = selectedFile?.fileId
+      ? {
+          fileId: selectedFile.fileId,
+          fileName: selectedFile.fileName,
+          filePage: currentPin?.filePage,
+          fileX: currentPin?.fileX,
+          fileY: currentPin?.fileY,
+        }
+      : null;
+
     const newCommentData = {
       content: input,
-      persona: 'BOO',
+      persona: 'BOO' as const,
       isAnonymous,
-      fileInfo: fileInfo ? { ...fileInfo } : {},
+      ...(fileInfo ? { fileInfo } : {}),
     };
 
     createComment({ commentData: newCommentData });
-    //⚠️ TODO: fileInfo =null 이면 500 에러 발생
-    // 댓글 생성 이후 setFileInfo={} 이라
-    // CurrentPin 초기화가 되지 않음
-    if (setFileInfo) setFileInfo({});
+
+    setCurrentPin(null);
 
     setInput('');
   };
@@ -155,7 +163,7 @@ const CommentSection = ({
               comment={c}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              onSelectPin={onCommentSelect}
+              onSelectPin={handlePinClick}
             />
           ),
         )}
