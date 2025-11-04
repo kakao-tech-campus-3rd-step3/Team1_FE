@@ -35,6 +35,7 @@ const ProjectUpdateModalContent = ({ navigate }: ProjectUpdateModalProps) => {
   const handleProjectDeleteClick = () => {
     showCustom({
       title: '프로젝트 삭제',
+      titleAlign: 'center',
       description: '정말로 프로젝트를 삭제하시나요? 🥹',
       size: 'sm',
       content: <ProjectDeleteModalContent navigate={navigate} />,
