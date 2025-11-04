@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
 import { usePushSessionStatusQuery } from '@/features/alarm/hooks/usePushSessionStatusQuery';
+import { WebPushStatus } from '@/features/alarm/types/pushApiTypes';
 
 const INTERVAL_MS = 30 * 1000; // 30초
 
@@ -37,7 +38,7 @@ const AlarmSetupPage = () => {
   // CONNECTED → 리디렉션
   useEffect(() => {
     if (!statusData?.status) return;
-    if (statusData.status === 'CONNECTED' && !hasHandledStatus.current) {
+    if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
       toast.success('푸시가 허용되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);

@@ -97,7 +97,6 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {permission === WebPushStatus.CONNECTED && (
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
             onClick={handleAllow}
@@ -107,7 +106,6 @@ const AlarmPermissionPage = () => {
             허용
           </Button>
         </div>
-      )}
     </StatusView>
   );
 };
