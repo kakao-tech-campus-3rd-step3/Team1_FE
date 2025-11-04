@@ -27,6 +27,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           const top = 100 - (m.fileY ? m.fileY / pageSize.height : 0) * 100;
           const isAnonymous = m.author?.isAnonymous;
 
+
           return (
             <div
               key={uuidv4()}
