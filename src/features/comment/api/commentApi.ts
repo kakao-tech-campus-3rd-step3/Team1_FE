@@ -13,7 +13,6 @@ export const commentApi = {
   // 댓글 목록 조회
   fetchComments: async (projectId: string, taskId: string): Promise<CommentType[]> => {
     const { data } = await api.get(`/projects/${projectId}/tasks/${taskId}/comments`);
-    console.log(data);
     return data;
   },
 
