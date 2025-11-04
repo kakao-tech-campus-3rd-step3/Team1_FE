@@ -4,6 +4,7 @@ import { formatBytes, getFileIcon } from '@/features/file/utils/fileUtils';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/Router';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
+import { formatDateTime } from '@/shared/utils/dateUtils';
 
 interface FileItemCardProps {
   file: {
@@ -13,12 +14,12 @@ interface FileItemCardProps {
     sizeBytes: number;
     completedAt: string;
     taskName: string;
+    taskId:string
   };
 }
 
 const FileItemCard = ({ file }: FileItemCardProps) => {
   const navigate = useNavigate();
-  console.log(file);
   const { mutate: downloadFile } = useFileDownloadMutation();
 
   return (
@@ -39,7 +40,7 @@ const FileItemCard = ({ file }: FileItemCardProps) => {
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <span>{formatBytes(file.sizeBytes)}</span>
             <span className="w-1 h-1 bg-gray-300 rounded-full" />
-            <span></span>
+            <span>{formatDateTime(file.completedAt)}</span>
           </div>
         </div>
 

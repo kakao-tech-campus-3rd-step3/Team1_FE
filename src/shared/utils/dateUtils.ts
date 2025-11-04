@@ -29,15 +29,20 @@ export const calculateDDay = (
   return diff;
 };
 
-export const formatShortDateTime = (isoString: string): string => {
+export const formatDateTime = (isoString: string): string => {
+  if (!isoString) return '';
+
   const date = new Date(isoString);
   const options: Intl.DateTimeFormatOptions = {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
     timeZone: 'Asia/Seoul',
   };
-  return new Intl.DateTimeFormat('ko-KR', options).format(date).replace('.', '').replace('.', '.');
+
+  // “2025년 11월 4일 오전 6:30” 형식 출력
+  return new Intl.DateTimeFormat('ko-KR', options).format(date);
 };
