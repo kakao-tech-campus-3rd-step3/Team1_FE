@@ -14,8 +14,11 @@ import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
 import toast from 'react-hot-toast';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/features/auth/store/authStore';
 
 const avatarBgColors = Object.values(AVATAR_BG_COLOR);
+
 interface AvatarsDrawerProps {
   showEditButton?: boolean;
   showConfirmButton?: boolean;
@@ -23,6 +26,7 @@ interface AvatarsDrawerProps {
 
 const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDrawerProps) => {
   const { mutate: updateAvatar } = useUpdateAvatarMutation();
+  const { user } = useAuthStore();
 
   const {
     selectedAvatarId,
@@ -33,6 +37,14 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
     openDrawer,
     closeDrawer,
   } = useAvatarStore();
+
+  useEffect(() => {
+    if (isDrawerOpen && user) {
+      setAvatarId(user.avatar ?? '');
+      setBgColor(user.backgroundColor ?? '');
+    }
+  }, [isDrawerOpen, user?.avatar, user?.backgroundColor]);
+
   const handleConfirm = () => {
     if (!selectedAvatarId || !selectedBgColor) {
       toast.error('아바타와 배경색을 모두 선택해주세요!');
@@ -48,6 +60,7 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
       },
     );
   };
+
   return (
     <Drawer open={isDrawerOpen} onOpenChange={(open) => (open ? openDrawer() : closeDrawer())}>
       {showEditButton && (
@@ -71,8 +84,8 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
           </DrawerDescription>
         </DrawerHeader>
         {/* 배경색 그리드 */}
-        <div className="px-6 py-6 border-b border-gray-100">
-          <div className="flex justify-center gap-3 flex-wrap max-w-md mx-auto">
+        <div className="flex items-center px-6 py-6 border-b border-gray-100 mb-5">
+          <div className="flex justify-center gap-4 flex-wrap mx-auto">
             {avatarBgColors.map(({ token, hex }) => (
               <button
                 key={hex}
