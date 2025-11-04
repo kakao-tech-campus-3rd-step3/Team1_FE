@@ -1,8 +1,6 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { ChevronRight, Download } from 'lucide-react';
 import { formatBytes, getFileIcon } from '@/features/file/utils/fileUtils';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 import { formatDateTime } from '@/shared/utils/dateUtils';
 
@@ -19,7 +17,6 @@ interface FileItemCardProps {
 }
 
 const FileItemCard = ({ file }: FileItemCardProps) => {
-  const navigate = useNavigate();
   const { mutate: downloadFile } = useFileDownloadMutation();
 
   return (
@@ -47,7 +44,7 @@ const FileItemCard = ({ file }: FileItemCardProps) => {
         {/* 할 일 태그 */}
         <div className="flex justify-center items-center text-center">
           <Button
-            onClick={() => navigate(ROUTES.TASK_DETAIL('1', file.id))}
+          //TODO:API 연동 후 할 일로의 라우팅 추가 
             variant="outline"
             size="sm"
             className="flex items-center gap-1.5 text-sm font-medium text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"
