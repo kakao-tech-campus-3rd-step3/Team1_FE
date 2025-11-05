@@ -29,13 +29,16 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editInput, setEditInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
+
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
-  const { selectedFile, currentPin, setCurrentPin, pins, isAnonymous, setIsAnonymous } =
+
+  const { selectedFile, currentPin, pins, isAnonymous, setIsAnonymous, clearCurrentPin } =
     useTaskDetailStore();
+
   const { commentSelect } = useCommentSelect();
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
@@ -77,8 +80,8 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
 
     const fileInfo = selectedFile?.fileId
       ? {
-          fileId: selectedFile.fileId,
-          fileName: selectedFile.fileName,
+          fileId: currentPin?.fileId,
+          fileName: currentPin?.fileName,
           filePage: currentPin?.filePage,
           fileX: currentPin?.fileX,
           fileY: currentPin?.fileY,
@@ -94,8 +97,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
 
     createComment({ commentData: newCommentData });
 
-    setCurrentPin(null);
-
+    clearCurrentPin();
     setInput('');
   };
 
