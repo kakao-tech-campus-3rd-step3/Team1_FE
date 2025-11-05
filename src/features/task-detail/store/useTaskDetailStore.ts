@@ -42,7 +42,6 @@ export const useTaskDetailStore = create<TaskDetailState>((set) => ({
     set({
       selectedFile: null,
       currentPin: null,
-      pins: [],
       isPdfOpen: false,
     }),
 
