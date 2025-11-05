@@ -20,6 +20,7 @@ import { getTagIds } from '@/features/tag/utils/tagUtils';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useUpdateTaskForm } from '@/features/task/hooks/useUpdateTaskForm';
 import { useModal } from '@/shared/hooks/useModal';
+import DueDatePicker from '@/features/task/components/TaskCreateModal/DueDatePicker';
 
 interface TaskUpdateModalContentProps {
   projectId: string;
@@ -87,8 +88,12 @@ const TaskUpdateModalContent = ({ projectId, task }: TaskUpdateModalContentProps
               members={projectMembers ?? []}
             />
           </FormField>
+
           <FormField icon={Calendar} required label="마감일" error={errors.dueDate?.message}>
-            <Input type="date" {...register('dueDate')} className={inputClasses} />
+            <DueDatePicker
+              value={watch('dueDate')}
+              onChange={(date) => setValue('dueDate', date, { shouldValidate: true })}
+            />
           </FormField>
         </div>
 
