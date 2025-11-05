@@ -30,7 +30,11 @@ export const useUpdateNotificationSettingsMutation = (
     },
 
     onSuccess: (data) => {
-      toast.success(data.enabled ? '서비스 전체 알림이 서비스 알림이 켜졌습니다' : '서비스 전체 알림이 꺼졌습니다');
+      toast.success(
+        data.enabled
+          ? '서비스 전체 알림이 서비스 알림이 켜졌습니다'
+          : '서비스 전체 알림이 꺼졌습니다',
+      );
     },
   });
 };
