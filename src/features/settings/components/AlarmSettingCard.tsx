@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Switch } from '@/shared/components/shadcn/switch';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { Card } from '@/shared/components/shadcn/card';
@@ -6,11 +6,12 @@ import { cn } from '@/shared/lib/utils';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useUpdateNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateNotificationSettingsMutation';
 import { useUpdateProjectNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateProjectNotificationSettingsMutation';
+import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);
   const [projectAlarms, setProjectAlarms] = useState<Record<string, boolean>>({});
-
+ const { data: myInfo } = useMyInfoQuery();
   const { data: projectsData } = useProjectsQuery();
 
   const resetProjectAlarms = () => setProjectAlarms({});
@@ -19,6 +20,11 @@ const AlarmSettingCard = () => {
     setIsServiceAlarmOn,
     resetProjectAlarms,
   );
+  useEffect(() => {
+    if (myInfo) {
+      setIsServiceAlarmOn(myInfo.notificationEnabled);
+    }
+  }, [myInfo]);
 
   const { mutate: updateProjectAlarm } =
     useUpdateProjectNotificationSettingsMutation(setProjectAlarms);
