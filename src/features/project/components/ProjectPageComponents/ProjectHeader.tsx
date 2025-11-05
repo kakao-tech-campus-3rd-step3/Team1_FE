@@ -21,6 +21,7 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
   const isOwner = project?.role === ROLES.OWNER;
 
   const handleButtonClick = () => {
+    if (!project?.id) return;
     if (location.pathname.includes('/memo')) {
       navigate(ROUTES.PROJECT_MEMO_EDIT(project.id));
     } else {
