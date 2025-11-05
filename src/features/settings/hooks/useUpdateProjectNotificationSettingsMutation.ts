@@ -13,7 +13,7 @@ export const useUpdateProjectNotificationSettingsMutation = (
   >({
     mutationFn: ({ projectId, enabled }) =>
       notificationsApi.updateProjectNotificationSettings(projectId, enabled),
-    onMutate: async ({ projectId, enabled }) => {
+    onMutate: ({ projectId, enabled }) => {
       setProjectAlarms((prev) => ({
         ...prev,
         [projectId]: enabled,
