@@ -1,4 +1,4 @@
-import FileItemSkeleton from './FileItemSkeleton';
+import FileItemSkeleton from '@/features/file/components/FileItemSkeleton';
 
 const FileListSkeleton = () => {
   return (
