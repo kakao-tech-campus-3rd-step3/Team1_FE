@@ -6,6 +6,7 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import { User } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { cn } from '@/shared/lib/utils';
+
 interface OverlayProps {
   pageNumber: number;
   zoom: number;
@@ -31,12 +32,12 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
             <div
               key={uuidv4()}
               className={cn(
-                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none',
-                isAnonymous && 'bg-gray-400',
+                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200',
+                isAnonymous ? 'bg-gray-500 border-gray-500' : '',
               )}
               style={{
-                backgroundColor: m.author?.backgroundColor,
-                borderColor: m.author?.backgroundColor,
+                backgroundColor: !isAnonymous ? m.author?.backgroundColor : undefined,
+                borderColor: !isAnonymous ? m.author?.backgroundColor : undefined,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
@@ -47,9 +48,11 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
               ) : (
                 <img
                   src={getAvatarSrc({ avatar: m.author?.avatar })}
-                  style={{ backgroundColor: user?.backgroundColor }}
                   alt={m.author?.name ?? 'avatar'}
                   className="w-6 h-6 object-cover rotate-[45deg]"
+                  style={{
+                    backgroundColor: m.author?.backgroundColor,
+                  }}
                 />
               )}
             </div>
@@ -60,23 +63,31 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
         (() => {
           const left = (currentPin.fileX ? currentPin.fileX / pageSize.width : 0) * 100;
           const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
+          const isAnonymous = user?.isAnonymous;
           return (
             <div
-              className="absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out select-none"
+              className={cn(
+                'absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out select-none',
+                isAnonymous ? 'bg-gray-500 border-gray-500' : '',
+              )}
               style={{
-                backgroundColor: user?.backgroundColor,
-                borderColor: user?.backgroundColor,
+                backgroundColor: !isAnonymous ? user?.backgroundColor : undefined,
+                borderColor: !isAnonymous ? user?.backgroundColor : undefined,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
               }}
             >
-              <img
-                src={getAvatarSrc({ avatar: user?.avatar })}
-                alt="current pin"
-                style={{ backgroundColor: user?.backgroundColor }}
-                className="w-6 h-6 object-cover rotate-[45deg]"
-              />
+              {isAnonymous ? (
+                <User className="text-white w-4 h-4 rotate-[45deg]" />
+              ) : (
+                <img
+                  src={getAvatarSrc({ avatar: user?.avatar })}
+                  alt="current pin"
+                  className="w-6 h-6 object-cover rotate-[45deg]"
+                  style={{ backgroundColor: user?.backgroundColor }}
+                />
+              )}
             </div>
           );
         })()}
