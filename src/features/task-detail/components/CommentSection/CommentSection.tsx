@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
@@ -8,8 +9,6 @@ import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
-
-import toast from 'react-hot-toast';
 import CommentList from '@/features/task-detail/components/CommentSection/CommentList';
 import CommentEditor from '@/features/task-detail/components/CommentSection/CommentEditor';
 
@@ -20,8 +19,6 @@ interface CommentSectionProps {
 }
 
 const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSectionProps) => {
-  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
-  const [editInput, setEditInput] = useState('');
   const prevCommentsRef = useRef<CommentUIType[] | null>(null);
 
   const { data: comments = [] } = useCommentQuery(projectId, taskId);
@@ -39,7 +36,6 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     commentSelect(fileInfo, task.files, pins);
   };
 
-  /** 댓글 목록 → 핀 정보 업데이트 */
   useEffect(() => {
     if (!onCommentsFetched) return;
     if (
@@ -59,22 +55,33 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   }) => {
     if (!data.content.trim()) return toast.error('댓글을 입력해주세요!');
     const resolvedFileInfo = data.fileInfo ?? currentPin ?? null;
+
     const newComment = {
       content: data.content,
-      persona: 'BOO' as const,
       isAnonymous: data.isAnonymous,
+      persona: 'BOO' as const,
       ...(resolvedFileInfo ? { fileInfo: resolvedFileInfo } : {}),
     };
+
     createComment({ commentData: newComment });
     clearCurrentPin();
   };
 
   /** 댓글 수정 */
-  const handleUpdate = (commentId: string, content: string) => {
-    if (!content.trim()) return;
-    updateComment({ commentId, updatedData: { content } });
-    setEditingCommentId(null);
-    setEditInput('');
+  const handleUpdate = (
+    commentId: string,
+    data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null },
+  ) => {
+    if (!data.content.trim()) return toast.error('댓글을 입력해주세요!');
+
+    const { content, isAnonymous, fileInfo } = data;
+    const updatedData = {
+      content,
+      isAnonymous,
+      fileInfo: fileInfo ?? undefined,
+    };
+
+    updateComment({ commentId, updatedData });
   };
 
   /** 댓글 삭제 */
@@ -85,19 +92,9 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
       <h2 className="px-4 py-3 font-semibold border-b border-gray-300 text-gray-800">
         댓글 ({comments.length})
       </h2>
+      <CommentList comments={comments} onSelectPin={handlePinClick} onDelete={handleDelete} />
 
-      <CommentList
-        comments={comments}
-        editingCommentId={editingCommentId}
-        editInput={editInput}
-        setEditingCommentId={setEditingCommentId}
-        setEditInput={setEditInput}
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
-        onSelectPin={handlePinClick}
-      />
-
-      <CommentEditor onSubmit={handleCreate} />
+      <CommentEditor onCreate={handleCreate} onUpdate={handleUpdate} />
     </div>
   );
 };

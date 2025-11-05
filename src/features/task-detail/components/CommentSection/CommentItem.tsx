@@ -12,12 +12,14 @@ interface CommentItemProps {
   onEdit?: (comment: CommentUIType) => void;
   onDelete?: (commentId: string) => void;
   onSelectPin?: (fileInfo: FileInfo | null) => void;
+  isEditing?: boolean;
 }
 
-const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
+const CommentItem = ({ comment, onEdit, onDelete, onSelectPin, isEditing }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
   const { user } = useAuthStore();
   const isAuthor = user?.id === comment.authorInfo.memberId;
+
   return (
     <div className="flex py-3">
       <div className="flex-1">
@@ -25,7 +27,10 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
           onClick={() => {
             if (onSelectPin) onSelectPin(comment.fileInfo ?? null);
           }}
-          className="bg-gray-200 rounded-xl px-4 py-3 shadow-sm relative"
+          className={cn(
+            'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200',
+            isEditing && 'bg-boost-blue/5 border-boost-blue/40',
+          )}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
