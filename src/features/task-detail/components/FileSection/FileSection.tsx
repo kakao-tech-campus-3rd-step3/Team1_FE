@@ -4,6 +4,7 @@ import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuer
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import ContentItem from '@/shared/components/ui/ContentItem';
 import { useFileUploader } from '@/features/task-detail/hooks/useFileUploader';
+import { useDeleteFileMutation } from '@/features/task-detail/hooks/useDeleteFileMutation';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
@@ -14,12 +15,11 @@ interface FileSectionProps {
 const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps) => {
   const { data: uiFiles } = useTaskFilesQuery(serverFiles, taskId);
   const { getRootProps, getInputProps } = useFileUploader(taskId);
+  const { mutate: deleteFile } = useDeleteFileMutation(taskId);
 
   const handleDelete = (fileId: string) => {
-    console.log(fileId);
-    //TODO: 파일 삭제 기능 필요
+    deleteFile(fileId);
   };
-
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300 flex flex-col">
       <ContentItem

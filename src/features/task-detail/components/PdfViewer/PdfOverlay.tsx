@@ -31,10 +31,9 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
             <div
               key={uuidv4()}
               className={cn(
-                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer',
+                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none',
                 isAnonymous && 'bg-gray-400',
               )}
-              /* TODO: 댓글 목록 조회 응답 필드 확인 필요 */
               style={{
                 backgroundColor: m.author?.backgroundColor,
                 borderColor: m.author?.backgroundColor,
@@ -63,7 +62,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
           return (
             <div
-              className="absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out"
+              className="absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out select-none"
               style={{
                 backgroundColor: user?.backgroundColor,
                 borderColor: user?.backgroundColor,
