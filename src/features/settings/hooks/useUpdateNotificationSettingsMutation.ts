@@ -26,11 +26,11 @@ export const useUpdateNotificationSettingsMutation = (
       if (context) {
         setIsServiceAlarmOn(!context.previousValue);
       }
-      toast.error('서비스 전체 알림 설정에 실패했습니다.');
+      toast.error('서비스 전체 알림 설정에 실패했습니다');
     },
 
     onSuccess: (data) => {
-      toast.success(data.enabled ? '알림이 활성화되었습니다.' : '알림이 비활성화되었습니다.');
+      toast.success(data.enabled ? '서비스 전체 알림이 서비스 알림이 켜졌습니다' : '서비스 전체 알림이 꺼졌습니다');
     },
   });
 };
