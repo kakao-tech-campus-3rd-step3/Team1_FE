@@ -17,4 +17,16 @@ export const notificationsApi = {
     const { data } = await api.patch(`/notifications/${notificationId}/read`);
     return data;
   },
+  updateNotificationSettings: async (enabled: boolean) => {
+    const { data } = await api.patch('/members/me/notifications', null, {
+      params: { enabled },
+    });
+    return data;
+  },
+  updateProjectNotificationSettings: async (projectId: string, enabled: boolean) => {
+    const { data } = await api.patch(`/projects/${projectId}/notifications`, null, {
+      params: { enabled },
+    });
+    return data;
+  },
 };
