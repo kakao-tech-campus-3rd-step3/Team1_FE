@@ -36,22 +36,20 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin, isEditing }: Comm
             <div className="flex items-center gap-2 pb-3">
               <Avatar
                 className={cn(
-                  'h-8 w-8 shrink-0 shadow-xs text-white text-xs',
-                  isAnonymous && 'bg-gray-400',
+                  'h-8 w-8 shrink-0 shadow-xs text-white text-xs flex items-center justify-center',
+                  isAnonymous ? 'bg-gray-500' : '',
                 )}
                 style={{
                   backgroundColor: !isAnonymous ? comment.authorInfo.backgroundColor : undefined,
                 }}
               >
                 {isAnonymous ? (
-                  <AvatarFallback className="bg-gray-400 flex items-center justify-center">
-                    <User className="w-4 h-4 text-gray-600" />
-                  </AvatarFallback>
+                  <User className="w-4 h-4 text-white" />
                 ) : comment.authorInfo.avatar ? (
                   <AvatarImage
                     src={getAvatarSrc(comment.authorInfo)}
                     alt={comment.authorInfo.name}
-                    className="h-7 w-7 object-cover rounded-full mx-auto my-auto"
+                    className="h-7 w-7 object-cover rounded-full"
                   />
                 ) : (
                   <AvatarFallback>

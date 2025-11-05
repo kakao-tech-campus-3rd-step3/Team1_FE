@@ -3,10 +3,10 @@ import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
 import Boo from '@/shared/assets/images/boost/boo.png';
-import { SendIcon, X } from 'lucide-react';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import toast from 'react-hot-toast';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
 
 interface CommentEditorProps {
   onCreate: (data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null }) => void;
@@ -47,7 +47,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     const data = {
       content: input,
       isAnonymous,
-      fileInfo: currentPin, 
+      fileInfo: currentPin,
     };
 
     if (editingComment) {
@@ -104,33 +104,11 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
             }
           }}
         />
-
-        {editingComment ? (
-          <>
-            <Button
-              size="icon"
-              className="h-13 w-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
-              onClick={handleSubmit}
-            >
-              <SendIcon />
-            </Button>
-            <Button
-              size="icon"
-              className="h-13 w-13 rounded-2xl bg-gray-400 hover:bg-gray-500 flex-shrink-0"
-              onClick={handleCancelEdit}
-            >
-              <X />
-            </Button>
-          </>
-        ) : (
-          <Button
-            size="icon"
-            className="h-13 w-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
-            onClick={handleSubmit}
-          >
-            <SendIcon />
-          </Button>
-        )}
+        <CommentEditorActions
+          isEditing={!!editingComment}
+          onSubmit={handleSubmit}
+          onCancel={handleCancelEdit}
+        />
       </div>
     </div>
   );
