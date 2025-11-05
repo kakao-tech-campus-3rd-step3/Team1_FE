@@ -19,7 +19,6 @@ const AlarmPermissionPage = () => {
 
   const hasShownError = useRef(false);
 
-  // 서버 구독 상태 폴링 (3초마다)
   const { data: serverStatus } = usePushSessionStatusQuery(qrToken || undefined);
 
   useEffect(() => {
@@ -40,13 +39,11 @@ const AlarmPermissionPage = () => {
         connectPushSession({ token: qrToken, deviceInfo });
       }
 
-      // 현재 브라우저 구독 상태 확인
       await checkBrowserSubscriptionStatus();
     };
     init();
   }, [qrToken, connectPushSession]);
 
-  // 서버 상태가 변경되면 permission 업데이트
   useEffect(() => {
     if (serverStatus?.status) {
       setPermission(serverStatus.status);
@@ -70,8 +67,6 @@ const AlarmPermissionPage = () => {
         return;
       }
 
-      // 브라우저에 구독이 있더라도 서버 상태를 기다림
-      // serverStatus useEffect에서 처리됨
     } catch (error) {
       console.error('브라우저 구독 상태 확인 실패:', error);
       setPermission(WebPushStatus.CREATED);
@@ -88,10 +83,7 @@ const AlarmPermissionPage = () => {
 
     if (result === 'granted') {
       try {
-        // registerPushSubscription이 서버에 구독 정보를 전송
         await registerPushSubscription();
-        // 서버 응답을 기다리지 않고 일단 REGISTERED로 설정
-        // usePushSessionStatusQuery가 폴링해서 실제 상태를 가져옴
         setPermission(WebPushStatus.REGISTERED);
         toast.success('알림이 활성화되었습니다!');
       } catch (error) {
