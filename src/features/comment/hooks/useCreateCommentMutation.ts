@@ -72,7 +72,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
 
     onError: (_err, _vars, context) => {
       if (!context) return;
-      toast.error("댓글 등록에 실패했습니다")
+      toast.error('댓글 등록에 실패했습니다');
       queryClient.setQueryData<CommentType[]>(context.queryKey, context.previous ?? []);
     },
   });

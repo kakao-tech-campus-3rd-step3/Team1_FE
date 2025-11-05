@@ -30,7 +30,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
           strokeWidth={1}
           className="h-12 ml-1 cursor-pointer"
           onClick={() => {
-            resetAll()
+            resetAll();
             navigate(-1);
           }}
         />

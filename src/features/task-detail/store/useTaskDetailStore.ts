@@ -14,7 +14,7 @@ interface TaskDetailState {
   setCurrentPin: (pin: PinWithAuthor | null) => void;
   togglePdf: (open: boolean) => void;
 
-  clearCurrentPin: () => void;// 현재 핀의 상태 초기화
+  clearCurrentPin: () => void; // 현재 핀의 상태 초기화
   clearFileState: () => void; //PDF 닫기 시 사용
   resetAll: () => void; // 뒤로가기 시 전체 초기화
 }
