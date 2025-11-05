@@ -1,3 +1,18 @@
+// yyyy-mm-dd -> ["yyyy", "mm", "dd"]
+export const parseDateString = (dateString: string) => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+// yyyy-mm-dd
+export const formatDate = (date: Date) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+// D-Day, N일 남음
 export const calculateDDay = (
   dueDate?: string | null,
   format: 'number' | 'string' | 'text' = 'number',
@@ -29,6 +44,7 @@ export const calculateDDay = (
   return diff;
 };
 
+// yyyy년 mm월 dd일 오전 hh:mm
 export const formatDateTime = (isoString: string): string => {
   if (!isoString) return '';
 
@@ -43,6 +59,5 @@ export const formatDateTime = (isoString: string): string => {
     timeZone: 'Asia/Seoul',
   };
 
-  // “2025년 11월 4일 오전 6:30” 형식 출력
   return new Intl.DateTimeFormat('ko-KR', options).format(date);
 };
