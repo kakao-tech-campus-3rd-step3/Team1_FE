@@ -7,5 +7,6 @@ export const useTagsQuery = (projectId: string) => {
   return useQuery({
     queryKey: TAG_QUERY_KEYS.project(projectId),
     queryFn: () => tagApi.fetchTags(projectId),
+    enabled: !!projectId,
   });
 };
