@@ -7,7 +7,8 @@ interface TaskDetailState {
   pins: PinWithAuthor[];
   isPdfOpen: boolean;
   isAnonymous: boolean;
-
+  isEditingPin: boolean;
+  setIsEditingPin: (val: boolean) => void;
   setIsAnonymous: (val: boolean) => void;
   setSelectedFile: (fileInfo: FileInfo | null) => void;
   setPins: (pins: PinWithAuthor[]) => void;
@@ -35,9 +36,10 @@ export const useTaskDetailStore = create<TaskDetailState>((set) => ({
   setPins: (pins) => set({ pins }),
   setCurrentPin: (currentPin) => set({ currentPin }),
   togglePdf: (isPdfOpen) => set({ isPdfOpen }),
-
+  isEditingPin: false,
+  
+  setIsEditingPin: (val) => set({ isEditingPin: val }),
   clearCurrentPin: () => set({ currentPin: null }),
-
   clearFileState: () =>
     set({
       selectedFile: null,
