@@ -1,10 +1,11 @@
 import api from '@/shared/api/axiosInstance';
 import type { CommentType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+import type { PersonaType } from '@/features/comment/constants/personaConstants';
 
 export interface CreateCommentRequest {
   content: string;
-  persona: 'BOO' | 'USER';
+  persona: PersonaType
   isAnonymous: boolean;
   fileInfo?: FileInfo;
 }

@@ -11,7 +11,8 @@ import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
 import toast from 'react-hot-toast';
 import CommentList from '@/features/task-detail/components/CommentSection/CommentList';
-import CommentEditor from '@/features/task-detail/components/CommentSection/CommentEditForm';
+import CommentEditor from '@/features/task-detail/components/CommentSection/CommentEditor';
+import { PERSONA } from '@/features/comment/constants/personaConstants';
 
 interface CommentSectionProps {
   projectId: string;
@@ -60,7 +61,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     if (!data.content.trim()) return toast.error('댓글을 입력해주세요!');
     const newComment = {
       content: data.content,
-      persona: 'BOO' as const,
+      persona: PERSONA.BOO,
       isAnonymous: data.isAnonymous,
       ...(data.fileInfo ? { fileInfo: data.fileInfo } : {}),
     };
