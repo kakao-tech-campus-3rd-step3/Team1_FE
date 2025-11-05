@@ -8,4 +8,8 @@ export const fileApi = {
     });
     return data;
   },
+  deleteFile: async (fileId: string) => {
+    const { data } = await api.delete(`/files/${fileId}`);
+    return data;
+  },
 };

@@ -73,13 +73,20 @@ export const useUploadFileMutation = () => {
     },
 
     onError: (error, _variables, context) => {
+      console.error('파일 업로드 실패:', error);
+
       if (isAxiosError(error) && error.response?.status === 400) {
-        toast.error('pdf 파일만 업로드 할 수 있습니다.');
+        toast.error('PDF 파일만 업로드할 수 있습니다.');
       } else {
         toast.error('파일 업로드에 실패했습니다.');
       }
+
       if (context?.prevFiles) {
         queryClient.setQueryData(['uploadedFile', context.taskId], context.prevFiles);
+      } else {
+        queryClient.setQueryData(['uploadedFile', context?.taskId], (old: FileItemType[] = []) =>
+          old.filter((file) => file.fileId !== context?.tempId),
+        );
       }
     },
   });
