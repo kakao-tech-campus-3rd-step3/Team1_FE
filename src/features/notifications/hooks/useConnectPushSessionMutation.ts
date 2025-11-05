@@ -1,8 +1,8 @@
-import { webPushApi } from '@/features/alarm/api/webPushApi';
+import { webPushApi } from '@/features/notifications/api/webPushApi';
 import type {
   ConnectPushSessionRequest,
   ConnectPushSessionResponse,
-} from '@/features/alarm/types/pushApiTypes';
+} from '@/features/notifications/types/pushApiTypes';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 

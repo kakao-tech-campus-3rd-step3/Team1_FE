@@ -18,6 +18,7 @@ export default function SettingsPage() {
       <UserInfoCard member={myInfo} />
       <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
       <Separator />
+      {/* 알림변경 */}
       <AlarmSettingCard />
       <Separator />
       {/* 회원탈퇴 */}

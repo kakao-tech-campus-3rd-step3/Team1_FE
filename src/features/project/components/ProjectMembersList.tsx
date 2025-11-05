@@ -1,8 +1,8 @@
-import ProjectMemberItem from '@/features/project/components/ProjectUpdateModal/ProjectMemberItem';
-import type { Member } from '@/features/user/types/userTypes';
+import ProjectMemberItem from '@/features/project/components/ProjectMemberItem';
+import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 
 interface ProjectMembersProps {
-  members: Member[];
+  members: MemberWithBoosting[];
 }
 
 const ProjectMembers = ({ members }: ProjectMembersProps) => {

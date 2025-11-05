@@ -17,14 +17,14 @@ const PDFViewer = () => {
   const { onMouseDown, onMouseMove, onMouseUp } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
-  const { togglePdf, selectedFile } = useTaskDetailStore();
+  const { clearFileState, selectedFile } = useTaskDetailStore();
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
       <div className="w-full h-12 flex items-center justify-between te bg-white border-b-gray-400 xt-white px-4">
         <span className="text-sm">{selectedFile?.fileName}</span>
         <button
-          onClick={() => togglePdf(false)}
+          onClick={() => clearFileState()}
           className="text-sm bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded-md transition"
         >
           ← 뒤로가기

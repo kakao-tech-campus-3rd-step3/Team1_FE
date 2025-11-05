@@ -1,7 +1,7 @@
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import EditField from '@/shared/components/ui/Form/EditField';
 
-const ProjectBasicInfo = () => {
+const ProjectManageBasicInfo = () => {
   const { projectData, updateProjectData } = useProjectStore();
 
   return (
@@ -23,4 +23,4 @@ const ProjectBasicInfo = () => {
   );
 };
 
-export default ProjectBasicInfo;
+export default ProjectManageBasicInfo;

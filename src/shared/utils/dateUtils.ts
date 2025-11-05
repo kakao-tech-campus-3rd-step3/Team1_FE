@@ -28,3 +28,21 @@ export const calculateDDay = (
 
   return diff;
 };
+
+export const formatDateTime = (isoString: string): string => {
+  if (!isoString) return '';
+
+  const date = new Date(isoString);
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    timeZone: 'Asia/Seoul',
+  };
+
+  // “2025년 11월 4일 오전 6:30” 형식 출력
+  return new Intl.DateTimeFormat('ko-KR', options).format(date);
+};

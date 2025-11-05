@@ -4,9 +4,9 @@ import { useModal } from '@/shared/hooks/useModal';
 import DeleteAccountModalContent from '@/features/settings/components/DeleteAccountModalContent';
 
 export const DeleteAccountCard = () => {
-  const { showSelect } = useModal();
+  const { showCustom } = useModal();
   const showModal = () => {
-    showSelect({
+    showCustom({
       title: '회원 탈퇴',
       description: '정말로 회원을 탈퇴하시겠습니까?',
       size: 'md',

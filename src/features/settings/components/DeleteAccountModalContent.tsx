@@ -8,11 +8,11 @@ const DeleteAccountModalContent = () => {
   const { resetModal } = useModal();
   const { mutate: deleteAccount } = useDeleteAccountMutation();
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 w-full">
       <motion.img
         src={cryingBoo}
         alt="Boo"
-        className="w-28 h-28 m-4"
+        className="w-32 h-32 m-4 mt-5"
         animate={{ y: [0, -6, 0] }}
         transition={{
           duration: 2,
@@ -21,14 +21,14 @@ const DeleteAccountModalContent = () => {
         }}
       />
 
-      <div className=" space-y-2">
+      <div className="flex flex-col items-center justify-center space-y-2 w-full">
         <h2 className="title1-bold text-boost-blue">정말 떠나시겠어요? </h2>
-        <p className="label2-regular text-muted-foreground">
+        <p className="text-center label2-regular text-muted-foreground">
           부스트와 함께한 기록이 모두 사라져요.
           <br />
           정말로 계속 진행하시겠어요?
         </p>
-        <div className="flex gap-2 mt-2 w-full">
+        <div className="flex w-full gap-2 mt-3">
           <Button
             variant="outline"
             onClick={() => {

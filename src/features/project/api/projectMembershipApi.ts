@@ -1,10 +1,5 @@
 import { api } from '@/shared/api/axiosInstance';
-import type { Project } from '@/features/project/types/projectTypes';
-
-export interface JoinCodeResponse {
-  joinCode: string;
-  expiresAt: string;
-}
+import type { JoinCodeResponse, Project } from '@/features/project/types/projectTypes';
 
 export const projectMembershipApi = {
   joinProject: async (joinCode: string): Promise<Project> => {
@@ -22,7 +17,8 @@ export const projectMembershipApi = {
     return data;
   },
 
-  leaveProject: async (projectId: string): Promise<void> => {
+  leaveProject: async (projectId: string): Promise<{ success: boolean }> => {
     await api.delete(`/projects/${projectId}/leave`);
+    return { success: true };
   },
 };

@@ -4,17 +4,16 @@ import { useModal } from '@/shared/hooks/useModal';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { type NavigateFunction } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
 import { Button } from '@/shared/components/shadcn/button';
 import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
-import Boo from '@/shared/assets/images/boost/boo.png';
+import MovingBoo from '@/shared/components/ui/MovingBoo';
 
 interface ProjectDeleteModalContentProps {
   navigate: NavigateFunction;
 }
 
 const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps) => {
-  const { projectData } = useProjectStore();
+  const projectData = useProjectStore((state) => state.projectData);
   const { resetModal, backModal } = useModal();
   const { mutateAsync: deleteProject } = useDeleteProjectMutation();
 
@@ -35,17 +34,7 @@ const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps)
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <motion.img
-        src={Boo}
-        alt="Boo"
-        className="w-30 h-30 m-5"
-        animate={{ y: [0, -5, 0] }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+      <MovingBoo size={28} />
       <ProjectDeleteRotatingText />
       <div className="flex gap-2 mt-2 w-full">
         <Button

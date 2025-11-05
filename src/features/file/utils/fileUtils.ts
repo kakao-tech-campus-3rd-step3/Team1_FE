@@ -10,9 +10,12 @@ const fileIcons: FileIcon[] = [
   { name: 'ppt', url: pptUrl },
   { name: 'pdf', url: pdfUrl },
 ];
+
 export const getFileIcon = (type: string) => {
-  const match = fileIcons.find((icon) => icon.name.toLowerCase() === type.toLowerCase());
-  return match?.url;
+  const lowerType = type.toLowerCase();
+  const extension = lowerType.split('.').pop() ?? lowerType;
+  const match = fileIcons.find((icon) => extension.includes(icon.name));
+  return match?.url ?? pdfUrl;
 };
 export const getTotalFileSize = (files: { sizeBytes: number }[]) => {
   const totalBytes = files.reduce((acc, file) => acc + file.sizeBytes, 0);

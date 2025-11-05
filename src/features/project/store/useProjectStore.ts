@@ -1,11 +1,9 @@
 import { create } from 'zustand';
+import type { Project } from '@/features/project/types/projectTypes';
+import { ROLES } from '@/features/project/constants/projectConstants';
 
 interface ProjectState {
-  projectData: {
-    id: string;
-    name: string;
-    defaultReviewerCount: number;
-  };
+  projectData: Project;
   setProjectData: (data: { id?: string; name?: string; defaultReviewerCount?: number }) => void;
   updateProjectData: (data: { name?: string; defaultReviewerCount?: number }) => void;
 }
@@ -15,6 +13,7 @@ export const useProjectStore = create<ProjectState>((set) => ({
     id: '',
     name: '',
     defaultReviewerCount: 0,
+    role: ROLES.MEMBER,
   },
   setProjectData: (data) =>
     set((state) => ({

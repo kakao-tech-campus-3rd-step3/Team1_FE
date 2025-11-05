@@ -22,13 +22,15 @@ const AssigneesList = ({ projectId, assigneeId }: AssigneeAvatarProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Avatar
-            style={{ backgroundColor: member?.backgroundColor }}
+            style={{
+              backgroundColor: member?.backgroundColor,
+            }}
             className={cn(
-              'flex items-center justify-center w-6 h-6 cursor-pointer ring-1 ring-background',
+              'flex items-center justify-center w-7 h-7 cursor-pointer ring-2 ring-white',
             )}
           >
             <AvatarFallback>{member?.name[0] ?? '?'}</AvatarFallback>
-            <AvatarImage src={getAvatarSrc(member)} className="w-5 h-5" />
+            <AvatarImage src={getAvatarSrc(member)} className="w-6 h-6" />
           </Avatar>
         </TooltipTrigger>
         <TooltipContent side="top">

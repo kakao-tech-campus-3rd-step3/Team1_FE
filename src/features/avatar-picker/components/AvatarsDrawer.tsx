@@ -43,6 +43,7 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
       setAvatarId(user.avatar ?? '');
       setBgColor(user.backgroundColor ?? '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawerOpen, user?.avatar, user?.backgroundColor]);
 
   const handleConfirm = () => {
