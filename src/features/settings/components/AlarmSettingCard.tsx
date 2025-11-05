@@ -51,26 +51,36 @@ const AlarmSettingCard = () => {
         {/* 프로젝트별 알림 섹션 */}
         <div
           className={cn(
-            'flex flex-col gap-3 pl-4 transition-opacity duration-300',
+            'flex flex-col gap-3 transition-opacity duration-300',
             !isServiceAlarmOn && 'opacity-60 pointer-events-none',
           )}
         >
-          <p className="font-medium text-gray-800">프로젝트별 알림</p>
+          <p className="font-medium text-gray-800 px-1">프로젝트별 알림</p>
 
-          <div className="border border-gray-100 rounded-md divide-y divide-gray-100">
-            {projectsData?.map((project) => (
-              <div
-                key={project.id}
-                className="flex items-center justify-between py-2 px-3 bg-white"
-              >
-                <span className="text-sm text-gray-900">{project.name}</span>
-                <Switch
-                  checked={projectAlarms[project.id] ?? false}
-                  onCheckedChange={(val) => handleProjectToggle(project.id, val)}
-                  disabled={!isServiceAlarmOn}
-                />
-              </div>
-            ))}
+          <div className="border border-gray-200 rounded-lg divide-y divide-gray-200 bg-gray-50">
+            {projectsData?.map((project) => {
+              const enabled = projectAlarms[project.id] ?? false;
+              return (
+                <div
+                  key={project.id}
+                  className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span
+                    className={cn(
+                      'text-sm font-medium transition-colors',
+                      !enabled ? 'text-gray-400' : 'text-gray-900',
+                    )}
+                  >
+                    {project.name}
+                  </span>
+                  <Switch
+                    checked={enabled}
+                    onCheckedChange={(val) => handleProjectToggle(project.id, val)}
+                    disabled={!isServiceAlarmOn}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
