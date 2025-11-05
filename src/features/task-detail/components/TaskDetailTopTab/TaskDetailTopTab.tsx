@@ -15,7 +15,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
 
   const [approvedCount, setApprovedCount] = useState(task.approvedCount);
   const [isMyReviewed, setIsMyReviewed] = useState(false);
-  const { togglePdf } = useTaskDetailStore();
+  const { resetAll } = useTaskDetailStore();
   const handleReviewComplete = () => {
     if (isMyReviewed) return;
     setApprovedCount((prev) => prev + 1);
@@ -30,7 +30,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
           strokeWidth={1}
           className="h-12 ml-1 cursor-pointer"
           onClick={() => {
-            togglePdf(false);
+            resetAll()
             navigate(-1);
           }}
         />
