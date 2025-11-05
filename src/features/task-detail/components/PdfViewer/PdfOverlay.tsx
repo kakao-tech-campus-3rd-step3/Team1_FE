@@ -15,7 +15,7 @@ interface OverlayProps {
 }
 
 const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
-  const { pins, currentPin, selectedFile } = useTaskDetailStore();
+  const { pins, currentPin, selectedFile, setSelectedCommentId } = useTaskDetailStore();
   const pinList = pins as PinWithAuthor[];
   const { user } = useAuthStore();
 
@@ -31,6 +31,10 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           return (
             <div
               key={uuidv4()}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (m.commentId) setSelectedCommentId(m.commentId);
+              }}
               className={cn(
                 'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200',
                 isAnonymous ? 'bg-gray-500 border-gray-500' : '',
@@ -67,7 +71,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           return (
             <div
               className={cn(
-                'absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out select-none',
+                'absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out ',
                 isAnonymous ? 'bg-gray-500 border-gray-500' : '',
               )}
               style={{

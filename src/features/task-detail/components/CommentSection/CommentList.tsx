@@ -12,7 +12,7 @@ interface CommentListProps {
 
 const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { setEditingComment, editingComment } = useTaskDetailStore();
+  const { setEditingComment, editingComment, selectedCommentId } = useTaskDetailStore();
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -27,6 +27,7 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
           key={comment.commentId}
           comment={comment}
           isEditing={editingComment?.id === comment.commentId}
+          isHighlighted={comment.commentId === selectedCommentId} // ✅ 강조 상태 전달
           onEdit={() =>
             setEditingComment({
               id: comment.commentId,

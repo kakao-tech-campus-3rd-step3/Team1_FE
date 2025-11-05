@@ -24,4 +24,5 @@ export interface CommentUIType extends CommentType {
   fallback: string;
   timeAgo: string;
   isPinned?: boolean;
+  commentId: string;
 }

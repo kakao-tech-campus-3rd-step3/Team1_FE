@@ -15,6 +15,8 @@ interface TaskDetailState {
   pins: PinWithAuthor[];
   isPdfOpen: boolean;
 
+  selectedCommentId: string | null;
+  setSelectedCommentId: (id: string | null) => void;
   setSelectedFile: (fileInfo: FileInfo | null) => void;
   setPins: (pins: PinWithAuthor[]) => void;
   setCurrentPin: (pin: PinWithAuthor | null) => void;
@@ -50,6 +52,10 @@ const initialState = {
 
 export const useTaskDetailStore = create<TaskDetailState>((set) => ({
   ...initialState,
+  // ===== 핀 선택 -> 댓글 =====
+
+  selectedCommentId: null,
+  setSelectedCommentId: (id) => set({ selectedCommentId: id }),
 
   // ===== 🙈 익명 =====
   setIsAnonymous: (val) => set({ isAnonymous: val }),
