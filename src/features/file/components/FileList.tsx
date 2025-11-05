@@ -1,5 +1,5 @@
+import FileItemCard from '@/features/file/components/FileItemCard';
 import type { ProjectFile } from '@/features/file/types/fileApiTypes';
-import FileItemCard from './FileItemCard';
 
 interface FileListProps {
   files: ProjectFile[];

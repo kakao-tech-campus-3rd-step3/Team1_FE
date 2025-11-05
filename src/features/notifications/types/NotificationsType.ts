@@ -19,3 +19,15 @@ export interface MarkNotificationAsReadResponse {
   notificationId: string;
   read: boolean;
 }
+
+// 알림 설정 변경 응답
+export interface UpdateNotificationSettingsResponse {
+  memberId: string;
+  enabled: boolean;
+}
+
+// 프로젝트 알림 설정 변경 응답
+export interface UpdateProjectNotificationSettingsResponse
+  extends UpdateNotificationSettingsResponse {
+  projectId: string;
+}

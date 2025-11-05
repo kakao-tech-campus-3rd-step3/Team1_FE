@@ -7,7 +7,7 @@ import TaskCreateModalContent from '@/features/task/components/TaskCreateModal/T
 import type { Project } from '@/features/project/types/projectTypes';
 import { ROUTES } from '@/app/routes/Router';
 import { ROLES } from '@/features/project/constants/projectConstants';
-import ProjectInfoModalContent from '../ProjectInfoModal/ProjectInfoModalContent';
+import ProjectInfoModalContent from '@/features/project/components/ProjectInfoModal/ProjectInfoModalContent';
 
 interface ProjectHeaderProps {
   project: Project;
