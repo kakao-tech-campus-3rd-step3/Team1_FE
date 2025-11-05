@@ -11,7 +11,7 @@ import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);
   const [projectAlarms, setProjectAlarms] = useState<Record<string, boolean>>({});
- const { data: myInfo } = useMyInfoQuery();
+  const { data: myInfo } = useMyInfoQuery();
   const { data: projectsData } = useProjectsQuery();
 
   const resetProjectAlarms = () => setProjectAlarms({});

@@ -16,10 +16,8 @@ export const useUpdateNotificationSettingsMutation = (
     mutationFn: (enabled) => notificationsApi.updateNotificationSettings(enabled),
 
     onMutate: async (enabled) => {
-      const previousValue = enabled;
       setIsServiceAlarmOn(enabled);
-      if (!enabled) resetProjectAlarms();
-      return { previousValue };
+      return { previousValue: !enabled };
     },
 
     onError: (_error, _enabled, context) => {
@@ -30,11 +28,8 @@ export const useUpdateNotificationSettingsMutation = (
     },
 
     onSuccess: (data) => {
-      toast.success(
-        data.enabled
-          ? '서비스 알림이 켜졌습니다'
-          : '서비스 전체 알림이 꺼졌습니다',
-      );
+      if (!data.enabled) resetProjectAlarms();
+      toast.success(data.enabled ? '서비스 알림이 켜졌습니다' : '서비스 전체 알림이 꺼졌습니다');
     },
   });
 };
