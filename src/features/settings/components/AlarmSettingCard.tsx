@@ -4,6 +4,8 @@ import { SettingsSectionCard } from '@/features/settings/components/SettingsSect
 import { Card } from '@/shared/components/shadcn/card';
 import { cn } from '@/shared/lib/utils';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
+import { useUpdateNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateNotificationSettingsMutation';
+import { useUpdateProjectNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateProjectNotificationSettingsMutation';
 
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);
@@ -11,20 +13,22 @@ const AlarmSettingCard = () => {
 
   const { data: projectsData } = useProjectsQuery();
 
-  // 프로젝트별 알림 토글
+  const resetProjectAlarms = () => setProjectAlarms({});
+
+  const { mutate: updateServiceAlarm } = useUpdateNotificationSettingsMutation(
+    setIsServiceAlarmOn,
+    resetProjectAlarms,
+  );
+
+  const { mutate: updateProjectAlarm } =
+    useUpdateProjectNotificationSettingsMutation(setProjectAlarms);
+
   const handleProjectToggle = (projectId: string, value: boolean) => {
-    setProjectAlarms((prev) => ({
-      ...prev,
-      [projectId]: value,
-    }));
+    updateProjectAlarm({ projectId, enabled: value });
   };
 
-  // 서비스 알림 토글
   const handleServiceToggle = (value: boolean) => {
-    setIsServiceAlarmOn(value);
-    if (!value) {
-      setProjectAlarms({});
-    }
+    updateServiceAlarm(value);
   };
 
   return (
