@@ -47,7 +47,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
               ) : (
                 <img
                   src={getAvatarSrc({ avatar: m.author?.avatar })}
-                  style={{ backgroundColor: m.author?.backgroundColor }}
+                  style={{ backgroundColor: user?.backgroundColor }}
                   alt={m.author?.name ?? 'avatar'}
                   className="w-6 h-6 object-cover rotate-[45deg]"
                 />

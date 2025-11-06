@@ -6,32 +6,35 @@ import {
   TooltipTrigger,
 } from '@/shared/components/shadcn/tooltip';
 import { cn } from '@/shared/lib/utils';
+import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
-import type { Member } from '@/features/user/types/userTypes';
 
 interface AssigneeAvatarProps {
-  assignee: Member;
+  projectId: string;
+  assigneeId: string;
 }
 
-const AssigneesList = ({ assignee }: AssigneeAvatarProps) => {
+const AssigneesList = ({ projectId, assigneeId }: AssigneeAvatarProps) => {
+  const { data: projectMembers } = useProjectMembersQuery(projectId);
+  const member = projectMembers?.find((m) => m.id === assigneeId);
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Avatar
             style={{
-              backgroundColor: assignee?.backgroundColor,
+              backgroundColor: member?.backgroundColor,
             }}
             className={cn(
               'flex items-center justify-center w-7 h-7 cursor-pointer ring-2 ring-white',
             )}
           >
-            <AvatarFallback>{assignee?.name[0] ?? '?'}</AvatarFallback>
-            <AvatarImage src={getAvatarSrc(assignee)} className="w-6 h-6" />
+            <AvatarFallback>{member?.name[0] ?? '?'}</AvatarFallback>
+            <AvatarImage src={getAvatarSrc(member)} className="w-6 h-6" />
           </Avatar>
         </TooltipTrigger>
         <TooltipContent side="top">
-          <p>{assignee?.name ?? assignee.id}</p>
+          <p>{member?.name ?? assigneeId}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

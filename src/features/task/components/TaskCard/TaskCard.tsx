@@ -95,7 +95,11 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         <div className="flex justify-between text-xs m-1 mt-3">
           <div className="flex -space-x-2">
             {task.assignees?.map((assignee) => (
-              <AssigneesList key={assignee.id} assignee={assignee} />
+              <AssigneesList
+                key={assignee.id}
+                projectId={task.projectId}
+                assigneeId={assignee.id}
+              />
             ))}
           </div>
 
