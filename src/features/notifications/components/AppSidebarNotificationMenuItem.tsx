@@ -8,8 +8,7 @@ import NotificationDropdownMenu from '@/features/notifications/components/Notifi
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 
 const AppSidebarNotificationMenuItem = () => {
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useNotificationsQuery();
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useNotificationsQuery();
 
   const { data: notificationCountData } = useNotificationCountsQuery();
   const notifications = data?.pages.flatMap((p) => p.notifications) ?? [];

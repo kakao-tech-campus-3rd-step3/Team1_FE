@@ -164,7 +164,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
               <div className="label1-regular text-gray-500 m-2">{title}</div>
               <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-md w-6 h-6">
                 {selectedTags.length > 0
-                  ? filteredTasks.length 
+                  ? filteredTasks.length
                   : getTaskCountByMember(status, memberTaskCountList)}
               </div>
             </div>
