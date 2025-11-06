@@ -1,16 +1,16 @@
+import { useProjectFileSummaryQuery } from '@/features/file/hooks/useProjectFileSummaryQuery';
 import { getTotalFileSize } from '@/features/file/utils/fileUtils';
+import { useParams } from 'react-router-dom';
 
-interface FileTableInfoProps {
-  files: {
-    sizeBytes: number;
-  }[];
-}
+const FileTableInfo = () => {
+  const { projectId } = useParams<{ projectId: string }>();
 
-const FileTableInfo = ({ files }: FileTableInfoProps) => {
+  const { data: fileSummaryData } = useProjectFileSummaryQuery(projectId!);
+
   return (
     <div className="flex items-center justify-between label1-regular text-gray-500 px-2 pb-2">
-      <p>총 {files.length}개 파일</p>
-      <p>전체 용량 : {getTotalFileSize(files)}</p>
+      <p>총 {fileSummaryData?.totalCount}개 파일</p>
+      <p> 전체 용량 : {getTotalFileSize([{ sizeBytes: fileSummaryData?.totalSizeBytes ?? 0 }])}</p>
     </div>
   );
 };

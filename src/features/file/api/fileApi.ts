@@ -1,3 +1,4 @@
+import type { FileSummaryResponse } from '@/features/file/types/fileApiTypes';
 import api from '@/shared/api/axiosInstance';
 
 export const fileApi = {
@@ -10,6 +11,10 @@ export const fileApi = {
   },
   deleteFile: async (fileId: string) => {
     const { data } = await api.delete(`/files/${fileId}`);
+    return data;
+  },
+  fetchFileSummary: async (projectId: string): Promise<FileSummaryResponse> => {
+    const { data } = await api.get(`/projects/${projectId}/files/summary`);
     return data;
   },
 };
