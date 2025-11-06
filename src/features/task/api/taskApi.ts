@@ -3,6 +3,7 @@ import type {
   MyTaskCountByStatusResponse,
   ProjectTaskCountByMemberResponse,
   ProjectTaskCountByStatusResponse,
+  TaskApproveResponse,
   TaskDetail,
   TaskListItem,
   TaskListResponse,
@@ -121,8 +122,8 @@ export const taskApi = {
     return res.data;
   },
 
-  // 할 일 이동
-  moveTask: async (
+  // 할 일 상태 변경
+  updateTaskStatus: async (
     projectId: string,
     taskId: string,
     status: string,
@@ -132,5 +133,18 @@ export const taskApi = {
       { status },
     );
     return res.data;
+  },
+
+  // 할 일 승인
+  approveTask: async (projectId: string, taskId: string): Promise<TaskApproveResponse> => {
+    const res = await api.patch<TaskApproveResponse>(
+      `/projects/${projectId}/tasks/${taskId}/approve`,
+    );
+    return res.data;
+  },
+
+  // 할 일 재검토 요청
+  requestReviewTask: async (projectId: string, taskId: string) => {
+    await api.post(`/projects/${projectId}/tasks/${taskId}/re-review`);
   },
 };

@@ -21,6 +21,12 @@ export type File = {
   type: string;
 };
 
+export interface TaskApproveResponse {
+  taskId: string;
+  approvedCount: number;
+  requiredReviewerCount: number;
+}
+
 // Task 목록 조회 아이템
 export type TaskListItem = {
   taskId: string;
@@ -57,6 +63,8 @@ export type TaskDetail = {
   urgent: boolean;
   approvedCount: number;
   requiredReviewerCount: number;
+  reReviewRequestedAt: string;
+  approvedByMe: boolean;
   tags: TagList;
   assignees: Member[];
   comments: Comment[];

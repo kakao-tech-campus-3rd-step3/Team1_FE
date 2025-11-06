@@ -31,6 +31,7 @@ import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutati
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
+import DueDatePicker from '@/features/task/components/TaskCreateModal/DueDatePicker';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
@@ -140,7 +141,10 @@ const TaskCreateModalContent = ({
 
           {/* 마감일 */}
           <FormField icon={Calendar} required label="마감일" error={errors.dueDate?.message}>
-            <Input type="date" {...register('dueDate')} className={inputClasses} />
+            <DueDatePicker
+              value={watch('dueDate')}
+              onChange={(date) => setValue('dueDate', date, { shouldValidate: true })}
+            />
           </FormField>
         </div>
 

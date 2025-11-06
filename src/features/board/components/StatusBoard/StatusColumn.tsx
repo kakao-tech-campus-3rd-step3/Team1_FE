@@ -6,6 +6,7 @@ import { type Column } from '@/features/task/types/taskTypes';
 import { type TaskQuery } from '@/features/task/types/taskTypes';
 import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 import { useStatusTaskCountQueries } from '@/features/board/hooks/useStatusTaskCountQueries';
+import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 
 interface StatusColumnProps {
   column: Column;
@@ -16,10 +17,18 @@ interface StatusColumnProps {
 const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
   const { data: statusTaskCountList } = useStatusTaskCountQueries(projectId);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
-
+  const { selectedTags } = useTagFilterStore();
   const tasks = data?.pages.flatMap((page) => page.tasks) || [];
   const sortedTasks = Array.from(new Map(tasks.map((t) => [t.taskId, t])).values());
-  const tasksIds = sortedTasks.map((task) => task.taskId);
+
+  const filteredTasks =
+    selectedTags.length > 0
+      ? sortedTasks.filter((task) =>
+          selectedTags.every((tag) => task.tags?.some((t) => t.tagId === tag.tagId)),
+        )
+      : sortedTasks;
+
+  const taskIds = filteredTasks.map((task) => task.taskId);
 
   const { setNodeRef } = useDroppable({
     id: column.status,
@@ -49,15 +58,17 @@ const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
         <div className="flex gap-2 text-gray-600 items-center">
           {column.title}
           <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-full">
-            {getTaskCountByStatus(column.status, statusTaskCountList)}
+            {selectedTags.length > 0
+              ? filteredTasks.length
+              : getTaskCountByStatus(column.status, statusTaskCountList)}
           </div>
         </div>
       </div>
 
       <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
-        <SortableContext items={tasksIds}>
-          {sortedTasks.map((task, idx) => {
-            const isLast = idx === sortedTasks.length - 1;
+        <SortableContext items={taskIds}>
+          {filteredTasks.map((task, idx) => {
+            const isLast = idx === filteredTasks.length - 1;
             return (
               <TaskCard
                 key={task.taskId}

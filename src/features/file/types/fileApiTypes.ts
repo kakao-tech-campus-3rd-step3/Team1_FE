@@ -8,13 +8,12 @@ export interface FileDownloadUrlResponse {
 }
 
 export interface ProjectFile {
-  id: string;
+  fileId: string;
   filename: string;
   contentType: string;
   type: string;
   completedAt: string;
   sizeBytes: number;
-  // 🔜 서버에서 추후 내려올 예정인 필드
   taskId: string;
   taskName: string;
 }
@@ -25,4 +24,8 @@ export interface ProjectFilesResponse {
   count: number;
   nextCursor: string | null;
   hasNext: boolean;
+}
+export interface FileSummaryResponse {
+  totalCount: number;
+  totalSizeBytes: number;
 }

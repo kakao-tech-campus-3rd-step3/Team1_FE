@@ -1,3 +1,18 @@
+// yyyy-mm-dd -> ["yyyy", "mm", "dd"]
+export const parseDateString = (dateString: string) => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+// yyyy-mm-dd
+export const formatDate = (date: Date) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+// D-Day, N일 남음
 export const calculateDDay = (
   dueDate?: string | null,
   format: 'number' | 'string' | 'text' = 'number',
@@ -29,6 +44,7 @@ export const calculateDDay = (
   return diff;
 };
 
+// yyyy년 mm월 dd일 오전 hh:mm
 export const formatDateTime = (isoString: string): string => {
   if (!isoString) return '';
 
@@ -43,6 +59,29 @@ export const formatDateTime = (isoString: string): string => {
     timeZone: 'Asia/Seoul',
   };
 
-  // “2025년 11월 4일 오전 6:30” 형식 출력
   return new Intl.DateTimeFormat('ko-KR', options).format(date);
+};
+
+// 초 단위 숫자를 HH:MM:SS로 변환
+export const formatSecondsToHHMMSS = (seconds: number) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+// 초 단위 숫자를 MM:SS로 변환
+export const formatSecondsMMSS = (seconds: number) => {
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+// 만료일과 현재 시간으로 남은 초 계산
+export const getRemainingSeconds = (expiresAt: string | Date) => {
+  const expires = new Date(expiresAt).getTime();
+  const now = Date.now();
+  return Math.max(Math.floor((expires - now) / 1000), 0);
 };

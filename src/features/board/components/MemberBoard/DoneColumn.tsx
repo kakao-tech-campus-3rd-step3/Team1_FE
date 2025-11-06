@@ -8,6 +8,7 @@ import { cn } from '@/shared/lib/utils';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
+import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 
 interface DoneColumnProps {
   tasks: TaskListItem[];
@@ -16,6 +17,15 @@ interface DoneColumnProps {
 const DoneColumn = ({ tasks }: DoneColumnProps) => {
   const [isProfileCollapsible, setIsProfileCollapsible] = useState(false);
   const [isMouseInside, setIsMouseInside] = useState(false);
+
+  const { selectedTags } = useTagFilterStore();
+
+  const filteredTasks =
+    selectedTags.length > 0
+      ? tasks.filter((task) =>
+          selectedTags.every((tag) => task.tags?.some((t) => t.tagId === tag.tagId)),
+        )
+      : tasks;
 
   const scrollRef = useVerticalScroll<HTMLDivElement>(() => {
     if (!scrollRef.current || !isMouseInside) return;
@@ -79,6 +89,10 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
           >
             진행 완료
           </div>
+
+          <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-md w-fit">
+            {filteredTasks.length}
+          </div>
         </motion.div>
       </motion.div>
 
@@ -89,7 +103,7 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
       />
 
       <div ref={scrollRef} className="relative flex flex-col p-2 gap-4 overflow-y-auto flex-grow">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <TaskCard key={task.taskId} task={task} draggable={false} />
         ))}
       </div>

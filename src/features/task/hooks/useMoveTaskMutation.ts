@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
-import type { TaskListResponse, TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskListResponse, TaskListItem, TaskDetail } from '@/features/task/types/taskTypes';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
@@ -32,7 +32,7 @@ export const useMoveTaskMutation = () => {
 
   return useMutation({
     mutationFn: ({ projectId, activeTaskId, toStatus }: MoveTaskParams) =>
-      taskApi.moveTask(projectId, activeTaskId, toStatus),
+      taskApi.updateTaskStatus(projectId, activeTaskId, toStatus),
 
     onMutate: async (variables) => {
       const {
@@ -110,11 +110,19 @@ export const useMoveTaskMutation = () => {
         });
       }
 
-      return { previousFrom, previousTo };
+      const taskDetailKey = TASK_QUERY_KEYS.detail(projectId, activeTaskId);
+      const previousTaskDetail = queryClient.getQueryData<TaskDetail>(taskDetailKey);
+      queryClient.setQueryData<TaskDetail>(taskDetailKey, (old) => {
+        if (!old) return old;
+        return { ...old, status: toStatus };
+      });
+
+      return { previousFrom, previousTo, previousTaskDetail };
     },
 
     onError: (error, variables, context) => {
-      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
+      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction, activeTaskId } =
+        variables;
 
       const search =
         queryIdentifier === 'me'
@@ -130,10 +138,22 @@ export const useMoveTaskMutation = () => {
         queryClient.setQueryData(getQueryKey(fromStatus), context.previousFrom);
       if (context?.previousTo) queryClient.setQueryData(getQueryKey(toStatus), context.previousTo);
 
+      if (context?.previousTaskDetail)
+        queryClient.setQueryData(
+          TASK_QUERY_KEYS.detail(projectId, activeTaskId),
+          context.previousTaskDetail,
+        );
+
       if (isAxiosError(error) && error.response?.status === 403) {
         toast.error('담당자만 가능해요!');
         return;
       }
+      if (isAxiosError(error) && error.response?.status === 400) {
+        toast.error('아직 승인이 완료되지 않았어요!');
+        return;
+      }
+
+      console.error(error);
       alert('할 일 이동 중 오류가 발생했습니다.');
     },
 
@@ -152,6 +172,9 @@ export const useMoveTaskMutation = () => {
 
       queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
       queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.detail(projectId, variables.activeTaskId),
+      });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.meCountStatus() });

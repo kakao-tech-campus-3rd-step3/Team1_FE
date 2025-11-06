@@ -56,8 +56,10 @@ export const mapTaskListItemToDetail = (task: TaskListItem): TaskDetail => {
     tags: task.tags,
     assignees: task.assignees,
     approvedCount: 0,
+    reReviewRequestedAt: '',
     comments: [],
     files: [],
+    approvedByMe: false,
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,
   };
