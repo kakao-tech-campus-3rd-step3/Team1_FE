@@ -50,6 +50,7 @@ const AlarmPermissionPage = () => {
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
   const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
+  const [isLoading, setIsLoading] = useState(false);
   const { registerPushSubscription } = useAlarmPermission(qrToken!);
 
   const hasShownError = useRef(false);
@@ -76,18 +77,32 @@ const AlarmPermissionPage = () => {
       return;
     }
 
-    const result = await Notification.requestPermission();
+    try {
+      setIsLoading(true);
+      const result = await Notification.requestPermission();
 
-    if (result === 'granted') {
-      await registerPushSubscription();
-      setPermission(WebPushStatus.REGISTERED);
-      toast.success('알림이 활성화되었습니다!');
-    } else {
-      toast.error('알림 허용이 필요합니다.');
+      if (result === 'granted') {
+        // registerPushSubscription
+        // 1. 기존 구독 확인
+        // 2. 없으면 새로 생성
+        // 3. 백엔드에 등록
+        await registerPushSubscription();
+        setPermission(WebPushStatus.REGISTERED);
+      } else if (result === 'denied') {
+        toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
+      } else {
+        toast.error('알림 허용이 필요합니다.');
+      }
+    } catch (error) {
+      console.error('[handleAllow error]', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const status = STATUS_CONTENT[permission];
+  const shouldShowButton = permission === WebPushStatus.CREATED;
+
   return (
     <StatusView
       icon={status.icon}
@@ -97,15 +112,18 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
-        <Button
-          onClick={handleAllow}
-          className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer"
-        >
-          <CheckCircle className="w-4 h-4" />
-          허용
-        </Button>
-      </div>
+      {shouldShowButton && (
+        <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
+          <Button
+            onClick={handleAllow}
+            disabled={isLoading}
+            className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <CheckCircle className="w-4 h-4" />
+            {isLoading ? '처리 중...' : '허용'}
+          </Button>
+        </div>
+      )}
     </StatusView>
   );
 };
