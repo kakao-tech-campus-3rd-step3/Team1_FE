@@ -9,6 +9,42 @@ import { STATUS_CONTENT } from '@/features/notifications/constants/alarmStatusCo
 import { WebPushStatus, type WebPushStatusType } from '@/features/notifications/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/notifications/hooks/useConnectPushSessionMutation';
 
+interface StatusViewProps {
+  title: string;
+  message: React.ReactNode;
+  icon: React.ComponentType<{ className?: string }>;
+  blurClass: string;
+  bgClass: string;
+  textClass: string;
+  children?: React.ReactNode;
+}
+
+const StatusView = ({
+  title,
+  message,
+  icon: Icon,
+  blurClass,
+  bgClass,
+  textClass,
+  children,
+}: StatusViewProps) => (
+  <div className="flex flex-col h-screen justify-center items-center text-center p-6 space-y-6">
+    <div className="relative inline-block">
+      <div className={cn('absolute inset-0 rounded-full blur-xs', blurClass)} />
+      <div className={cn('relative p-4 rounded-full w-fit mx-auto', bgClass)}>
+        <Icon className={cn('w-10 h-10', textClass)} />
+      </div>
+    </div>
+
+    <div className="space-y-2">
+      <h2 className="title1-bold text-gray-900">{title}</h2>
+      <p className="subtitle2-regular text-gray-600 leading-relaxed">{message}</p>
+    </div>
+
+    {children}
+  </div>
+);
+
 const AlarmPermissionPage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
@@ -19,24 +55,19 @@ const AlarmPermissionPage = () => {
   const hasShownError = useRef(false);
 
   useEffect(() => {
-    const init = () => {
-      if (!qrToken && !hasShownError.current) {
-        toast.error('잘못된 QR입니다.');
-        hasShownError.current = true;
-        return;
-      }
-
-      if (!('serviceWorker' in navigator)) {
-        toast.error('이 브라우저는 알림을 지원하지 않습니다.');
-        return;
-      }
-
-      if (qrToken) {
-        const deviceInfo = navigator.userAgent;
-        connectPushSession({ token: qrToken, deviceInfo });
-      }
-    };
-    init();
+    if (!qrToken && !hasShownError.current) {
+      toast.error('잘못된 QR 입니다');
+      hasShownError.current = true;
+      return;
+    }
+    if (!('serviceWorker' in navigator)) {
+      toast.error('이 브라우저는 Service Worker를 지원하지 않습니다.');
+      return;
+    }
+    if (qrToken) {
+      const deviceInfo = navigator.userAgent;
+      connectPushSession({ token: qrToken, deviceInfo });
+    }
   }, [qrToken, connectPushSession]);
 
   const handleAllow = async () => {
@@ -51,28 +82,21 @@ const AlarmPermissionPage = () => {
       await registerPushSubscription();
       setPermission(WebPushStatus.REGISTERED);
       toast.success('알림이 활성화되었습니다!');
-    } else if (result === 'denied') {
-      toast.error('브라우저 설정에서 알림을 허용해주세요.');
     } else {
-      toast('알림 요청이 무시되었습니다. 다시 시도해주세요.');
+      toast.error('알림 허용이 필요합니다.');
     }
   };
 
   const status = STATUS_CONTENT[permission];
   return (
-    <div className="flex flex-col h-screen justify-center items-center text-center p-6 space-y-6">
-      <div className="relative inline-block">
-        <div className={cn('absolute inset-0 rounded-full blur-xs', status.blurClass)} />
-        <div className={cn('relative p-4 rounded-full w-fit mx-auto', status.bgClass)}>
-          <status.icon className={cn('w-10 h-10', status.textClass)} />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <h2 className="title1-bold text-gray-900">{status.title}</h2>
-        <p className="subtitle2-regular text-gray-600 leading-relaxed">{status.message}</p>
-      </div>
-
+    <StatusView
+      icon={status.icon}
+      title={status.title}
+      message={status.message}
+      blurClass={status.blurClass}
+      bgClass={status.bgClass}
+      textClass={status.textClass}
+    >
       <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
         <Button
           onClick={handleAllow}
@@ -82,7 +106,7 @@ const AlarmPermissionPage = () => {
           허용
         </Button>
       </div>
-    </div>
+    </StatusView>
   );
 };
 
