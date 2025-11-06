@@ -7,6 +7,8 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import toast from 'react-hot-toast';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
+import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
+import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 
 interface CommentEditorProps {
   onCreate: (data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null }) => void;
@@ -41,6 +43,24 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     }
   }, [editingComment, setIsAnonymous, setCurrentPin]);
 
+  const { showAiTransformConfirmModal } = useAiTransformModals();
+
+  const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
+  const selectedText = useAiTransformStore((state) => state.selectedText);
+
+  useEffect(() => {
+    if (selectedText) setInput(selectedText);
+  }, [selectedText]);
+
+  const handleBooClick = () => {
+    if (!input.trim()) {
+      toast.error('댓글을 입력해주세요!');
+      return;
+    }
+    setOriginalText(input);
+    showAiTransformConfirmModal();
+  };
+
   const handleSubmit = () => {
     if (!input.trim()) return toast.error('댓글을 입력해주세요!');
 
@@ -73,6 +93,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
         <Button
           size="sm"
           className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
+          onClick={() => handleBooClick()}
         >
           <img src={Boo} width="20" />
           <p className="label2-bold">Boo가 대신 말하기</p>
@@ -91,7 +112,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
       </div>
 
       {/* 입력창 + 버튼 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mb-2">
         <Textarea
           className="rounded-md text-sm focus:ring-transparent flex-1 h-10 resize-none"
           placeholder={editingComment ? '댓글 수정중..' : '댓글을 입력해주세요'}
