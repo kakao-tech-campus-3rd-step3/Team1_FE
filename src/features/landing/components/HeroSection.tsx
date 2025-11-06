@@ -3,35 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { motion } from 'framer-motion';
 import Boost_3D from '@/shared/assets/images/boost/boost-logo-3d.png';
-import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { useState } from 'react';
-import {
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/components/shadcn/dropdown-menu';
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-
-  const options = [
-    { label: '에러 페이지', click: () => navigate(ROUTE_PATH.ERROR) },
-    { label: '아바타 설정 페이지', click: () => navigate(ROUTE_PATH.AVATAR) },
-    { label: '할 일 상세 페이지', click: () => navigate(ROUTE_PATH.TASK_DETAIL) },
-    {
-      label: '알림 QR 페이지',
-      click: () => {
-        navigate(ROUTE_PATH.ALARM_SETUP);
-      },
-    },
-    {
-      label: '알림 허용 페이지',
-      click: () => {
-        navigate(ROUTE_PATH.ALARM_SETUP_MOBILE);
-      },
-    },
-  ];
 
   return (
     <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -55,31 +29,8 @@ const HeroSection = () => {
               className="bg-boost-blue shadow-sm h-10 w-full sm:w-auto hover:bg-boost-blue-hover"
               size="lg"
             >
-              시작하기
+              서비스 경험하기
             </Button>
-
-            <DropdownMenu open={open} onOpenChange={setOpen}>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  className="bg-gray-300 shadow-sm w-full sm:w-40 h-10 focus:ring-transparent"
-                >
-                  데모 보기
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent className="w-full sm:w-40 border-gray-300 mt-1">
-                {options.map((opt) => (
-                  <DropdownMenuItem
-                    key={opt.label}
-                    className="flex items-center justify-between"
-                    onClick={opt.click}
-                  >
-                    {opt.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
 

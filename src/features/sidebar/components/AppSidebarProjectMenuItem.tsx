@@ -10,9 +10,10 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import { SidebarMenuButton, SidebarMenuItem } from '@/shared/components/shadcn/sidebar';
-import ProjectCreateButton from '@/features/sidebar/components/ProjectCreateButton';
+import ProjectCreateButton from '@/features/sidebar/components/AppSidebarProjectButton';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
+import { ROUTES } from '@/app/routes/Router';
 
 const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
   const { data: projects } = useProjectsQuery();
@@ -24,7 +25,7 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
       <DropdownMenu>
         <Tooltip>
           <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild className="cursor-pointer">
               <DropdownMenuTrigger>{item.icon}</DropdownMenuTrigger>
             </SidebarMenuButton>
           </TooltipTrigger>
@@ -43,7 +44,7 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
           <DropdownMenuRadioGroup
             value={currentProjectId}
             onValueChange={(value) => {
-              navigate(`/project/${value}/board`);
+              navigate(ROUTES.PROJECT_BOARD(value));
             }}
           >
             {projects && projects.length > 0 ? (

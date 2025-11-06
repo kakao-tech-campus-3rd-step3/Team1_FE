@@ -62,7 +62,7 @@ export const useCreateTaskMutation = (projectId: string) => {
       );
       const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction, activeSearch);
       const memberKeys = taskData.assignees.map((memberId) =>
-        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction, activeSearch),
+        TASK_QUERY_KEYS.member(projectId, memberId, activeSearch),
       );
 
       await Promise.all([
@@ -121,7 +121,7 @@ export const useCreateTaskMutation = (projectId: string) => {
       );
       const meKey = TASK_QUERY_KEYS.meStatus(taskData.status, sortBy, direction, activeSearch);
       const memberKeys = taskData.assignees.map((memberId) =>
-        TASK_QUERY_KEYS.member(projectId, memberId, sortBy, direction, activeSearch),
+        TASK_QUERY_KEYS.member(projectId, memberId, activeSearch),
       );
 
       const replaceTempTask = (oldData?: InfiniteData<TaskListResponse>) => {
