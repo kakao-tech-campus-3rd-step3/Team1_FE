@@ -19,6 +19,11 @@ interface StatusViewProps {
   children?: React.ReactNode;
 }
 
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const isStandalone = () =>
+  window.matchMedia('(display-mode: standalone)').matches ||
+  (navigator as unknown as { standalone?: boolean }).standalone === true;
+
 const StatusView = ({
   title,
   message,
@@ -49,11 +54,14 @@ const AlarmPermissionPage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
+  const { registerPushSubscription } = useAlarmPermission(qrToken!);
+
   const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
   const [isLoading, setIsLoading] = useState(false);
-  const { registerPushSubscription } = useAlarmPermission(qrToken!);
+
   const triedConnectRef = useRef(false);
   const hasShownError = useRef(false);
+
   useEffect(() => {
     if (!qrToken && !hasShownError.current) {
       toast.error('유효하지 않은 QR 코드입니다.');
@@ -65,7 +73,12 @@ const AlarmPermissionPage = () => {
       toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
-    //연결 시도 최초 1회만 시도
+
+    if (isIOS && !isStandalone()) {
+      console.log('iOS Safari → connectPushSession 실행 안 함');
+      return;
+    }
+
     if (qrToken && !triedConnectRef.current) {
       triedConnectRef.current = true;
       const deviceInfo = navigator.userAgent;
@@ -118,17 +131,23 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-        <p className="text-sm text-amber-800 leading-relaxed">
-          <span className="text-md font-bold"> 📢 IOS 환경 사용자는 아래 단계로 진행해주세요</span>
-          <br />
-          1. Safari에서 <b>공유 버튼</b> 클릭하기
-          <br />
-          2. <b>홈 화면에 추가</b>하기
-          <br />
-          3. <b>허용 버튼</b> 클릭
-        </p>
-      </div>
+      {isIOS && (
+        <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <p className="text-sm text-amber-800 leading-relaxed">
+            <span className="text-md font-bold">
+              {' '}
+              📢 IOS 환경 사용자는 아래 단계로 진행해주세요
+            </span>
+            <br />
+            1. Safari에서 <b>공유 버튼</b> 클릭하기
+            <br />
+            2. <b>홈 화면에 추가</b>하기
+            <br />
+            3. <b>허용 버튼</b> 클릭
+          </p>
+        </div>
+      )}
+
       {shouldShowButton && (
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
