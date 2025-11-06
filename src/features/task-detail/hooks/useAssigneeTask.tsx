@@ -5,6 +5,7 @@ import { getRemainingSeconds, formatSecondsMMSS } from '@/shared/utils/dateUtils
 import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useUpdateTaskStatusMutation } from '@/features/task/hooks/useUpdateTaskStatusMutation';
 import { useRequestReviewMutation } from '@/features/task/hooks/useRequestReviewMutation';
+import { ERROR } from '@/shared/constants/errorTypes';
 
 interface UseAssigneeTaskProps {
   projectId: string;
@@ -34,10 +35,7 @@ export const useAssigneeTask = ({
       try {
         await requestReviewMutate();
       } catch (err) {
-        if (
-          isAxiosError(err) &&
-          err.response?.data?.type === 'urn:problem:task_re_review_cooldown'
-        ) {
+        if (isAxiosError(err) && err.response?.data?.type === ERROR.TASK.RE_REVIEW_COOLDOWN.type) {
           if (!reReviewRequestedAt) return;
           const availableAt = new Date(new Date(reReviewRequestedAt).getTime() + 10 * 60 * 1000);
           const remainingSeconds = getRemainingSeconds(availableAt);

@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 import type { Project } from '@/features/project/types/projectTypes';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 type JoinProjectContext = {
   previousProjects?: Project[];
@@ -45,7 +44,6 @@ export const useJoinProjectMutation = () => {
       if (context?.previousProjects) {
         queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
-      toast.error('프로젝트 참여 중 오류가 발생했습니다.');
     },
 
     onSettled: () => {

@@ -1,12 +1,31 @@
 import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 import cryingBoo from '@/shared/assets/images/boost/boo-crying.png';
 import { Button } from '@/shared/components/shadcn/button';
+import { ERROR } from '@/shared/constants/errorTypes';
 import { useModal } from '@/shared/hooks/useModal';
+import { isAxiosError } from 'axios';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const DeleteAccountModalContent = () => {
   const { resetModal } = useModal();
-  const { mutate: deleteAccount } = useDeleteAccountMutation();
+  const { mutateAsync: deleteAccount } = useDeleteAccountMutation();
+
+  const handleDeleteAccountClick = async () => {
+    try {
+      await deleteAccount();
+      resetModal();
+    } catch (error) {
+      if (
+        isAxiosError(error) &&
+        error.response?.data?.type === ERROR.USER.HAS_OWNED_PROJECTS.type
+      ) {
+        toast.error(ERROR.USER.HAS_OWNED_PROJECTS.detail);
+        resetModal();
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 w-full">
       <motion.img
@@ -31,10 +50,7 @@ const DeleteAccountModalContent = () => {
         <div className="flex w-full gap-2 mt-3">
           <Button
             variant="outline"
-            onClick={() => {
-              deleteAccount();
-              resetModal();
-            }}
+            onClick={() => handleDeleteAccountClick()}
             className="flex-1 border-gray-300 hover:bg-gray-200 cursor-pointer"
           >
             떠나기

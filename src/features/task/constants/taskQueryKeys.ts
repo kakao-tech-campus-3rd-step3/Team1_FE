@@ -23,23 +23,8 @@ export const TASK_QUERY_KEYS = {
   meStatus: (status: string, sortBy: SortBy, direction: Direction, search?: string) =>
     [...TASK_QUERY_KEYS.root, 'me', status, sortBy, direction, search ?? ''] as const,
 
-  member: (
-    projectId: string,
-    memberId: string,
-    sortBy: SortBy,
-    direction: Direction,
-    search?: string,
-  ) =>
-    [
-      ...TASK_QUERY_KEYS.root,
-      'project',
-      projectId,
-      'member',
-      memberId,
-      sortBy,
-      direction,
-      search ?? '',
-    ] as const,
+  member: (projectId: string, memberId: string, search?: string) =>
+    [...TASK_QUERY_KEYS.root, 'project', projectId, 'member', memberId, search ?? ''] as const,
 
   detail: (projectId: string, taskId: string) =>
     [...TASK_QUERY_KEYS.root, 'detail', projectId, taskId] as const,

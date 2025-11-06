@@ -4,11 +4,13 @@ import ProjectCreateModalContent from '@/features/project/components/ProjectCrea
 import ProjectJoinCodeInputModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeInputModalContent';
 import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProjectMutation';
 import { useJoinProjectMutation } from '@/features/project/hooks/useProjectJoinMutation';
+import { ERROR } from '@/shared/constants/errorTypes';
+import { isAxiosError } from 'axios';
 
 export const useProjectModals = () => {
   const { showCustom } = useModal();
   const createProjectMutation = useCreateProjectMutation();
-  const joinProjectMutation = useJoinProjectMutation();
+  const { mutateAsync: joinProjectMutation } = useJoinProjectMutation();
 
   const showCreateProjectModal = () => {
     showCustom({
@@ -39,11 +41,14 @@ export const useProjectModals = () => {
         <ProjectJoinCodeInputModalContent
           onConfirm={async (joinCode) => {
             try {
-              await joinProjectMutation.mutateAsync(joinCode);
+              await joinProjectMutation(joinCode);
               toast.success('프로젝트에 참여했어요!');
             } catch (error) {
-              console.error('프로젝트 참여 실패:', error);
-              toast.error('프로젝트 참여에 실패했어요.');
+              if (
+                isAxiosError(error) &&
+                error.response?.data?.type === ERROR.MEMBER.ALREADY_JOINED.type
+              )
+                toast.error('이미 참여하고 있는 프로젝트입니다.');
             }
           }}
           onCreateClick={showCreateProjectModal}

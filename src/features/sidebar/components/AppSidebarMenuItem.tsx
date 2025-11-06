@@ -9,7 +9,7 @@ const AppSidebarMenuItem = ({ item }: { item: SidebarItem }) => {
       <Link to={item.url || '#'}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <SidebarMenuButton>{item.icon} </SidebarMenuButton>
+            <SidebarMenuButton className="cursor-pointer">{item.icon} </SidebarMenuButton>
           </TooltipTrigger>
           <TooltipContent side="right" className="text-center">
             <p>{item.title}</p>
