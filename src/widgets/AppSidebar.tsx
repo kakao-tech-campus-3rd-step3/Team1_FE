@@ -12,8 +12,6 @@ import { LogOut, User } from 'lucide-react';
 import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
 import AppSidebarAlarmMenuItem from '@/features/notifications/components/AppSidebarNotificationMenuItem';
-import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
@@ -21,11 +19,7 @@ import { Avatar } from '@/shared/components/shadcn/avatar';
 
 const AppSidebar = () => {
   const user = useAuthStore((state) => state.user);
-  const navigate = useNavigate();
   const { mutate: LogoutMutaion } = useLogoutMutation();
-  const handleHeaderClick = () => {
-    navigate(ROUTE_PATH.MY_INFO);
-  };
 
   const handleLogoutClick = () => {
     LogoutMutaion();
@@ -33,10 +27,7 @@ const AppSidebar = () => {
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
-      <SidebarHeader
-        onClick={handleHeaderClick}
-        className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer"
-      >
+      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer">
         <Avatar
           style={{ backgroundColor: user?.backgroundColor }}
           className="flex justify-center items-center w-11 h-11"

@@ -5,7 +5,6 @@ import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
-import MyInfoPage from '@/pages/MyInfoPage';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import TaskDetailPage from '@/pages/TaskDetailPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
@@ -33,7 +32,6 @@ export const ROUTE_PATH = {
   AVATAR: '/avatar',
   CALLBACK: '/auth/callback',
   TASK_DETAIL: '/project/:projectId/tasks/:taskId',
-  MY_INFO: '/my-info',
   ALARM_SETUP: '/alarm/setup',
   ALARM_SETUP_MOBILE: '/alarm/permission',
   SETTINGS: '/my-settings',
@@ -75,7 +73,6 @@ const PROTECTED_ROUTES = [
   },
   { path: ROUTE_PATH.MY_TASK, element: <MyTaskPage /> },
   { path: ROUTE_PATH.TASK_DETAIL, element: <TaskDetailPage /> },
-  { path: ROUTE_PATH.MY_INFO, element: <MyInfoPage /> },
   { path: ROUTE_PATH.SETTINGS, element: <SettingsPage /> },
 ];
 
@@ -93,7 +90,6 @@ export const router = createBrowserRouter([
     ...route,
     element: <ProtectedRoute>{route.element}</ProtectedRoute>,
   })),
-  // ...PROTECTED_ROUTES_NO_LAYOUT, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
 
   {
     path: '/',
@@ -104,7 +100,6 @@ export const router = createBrowserRouter([
         ...route,
         element: <ProtectedRoute>{route.element}</ProtectedRoute>,
       })),
-      // ...PROTECTED_ROUTES, // 보호 라우트 해제 (테스트용) -> 주석 풀면 이것도 지워주세요
     ],
   },
 ]);
