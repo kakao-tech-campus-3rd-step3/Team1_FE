@@ -75,7 +75,6 @@ const NotificationDropdownMenu = ({
               <DropdownMenuItem
                 className={cn(
                   'group relative px-4 py-3 transition-colors',
-                  n.read && 'hover:bg-transparent focus:bg-transparent',
                   'hover:bg-transparent focus:bg-transparent',
                   !n.read && 'bg-blue-50 hover:bg-blue-50 focus:bg-blue-50',
                 )}

@@ -32,7 +32,6 @@ export const notificationsApi = {
   },
   fetchNotificationCounts: async (): Promise<NotificationCountsResponse> => {
     const { data } = await api.get('/notifications/count');
-    console.log(data);
     return data;
   },
 };
