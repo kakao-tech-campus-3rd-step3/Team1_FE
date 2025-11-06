@@ -133,7 +133,7 @@ const AlarmSetupPage = () => {
           {qrData ? (
             <QRCodeSVG value={qrData} className="w-40 h-40" />
           ) : (
-            <p>QR 데이터가 없습니다.</p>
+            <p>QR 데이터를 불러오는 중입니다..</p>
           )}
         </div>
 
