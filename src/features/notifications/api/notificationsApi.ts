@@ -1,5 +1,6 @@
 import type {
   MarkNotificationAsReadResponse,
+  NotificationCountsResponse,
   NotificationsResponse,
 } from '@/features/notifications/types/NotificationsType';
 import api from '@/shared/api/axiosInstance';
@@ -27,6 +28,11 @@ export const notificationsApi = {
     const { data } = await api.patch(`/projects/${projectId}/notifications`, null, {
       params: { enabled },
     });
+    return data;
+  },
+  fetchNotificationCounts: async (): Promise<NotificationCountsResponse> => {
+    const { data } = await api.get('/notifications/count');
+    console.log(data);
     return data;
   },
 };

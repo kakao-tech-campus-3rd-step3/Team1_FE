@@ -31,3 +31,8 @@ export interface UpdateProjectNotificationSettingsResponse
   extends UpdateNotificationSettingsResponse {
   projectId: string;
 }
+// 알림 개수 조회 응답
+export interface NotificationCountsResponse {
+  totalCount: number;
+  unreadCount: number;
+}
