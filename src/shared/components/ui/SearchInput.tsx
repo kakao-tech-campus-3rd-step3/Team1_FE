@@ -27,7 +27,7 @@ const SearchInput = ({ boardKey }: SearchInputProps) => {
       <Input
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
-        className="w-full pl-10 pr-3 py-2 rounded-lg border-gray-300 focus:border-gray-500 focus:ring-transparent placeholder-gray-400 transition"
+        className="w-full pl-10 pr-3 py-2 h-10 rounded-lg border-gray-300 focus:border-gray-500 focus:ring-transparent placeholder-gray-400 transition"
         placeholder="검색어를 입력하세요"
       />
     </div>
