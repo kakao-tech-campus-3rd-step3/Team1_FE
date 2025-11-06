@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
+import { ERROR } from '@/shared/constants/errorTypes';
 
 export const useJoinCode = (projectId: string) => {
   const [joinCode, setJoinCode] = useState<string | null>(null);
@@ -16,7 +17,10 @@ export const useJoinCode = (projectId: string) => {
         .fetchJoinCode(projectId)
         .catch(async (error: unknown) => {
           if (isAxiosError(error)) {
-            if (error.response?.status === 404 || error.response?.status === 400) {
+            if (
+              error.response?.data?.type === ERROR.JOIN_CODE.NOT_FOUND.type ||
+              error.response?.status === 400
+            ) {
               return projectMembershipApi.createJoinCode(projectId);
             }
           }
