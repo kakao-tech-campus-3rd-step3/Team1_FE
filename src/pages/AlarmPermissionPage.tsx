@@ -54,17 +54,18 @@ const AlarmPermissionPage = () => {
   const { registerPushSubscription } = useAlarmPermission(qrToken!);
 
   const hasShownError = useRef(false);
-
   useEffect(() => {
     if (!qrToken && !hasShownError.current) {
-      toast.error('잘못된 QR 입니다');
+      toast.error('유효하지 않은 QR 코드입니다.');
       hasShownError.current = true;
       return;
     }
+
     if (!('serviceWorker' in navigator)) {
-      toast.error('이 브라우저는 Service Worker를 지원하지 않습니다.');
+      toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
+
     if (qrToken) {
       const deviceInfo = navigator.userAgent;
       connectPushSession({ token: qrToken, deviceInfo });
@@ -82,19 +83,17 @@ const AlarmPermissionPage = () => {
       const result = await Notification.requestPermission();
 
       if (result === 'granted') {
-        // registerPushSubscription
-        // 1. 기존 구독 확인
-        // 2. 없으면 새로 생성
-        // 3. 백엔드에 등록
         await registerPushSubscription();
         setPermission(WebPushStatus.REGISTERED);
+        toast.success('알림이 성공적으로 활성화되었습니다!');
       } else if (result === 'denied') {
         toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
       } else {
-        toast.error('알림 허용이 필요합니다.');
+        toast('알림 요청이 취소되었습니다. 다시 시도해주세요.');
       }
     } catch (error) {
       console.error('[handleAllow error]', error);
+      toast.error('알림 권한 설정 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
