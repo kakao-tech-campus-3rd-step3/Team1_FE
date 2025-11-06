@@ -16,6 +16,7 @@ import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import Crown from '@/shared/assets/images/boost/crown.png';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
+import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 
 interface MemberColumnProps {
   projectId: string;
@@ -26,6 +27,8 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const [isProfileCollapsible, setIsProfileCollapsible] = useState(false);
   const [isMouseInside, setIsMouseInside] = useState(false);
   const currentUser = useAuthStore((state) => state.user);
+
+  const { selectedTags } = useTagFilterStore();
 
   const { data: memberTaskCountMap } = useProjectTaskCountByMemberQuery(projectId);
   const memberTaskCountList = memberTaskCountMap?.[member.id] ?? {
@@ -40,6 +43,13 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const tasks = data?.pages.flatMap((page) => page.tasks) ?? [];
   const activeTasks = tasks.filter((t) => t.status !== 'DONE');
 
+  const filteredActiveTasks =
+    selectedTags.length > 0
+      ? activeTasks.filter((task) =>
+          selectedTags.every((tag) => task.tags?.some((t) => t.tagId === tag.tagId)),
+        )
+      : activeTasks;
+
   const sortedColumnStatus = columnStatus
     .filter((c) => c.status !== 'DONE')
     .sort((a, b) => columnOrder.indexOf(a.status) - columnOrder.indexOf(b.status));
@@ -47,7 +57,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const columnData = sortedColumnStatus.map(({ status, title }) => ({
     status,
     title,
-    tasks: activeTasks.filter((t) => t.status === status),
+    tasks: filteredActiveTasks.filter((t) => t.status === status),
   }));
 
   const scrollRef = useVerticalScroll<HTMLDivElement>(() => {
@@ -153,7 +163,9 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
             <div className="flex flex-row items-center">
               <div className="label1-regular text-gray-500 m-2">{title}</div>
               <div className="flex justify-center items-center bg-gray-300 px-2 py-1 text-sm rounded-md w-6 h-6">
-                {getTaskCountByMember(status, memberTaskCountList)}
+                {selectedTags.length > 0
+                  ? filteredTasks.length 
+                  : getTaskCountByMember(status, memberTaskCountList)}
               </div>
             </div>
 
