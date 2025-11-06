@@ -33,6 +33,17 @@ const AlarmSettingCard = () => {
 
   const { mutate: updateProjectAlarm } =
     useUpdateProjectNotificationSettingsMutation(setProjectAlarms);
+  useEffect(() => {
+    if (!projectsData) return;
+
+    const initialState: Record<string, boolean> = {};
+    projectsData.forEach((project) => {
+      console.log(project);
+      initialState[project.id] = project.isNotificationEnabled ?? false;
+    });
+
+    setProjectAlarms(initialState);
+  }, [projectsData]);
 
   const handleProjectToggle = (projectId: string, value: boolean) => {
     updateProjectAlarm({ projectId, enabled: value });
@@ -90,7 +101,7 @@ const AlarmSettingCard = () => {
               return (
                 <div
                   key={project.id}
-                  className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors border-b last:border-b-0"
+                  className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors border-b border-gray-300 last:border-b-0"
                 >
                   <span
                     className={cn(

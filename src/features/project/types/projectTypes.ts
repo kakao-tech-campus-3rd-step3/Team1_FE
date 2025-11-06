@@ -7,6 +7,7 @@ export type Project = {
   name: string;
   defaultReviewerCount: number;
   role: Role;
+  isNotificationEnabled: boolean;
 };
 
 export type MemberBoostingScore = {
