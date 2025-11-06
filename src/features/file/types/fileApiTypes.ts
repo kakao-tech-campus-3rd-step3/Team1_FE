@@ -25,3 +25,7 @@ export interface ProjectFilesResponse {
   nextCursor: string | null;
   hasNext: boolean;
 }
+export interface FileSummaryResponse {
+  totalCount: number;
+  totalSizeBytes: number;
+}
