@@ -45,7 +45,7 @@ const AlarmSetupPage = () => {
     if (!statusData?.status) return;
     if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
-      toast.success('알림이 성공적으로 활성화되었습니다!');
+      toast.success('알림이 활성화되었습니다!');
       navigate(ROUTE_PATH.MY_TASK);
     }
   }, [statusData, navigate]);
