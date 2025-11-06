@@ -49,6 +49,8 @@ export const useTaskDetailStore = create<TaskDetailState>((set) => ({
   setPins: (pins) => set({ pins }),
   setCurrentPin: (currentPin) => set({ currentPin }),
   togglePdf: (isPdfOpen) => set({ isPdfOpen }),
+  isEditingPin: false,
+
   setIsEditingPin: (val) => set({ isEditingPin: val }),
   setEditingComment: (comment) => set({ editingComment: comment }),
   clearCurrentPin: () => set({ currentPin: null }),

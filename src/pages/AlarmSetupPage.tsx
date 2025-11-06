@@ -18,17 +18,22 @@ const INTERVAL_MS = 30 * 10000;
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
   const hasHandledStatus = useRef(false);
-  const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
+  const {
+    mutate: createPushSession,
+    data,
+    isPending,
+  } = useCreatePushSessionMutation({
+    onSuccess: (res) => {
+      setQrToken(res.token);
+      setRemainingTime(INTERVAL_MS / 1000);
+    },
+    onError: () => {
+      toast.error('QR 세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    },
+  });
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
   const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
-
-  // 토큰 설정
-  useEffect(() => {
-    if (data?.token && !qrToken) {
-      setQrToken(data.token);
-    }
-  }, [data, qrToken]);
 
   // QR 데이터 URL 생성
   const qrData = qrToken
@@ -40,12 +45,12 @@ const AlarmSetupPage = () => {
     if (!statusData?.status) return;
     if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
-      toast.success('푸시가 허용되었습니다.');
+      toast.success('알림이 활성화되었습니다!');
       navigate(ROUTE_PATH.MY_TASK);
     }
   }, [statusData, navigate]);
 
-  // 세션 생성 + 30초마다 갱신 + 카운트다운
+  // 세션 생성 + 5분마다 갱신 + 카운트다운
   useEffect(() => {
     createPushSession();
     setRemainingTime(INTERVAL_MS / 1000);
@@ -128,7 +133,7 @@ const AlarmSetupPage = () => {
           {qrData ? (
             <QRCodeSVG value={qrData} className="w-40 h-40" />
           ) : (
-            <p>QR 데이터가 없습니다.</p>
+            <p>QR 데이터를 불러오는 중입니다..</p>
           )}
         </div>
 
