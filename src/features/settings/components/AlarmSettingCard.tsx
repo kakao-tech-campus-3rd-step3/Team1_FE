@@ -7,13 +7,16 @@ import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useUpdateNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateNotificationSettingsMutation';
 import { useUpdateProjectNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateProjectNotificationSettingsMutation';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
+import { Button } from '@/shared/components/shadcn/button';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
 
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);
   const [projectAlarms, setProjectAlarms] = useState<Record<string, boolean>>({});
   const { data: myInfo } = useMyInfoQuery();
   const { data: projectsData } = useProjectsQuery();
-
+  const navigate = useNavigate();
   const resetProjectAlarms = () => setProjectAlarms({});
 
   const { mutate: updateServiceAlarm } = useUpdateNotificationSettingsMutation(
@@ -42,6 +45,14 @@ const AlarmSettingCard = () => {
       title="알림 설정"
       desc="서비스 알림과 프로젝트별 알림을 관리할 수 있습니다 🔔"
     >
+      <div className="px-1">
+        <Button
+          className="w-50 h-10 text-white bg-boost-blue/90 hover:bg-boost-blue cursor-pointer disabled:opacity-50"
+          onClick={() => navigate(ROUTE_PATH.ALARM_SETUP)}
+        >
+          새로운 기기 등록하기
+        </Button>
+      </div>
       <div className="flex flex-col gap-6">
         {/* 서비스 알림 섹션 */}
         <Card className="p-4 bg-gray-50 border-gray-200">
@@ -50,6 +61,7 @@ const AlarmSettingCard = () => {
               <span className="font-semibold text-gray-900">서비스 알림</span>
               <span className="text-xs text-gray-500">모든 프로젝트 알림을 한번에 제어합니다</span>
             </div>
+
             <Switch checked={isServiceAlarmOn} onCheckedChange={handleServiceToggle} />
           </div>
         </Card>
