@@ -7,6 +7,7 @@ import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll'
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
@@ -31,6 +32,15 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
     projectMembers,
     projectBoostingScores,
   );
+
+  const myInfo = useAuthStore((state) => state.user);
+
+  const sortedMembersWithBoosting = projectMembersWithBoosting
+    ? [
+        ...(myInfo ? projectMembersWithBoosting.filter((m) => m.id === myInfo.id) : []),
+        ...projectMembersWithBoosting.filter((m) => m.id !== myInfo?.id),
+      ]
+    : [];
 
   const { data: doneData } = useInfiniteProjectTasksByStatusQuery(projectId ?? '', 'DONE');
   const doneTasks: TaskListItem[] = doneData?.pages.flatMap((page) => page.tasks) ?? [];
@@ -79,7 +89,7 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
       {/* 멤버 컬럼 */}
       <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden h-full py-2 px-1">
         <div className="flex gap-3 min-w-max h-full items-stretch">
-          {(projectMembersWithBoosting ?? []).map((member: MemberWithBoosting) => (
+          {(sortedMembersWithBoosting ?? []).map((member: MemberWithBoosting) => (
             <MemberColumn key={member.id} projectId={projectId ?? ''} member={member} />
           ))}
 

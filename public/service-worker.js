@@ -1,4 +1,3 @@
-// 푸시 수신 시 실행됨
 self.addEventListener('push', (event) => {
   if (!event.data) return;
   const payload = event.data.json();
@@ -7,6 +6,8 @@ self.addEventListener('push', (event) => {
   const options = {
     body: payload.body || '',
     data: payload.url || '/',
+    icon: '/images/app-icon.png',
+    badge: '/images/app-icon.png',
   };
 
   event.waitUntil(self.registration.showNotification(title, options));

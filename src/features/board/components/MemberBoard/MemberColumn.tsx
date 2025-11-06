@@ -14,6 +14,8 @@ import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import Crown from '@/shared/assets/images/boost/crown.png';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
 
 interface MemberColumnProps {
   projectId: string;
@@ -23,6 +25,7 @@ interface MemberColumnProps {
 const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
   const [isProfileCollapsible, setIsProfileCollapsible] = useState(false);
   const [isMouseInside, setIsMouseInside] = useState(false);
+  const currentUser = useAuthStore((state) => state.user);
 
   const { data: memberTaskCountMap } = useProjectTaskCountByMemberQuery(projectId);
   const memberTaskCountList = memberTaskCountMap?.[member.id] ?? {
@@ -131,6 +134,10 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
             />
             <strong className="mr-1">BOOSTING SCORE</strong>
             {member.totalScore}
+
+            {member.id === currentUser?.id && !isProfileCollapsible && (
+              <BoostingScoreInfoCard calculatedAt={member.calculatedAt} />
+            )}
           </div>
         </motion.div>
       </motion.div>

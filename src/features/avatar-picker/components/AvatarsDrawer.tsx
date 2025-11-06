@@ -14,8 +14,10 @@ import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
 import toast from 'react-hot-toast';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/features/auth/store/authStore';
+import tinycolor from 'tinycolor2';
+import { Button } from '@/shared/components/shadcn/button';
 
 const avatarBgColors = Object.values(AVATAR_BG_COLOR);
 
@@ -37,6 +39,8 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
     openDrawer,
     closeDrawer,
   } = useAvatarStore();
+
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (isDrawerOpen && user) {
@@ -68,7 +72,7 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
         <DrawerTrigger asChild>
           <button
             type="button"
-            className="absolute -bottom-2 -right-2 bg-boost-blue hover:bg-boost-blue-hover text-white p-4 rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-boost-blue/30"
+            className="absolute -bottom-2 -right-2 bg-boost-blue hover:bg-boost-blue-hover text-white p-4 rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-boost-blue/30 cursor-pointer"
             aria-label="아바타 변경"
           >
             <Pen size={20} />
@@ -77,27 +81,27 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
         </DrawerTrigger>
       )}
 
-      <DrawerContent className="max-h-[80vh]">
+      <DrawerContent className="max-h-[95vh] border-gray-300">
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
           <DrawerTitle className="text-3xl font-bold text-gray-800 mb-2">아바타 선택</DrawerTitle>
           <DrawerDescription className="text-gray-600 text-lg">
-            아바타와 배경색상을 골라보세요!{' '}
+            아바타와 배경색상을 골라보세요!
           </DrawerDescription>
         </DrawerHeader>
+
         {/* 배경색 그리드 */}
         <div className="flex items-center px-6 py-6 border-b border-gray-100 mb-5">
-          <div className="flex justify-center gap-4 flex-wrap mx-auto">
+          <div className="flex justify-center gap-5 flex-wrap mx-auto">
             {avatarBgColors.map(({ token, hex }) => (
               <button
                 key={hex}
                 onClick={() => setBgColor(hex)}
                 className={cn(
-                  'relative w-12 h-12 rounded-full transition-all duration-200 hover:scale-110',
-                  selectedBgColor === hex
-                    ? 'ring-4 ring-boost-blue ring-offset-2 scale-110'
-                    : 'ring-2 ring-gray-200 hover:ring-gray-300',
+                  'relative w-12 h-12 rounded-full transition-all duration-200 hover:scale-110 focus:scale-120 hover:shadow-sm cursor-pointer',
                 )}
-                style={{ backgroundColor: token }}
+                style={{
+                  backgroundColor: token,
+                }}
                 aria-label={`색상 ${hex}`}
               >
                 {selectedBgColor === hex && (
@@ -111,11 +115,14 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
             ))}
           </div>
         </div>
+
         {/* 아바타 그리드 */}
-        <div className="px-6 py-6 max-h-96 overflow-y-auto">
-          <div role="listbox" aria-label="아바타 목록" className="grid grid-cols-3 gap-6">
+        <div className="px-24 py-6 max-h-96 overflow-y-auto">
+          <div role="listbox" aria-label="아바타 목록" className="grid grid-cols-4 gap-6">
             {avatarList.map((avatarUrl, index) => {
               const isSelected = selectedAvatarId === String(index);
+              const isHovered = hoveredIndex === index;
+
               return (
                 <div key={index} className="flex justify-center">
                   <button
@@ -125,29 +132,40 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
                     tabIndex={0}
                     className="group relative cursor-pointer outline-none"
                     onClick={() => setAvatarId(String(index))}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setAvatarId(String(index));
-                      }
-                    }}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     {isSelected && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-boost-blue to-purple-500 rounded-full blur-md opacity-30 scale-110" />
+                      <div
+                        className="absolute inset-0 rounded-full blur-xl opacity-50 scale-110 transition-all"
+                        style={{
+                          background: `radial-gradient(circle, ${selectedBgColor} 0%, transparent 30%)`,
+                        }}
+                      />
                     )}
 
                     <Avatar
                       className={cn(
-                        'w-28 h-28 border-4 transition-all duration-300 relative',
+                        'w-30 h-30 border-4 transition-all p-1 duration-300 relative flex items-center justify-center',
                         isSelected
-                          ? 'border-boost-blue shadow-lg scale-105'
-                          : 'border-gray-200 group-hover:border-boost-blue group-hover:shadow-md group-hover:scale-105',
+                          ? 'shadow-lg scale-105'
+                          : 'border-gray-200 group-hover:shadow-md group-hover:scale-105',
                       )}
                       style={{
-                        backgroundColor: isSelected ? selectedBgColor || '#f3f4f6' : '#f3f4f6',
+                        backgroundColor:
+                          isSelected || isHovered ? selectedBgColor || '#f3f4f6' : '#ffffff',
+                        borderColor: isSelected
+                          ? tinycolor(selectedBgColor || '#f3f4f6')
+                              .darken(3)
+                              .toString()
+                          : '#ffffff',
                       }}
                     >
-                      <AvatarImage src={avatarUrl} alt={`Avatar ${index + 1}`} />
+                      <AvatarImage
+                        src={avatarUrl}
+                        alt={`Avatar ${index + 1}`}
+                        className="w-24 h-24"
+                      />
                       <AvatarFallback
                         style={{
                           backgroundColor: selectedBgColor || '#f3f4f6',
@@ -158,7 +176,7 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
                     </Avatar>
 
                     {isSelected && (
-                      <div className="absolute -top-1 -right-1 bg-gradient-to-r from-boost-blue to-blue-600 rounded-full p-1.5 shadow-lg animate-pulse">
+                      <div className="absolute top-1 -right-0 bg-boost-blue rounded-full p-1.5 shadow-lg">
                         <Check size={12} className="text-white" />
                       </div>
                     )}
@@ -168,15 +186,16 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
             })}
           </div>
         </div>
+
         {showConfirmButton && selectedAvatarId && selectedBgColor && (
-          <div className="flex justify-end px-6 py-4 border-t border-gray-100">
-            <button
-              type="button"
+          <div className="absolute top-2 left-0 right-2 flex justify-end px-6 py-4 bg-transparent">
+            <Button
+              variant="defaultBoost"
               onClick={handleConfirm}
-              className="bg-boost-blue hover:bg-boost-blue-hover text-white font-medium px-6 py-2 rounded-lg shadow-md transition-all disabled:opacity-50"
+              className="rounded-full w-12 h-12 shadow-md"
             >
-              확인
-            </button>
+              <Check className="w-9 h-9" />
+            </Button>
           </div>
         )}
       </DrawerContent>
