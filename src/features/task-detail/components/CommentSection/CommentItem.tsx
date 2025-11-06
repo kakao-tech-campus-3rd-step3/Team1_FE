@@ -12,41 +12,51 @@ interface CommentItemProps {
   onEdit?: (comment: CommentUIType) => void;
   onDelete?: (commentId: string) => void;
   onSelectPin?: (fileInfo: FileInfo | null) => void;
+  isEditing?: boolean;
+  isHighlighted?: boolean; // ✅ 강조 여부 추가
 }
 
-const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProps) => {
+const CommentItem = ({
+  comment,
+  onEdit,
+  onDelete,
+  onSelectPin,
+  isEditing,
+  isHighlighted, // ✅ 추가
+}: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
   const { user } = useAuthStore();
   const isAuthor = user?.id === comment.authorInfo.memberId;
+
   return (
     <div className="flex py-3">
       <div className="flex-1">
         <div
-          onClick={() => {
-            if (onSelectPin) onSelectPin(comment.fileInfo ?? null);
-          }}
-          className="bg-gray-200 rounded-xl px-4 py-3 shadow-sm relative"
+          onClick={() => onSelectPin?.(comment.fileInfo ?? null)}
+          className={cn(
+            'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200 cursor-pointer',
+            isEditing && 'bg-boost-blue/5 border-boost-blue/40',
+            isHighlighted && 'border-2 border-boost-blue bg-boost-blue/10', // ✅ 강조 스타일
+          )}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
               <Avatar
                 className={cn(
-                  'h-8 w-8 shrink-0 shadow-xs text-white text-xs',
-                  isAnonymous && 'bg-gray-400',
+                  'h-8 w-8 shrink-0 shadow-xs text-white text-xs flex items-center justify-center',
+                  isAnonymous && 'bg-gray-500',
                 )}
                 style={{
                   backgroundColor: !isAnonymous ? comment.authorInfo.backgroundColor : undefined,
                 }}
               >
                 {isAnonymous ? (
-                  <AvatarFallback className="bg-gray-400 flex items-center justify-center">
-                    <User className="w-4 h-4 text-gray-600" />
-                  </AvatarFallback>
+                  <User className="w-4 h-4 text-white" />
                 ) : comment.authorInfo.avatar ? (
                   <AvatarImage
                     src={getAvatarSrc(comment.authorInfo)}
                     alt={comment.authorInfo.name}
-                    className="h-7 w-7 object-cover rounded-full mx-auto my-auto"
+                    className="h-7 w-7 object-cover rounded-full"
                   />
                 ) : (
                   <AvatarFallback>
@@ -60,6 +70,7 @@ const CommentItem = ({ comment, onEdit, onDelete, onSelectPin }: CommentItemProp
               </span>
               {comment.isPinned && <Pin className="h-3.5 w-3.5 text-boost-blue cursor-pointer" />}
             </div>
+
             <div className="flex items-center gap-1">
               <span className="text-xs text-gray-500">{comment.timeAgo}</span>
               {isAuthor && (

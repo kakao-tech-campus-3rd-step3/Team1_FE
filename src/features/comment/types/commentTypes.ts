@@ -14,7 +14,7 @@ export interface CommentType {
   content: string;
   persona: string;
   isAnonymous: boolean;
-  fileInfo?: FileInfo;
+  fileInfo?: FileInfo | null;
   authorInfo: AuthorInfo;
   createdAt: string;
   updatedAt: string;
@@ -24,4 +24,5 @@ export interface CommentUIType extends CommentType {
   fallback: string;
   timeAgo: string;
   isPinned?: boolean;
+  commentId: string;
 }

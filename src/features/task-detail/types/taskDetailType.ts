@@ -16,5 +16,6 @@ export interface PinWithAuthor {
   fileX?: number;
   fileY?: number;
   author?: AuthorInfo;
+  commentId?: string;
 }
 export type FileStatus = 'uploading' | 'success';
