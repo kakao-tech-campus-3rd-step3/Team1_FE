@@ -21,4 +21,12 @@ export const projectMembershipApi = {
     await api.delete(`/projects/${projectId}/leave`);
     return { success: true };
   },
+
+  kickProjectMember: async (
+    projectId: string,
+    targetMemberId: string,
+  ): Promise<{ success: boolean }> => {
+    await api.delete(`/projects/${projectId}/members/${targetMemberId}`);
+    return { success: true };
+  },
 };
