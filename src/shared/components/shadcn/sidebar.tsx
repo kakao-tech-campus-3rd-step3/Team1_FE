@@ -10,13 +10,6 @@ import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { Input } from '@/shared/components/shadcn/input';
 import { Separator } from '@/shared/components/shadcn/separator';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/shared/components/shadcn/sheet';
 import { Skeleton } from '@/shared/components/shadcn/skeleton';
 import {
   Tooltip,
@@ -28,7 +21,6 @@ import {
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = '15rem';
-const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '4.688rem'; // 75px
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
@@ -151,7 +143,7 @@ function SidebarProvider({
 function Sidebar({
   side = 'left',
   variant = 'sidebar',
-  collapsible = 'offcanvas',
+  collapsible = 'none',
   className,
   children,
   ...props
@@ -160,7 +152,7 @@ function Sidebar({
   variant?: 'sidebar' | 'floating' | 'inset';
   collapsible?: 'offcanvas' | 'icon' | 'none';
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { state } = useSidebar();
 
   if (collapsible === 'none') {
     return (
@@ -174,31 +166,6 @@ function Sidebar({
       >
         {children}
       </div>
-    );
-  }
-
-  if (isMobile) {
-    return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-          style={
-            {
-              '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
-            } as React.CSSProperties
-          }
-          side={side}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
     );
   }
 
