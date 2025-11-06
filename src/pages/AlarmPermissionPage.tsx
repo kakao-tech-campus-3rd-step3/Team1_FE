@@ -80,11 +80,17 @@ const AlarmPermissionPage = () => {
 
     try {
       setIsLoading(true);
+
       const result = await Notification.requestPermission();
 
       if (result === 'granted') {
-        await registerPushSubscription();
-        setPermission(WebPushStatus.REGISTERED);
+        const success = await registerPushSubscription();
+
+        if (success) {
+          setPermission(WebPushStatus.REGISTERED);
+        } else {
+          toast.error('푸시 구독에 실패했습니다. 다시 시도해주세요.');
+        }
       } else if (result === 'denied') {
         toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
       } else {
@@ -113,7 +119,6 @@ const AlarmPermissionPage = () => {
       <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
         <p className="text-sm text-amber-800 leading-relaxed">
           <span className="text-md font-bold"> 📢 IOS 환경 사용자는 아래 단계로 진행해주세요</span>
-          
           <br />
           1. Safari에서 <b>공유 버튼</b> 클릭하기
           <br />
