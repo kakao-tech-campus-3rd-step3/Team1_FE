@@ -32,10 +32,10 @@ const FilterTab = ({
       </div>
 
       <div className="flex flex-row gap-4">
+        {showSortDropDown && <SortDropDown />}
         {showFilterToggle && value !== undefined && onChange && (
           <FilterToggle value={value} onChange={onChange} />
         )}
-        {showSortDropDown && <SortDropDown />}
       </div>
     </div>
   );

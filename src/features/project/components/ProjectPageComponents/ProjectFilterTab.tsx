@@ -8,6 +8,9 @@ interface ProjectFilterTabProps {
 
 const ProjectFilterTab = ({ value, onChange }: ProjectFilterTabProps) => {
   const boardKey = value === 'status' ? BOARD_KEYS.PROJECT_STATUS : BOARD_KEYS.PROJECT_MEMBER;
+  let isShowSortDropdown = true;
+
+  if (value === 'member') isShowSortDropdown = false;
 
   return (
     <FilterTab
@@ -17,7 +20,7 @@ const ProjectFilterTab = ({ value, onChange }: ProjectFilterTabProps) => {
       showFilterToggle={true}
       showTagSearchInput={true}
       showSearchInput={true}
-      showSortDropDown={true}
+      showSortDropDown={isShowSortDropdown}
     />
   );
 };

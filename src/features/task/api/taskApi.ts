@@ -51,13 +51,11 @@ export const taskApi = {
     memberId: string,
     cursor?: string,
     limit = 10,
-    sortBy: SortBy = SORT_BY.CREATED_AT,
-    direction: Direction = DIRECTION.ASC,
     search?: string,
   ): Promise<MemberTaskListResponse> => {
     const res = await api.get<MemberTaskListResponse>(
       `/projects/${projectId}/members/${memberId}/tasks`,
-      { params: { cursor, limit, sortBy, direction, search } },
+      { params: { cursor, limit, search } },
     );
     return res.data;
   },

@@ -54,7 +54,7 @@ export const useDeleteTaskMutation = (projectId: string) => {
       projectData?.pages.forEach((page) => {
         const targetTask = page.tasks.find((task) => task.taskId === taskId);
         targetTask?.assignees.forEach((assignee) => {
-          const memberKey = TASK_QUERY_KEYS.member(projectId, assignee.id, sortBy, direction);
+          const memberKey = TASK_QUERY_KEYS.member(projectId, assignee.id);
           queryClient.cancelQueries({ queryKey: memberKey });
 
           const memberData = queryClient.getQueryData<InfiniteData<TaskListResponse>>(memberKey);
