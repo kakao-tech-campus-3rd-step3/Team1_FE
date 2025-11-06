@@ -18,22 +18,17 @@ const INTERVAL_MS = 30 * 10000;
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
   const hasHandledStatus = useRef(false);
-  const {
-    mutate: createPushSession,
-    data,
-    isPending,
-  } = useCreatePushSessionMutation({
-    onSuccess: (res) => {
-      setQrToken(res.token);
-      setRemainingTime(INTERVAL_MS / 1000);
-    },
-    onError: () => {
-      toast.error('QR 세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    },
-  });
+  const { mutate: createPushSession, data, isPending } = useCreatePushSessionMutation();
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
   const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
+
+  // 토큰 설정
+  useEffect(() => {
+    if (data?.token && !qrToken) {
+      setQrToken(data.token);
+    }
+  }, [data, qrToken]);
 
   // QR 데이터 URL 생성
   const qrData = qrToken
@@ -50,7 +45,7 @@ const AlarmSetupPage = () => {
     }
   }, [statusData, navigate]);
 
-  // 세션 생성 + 5분마다 갱신 + 카운트다운
+  // 세션 생성 + 30초마다 갱신 + 카운트다운
   useEffect(() => {
     createPushSession();
     setRemainingTime(INTERVAL_MS / 1000);
