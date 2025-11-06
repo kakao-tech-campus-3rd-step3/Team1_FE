@@ -14,7 +14,7 @@ export interface CommentType {
   content: string;
   persona: string;
   isAnonymous: boolean;
-  fileInfo?: FileInfo;
+  fileInfo?: FileInfo | null;
   authorInfo: AuthorInfo;
   createdAt: string;
   updatedAt: string;

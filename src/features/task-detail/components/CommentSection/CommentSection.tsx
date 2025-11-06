@@ -78,7 +78,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     const updatedData = {
       content,
       isAnonymous,
-      fileInfo: fileInfo ?? undefined,
+      ...(fileInfo !== undefined ? { fileInfo } : {}),
     };
 
     updateComment({ commentId, updatedData });
