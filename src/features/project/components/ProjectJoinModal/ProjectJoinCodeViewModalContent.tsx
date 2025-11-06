@@ -38,9 +38,13 @@ const ProjectJoinCodeViewModalContent = ({ projectId }: ProjectJoinCodeViewModal
   };
 
   const handleRefresh = async () => {
-    if (!loadJoinCode) return;
-    await loadJoinCode();
-    toast.success('새 참여 코드가 발급되었습니다!');
+    try {
+      await loadJoinCode();
+      toast.success('새 참여 코드가 발급되었습니다!');
+    } catch (error) {
+      toast.error('참여 코드 재발급에 실패했습니다.');
+      console.error('참여 코드 재발급 실패:', error);
+    }
   };
 
   return (
