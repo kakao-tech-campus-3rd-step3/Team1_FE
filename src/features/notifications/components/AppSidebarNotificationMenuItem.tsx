@@ -8,8 +8,7 @@ import NotificationDropdownMenu from '@/features/notifications/components/Notifi
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 
 const AppSidebarNotificationMenuItem = () => {
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useNotificationsQuery();
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useNotificationsQuery();
 
   const { data: notificationCountData } = useNotificationCountsQuery();
   const notifications = data?.pages.flatMap((p) => p.notifications) ?? [];
@@ -21,7 +20,7 @@ const AppSidebarNotificationMenuItem = () => {
         <Tooltip>
           <DropdownMenuTrigger asChild>
             <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-              <SidebarMenuButton className="relative">
+              <SidebarMenuButton className="relative cursor-pointer">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
                   <Badge
