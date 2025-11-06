@@ -55,9 +55,6 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
                   style={{ backgroundColor: m.author?.backgroundColor }}
                   alt={m.author?.name ?? 'avatar'}
                   className="w-6 h-6 object-cover rotate-[45deg]"
-                  style={{
-                    backgroundColor: m.author?.backgroundColor,
-                  }}
                 />
               )}
             </div>
