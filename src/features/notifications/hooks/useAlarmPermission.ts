@@ -43,7 +43,7 @@ export const useAlarmPermission = (token: string | null) => {
         return false;
       }
 
-      const normalized = normalizeSubscription(targetSub);
+      const normalized = normalizeSubscription(targetSub.toJSON());
       const request: PushSubscriptionRequest = {
         token,
         webPushUrl: normalized.endpoint,
