@@ -72,6 +72,13 @@ export const formatSecondsToHHMMSS = (seconds: number) => {
     .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
+// 초 단위 숫자를 MM:SS로 변환
+export const formatSecondsMMSS = (seconds: number) => {
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
 // 만료일과 현재 시간으로 남은 초 계산
 export const getRemainingSeconds = (expiresAt: string | Date) => {
   const expires = new Date(expiresAt).getTime();
