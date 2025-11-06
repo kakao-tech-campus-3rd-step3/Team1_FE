@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/components/shadcn/button';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { cn } from '@/shared/lib/utils';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
+import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
+import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
+import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
+import type { TaskDetail } from '@/features/task/types/taskTypes';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -12,54 +15,89 @@ interface TaskDetailTopTabProps {
 
 const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
   const navigate = useNavigate();
-
-  const [approvedCount, setApprovedCount] = useState(task.approvedCount);
-  const [isMyReviewed, setIsMyReviewed] = useState(false);
   const { resetAll } = useTaskDetailStore();
-  const handleReviewComplete = () => {
-    if (isMyReviewed) return;
-    setApprovedCount((prev) => prev + 1);
-    setIsMyReviewed(true);
-  };
+  const currentUser = useAuthStore((state) => state.user);
+  const { projectId } = useParams<{ projectId: string }>();
+
+  const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
+
+  const assigneeTask = useAssigneeTask({
+    projectId: projectId!,
+    taskId: task.id,
+    taskStatus: task.status,
+    approvedCount: task.approvedCount,
+    requiredReviewerCount: task.requiredReviewerCount,
+    reReviewRequestedAt: task.reReviewRequestedAt,
+  });
+
+  const reviewerTask = useReviewerTask({
+    projectId: projectId!,
+    taskId: task.id,
+    initialApprovedCount: task.approvedCount,
+    requiredReviewerCount: task.requiredReviewerCount,
+    initialApprovedByMe: task.approvedByMe,
+  });
 
   return (
-    <nav className="flex flex-row items-center gap-3 justify-between w-full bg-gray-100 border-b border-gray-300 subtitle2-bold">
-      <div className="flex flex-row items-center gap-3">
+    <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
+      <div className="flex items-center gap-3 font-semibold text-lg truncate max-w-xs">
         <ChevronLeft
           size={30}
           strokeWidth={1}
-          className="h-12 ml-1 cursor-pointer"
+          className="cursor-pointer p-1"
           onClick={() => {
             resetAll();
             navigate(-1);
           }}
         />
-        <div>{task.title}</div>
+        {task.title}
       </div>
 
-      <div className="flex flex-row items-center gap-3 mr-4 cursor-default">
-        <div
-          className={cn(
-            'rounded-full border h-9 px-4 py-2',
-            isMyReviewed
-              ? 'border-green-600 bg-green-100 text-green-700'
-              : 'border-boost-blue-pressed bg-boost-blue/10 text-boost-blue-dark',
+      {task.requiredReviewerCount > 0 && (
+        <>
+          {isAssignee ? (
+            <div className="flex items-center gap-3">
+              <div
+                className={cn(
+                  'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
+                  assigneeTask.getBadgeClass(),
+                )}
+              >
+                받은 검토 수 {assigneeTask.approvedCount}/{task.requiredReviewerCount}
+              </div>
+              <AssigneeActionButton
+                uiStatus={assigneeTask.uiStatus}
+                approvedCount={assigneeTask.approvedCount}
+                requiredReviewerCount={task.requiredReviewerCount}
+                onAction={
+                  assigneeTask.approvedCount >= task.requiredReviewerCount
+                    ? assigneeTask.handleCompleteTask
+                    : assigneeTask.handleAction
+                }
+              />
+            </div>
+          ) : (
+            assigneeTask.uiStatus === 'REVIEW' && (
+              <div className="flex items-center gap-3">
+                <div
+                  className={cn(
+                    'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
+                    reviewerTask.getBadgeClass(),
+                  )}
+                >
+                  검토 완료 수 {reviewerTask.approvedCount}/{task.requiredReviewerCount}
+                </div>
+                <ReviewerActionButton
+                  isApprovedByMe={reviewerTask.isApprovedByMe}
+                  approvedCount={reviewerTask.approvedCount}
+                  requiredReviewerCount={task.requiredReviewerCount}
+                  onApprove={reviewerTask.handleApprove}
+                />
+              </div>
+            )
           )}
-        >
-          검토 완료 수 {approvedCount}/{task.requiredReviewerCount}
-        </div>
-        <Button
-          onClick={handleReviewComplete}
-          className={cn(
-            'rounded-md',
-            isMyReviewed
-              ? 'bg-green-600 hover:bg-green-600'
-              : 'bg-boost-blue hover:bg-boost-blue-hover',
-          )}
-        >
-          {isMyReviewed ? '검토 완료됨' : '검토 완료하기'}
-        </Button>
-      </div>
+        </>
+      )}
     </nav>
   );
 };
