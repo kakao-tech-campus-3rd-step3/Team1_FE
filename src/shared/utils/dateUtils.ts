@@ -61,3 +61,20 @@ export const formatDateTime = (isoString: string): string => {
 
   return new Intl.DateTimeFormat('ko-KR', options).format(date);
 };
+
+// 초 단위 숫자를 HH:MM:SS로 변환
+export const formatSecondsToHHMMSS = (seconds: number) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+// 만료일과 현재 시간으로 남은 초 계산
+export const getRemainingSeconds = (expiresAt: string | Date) => {
+  const expires = new Date(expiresAt).getTime();
+  const now = Date.now();
+  return Math.max(Math.floor((expires - now) / 1000), 0);
+};

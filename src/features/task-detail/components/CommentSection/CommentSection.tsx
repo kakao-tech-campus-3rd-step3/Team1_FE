@@ -12,7 +12,6 @@ import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import toast from 'react-hot-toast';
 import CommentList from '@/features/task-detail/components/CommentSection/CommentList';
 import CommentEditor from '@/features/task-detail/components/CommentSection/CommentEditor';
-import { PERSONA } from '@/features/comment/constants/personaConstants';
 
 interface CommentSectionProps {
   projectId: string;
@@ -31,7 +30,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
-  const { pins, clearCurrentPin } = useTaskDetailStore();
+  const { pins, clearCurrentPin, currentPin } = useTaskDetailStore();
   const { commentSelect } = useCommentSelect();
 
   /** 핀 클릭 시 PDF 위치 이동 */
@@ -59,11 +58,12 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     fileInfo?: FileInfo | null;
   }) => {
     if (!data.content.trim()) return toast.error('댓글을 입력해주세요!');
+    const resolvedFileInfo = data.fileInfo ?? currentPin ?? null;
     const newComment = {
       content: data.content,
-      persona: PERSONA.BOO,
+      persona: 'BOO' as const,
       isAnonymous: data.isAnonymous,
-      ...(data.fileInfo ? { fileInfo: data.fileInfo } : {}),
+      ...(resolvedFileInfo ? { fileInfo: resolvedFileInfo } : {}),
     };
     createComment({ commentData: newComment });
     clearCurrentPin();
