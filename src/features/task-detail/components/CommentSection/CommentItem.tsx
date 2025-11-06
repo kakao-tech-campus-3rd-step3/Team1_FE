@@ -34,9 +34,9 @@ const CommentItem = ({
         <div
           onClick={() => onSelectPin?.(comment.fileInfo ?? null)}
           className={cn(
-            'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200 cursor-pointer',
+            'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200',
             isEditing && 'bg-boost-blue/5 border-boost-blue/40',
-            isHighlighted && 'border-2 border-boost-blue bg-boost-blue/10', // ✅ 강조 스타일
+            isHighlighted && 'border-2 border-boost-blue bg-boost-blue/10',
           )}
         >
           <div className="flex items-center justify-between">
