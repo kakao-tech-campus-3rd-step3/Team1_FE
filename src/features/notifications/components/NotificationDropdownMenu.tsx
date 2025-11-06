@@ -9,10 +9,10 @@ import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
+import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 
 interface NotificationDropdownMenuProps {
   notifications: NotificationItem[];
-  unreadCount: number;
   hasNextPage: boolean;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
@@ -20,13 +20,12 @@ interface NotificationDropdownMenuProps {
 
 const NotificationDropdownMenu = ({
   notifications,
-  unreadCount,
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
 }: NotificationDropdownMenuProps) => {
   const { mutate: markAsRead } = useMarkNotificationAsReadMutation();
-
+  const { data: notificationCountData } = useNotificationCountsQuery();
   const handleMarkAsRead = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     markAsRead(id);
@@ -51,14 +50,14 @@ const NotificationDropdownMenu = ({
       {/* 헤더 */}
       <DropdownMenuLabel className="flex items-center justify-between py-3 px-4">
         <span className="text-base font-semibold">알림</span>
-        {unreadCount > 0 && (
+        {notificationCountData?.unreadCount ? (
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">안읽음 {unreadCount}</span>
-            <Button onClick={handleMarkAllAsRead} variant="ghost" size="sm" className="h-7 text-xs">
-              모두 읽음
-            </Button>
+            <span className="text-xs text-gray-500">
+              안읽음 {notificationCountData.unreadCount}
+            </span>
+            <Button onClick={handleMarkAllAsRead}>모두 읽음</Button>
           </div>
-        )}
+        ) : null}
       </DropdownMenuLabel>
 
       <DropdownMenuSeparator />
@@ -75,9 +74,10 @@ const NotificationDropdownMenu = ({
             <div key={n.id}>
               <DropdownMenuItem
                 className={cn(
-                  'group relative px-4 py-3 cursor-pointer transition-colors',
-                  'focus:bg-accent',
-                  !n.read && 'bg-blue-50',
+                  'group relative px-4 py-3 transition-colors',
+                  n.read && 'hover:bg-transparent focus:bg-transparent',
+                  'hover:bg-transparent focus:bg-transparent',
+                  !n.read && 'bg-blue-50 hover:bg-blue-50 focus:bg-blue-50',
                 )}
               >
                 <div className="flex gap-3 w-full pr-4">
@@ -97,9 +97,6 @@ const NotificationDropdownMenu = ({
                       >
                         {n.title}
                       </p>
-                      {!n.read && (
-                        <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1.5" />
-                      )}
                     </div>
                     <p
                       className={cn(
@@ -125,7 +122,7 @@ const NotificationDropdownMenu = ({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 hover:bg-blue-100"
+                    className="h-7 w-7 hover:bg-blue-100 cursor-pointer"
                     onClick={(e) => handleMarkAsRead(n.id, e)}
                   >
                     <Check className="h-4 w-4 text-blue-700" />

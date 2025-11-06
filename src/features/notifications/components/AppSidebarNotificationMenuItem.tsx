@@ -5,13 +5,15 @@ import { Bell } from 'lucide-react';
 import { Badge } from '@/shared/components/shadcn/badge';
 import { useNotificationsQuery } from '@/features/notifications/hooks/useNotificationsQuery';
 import NotificationDropdownMenu from '@/features/notifications/components/NotificationDropdownMenu';
+import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 
 const AppSidebarNotificationMenuItem = () => {
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useNotificationsQuery();
 
+  const { data: notificationCountData } = useNotificationCountsQuery();
   const notifications = data?.pages.flatMap((p) => p.notifications) ?? [];
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notificationCountData?.unreadCount ?? 0;
 
   return (
     <SidebarMenuItem className="pb-4">
@@ -19,10 +21,17 @@ const AppSidebarNotificationMenuItem = () => {
         <Tooltip>
           <DropdownMenuTrigger asChild>
             <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-              <SidebarMenuButton className="relative" disabled={isLoading}>
+              <SidebarMenuButton className="relative">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <Badge className="absolute top-1 right-0.5 h-3 w-3 flex items-center justify-center p-0 bg-red-500 text-white text-[10px]">
+                  <Badge
+                    className="
+                      absolute top-1 right-0.5 
+                      h-3 min-w-[0.75rem] 
+                      flex items-center justify-center 
+                      p-0 bg-red-500 text-white text-[10px]
+                    "
+                  >
                     {unreadCount}
                   </Badge>
                 )}
@@ -31,13 +40,12 @@ const AppSidebarNotificationMenuItem = () => {
           </DropdownMenuTrigger>
 
           <TooltipContent side="right" className="text-center">
-            <p>알림</p>
+            알림
           </TooltipContent>
         </Tooltip>
 
         <NotificationDropdownMenu
           notifications={notifications}
-          unreadCount={unreadCount}
           hasNextPage={!!hasNextPage}
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
