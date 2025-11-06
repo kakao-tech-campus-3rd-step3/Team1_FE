@@ -15,7 +15,7 @@ import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import Crown from '@/shared/assets/images/boost/crown.png';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import BoostringScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
+import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
 
 interface MemberColumnProps {
   projectId: string;
@@ -136,7 +136,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
             {member.totalScore}
 
             {member.id === currentUser?.id && !isProfileCollapsible && (
-              <BoostringScoreInfoCard calculatedAt={member.calculatedAt} />
+              <BoostingScoreInfoCard calculatedAt={member.calculatedAt} />
             )}
           </div>
         </motion.div>
