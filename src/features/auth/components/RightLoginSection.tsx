@@ -30,11 +30,17 @@ const RightLoginSection = ({ onClick }: RightLoginSectionProps) => {
       <div className="bg-gray-200 p-5 rounded-xl">
         <p className="label1-regular text-gray-600 leading-relaxed">
           로그인 시{' '}
-          <a href="#" className="text-boost-blue label1-bold hover:underline">
+          <a
+            href="https://flat-capricorn-b40.notion.site/BOOST-2a3b32e74312805da68febc9a138d6b7"
+            className="text-boost-blue label1-bold hover:underline"
+          >
             이용약관
           </a>{' '}
           및{' '}
-          <a href="#" className="text-boost-blue label1-bold hover:underline">
+          <a
+            href="https://flat-capricorn-b40.notion.site/BOOST-2a3b32e74312809da69de2046a8f38b3"
+            className="text-boost-blue label1-bold hover:underline"
+          >
             개인정보처리방침
           </a>
           에 동의하게 됩니다.
