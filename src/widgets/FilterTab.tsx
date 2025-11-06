@@ -26,7 +26,7 @@ const FilterTab = ({
 }: FilterTabProps) => {
   return (
     <div className="flex flex-row p-2 pr-4 pl-4 justify-between items-center gap-4">
-      <div className="flex felx-row gap-4">
+      <div className="flex flex-row gap-4">
         {showSearchInput && <SearchInput boardKey={boardKey} />}
         {showTagSearchInput && <TagSearchInput />}
       </div>
