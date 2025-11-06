@@ -85,7 +85,6 @@ const AlarmPermissionPage = () => {
       if (result === 'granted') {
         await registerPushSubscription();
         setPermission(WebPushStatus.REGISTERED);
-        toast.success('알림이 성공적으로 활성화되었습니다!');
       } else if (result === 'denied') {
         toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
       } else {

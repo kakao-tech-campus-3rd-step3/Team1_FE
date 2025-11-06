@@ -41,8 +41,7 @@ export const useAlarmPermission = (token: string | null) => {
         publicKey: subData.keys.p256dh,
         authKey: subData.keys.auth,
       });
-
-      toast.success(existing ? '기존 구독 정보를 갱신했습니다.' : '푸시 구독이 완료되었습니다!');
+      toast.success('알림이 활성화되었습니다!');
     } catch (error) {
       console.error('[registerPushSubscription error]', error);
       toast.error('푸시 구독 등록 중 오류가 발생했습니다.');
