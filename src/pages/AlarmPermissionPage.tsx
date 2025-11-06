@@ -52,7 +52,7 @@ const AlarmPermissionPage = () => {
   const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
   const [isLoading, setIsLoading] = useState(false);
   const { registerPushSubscription } = useAlarmPermission(qrToken!);
-
+  const triedConnectRef = useRef(false);
   const hasShownError = useRef(false);
   useEffect(() => {
     if (!qrToken && !hasShownError.current) {
@@ -65,12 +65,14 @@ const AlarmPermissionPage = () => {
       toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
-
-    if (qrToken) {
+    //연결 시도 최초 1회만 시도
+    if (qrToken && !triedConnectRef.current) {
+      triedConnectRef.current = true;
       const deviceInfo = navigator.userAgent;
       connectPushSession({ token: qrToken, deviceInfo });
     }
-  }, [qrToken, connectPushSession]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qrToken]);
 
   const handleAllow = async () => {
     if (!qrToken) {
