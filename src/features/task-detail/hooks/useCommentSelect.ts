@@ -34,7 +34,7 @@ export const useCommentSelect = () => {
       }
     } catch (err) {
       console.error('파일 열기 오류:', err);
-      toast.error('파일을 여는 중 오류가 발생했습니다.');
+      toast.error('해당 파일이 삭제되어 마커를 찾을 수 없습니다.');
     }
   };
 
