@@ -7,6 +7,7 @@ const MyTaskFilterTab = () => {
       boardKey={BOARD_KEYS.MY_TASKS}
       showFilterToggle={false}
       showSearchInput={true}
+      showTagSearchInput={false}
       showSortDropDown={true}
     />
   );

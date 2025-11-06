@@ -15,6 +15,7 @@ const ProjectFilterTab = ({ value, onChange }: ProjectFilterTabProps) => {
       value={value}
       onChange={onChange}
       showFilterToggle={true}
+      showTagSearchInput={true}
       showSearchInput={true}
       showSortDropDown={true}
     />
