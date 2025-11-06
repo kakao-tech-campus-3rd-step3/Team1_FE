@@ -66,6 +66,7 @@ const AlarmPermissionPage = () => {
         setPermission(WebPushStatus.CREATED);
         return;
       }
+
     } catch (error) {
       console.error('브라우저 구독 상태 확인 실패:', error);
       setPermission(WebPushStatus.CREATED);
