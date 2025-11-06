@@ -26,7 +26,7 @@ const FileSection = () => {
 
   return (
     <div className="flex flex-col space-y-4 p-4 bg-gray-50 rounded-lg shadow-sm h-full">
-      <FileTableInfo/>
+      <FileTableInfo />
 
       <div className="flex-1 flex flex-col border border-gray-200 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)] overflow-hidden">
         <div className="flex-shrink-0">
