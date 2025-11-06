@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 
@@ -7,40 +7,36 @@ export const useJoinCode = (projectId: string) => {
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const loadJoinCode = useCallback(async () => {
     if (!projectId) return;
+    setLoading(true);
 
-    const loadJoinCode = async () => {
-      setLoading(true);
-
-      try {
-        const codeInfo = await projectMembershipApi
-          .fetchJoinCode(projectId)
-          .catch(async (error: unknown) => {
-            if (isAxiosError(error)) {
-              if (error.response?.status === 404) {
-                return projectMembershipApi.createJoinCode(projectId);
-              }
-              if (error.response?.status === 400) {
-                return projectMembershipApi.createJoinCode(projectId);
-              }
+    try {
+      const codeInfo = await projectMembershipApi
+        .fetchJoinCode(projectId)
+        .catch(async (error: unknown) => {
+          if (isAxiosError(error)) {
+            if (error.response?.status === 404 || error.response?.status === 400) {
+              return projectMembershipApi.createJoinCode(projectId);
             }
-            throw error;
-          });
+          }
+          throw error;
+        });
 
-        setJoinCode(codeInfo.joinCode);
-        setExpiresAt(codeInfo.expiresAt);
-      } catch (err) {
-        console.error('참여 코드 조회/생성 실패:', err);
-        setJoinCode(null);
-        setExpiresAt(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadJoinCode();
+      setJoinCode(codeInfo.joinCode);
+      setExpiresAt(codeInfo.expiresAt);
+    } catch (err) {
+      console.error('참여 코드 조회/생성 실패:', err);
+      setJoinCode(null);
+      setExpiresAt(null);
+    } finally {
+      setLoading(false);
+    }
   }, [projectId]);
 
-  return { joinCode, expiresAt, loading };
+  useEffect(() => {
+    loadJoinCode();
+  }, [loadJoinCode]);
+
+  return { joinCode, expiresAt, loading, loadJoinCode };
 };
