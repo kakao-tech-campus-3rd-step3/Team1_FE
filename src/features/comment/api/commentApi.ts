@@ -5,7 +5,7 @@ import type { PersonaType } from '@/features/comment/constants/personaConstants'
 
 export interface CreateCommentRequest {
   content: string;
-  persona: PersonaType;
+  persona: PersonaType
   isAnonymous: boolean;
   fileInfo?: FileInfo;
 }
