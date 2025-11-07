@@ -7,7 +7,8 @@ import FileTableInfo from '@/features/file/components/FileTableInfo';
 import FileTableHeader from '@/features/file/components/FileTableHeader';
 import FileTableBody from '@/features/file/components/FileTableBody';
 import FileTableEmpty from '@/features/file/components/FileTableEmpty';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -40,11 +41,7 @@ const FileSection = () => {
         </div>
       </div>
 
-      {isFetchingNextPage && (
-        <div className="flex justify-center py-4">
-          <FullPageLoader />
-        </div>
-      )}
+      {isFetchingNextPage && <InlineLoader size={5} />}
 
       {hasNextPage && !isFetchingNextPage && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
