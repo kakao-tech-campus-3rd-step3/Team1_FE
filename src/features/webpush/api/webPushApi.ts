@@ -6,7 +6,7 @@ import type {
   ConnectPushSessionResponse,
   PushSubscriptionRequest,
   PushSubscriptionResponse,
-} from '@/features/notifications/types/pushApiTypes';
+} from '@/features/settings/types/pushApiTypes';
 
 export const webPushApi = {
   // 웹푸시 세션 생성

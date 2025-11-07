@@ -7,7 +7,7 @@ import NotificationList from '@/features/notifications/components/notificationDr
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 
 export interface NotificationDropdownMenuProps {
-  notifications: NotificationItem [];
+  notifications: NotificationItem[];
   hasNextPage: boolean;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;

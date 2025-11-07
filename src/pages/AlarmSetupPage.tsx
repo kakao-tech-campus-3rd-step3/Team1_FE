@@ -6,12 +6,12 @@ import BooAlarmClick from '@/shared/assets/images/boost/boo-with-alarm.png';
 import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
-import { useCreatePushSessionMutation } from '@/features/notifications/hooks/useCreatePushSessionMutation';
+import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
 import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
-import { usePushSessionStatusQuery } from '@/features/notifications/hooks/usePushSessionStatusQuery';
-import { WebPushStatus } from '@/features/notifications/types/pushApiTypes';
+import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
+import { WebPushStatus } from '@/features/settings/types/pushApiTypes';
 
 const INTERVAL_MS = 30 * 10000;
 

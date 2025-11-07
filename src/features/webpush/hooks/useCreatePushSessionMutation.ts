@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { webPushApi } from '@/features/notifications/api/webPushApi';
-import type { CreatePushSessionResponse } from '@/features/notifications/types/pushApiTypes';
+import { webPushApi } from '@/features/webpush/api/webPushApi';
+import type { CreatePushSessionResponse } from '@/features/settings/types/pushApiTypes';
 
 export const useCreatePushSessionMutation = (options?: {
   onSuccess?: (res: CreatePushSessionResponse) => void;
