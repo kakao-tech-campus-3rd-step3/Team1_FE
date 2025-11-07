@@ -7,6 +7,7 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
 import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';
+import FullPageLoader from '@/shared/components/ui/FullPageLoader';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -22,7 +23,10 @@ const TaskDetailPage = () => {
   );
   if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
   if (!taskId) return <div className="p-4">태스크 ID를 찾을 수 없습니다.</div>;
-  if (isLoading || !task) return <div>Loading...</div>;
+
+  if (isLoading || !task) {
+    return <FullPageLoader text="할 일 불러오는 중.." />;
+  }
 
   return (
     <div className="flex flex-col h-screen">

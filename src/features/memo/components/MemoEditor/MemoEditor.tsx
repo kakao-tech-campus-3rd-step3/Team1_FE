@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
 import { useCreateMemoMutation } from '@/features/memo/hooks/useCreateMemoMutation';
 import { useUpdateMemoMutation } from '@/features/memo/hooks/useUpdateMemoMutation';
 import { useMemoQuery } from '@/features/memo/hooks/useMemoQuery';
@@ -8,6 +7,7 @@ import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
 import MemoEditorHeader from '@/features/memo/components/MemoEditor/MemoEditorHeader';
 import MemoEditorTitle from '@/features/memo/components/MemoEditor/MemoEditorTitle';
 import MemoEditorContent from '@/features/memo/components/MemoEditor/MemoEditorContent';
+import FullPageLoader from '@/shared/components/ui/FullPageLoader';
 
 const MemoEditor = () => {
   const navigate = useNavigate();
@@ -32,12 +32,7 @@ const MemoEditor = () => {
 
   if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
 
-  if (isLoading && isEditMode)
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+  if (isLoading && isEditMode) return <FullPageLoader text="메모 불러오는 중.." />;
 
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {

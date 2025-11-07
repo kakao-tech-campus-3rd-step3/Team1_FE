@@ -6,11 +6,12 @@ import { Separator } from '@/shared/components/shadcn/separator';
 
 import AlarmSettingCard from '@/features/settings/components/AlarmSettingCard';
 import { UserInfoCard } from '@/features/settings/components/UserInfoCard';
+import FullPageLoader from '@/shared/components/ui/FullPageLoader';
 
 export default function SettingsPage() {
   const { data: myInfo, isLoading } = useMyInfoQuery();
 
-  if (isLoading || !myInfo) return <p className="p-10 text-gray-500">불러오는 중...</p>;
+  if (isLoading || !myInfo) return <FullPageLoader text="정보 불러오는 중.." />;
 
   return (
     <div className="flex flex-col pr-10 pl-10 space-y-8">
