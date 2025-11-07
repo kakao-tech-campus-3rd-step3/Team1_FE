@@ -34,4 +34,7 @@ export const notificationsApi = {
     const { data } = await api.get('/notifications/count');
     return data;
   },
+  markAllNotificationAsRead: async () => {
+    await api.patch('/notifications/read-all');
+  },
 };

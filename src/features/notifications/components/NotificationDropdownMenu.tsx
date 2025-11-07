@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/utils';
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
+import { useMarkAllNotificationAsRead } from '@/features/notifications/hooks/useMarkAllNotificationAsRead';
 
 interface NotificationDropdownMenuProps {
   notifications: NotificationItem[];
@@ -24,22 +25,14 @@ const NotificationDropdownMenu = ({
   fetchNextPage,
   isFetchingNextPage,
 }: NotificationDropdownMenuProps) => {
-  const { mutate: markAsRead } = useMarkNotificationAsReadMutation();
   const { data: notificationCountData } = useNotificationCountsQuery();
+  const { mutate: markAsRead } = useMarkNotificationAsReadMutation();
+  const { mutate: markAllAsRead } = useMarkAllNotificationAsRead();
   const handleMarkAsRead = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     markAsRead(id);
   };
-  const handleMarkAllAsRead = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
 
-    const unread = notifications.filter((n) => !n.read);
-    if (unread.length === 0) return;
-
-    unread.forEach((n) => {
-      markAsRead(n.id);
-    });
-  };
   return (
     <DropdownMenuContent
       side="right"
@@ -55,7 +48,7 @@ const NotificationDropdownMenu = ({
             <span className="text-xs text-gray-500">
               안읽음 {notificationCountData.unreadCount}
             </span>
-            <Button onClick={handleMarkAllAsRead}>모두 읽음</Button>
+            <Button onClick={() => markAllAsRead()}>모두 읽음</Button>
           </div>
         ) : null}
       </DropdownMenuLabel>
