@@ -40,7 +40,10 @@ const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModa
       </div>
       <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
         <Button
-          onClick={onJoinClick}
+          onClick={() => {
+            resetModal();
+            onJoinClick();
+          }}
           variant="outline"
           disabled={isLoading}
           className="border-none text-gray-500 p-1 hover:text-gray-600 underline cursor-pointer hover:bg-gray-100"
