@@ -59,6 +59,20 @@ const TagSearchInput = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onFocus={() => setIsFocused(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                const match = allTags.find((t) => t.name.toLowerCase() === normalizedInput);
+
+                if (match) {
+                  const isSelected = selectedTags.some((t) => t.tagId === match.tagId);
+                  if (isSelected) removeTag(match.tagId);
+                  else addTag(match);
+                  setInput('');
+                  inputRef.current?.focus();
+                }
+              }
+            }}
             placeholder={selectedTags.length === 0 ? '태그 검색' : ''}
             className="flex-1 min-w-[120px] h-8 border-none focus:ring-transparent label2-regular bg-transparent placeholder:text-gray-400"
           />
@@ -79,7 +93,12 @@ const TagSearchInput = () => {
             return (
               <div
                 key={tag.tagId}
-                onClick={() => (isSelected ? removeTag(tag.tagId) : addTag(tag))}
+                onClick={() => {
+                  if (isSelected) removeTag(tag.tagId);
+                  else addTag(tag);
+                  setInput('');
+                  inputRef.current?.focus();
+                }}
                 className="flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors hover:bg-gray-50"
               >
                 <div
