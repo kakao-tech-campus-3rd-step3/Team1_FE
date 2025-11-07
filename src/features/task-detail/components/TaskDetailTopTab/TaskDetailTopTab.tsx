@@ -8,6 +8,7 @@ import { ReviewerActionButton } from '@/features/task-detail/components/TaskDeta
 import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
 import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
+import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -18,6 +19,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
   const { resetAll } = useTaskDetailStore();
   const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
+  const resetAiComment = useAiTransformStore((state) => state.reset);
 
   const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
@@ -38,6 +40,12 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
     initialApprovedByMe: task.approvedByMe,
   });
 
+  const handleBackClick = () => {
+    resetAll();
+    resetAiComment();
+    navigate(-1);
+  };
+
   return (
     <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
       <div className="flex items-center gap-3 font-semibold text-lg truncate max-w-xs">
@@ -45,10 +53,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
           size={30}
           strokeWidth={1}
           className="cursor-pointer p-1"
-          onClick={() => {
-            resetAll();
-            navigate(-1);
-          }}
+          onClick={() => handleBackClick()}
         />
         {task.title}
       </div>

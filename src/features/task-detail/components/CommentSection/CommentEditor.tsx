@@ -47,6 +47,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
 
   const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
   const selectedText = useAiTransformStore((state) => state.selectedText);
+  const resetAiComment = useAiTransformStore((state) => state.reset);
 
   useEffect(() => {
     if (selectedText) setInput(selectedText);
@@ -79,6 +80,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
 
     setInput('');
     setCurrentPin(null);
+    resetAiComment();
   };
 
   const handleCancelEdit = () => {
