@@ -2,7 +2,7 @@ import { webPushApi } from '@/features/webpush/api/webPushApi';
 import type {
   ConnectPushSessionRequest,
   ConnectPushSessionResponse,
-} from '@/features/settings/types/pushApiTypes';
+} from '@/features/webpush/types/pushApiTypes';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 

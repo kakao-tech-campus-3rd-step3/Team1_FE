@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
-import { WebPushStatus } from '@/features/settings/types/pushApiTypes';
+import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
 
 const INTERVAL_MS = 30 * 10000;
 
