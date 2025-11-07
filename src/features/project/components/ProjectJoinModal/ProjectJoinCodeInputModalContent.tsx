@@ -3,9 +3,12 @@ import { Input } from '@/shared/components/shadcn/input';
 import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import useModalStore from '@/shared/store/useModalStore';
+import { isAxiosError } from 'axios';
+import { ERROR } from '@/shared/constants/errorTypes';
+import toast from 'react-hot-toast';
 
 interface ProjectJoinCodeInputModalProps {
-  onConfirm: (joinCode: string) => Promise<void> | void;
+  onConfirm: (joinCode: string) => Promise<void>;
   onCreateClick: () => void;
 }
 
@@ -18,14 +21,33 @@ const ProjectJoinCodeInputModalContent = ({
   const isLoading = stack[stack.length - 1]?.isLoading ?? false;
 
   const handleConfirm = async () => {
+    if (!joinCode) return;
     setLoading(true);
+
     try {
       await onConfirm(joinCode);
-      resetModal();
+      toast.success('프로젝트에 성공적으로 참여했습니다!');
     } catch (error) {
-      console.error('프로젝트 참여 실패 :', error);
+      if (isAxiosError(error)) {
+        const type = error.response?.data?.type;
+
+        switch (type) {
+          case ERROR.JOIN_CODE.NOT_FOUND.type:
+            toast.error('잘못된 참여 코드입니다.');
+            break;
+          case ERROR.MEMBER.ALREADY_JOINED.type:
+            toast.error('이미 참여하고 있는 프로젝트입니다.');
+            break;
+          default:
+            toast.error('프로젝트 참여에 실패했습니다.');
+        }
+      } else {
+        toast.error('알 수 없는 오류가 발생했습니다.');
+        console.error(error);
+      }
     } finally {
       setLoading(false);
+      resetModal();
     }
   };
 
