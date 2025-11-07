@@ -1,7 +1,5 @@
-# 🚀 대학생을 위한 팀 프로젝트 관리 서비스  BOOST
-
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1434f974-0dca-4f15-8cfe-32c5c9cc0719" alt="썸네일" width="100%" style="max-width: 1200px; margin-bottom: 30px;"/>
+  <img src="https://github.com/daaoooy/boost-assets/blob/main/assets/thumbnail/default-thumbnail.png" alt="썸네일" width="100%" style="max-width: 1200px; margin-bottom: 30px;"/>
 </div>
 
 
@@ -11,12 +9,13 @@
 <br/>
 
 
+
 <div aria-label="why-boost" align="center" >
   <h1>💙 왜 BOOST인가? 💙</h1>
   
   <br/>
 
-  <img src="https://github.com/user-attachments/assets/a2068422-550d-420f-878b-ffe106f803c9" alt="boo-front" width="150"/> 
+  <img src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-front.png" alt="boo-front" width="150"/> 
  
   <br/>
   <br/>
@@ -34,6 +33,9 @@
 
 <br/>
 <br/>
+<br/>
+<br/>
+
 
 
 ## 🚀 프로젝트 소개
@@ -62,7 +64,7 @@
 
 | **이진호** | **김원호** | **김혜민** | **서영진** | **유다연** |
 | :------: |  :------: | :------: | :------: | :------: |
-| [<img src="https://github.com/user-attachments/assets/e0f9fb2b-70cd-4f46-87d9-3bc58512ec91" height=150 width=150> <br/> @treasure-sky](https://github.com/treasure-sky) | [<img src="https://github.com/user-attachments/assets/458ff5bd-889b-4cb3-a8ff-aa641f0c6819" height=150 width=150> <br/> @kmwh](https://github.com/kmwh) | [<img src="https://github.com/user-attachments/assets/a145d137-8039-4445-a776-72b80bf3311f" height=150 width=150> <br/> @hyemomo](https://github.com/hyemomo) | [<img src="https://github.com/user-attachments/assets/823d2a52-ece4-49e2-b52d-bfd958c7a83e" height=150 width=150> <br/> @seoyoungjin23](https://github.com/seoyoungjin23) | [<img src="https://github.com/user-attachments/assets/e08aa2cd-b32c-4ae6-aaac-1664decece43" height=150 width=150> <br/> @daaoooy](https://github.com/daaoooy) |
+| [<img src="https://github.com/daaoooy/boost-assets/blob/main/assets/members-avatar/be-ljh.png" height=150 width=150> <br/> @treasure-sky](https://github.com/treasure-sky) | [<img src="https://github.com/daaoooy/boost-assets/blob/main/assets/members-avatar/be-kwh.png" height=150 width=150> <br/> @kmwh](https://github.com/kmwh) | [<img src="https://github.com/daaoooy/boost-assets/blob/main/assets/members-avatar/fe-khm.png" height=150 width=150> <br/> @hyemomo](https://github.com/hyemomo) | [<img src="https://github.com/daaoooy/boost-assets/blob/main/assets/members-avatar/bg-syj.png" height=150 width=150> <br/> @seoyoungjin23](https://github.com/seoyoungjin23) | [<img src="https://github.com/daaoooy/boost-assets/blob/main/assets/members-avatar/fe-ydy.png" height=150 width=150> <br/> @daaoooy](https://github.com/daaoooy) |
 | **Backend** | **Backend** | **Frontend** | **Backend** | **Frontend** |
 
 </div>
@@ -72,7 +74,7 @@
 
 ## 📍 시작하기 (Start Guide)
 ```
-git clone git@github.com:kakao-tech-campus-3rd-step3/Team1_FE.git
+git clone https://github.com/kakao-tech-campus-3rd-step3/Team1_FE.git
 cd Team1_FE
 pnpm install
 pnpm run dev
@@ -312,94 +314,108 @@ src/
 ## ✨ 주요 기능 (Key features)
 
 ### 1. 간편한 카카오 로그인
-<img width="1919" height="976" alt="로그인페이지" src="https://github.com/user-attachments/assets/1d75ea89-f73e-47f8-8282-f27e5d2e45a5" />
+<img width="1919" height="976" alt="로그인페이지" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/login-page.png" />
 
 <br/>
 <br/>
 
-### 2. 할 일(Task) 관리 
-- 칸반(Kanban) 보드 형태로 직관적인 테스크 생성 및 관리
-- 보드에서 해야 하는 작업 및 진행 상황을 한눈에 파악 가능
-- 상태 변경(진행 전, 진행 중, 검토 중, 완료) 표시
-<img width="1918" height="982" alt="나의 할일보드 " src="https://github.com/user-attachments/assets/8173b403-fdd5-40d9-8838-644c89830f20" />
-<img width="1919" height="986" alt="image" src="https://github.com/user-attachments/assets/3f445c63-855a-4fe5-8aea-38dd9e711f4e" />
-<img width="1918" height="977" alt="image" src="https://github.com/user-attachments/assets/daf2fcdd-e245-49f5-86a4-4c40f482dd25" />
+### 2. 나의 할 일 관리 
+- 개인 칸반보드 형태로 직관적인 작업 생성 및 관리 가능
+- 프로젝트별 개인 테스크를 한눈에 확인하고, 우선순위에 따라 효율적으로 정리
+- 상태(진행 전 / 진행 중 / 검토 중 / 완료) 변경을 통해 작업 현황을 명확하게 관리
+<img width="1918" height="982" alt="나의 할일보드" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/my-task-page.gif" />
+<img width="1918" height="982" alt="할 일 생성" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/my-task-create.gif" />
+
 
 <br/>
 <br/>
 
+### 3. 프로젝트 할 일 관리
+- 팀 단위 칸반보드를 통해 팀원들과 실시간으로 작업 진행 상황을 공유
+- 각 작업의 담당자, 진행 상태, 마감일 등을 한곳에서 관리하여 협업 효율 극대화
+- 상태 변경 시 팀원들이 즉시 확인할 수 있어 투명한 협업 환경 구축
 
-### 3. 참여 코드 기반 프로젝트 참여
+<img width="1918" height="982" alt="프로젝트 페이지" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/project-page.gif" />
+
+
+### 4. 손쉬운 프로젝트 생성 / 참여 코드 기반 프로젝트 참여
 - 참여 코드를 통해 안전하게 프로젝트 참여 가능
 - 24시간마다 코드가 리프레시되어 보안 유지
 - 코드 공유로 간편하게 팀원 초대
-<img width="1919" height="982" alt="image" src="https://github.com/user-attachments/assets/60dabf26-42d6-40ba-91cc-c6ad7a4201c8" />
+<img width="1919" height="982" alt="프로젝트참여생성" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/project-create-join.gif" />
 
 <br/>
 <br/>
 
-### 4. 팀원 보드 및 공헌도 시스템
+### 5. 팀원 보드 및 공헌도 시스템
 - 각 팀원의 작업 상태 한눈에 확인 가능
 - 점수가 가장 높은 팀원에게 왕관 아이콘 부여
 - 개인의 기여도를 시각적으로 표시하여 협업 동기 부여
-<img width="1918" height="979" alt="image" src="https://github.com/user-attachments/assets/83b7476a-7ac0-47ea-9263-9f75d5d2cc77" />
+<img width="1918" height="979" alt="팀원보드" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/team-board.gif" />
 
 <br/>
 <br/>
 
-### 5. 팀원 간 피드백
+### 6. 팀원 간 작업에 댓글로 피드백
 - 팀원의 작업물에 댓글 가능 
 - 피드백 작성 시 원하는 위치에 마커 지정 후 댓글 작성 기능
-- AI 댓글 변환과 익명 기능 제공으로 솔직한 의견 공유 기능
-<img width="1919" height="981" alt="image" src="https://github.com/user-attachments/assets/b4d4a42c-e0b8-4ef9-a7d2-4a69e4deb938" />
-<img width="1919" height="975" alt="image" src="https://github.com/user-attachments/assets/321827b4-881e-40fc-9468-13da471892a4" />
-<img width="1919" height="979" alt="image" src="https://github.com/user-attachments/assets/47c908ef-5407-4f99-97b0-628722892dbb" />
-<img width="1919" height="979" alt="image" src="https://github.com/user-attachments/assets/5fb0e71a-d34f-4af7-973a-c6aba4038dbf" />
+<img width="1919" height="981" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/comment.gif" />
+
 
 <br/>
 <br/>
 
-### 6. 작업물 검토 요청 및 승인 시스템
+### 7. 솔직한 의견 공유를 위한 AI 댓글 변환 기능
+- 거친 표현이나 세게 들릴 수 있는 말투를 AI가 자연스럽고 부드럽게 변환
+- 솔직한 피드백은 그대로 유지하면서, 상대방이 기분 좋게 받아들일 수 있도록 조정
+- 팀 내 건강한 커뮤니케이션 문화 형성에 도움
+<img width="1919" height="981" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/ai-transform.gif" />
+
+
+<br/>
+<br/>
+
+### 8. 작업물 검토 요청 및 승인 시스템
 - 업로드된 작업물 확인 및 승인
 - 리뷰 요청 시 검토 중으로 할 일이 이동하고, 모든 승인을 다 받으면 완료 처리 가능
-<img width="1919" height="981" alt="image" src="https://github.com/user-attachments/assets/1a0ae216-dafe-4ede-a4c9-924d32046805" />
+<img width="1919" height="981" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/review-request.gif" />
+<img width="1919" height="981" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/task-approve.gif" />
+
 
 <br/>
 <br/>
 
-### 7. 웹 푸시 알림 기능
+### 9. 웹 푸시 알림 기능
 - 마감일이 얼마 남지 않은 작업 알림
 - 검토가 필요한 작업 발생 시 알림
 - 모든 승인 완료 시 알림
 - 팀원들이 중요한 일정을 놓치지 않도록 실시간으로 안내
-<img width="636" height="266" alt="image" src="https://github.com/user-attachments/assets/7b3f4d69-4343-4477-9278-900dbdb49c56" />
-<img width="600" height="2000" alt="image" src="https://github.com/user-attachments/assets/eeb0f8bc-b961-4f32-bef8-4bb62e723a28" />
-<img width="1919" height="983" alt="image" src="https://github.com/user-attachments/assets/e6fd62c5-99f4-428c-ae9f-87cc369270f9" />
+<img width="400" height="1800" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/phone-alarm.png" />
+<img width="1919" height="983" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/computer-alarm.png" />
 
 <br/>
 <br/>
 
-### 8. 사용자 친화적 UI/UX, 아바타 커스터마이징
+### 10. 사용자 친화적 UI/UX, 아바타 커스터마이징
 - 직관적인 인터페이스로 누구나 쉽게 사용 가능
 - 귀여운 아바타 지정 가능 
-<img width="1919" height="981" alt="아바타 선택 페이지" src="https://github.com/user-attachments/assets/734b3025-f2d3-4eb2-b3ad-481cbcd4bfca" />
+<img width="1919" height="981" alt="아바타 선택 페이지" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/avatar-change.gif" />
 
 <br/>
 <br/>
 
-### 9. 프로젝트에서 작업한 파일들을 모아보는 기능
+### 11. 프로젝트에서 작업한 파일들을 모아보는 기능
 - 프로젝트를 진행하면서 나온 작업 파일들을 한곳에서 모아보기 가능
-<img width="1919" height="981" alt="image" src="https://github.com/user-attachments/assets/6c4723fd-094d-4f44-82f8-6062a53e6f06" />
+<img width="1919" height="981" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/file-page.gif" />
 
 <br/>
 <br/>
 
-### 10. 메모 페이지
+### 12. 메모 페이지
 - 팀원 간 공유용 자유로운 메모 작성 가능
 - 프로젝트 관련 아이디어, 링크, 참고 자료 정리
 - 간단한 개인 기록용으로도 사용 가능
-<img width="1919" height="983" alt="image" src="https://github.com/user-attachments/assets/2b97c36a-cd6a-4526-834f-0b88425d4ad8" />
-<img width="1919" height="983" alt="image" src="https://github.com/user-attachments/assets/f95e94f0-22b6-4227-a671-68672d951e82" />
+<img width="1919" height="983" alt="image" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/memo-page.gif" />
 
 <br/>
 <br/>
@@ -409,14 +425,14 @@ src/
 
 ## 🎨 브랜딩 및 디자인 (Branding & Design)
 
-<img width="1732" height="921" alt="디자인 시스템" src="https://github.com/user-attachments/assets/3468ec43-6b7c-49c5-8b14-00b7246b7026" />
+<img width="1732" height="921" alt="디자인 시스템" src="https://github.com/daaoooy/boost-assets/blob/main/assets/design-system/design-system.png" />
 
 <br/>
 <br/>
 
 ### 로고 (Logo)
 
-| <img width="844" height="498" alt="boost-logo-2d" src="https://github.com/user-attachments/assets/7483a0f3-ae82-457b-a0b3-58b89a116463" /> | <img width="844" height="498" alt="boost-log-3d" src="https://github.com/user-attachments/assets/710c0eda-8f5c-45b7-9784-5ac10b797fce" /> |
+| <img width="844" height="498" alt="boost-logo-2d" src="https://github.com/daaoooy/boost-assets/blob/main/assets/logo/boost-logo-2d-transparent.png" /> | <img width="844" height="498" alt="boost-log-3d" src="https://github.com/daaoooy/boost-assets/blob/main/assets/logo/boost-logo-3d-transparent.png" /> |
 |:---------------------------------------:|:---------------------------------------:|
 |      **Logo 2D ver**      |      **Logo 3D ver**     | 
 
@@ -424,7 +440,7 @@ src/
 
 ### 앱 아이콘 (App Icon)
 
-|<img width="300" height="300" alt="notification-icon" src="https://github.com/user-attachments/assets/69f6a870-51e0-4c79-8058-b1b28e7cf677" />  | 
+|<img width="300" height="300" alt="notification-icon" src="https://github.com/daaoooy/boost-assets/blob/main/assets/app-icon/app-icon.png" />  | 
 |:---------------------------------------:|
 |      **App Icon**      |
 
@@ -432,7 +448,7 @@ src/
 
 ### 아이템 (Item)
   
-| <img width="100" height="100" alt="crown" src="https://github.com/user-attachments/assets/a38d194b-ae52-4096-b02c-aa6bb86fce30" /> | <img width="100" height="120" alt="로켓 3D (배경 제거)" src="https://github.com/user-attachments/assets/45a4928a-1218-49ee-8588-1c66084fc8bc" /> | <img width="100" height="100" alt="alarm-bell" src="https://github.com/user-attachments/assets/935df988-84ce-4500-877d-26eec161e2e1" /> | <img width="100" height="100" alt="boost-siren" src="https://github.com/user-attachments/assets/1d86b047-2814-4008-89e5-e75fcea8439e" /> |
+| <img width="100" height="100" alt="crown" src="https://github.com/daaoooy/boost-assets/blob/main/assets/items/crown.png" /> | <img width="100" height="120" alt="로켓 3D (배경 제거)" src="https://github.com/daaoooy/boost-assets/blob/main/assets/items/boost-rocket-3d.png" /> | <img width="100" height="100" alt="alarm-bell" src="https://github.com/daaoooy/boost-assets/blob/main/assets/items/alarm-bell.png" /> | <img width="100" height="100" alt="boost-siren" src="https://github.com/daaoooy/boost-assets/blob/main/assets/items/siren.png" /> |
 |:---------------------------------------:|:---------------------------------------:|:---------------------------------------:|:---------------------------------------:|
 |      **Crown**      |      **Rocket**     |     **Bell**       |      **Siren**      |
 
@@ -441,7 +457,7 @@ src/
 ### 캐릭터 (Charactor) 
 > **Name**: Boo (부)
 
-| <img width="740" height="740" alt="boo-front" src="https://github.com/user-attachments/assets/f494e1cf-c028-44a1-bcdc-bbcbb0b5ed6f" /> | <img width="740" height="740" alt="boo-left" src="https://github.com/user-attachments/assets/331d61a4-d36f-4807-a01c-0626542e7e27" /> | <img width="740" height="740" alt="boo-back" src="https://github.com/user-attachments/assets/cdb851e5-8203-4a5d-8f08-f672b7298419" /> | <img width="740" height="740" alt="boo-right" src="https://github.com/user-attachments/assets/81e4c04d-487e-4e3c-8c5f-058b07967fab" /> |
+| <img width="740" height="740" alt="boo-front" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-front.png" /> | <img width="740" height="740" alt="boo-left" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-left.png" /> | <img width="740" height="740" alt="boo-back" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-back.png" /> | <img width="740" height="740" alt="boo-right" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-right.png" /> |
 |:---------------------------------------:|:---------------------------------------:|:---------------------------------------:|:---------------------------------------:|
 |      **front**      |      **left**     |     **Back**       |      **Right**      |
 
@@ -460,5 +476,5 @@ Avatars by Stefanie – Licensed underCC BY 4.0
 <br/>
 
 ## 🔍 이용약관 및 개인정보 처리 방침
-> [개인정보 처리방침](https://flat-capricorn-b40.notion.site/BOOST-2a3b32e74312809da69de2046a8f38b3?source=copy_link)
+> [개인정보 처리방침](https://flat-capricorn-b40.notion.site/BOOST-2a3b32e74312809da69de2046a8f38b3?source=copy_link) 
 > [이용약관](https://flat-capricorn-b40.notion.site/BOOST-2a3b32e74312805da68febc9a138d6b7?source=copy_link)
