@@ -6,7 +6,7 @@ import { Separator } from '@/shared/components/shadcn/separator';
 
 import AlarmSettingCard from '@/features/settings/components/AlarmSettingCard';
 import { UserInfoCard } from '@/features/settings/components/UserInfoCard';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 export default function SettingsPage() {
   const { data: myInfo, isLoading } = useMyInfoQuery();

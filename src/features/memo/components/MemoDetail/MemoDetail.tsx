@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useMemoQuery } from '@/features/memo/hooks/useMemoQuery';
 import MemoDetailHeader from '@/features/memo/components/MemoDetail/MemoDetailHeader';
 import MemoDetailContent from '@/features/memo/components/MemoDetail/MemoDetailContent';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const MemoDetail = () => {
   const { projectId, memoId } = useParams<{ projectId: string; memoId: string }>();

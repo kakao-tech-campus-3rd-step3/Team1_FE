@@ -7,7 +7,7 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
 import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();

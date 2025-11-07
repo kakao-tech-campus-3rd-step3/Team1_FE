@@ -7,7 +7,7 @@ import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
 import MemoEditorHeader from '@/features/memo/components/MemoEditor/MemoEditorHeader';
 import MemoEditorTitle from '@/features/memo/components/MemoEditor/MemoEditorTitle';
 import MemoEditorContent from '@/features/memo/components/MemoEditor/MemoEditorContent';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const MemoEditor = () => {
   const navigate = useNavigate();

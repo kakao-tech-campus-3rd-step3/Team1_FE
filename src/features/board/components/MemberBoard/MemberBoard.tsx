@@ -10,7 +10,7 @@ import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProje
 import { useAuthStore } from '@/features/auth/store/authStore';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 interface MemberBoardProps {
   projectId?: string;

@@ -4,7 +4,7 @@ import MemoListHeader from '@/features/memo/components/MemoList/MemoListHeader';
 import MemoTable from '@/features/memo/components/MemoList/MemoTable';
 import { useNavigate } from 'react-router-dom';
 import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 interface MemoListProps {
   projectId: string;

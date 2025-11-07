@@ -5,7 +5,7 @@ import ProjectTopTab from '@/features/project/components/ProjectPageComponents/P
 import { Separator } from '@/shared/components/shadcn/separator';
 import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const ProjectPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
