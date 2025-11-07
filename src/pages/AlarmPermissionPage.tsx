@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
 import { useAlarmPermission } from '@/features/webpush/hooks/useAlarmPermission';
-import { STATUS_CONTENT } from '@/features/notifications/constants/alarmStatusContent';
+import { STATUS_CONTENT } from '@/features/webpush/constants/alarmStatusContent';
 import { WebPushStatus, type WebPushStatusType } from '@/features/settings/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConnectPushSessionMutation';
 
