@@ -17,7 +17,7 @@ import Crown from '@/shared/assets/images/boost/crown.png';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
-import FullPageLoader from '@/shared/components/ui/FullPageLoader';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 interface MemberColumnProps {
   projectId: string;
@@ -177,7 +177,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
             </div>
           </div>
         ))}
-        {isFetchingNextPage && <FullPageLoader />}
+        {isFetchingNextPage && <InlineLoader size={5} />}
       </div>
     </div>
   );
