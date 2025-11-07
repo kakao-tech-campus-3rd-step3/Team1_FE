@@ -337,6 +337,9 @@ src/
 
 <img width="1918" height="982" alt="프로젝트 페이지" src="https://github.com/daaoooy/boost-assets/blob/main/assets/demo/project-page.gif" />
 
+<br/>
+<br/>
+
 
 ### 4. 손쉬운 프로젝트 생성 / 참여 코드 기반 프로젝트 참여
 - 참여 코드를 통해 안전하게 프로젝트 참여 가능
