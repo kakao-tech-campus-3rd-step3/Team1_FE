@@ -41,8 +41,8 @@ export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => 
         name: user?.name ?? '익명',
         avatar: user?.avatar ?? '0',
         backgroundColor: user?.backgroundColor ?? '#CCCCCC',
-        isAnonymous: isAnonymous,
       },
+      isAnonymous: isAnonymous,
     };
 
     setCurrentPin(newPin);
