@@ -6,14 +6,14 @@ import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
-
+import BOO from '@/shared/assets/images/boost/boo.png'
 interface CommentItemProps {
   comment: CommentUIType;
   onEdit?: (comment: CommentUIType) => void;
   onDelete?: (commentId: string) => void;
   onSelectPin?: (fileInfo: FileInfo | null) => void;
   isEditing?: boolean;
-  isHighlighted?: boolean; // ✅ 강조 여부 추가
+  isHighlighted?: boolean;
 }
 
 const CommentItem = ({
@@ -34,8 +34,8 @@ const CommentItem = ({
   const renderAvatar = () => {
     if (isBooPersona) {
       return (
-        <Avatar className="h-8 w-8 shrink-0 shadow-xs">
-          <AvatarImage src="/images/persona/boo.png" alt="BOO" />
+        <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-boost-yellow">
+          <AvatarImage className="w-6 h-6" src={BOO} alt="BOO" />
           <AvatarFallback>BOO</AvatarFallback>
         </Avatar>
       );
@@ -43,7 +43,7 @@ const CommentItem = ({
 
     if (effectiveAnonymous) {
       return (
-        <Avatar className="h-8 w-8 shrink-0 shadow-xs bg-gray-500">
+        <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-gray-500">
           <User className="w-4 h-4 text-white" />
         </Avatar>
       );
@@ -51,7 +51,7 @@ const CommentItem = ({
 
     return (
       <Avatar
-        className="h-8 w-8 shrink-0 shadow-xs text-white text-xs"
+        className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs text-white text-xs"
         style={{
           backgroundColor: comment.authorInfo.backgroundColor,
         }}
