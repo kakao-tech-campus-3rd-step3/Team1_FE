@@ -13,18 +13,20 @@ interface TaskDetailState {
   currentPin: PinWithAuthor | null;
   pins: PinWithAuthor[];
   isPdfOpen: boolean;
-  selectedCommentId: string | null;
-  setSelectedCommentId: (id: string | null) => void;
-  setSelectedFile: (fileInfo: FileInfo | null) => void;
-  setPins: (pins: PinWithAuthor[]) => void;
-  setCurrentPin: (pin: PinWithAuthor | null) => void;
-  togglePdf: (open: boolean) => void;
   isEditingPin: boolean;
-  setIsEditingPin: (val: boolean) => void;
   isAnonymous: boolean;
-  setIsAnonymous: (val: boolean) => void;
+  selectedCommentId: string | null;
   editingComment: EditingCommentState | null;
+
+  setSelectedFile: (fileInfo: FileInfo | null) => void;
+  setCurrentPin: (pin: PinWithAuthor | null) => void;
+  setPins: (pins: PinWithAuthor[]) => void;
+  togglePdf: (open: boolean) => void;
+  setIsEditingPin: (val: boolean) => void;
+  setIsAnonymous: (val: boolean) => void;
+  setSelectedCommentId: (id: string | null) => void;
   setEditingComment: (comment: EditingCommentState | null) => void;
+
   clearCurrentPin: () => void;
   clearFileState: () => void;
   resetAll: () => void;
@@ -35,24 +37,24 @@ const initialState = {
   currentPin: null,
   pins: [],
   isPdfOpen: false,
-  isAnonymous: false,
   isEditingPin: false,
-  editingComment: null,
+  isAnonymous: false,
   selectedCommentId: null,
+  editingComment: null,
 };
 
 export const useTaskDetailStore = create<TaskDetailState>((set) => ({
   ...initialState,
-  setSelectedCommentId: (id) => set({ selectedCommentId: id }),
-  setIsAnonymous: (val) => set({ isAnonymous: val }),
-  setSelectedFile: (selectedFile) => set({ selectedFile }),
-  setPins: (pins) => set({ pins }),
-  setCurrentPin: (currentPin) => set({ currentPin }),
-  togglePdf: (isPdfOpen) => set({ isPdfOpen }),
-  isEditingPin: false,
 
+  setSelectedFile: (selectedFile) => set({ selectedFile }),
+  setCurrentPin: (currentPin) => set({ currentPin }),
+  setPins: (pins) => set({ pins }),
+  togglePdf: (isPdfOpen) => set({ isPdfOpen }),
   setIsEditingPin: (val) => set({ isEditingPin: val }),
+  setIsAnonymous: (val) => set({ isAnonymous: val }),
+  setSelectedCommentId: (id) => set({ selectedCommentId: id }),
   setEditingComment: (comment) => set({ editingComment: comment }),
+
   clearCurrentPin: () => set({ currentPin: null }),
   clearFileState: () =>
     set({
