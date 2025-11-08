@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import type { PersonaType } from '@/features/comment/constants/personaConstants';
 
 interface EditingCommentState {
   id: string;
@@ -17,7 +18,9 @@ interface TaskDetailState {
   isAnonymous: boolean;
   selectedCommentId: string | null;
   editingComment: EditingCommentState | null;
+  persona: PersonaType
 
+  setPersona: (persona: TaskDetailState['persona']) => void;
   setSelectedFile: (fileInfo: FileInfo | null) => void;
   setCurrentPin: (pin: PinWithAuthor | null) => void;
   setPins: (pins: PinWithAuthor[]) => void;
@@ -41,6 +44,7 @@ const initialState = {
   isAnonymous: false,
   selectedCommentId: null,
   editingComment: null,
+  persona: null,
 };
 
 export const useTaskDetailStore = create<TaskDetailState>((set) => ({
@@ -64,4 +68,5 @@ export const useTaskDetailStore = create<TaskDetailState>((set) => ({
     }),
 
   resetAll: () => set(initialState),
+  setPersona: (persona) => set({ persona }),
 }));
