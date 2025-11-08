@@ -1,3 +1,4 @@
+import type { PersonaType } from '@/features/comment/constants/personaConstants';
 import type { AuthorInfo } from '@/features/comment/types/commentTypes';
 
 export interface FileInfo {
@@ -18,5 +19,6 @@ export interface PinWithAuthor {
   author?: AuthorInfo;
   commentId?: string;
   isAnonymous?: boolean;
+  persona:PersonaType;
 }
 export type FileStatus = 'uploading' | 'success';

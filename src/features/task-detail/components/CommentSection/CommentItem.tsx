@@ -1,12 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
-import { Pin, User } from 'lucide-react';
+import { Pin } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
-import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
-import BOO from '@/shared/assets/images/boost/boo.png'
+import { AuthorAvatar } from '@/features/task-detail/components/CommentSection/AuthorAvatar';
 interface CommentItemProps {
   comment: CommentUIType;
   onEdit?: (comment: CommentUIType) => void;
@@ -27,47 +25,6 @@ const CommentItem = ({
   const isAnonymous = comment.isAnonymous;
   const { user } = useAuthStore();
   const isAuthor = user?.id === comment.authorInfo.memberId;
-  const isBooPersona = comment.persona === 'BOO';
-
-  const effectiveAnonymous = isBooPersona ? true : comment.isAnonymous;
-
-  const renderAvatar = () => {
-    if (isBooPersona) {
-      return (
-        <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-boost-yellow">
-          <AvatarImage className="w-6 h-6" src={BOO} alt="BOO" />
-          <AvatarFallback>BOO</AvatarFallback>
-        </Avatar>
-      );
-    }
-
-    if (effectiveAnonymous) {
-      return (
-        <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-gray-500">
-          <User className="w-4 h-4 text-white" />
-        </Avatar>
-      );
-    }
-
-    return (
-      <Avatar
-        className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs text-white text-xs"
-        style={{
-          backgroundColor: comment.authorInfo.backgroundColor,
-        }}
-      >
-        {comment.authorInfo.avatar ? (
-          <AvatarImage
-            src={getAvatarSrc(comment.authorInfo)}
-            alt={comment.authorInfo.name}
-            className="h-7 w-7 object-cover rounded-full"
-          />
-        ) : (
-          <AvatarFallback>{comment.authorInfo.name?.charAt(0).toUpperCase()}</AvatarFallback>
-        )}
-      </Avatar>
-    );
-  };
 
   return (
     <div className="flex py-3">
@@ -82,7 +39,13 @@ const CommentItem = ({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 pb-3">
-              {renderAvatar()}
+              <AuthorAvatar
+                persona={comment.persona}
+                isAnonymous={comment.isAnonymous}
+                avatar={comment.authorInfo.avatar}
+                backgroundColor={comment.authorInfo.backgroundColor}
+                name={comment.authorInfo.name}
+              />
               <span className="label1-bold text-sm text-gray-800">
                 {isAnonymous ? '익명' : comment.authorInfo.name}
               </span>
