@@ -9,17 +9,21 @@ import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVari
 import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
 import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
 import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
-import BackButton from '@/shared/components/ui/BackButton';
+import { Button } from '@/shared/components/shadcn/button';
 
 const INTERVAL_MS = 30 * 10000;
 
 const AlarmSetupPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
+
   const hasHandledStatus = useRef(false);
+
   const {
     mutate: createPushSession,
     data,
@@ -89,7 +93,6 @@ const AlarmSetupPage = () => {
 
   return (
     <div className="flex flex-row h-screen overflow-hidden">
-      <BackButton to={ROUTE_PATH.AVATAR} className="absolute top-8 left-8 z-50" />
       {/* 왼쪽 알림 예시 */}
       <section
         aria-label="Notification examples"
@@ -135,7 +138,7 @@ const AlarmSetupPage = () => {
         </div>
 
         {/* QR 코드 */}
-        <div className="p-4 shadow-md rounded-md bg-white">
+        <div className="p-4 shadow-md rounded-md bg-white mt-[-20px]">
           {qrData ? (
             <QRCodeSVG value={qrData} className="w-40 h-40" />
           ) : (
@@ -144,13 +147,25 @@ const AlarmSetupPage = () => {
         </div>
 
         {/* 남은 시간 */}
-        <p className="text-gray-500 font-semibold text-sm">
+        <p className="text-gray-700 font-semibold text-sm">
           QR 갱신까지 남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
         </p>
 
+        <Button
+          variant="link"
+          onClick={() => {
+            if (from === ROUTE_PATH.AVATAR) navigate(ROUTE_PATH.MY_TASK);
+            else if (from === ROUTE_PATH.SETTINGS) navigate(ROUTE_PATH.SETTINGS);
+            else navigate(ROUTE_PATH.MY_TASK);
+          }}
+          className="z-10 mt-[-20px] cursor-pointer text-gray-500"
+        >
+          다음에 할래요
+        </Button>
+
         {/* 중앙 이미지 */}
         <div aria-label="image" className="flex flex-col items-center">
-          <div aria-label="mockup" className="relative w-[640px] mt-1">
+          <div aria-label="mockup" className="relative w-[640px] mt-[-30px]">
             <motion.img
               src={AlarmBell}
               alt="alarm-bell"

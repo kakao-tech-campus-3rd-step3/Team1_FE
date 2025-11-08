@@ -29,7 +29,7 @@ const AvatarSettingsPage = () => {
 
     saveAvatar(avatarInfo, {
       onSuccess: () => {
-        navigate(ROUTE_PATH.ALARM_SETUP);
+        navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
         setAuth({ user: avatarInfo });
       },
     });
