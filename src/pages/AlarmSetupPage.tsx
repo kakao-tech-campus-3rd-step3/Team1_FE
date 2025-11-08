@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
 import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
+import BackButton from '@/shared/components/ui/BackButton';
 
 const INTERVAL_MS = 30 * 10000;
 
@@ -88,6 +89,7 @@ const AlarmSetupPage = () => {
 
   return (
     <div className="flex flex-row h-screen overflow-hidden">
+      <BackButton to={ROUTE_PATH.AVATAR} className="absolute top-8 left-8 z-50" />
       {/* 왼쪽 알림 예시 */}
       <section
         aria-label="Notification examples"
