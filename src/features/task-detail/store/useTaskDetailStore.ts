@@ -18,7 +18,7 @@ interface TaskDetailState {
   isAnonymous: boolean;
   selectedCommentId: string | null;
   editingComment: EditingCommentState | null;
-  persona: PersonaType
+  persona: PersonaType;
 
   setPersona: (persona: TaskDetailState['persona']) => void;
   setSelectedFile: (fileInfo: FileInfo | null) => void;
@@ -65,6 +65,8 @@ export const useTaskDetailStore = create<TaskDetailState>((set) => ({
       selectedFile: null,
       currentPin: null,
       isPdfOpen: false,
+      persona: null,
+      isAnonymous: false,
     }),
 
   resetAll: () => set(initialState),
