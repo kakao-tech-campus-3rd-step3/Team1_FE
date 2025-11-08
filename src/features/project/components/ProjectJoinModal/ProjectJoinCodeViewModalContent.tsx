@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Copy, RefreshCw } from 'lucide-react';
 import { useJoinCode } from '@/features/project/hooks/useJoinCode';
 import { formatSecondsToHHMMSS, getRemainingSeconds } from '@/shared/utils/dateUtils';
+import { useCreateJoinCodeMutation } from '@/features/project/hooks/useCreateJoincodeMutation';
 
 interface ProjectJoinCodeViewModalContentProps {
   projectId: string;
@@ -13,11 +14,16 @@ interface ProjectJoinCodeViewModalContentProps {
 
 const ProjectJoinCodeViewModalContent = ({ projectId }: ProjectJoinCodeViewModalContentProps) => {
   const { joinCode, expiresAt, loading, loadJoinCode } = useJoinCode(projectId);
+  const { mutate: createJoinCode } = useCreateJoinCodeMutation(projectId);
   const { resetModal } = useModalStore();
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
-    if (!expiresAt) return;
+    if (!expiresAt) {
+      setRemainingTime(null);
+      return;
+    }
 
     const updateRemainingTime = () => setRemainingTime(getRemainingSeconds(expiresAt));
     updateRemainingTime();
@@ -38,47 +44,55 @@ const ProjectJoinCodeViewModalContent = ({ projectId }: ProjectJoinCodeViewModal
   };
 
   const handleRefresh = async () => {
+    setIsCreating(true);
     try {
-      await loadJoinCode();
-      toast.success('새 참여 코드가 발급되었습니다!');
-    } catch (error) {
-      toast.error('참여 코드 재발급에 실패했습니다.');
-      console.error('참여 코드 재발급 실패:', error);
+      createJoinCode(undefined, {
+        onSuccess: () => {
+          loadJoinCode();
+          toast.success('새 참여 코드가 발급되었습니다!');
+        },
+        onError: (err) => {
+          toast.error('참여 코드 재발급에 실패했습니다.');
+          console.error('참여 코드 재발급 실패:', err);
+        },
+        onSettled: () => {
+          setIsCreating(false);
+        },
+      });
+    } catch (err) {
+      setIsCreating(false);
+      toast.error('참여 코드 재발급 중 에러가 발생했습니다.');
+      console.error(err);
     }
   };
 
   return (
     <>
-      <div className="py-4 flex flex-col gap-2">
+      <div className="py-4 flex flex-col gap-3">
         {loading ? (
           <p>참여 코드를 불러오는 중입니다!</p>
         ) : joinCode ? (
           <>
-            <p className="subtitle2-bold flex items-center justify-between">
-              참여 코드 <span className="subtitle2-regular">{joinCode}</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCopy}
-                className="flex items-center gap-1 cursor-pointer"
-              >
-                <Copy className="w-4 h-4" />
-                복사
-              </Button>
-            </p>
-            {remainingTime !== null && remainingTime > 0 ? (
-              <p className="absolute bottom-9 left-6 label2-regular text-gray-500">
-                참여 코드 만료 D-{formatSecondsToHHMMSS(remainingTime)}
+            <div className="flex items-center justify-between">
+              <p className="subtitle1-bold">참여 코드</p>
+              <div className="flex items-center gap-2">
+                <span className="subtitle2-regular">{joinCode}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCopy}
+                  className="flex items-center gap-1 cursor-pointer"
+                >
+                  <Copy className="w-4 h-4" />
+                  복사
+                </Button>
+              </div>
+            </div>
+
+            {remainingTime !== null && (
+              <p className="label2-regular text-gray-500">
+                참여 코드 만료 D-{formatSecondsToHHMMSS(Math.max(remainingTime, 0))}
               </p>
-            ) : (
-              <Button
-                variant="link"
-                onClick={handleRefresh}
-                className="absolute bottom-6 left-3 cursor-pointer label2-regular text-gray-500"
-              >
-                <RefreshCw className="w-3 h-3" /> 참여 코드가 만료되었습니다. 여기를 눌러 참여코드를
-                재발급 해주세요!
-              </Button>
             )}
           </>
         ) : (
@@ -86,8 +100,17 @@ const ProjectJoinCodeViewModalContent = ({ projectId }: ProjectJoinCodeViewModal
         )}
       </div>
 
-      <DialogFooter>
-        <Button onClick={resetModal} className="bg-boost-blue hover:bg-boost-hover cursor-pointer">
+      <DialogFooter className="flex w-full !justify-between gap-2">
+        <Button
+          variant="link"
+          onClick={handleRefresh}
+          disabled={isCreating}
+          className="cursor-pointer flex items-center gap-1 !pl-0 text-gray-600"
+        >
+          <RefreshCw className="w-4 h-4" />
+          {isCreating ? '참여 코드 재발급 중...' : '참여 코드 재발급'}
+        </Button>
+        <Button variant="defaultBoost" onClick={resetModal}>
           닫기
         </Button>
       </DialogFooter>
