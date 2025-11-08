@@ -82,6 +82,8 @@ export const useUploadFileMutation = () => {
           toast.error('PDF 파일만 업로드할 수 있습니다.');
         } else if (status === 403) {
           toast.error('담당자만 파일을 업로드할 수 있습니다.');
+        } else if (status === 413) {
+          toast.error('파일 크기가 너무 커서 업로드할 수 없습니다.');
         } else {
           toast.error('파일 업로드에 실패했습니다.');
         }

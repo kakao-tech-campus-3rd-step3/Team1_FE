@@ -6,12 +6,14 @@ import BooAlarmClick from '@/shared/assets/images/boost/boo-with-alarm.png';
 import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
-import { useCreatePushSessionMutation } from '@/features/notifications/hooks/useCreatePushSessionMutation';
+import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
 import toast from 'react-hot-toast';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { useNavigate } from 'react-router-dom';
-import { usePushSessionStatusQuery } from '@/features/notifications/hooks/usePushSessionStatusQuery';
-import { WebPushStatus } from '@/features/notifications/types/pushApiTypes';
+import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
+import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
+import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
+import BackButton from '@/shared/components/ui/BackButton';
 
 const INTERVAL_MS = 30 * 10000;
 
@@ -34,6 +36,7 @@ const AlarmSetupPage = () => {
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const [qrToken, setQrToken] = useState<string | null>(null);
   const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
+  const { mutate: enableServiceAlarm } = useEnableServiceAlarmMutation();
 
   // QR 데이터 URL 생성
   const qrData = qrToken
@@ -45,10 +48,12 @@ const AlarmSetupPage = () => {
     if (!statusData?.status) return;
     if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
+      enableServiceAlarm();
       toast.success('알림이 활성화되었습니다!');
       navigate(ROUTE_PATH.MY_TASK);
     }
-  }, [statusData, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusData?.status, navigate]);
 
   // 세션 생성 + 5분마다 갱신 + 카운트다운
   useEffect(() => {
@@ -84,6 +89,7 @@ const AlarmSetupPage = () => {
 
   return (
     <div className="flex flex-row h-screen overflow-hidden">
+      <BackButton to={ROUTE_PATH.AVATAR} className="absolute top-8 left-8 z-50" />
       {/* 왼쪽 알림 예시 */}
       <section
         aria-label="Notification examples"

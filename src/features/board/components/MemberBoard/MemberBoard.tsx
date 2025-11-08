@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MemberColumn from '@/features/board/components/MemberBoard/MemberColumn';
 import DoneColumn from '@/features/board/components/MemberBoard/DoneColumn';
 import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
@@ -10,6 +10,7 @@ import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProje
 import { useAuthStore } from '@/features/auth/store/authStore';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 interface MemberBoardProps {
   projectId?: string;
@@ -49,11 +50,7 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
   const handleMouseLeave = () => setIsBoardHover(false);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+    return <FullPageLoader />;
   }
 
   return (

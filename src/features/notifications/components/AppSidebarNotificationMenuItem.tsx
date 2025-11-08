@@ -20,7 +20,7 @@ const AppSidebarNotificationMenuItem = () => {
         <Tooltip>
           <DropdownMenuTrigger asChild>
             <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-              <SidebarMenuButton className="relative cursor-pointer">
+              <SidebarMenuButton className="relative cursor-pointer focus:ring-transparent">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
                   <Badge

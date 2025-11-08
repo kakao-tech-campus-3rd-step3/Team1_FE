@@ -24,11 +24,11 @@ export const formatTimeAgo = (createdAt: string) => {
   if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}시간 전`;
   return `${Math.floor(diff / 86_400_000)}일 전`;
 };
-//서버에서 받은 CommentType을 UI 전용 CommentUIType으로 변환하는 함수
 export const mapToUI = (comment: CommentType): CommentUIType => ({
   ...comment,
   author: comment.isAnonymous ? '익명' : comment.authorInfo.name,
   fallback: comment.isAnonymous ? '익' : comment.authorInfo.name.charAt(0),
   timeAgo: formatTimeAgo(comment.createdAt),
   isPinned: comment.fileInfo ? true : false,
+  persona: comment.persona,
 });

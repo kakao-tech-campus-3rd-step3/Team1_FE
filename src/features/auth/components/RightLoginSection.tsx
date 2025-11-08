@@ -7,27 +7,30 @@ interface RightLoginSectionProps {
 
 const RightLoginSection = ({ onClick }: RightLoginSectionProps) => {
   return (
-    <div className="flex-1 p-20 flex flex-col justify-center bg-white">
-      <div className="mb-12">
-        <h2 className="text-4xl font-extrabold mb-3 text-boost-blue-dark">환영합니다!</h2>
+    <div className="flex-1 p-10 md:p-20 flex flex-col justify-center bg-white">
+      <div className="mb-8 md:mb-12 text-center md:text-left">
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-2 md:mb-3 text-boost-blue-dark">
+          환영합니다!
+        </h2>
         <p className="text-gray-600 text-base leading-relaxed">
           Boost와 함께 새로운 경험을 시작해보세요.
           <br />
           카카오 계정으로 간편하게 시작할 수 있어요.
         </p>
       </div>
-      <div className="relative flex flex-col items-center mt-10">
+
+      <div className="relative flex flex-col items-center mt-8 md:mt-10">
         <BubbleDecoration />
         <KakaoLoginButton onClick={onClick} />
       </div>
 
-      <div className="flex items-center my-8">
+      <div className="flex items-center my-6 md:my-8">
         <div className="flex-1 h-px bg-gray-300" />
         <span className="px-4 label1-regular text-gray-400">간편 로그인</span>
         <div className="flex-1 h-px bg-gray-300" />
       </div>
 
-      <div className="bg-gray-200 p-5 rounded-xl">
+      <div className="bg-gray-200 p-4 md:p-5 rounded-xl">
         <p className="label1-regular text-gray-600 leading-relaxed">
           로그인 시{' '}
           <a

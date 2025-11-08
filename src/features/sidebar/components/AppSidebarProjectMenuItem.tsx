@@ -25,7 +25,10 @@ const AppSidebarProjectMenuItem = ({ item }: { item: SidebarItem }) => {
       <DropdownMenu>
         <Tooltip>
           <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-            <SidebarMenuButton asChild className="cursor-pointer">
+            <SidebarMenuButton
+              asChild
+              className="cursor-pointer focus:ring-transparent focus:bg-gray-300"
+            >
               <DropdownMenuTrigger>{item.icon}</DropdownMenuTrigger>
             </SidebarMenuButton>
           </TooltipTrigger>

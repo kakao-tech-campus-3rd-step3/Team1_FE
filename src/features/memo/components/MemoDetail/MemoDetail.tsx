@@ -1,8 +1,8 @@
-import { Loader2 } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { useMemoQuery } from '@/features/memo/hooks/useMemoQuery';
 import MemoDetailHeader from '@/features/memo/components/MemoDetail/MemoDetailHeader';
 import MemoDetailContent from '@/features/memo/components/MemoDetail/MemoDetailContent';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const MemoDetail = () => {
   const { projectId, memoId } = useParams<{ projectId: string; memoId: string }>();
@@ -12,11 +12,7 @@ const MemoDetail = () => {
   if (!memoId) return <div className="p-4">메모 ID를 찾을 수 없습니다.</div>;
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+    return <FullPageLoader />;
   }
 
   if (isError || !memo) {

@@ -6,13 +6,12 @@ export interface AuthorInfo {
   name: string;
   avatar: string;
   backgroundColor: string;
-  isAnonymous: boolean;
 }
 
 export interface CommentType {
   commentId: string;
   content: string;
-  persona: string;
+  persona: string | null;
   isAnonymous: boolean;
   fileInfo?: FileInfo | null;
   authorInfo: AuthorInfo;
@@ -25,4 +24,5 @@ export interface CommentUIType extends CommentType {
   timeAgo: string;
   isPinned?: boolean;
   commentId: string;
+  persona: string | null;
 }

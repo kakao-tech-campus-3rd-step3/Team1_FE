@@ -6,7 +6,7 @@ import type {
 import api from '@/shared/api/axiosInstance';
 
 export const notificationsApi = {
-  fetchNotifications: async (cursor?: string, limit = 10): Promise<NotificationsResponse> => {
+  fetchNotifications: async (cursor?: string, limit = 8): Promise<NotificationsResponse> => {
     const { data } = await api.get<NotificationsResponse>('/notifications', {
       params: { cursor, limit },
     });
@@ -33,5 +33,8 @@ export const notificationsApi = {
   fetchNotificationCounts: async (): Promise<NotificationCountsResponse> => {
     const { data } = await api.get('/notifications/count');
     return data;
+  },
+  markAllNotificationAsRead: async () => {
+    await api.patch('/notifications/read-all');
   },
 };

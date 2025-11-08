@@ -25,10 +25,10 @@ const EditField = ({ label, value, type = 'text', onSave }: EditFieldProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-1 border-b border-gray-300 pb-4">
+    <div className="flex flex-col gap-1 border-b border-gray-300 pb-2">
       <span className="subtitle1-bold">{label}</span>
       {editing ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Input
             type={type}
             value={inputValue}

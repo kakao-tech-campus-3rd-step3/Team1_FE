@@ -18,7 +18,7 @@ export const taskApi = {
   fetchMyTasksByStatus: async (
     cursor?: string,
     status?: string,
-    limit = 10,
+    limit = 8,
     sortBy: SortBy = SORT_BY.CREATED_AT,
     direction: Direction = DIRECTION.ASC,
     search?: string,
@@ -34,7 +34,7 @@ export const taskApi = {
     projectId: string,
     cursor?: string,
     status?: string,
-    limit = 10,
+    limit = 8,
     sortBy: SortBy = SORT_BY.CREATED_AT,
     direction: Direction = DIRECTION.ASC,
     search?: string,
@@ -50,7 +50,7 @@ export const taskApi = {
     projectId: string,
     memberId: string,
     cursor?: string,
-    limit = 10,
+    limit = 8,
     search?: string,
   ): Promise<MemberTaskListResponse> => {
     const res = await api.get<MemberTaskListResponse>(

@@ -5,10 +5,11 @@ import type { CommentType } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 import toast from 'react-hot-toast';
+
 // 댓글 생성
 export const useCreateCommentMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId);
 
   return useMutation<
@@ -31,13 +32,14 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
           name: commentData.isAnonymous ? '익명' : (user?.name ?? '사용자'),
           avatar: commentData.isAnonymous ? 'default' : (user?.avatar ?? 'default'),
           backgroundColor: '',
-          isAnonymous: commentData.isAnonymous,
         },
         createdAt: now,
         updatedAt: now,
+        isAnonymous: commentData.isAnonymous,
+        persona: commentData.persona,
       };
 
-      queryClient.setQueryData<CommentType[]>(queryKey, [tempComment, ...previous]);
+      queryClient.setQueryData<CommentType[]>(queryKey, [...previous, tempComment]);
       return { previous, queryKey: [...queryKey], tempId };
     },
 
@@ -54,7 +56,6 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
           name: res.authorInfo.name,
           avatar: res.authorInfo.avatar,
           backgroundColor: res.authorInfo.backgroundColor,
-          isAnonymous: commentData.isAnonymous,
         },
         createdAt: res.createdAt,
         updatedAt: res.updatedAt,

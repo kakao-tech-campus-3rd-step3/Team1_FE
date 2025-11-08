@@ -5,7 +5,7 @@ const ProjectManageBasicInfo = () => {
   const { projectData, updateProjectData } = useProjectStore();
 
   return (
-    <div className="flex-1 bg-gray-50 rounded-xl p-1 space-y-10">
+    <div className="flex-1 rounded-xl p-1 space-y-6 pt-3 pl-2">
       <EditField
         label="프로젝트 이름"
         value={projectData.name}

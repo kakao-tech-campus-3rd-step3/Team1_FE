@@ -1,5 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import { cn } from '@/shared/lib/utils';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
@@ -8,16 +7,18 @@ import { ReviewerActionButton } from '@/features/task-detail/components/TaskDeta
 import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
 import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
+import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import BackButton from '@/shared/components/ui/BackButton';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
 }
 
 const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
-  const navigate = useNavigate();
   const { resetAll } = useTaskDetailStore();
   const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
+  const resetAiComment = useAiTransformStore((state) => state.reset);
 
   const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
@@ -40,23 +41,21 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
 
   return (
     <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
-      <div className="flex items-center gap-3 font-semibold text-lg truncate max-w-xs">
-        <ChevronLeft
-          size={30}
-          strokeWidth={1}
-          className="cursor-pointer p-1"
-          onClick={() => {
+      <div className="flex items-center gap-3 font-semibold text-lg">
+        <BackButton
+          onBack={() => {
             resetAll();
-            navigate(-1);
+            resetAiComment();
           }}
         />
+
         {task.title}
       </div>
 
       {task.requiredReviewerCount > 0 && (
         <>
           {isAssignee ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 bg-transparent">
               <div
                 className={cn(
                   'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
