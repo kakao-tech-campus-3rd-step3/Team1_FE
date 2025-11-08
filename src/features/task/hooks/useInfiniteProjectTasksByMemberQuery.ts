@@ -23,7 +23,7 @@ export const useInfiniteProjectTasksByMemberQuery = (
         projectId,
         memberId,
         typeof pageParam === 'string' ? pageParam : undefined,
-        10,
+        6,
         search,
       ),
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
