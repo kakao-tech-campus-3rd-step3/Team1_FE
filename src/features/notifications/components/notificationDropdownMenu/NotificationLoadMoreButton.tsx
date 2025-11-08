@@ -15,7 +15,7 @@ const NotificationLoadMoreButton = ({ isFetching, onClick }: NotificationLoadMor
         onClick={onClick}
         disabled={isFetching}
       >
-        {isFetching ? <InlineLoader size={4}/> : '더 보기'}
+        {isFetching ? <InlineLoader size={4} /> : '더 보기'}
       </Button>
     </div>
   );

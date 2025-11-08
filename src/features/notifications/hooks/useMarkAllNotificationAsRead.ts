@@ -8,7 +8,7 @@ export const useMarkAllNotificationAsRead = () => {
 
   return useMutation({
     mutationFn: notificationsApi.markAllNotificationAsRead,
-    
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_QUERY_KEYS.all });
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_QUERY_KEYS.counts });

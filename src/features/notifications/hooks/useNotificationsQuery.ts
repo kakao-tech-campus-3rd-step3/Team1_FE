@@ -12,7 +12,7 @@ export const useNotificationsQuery = () => {
     },
 
     initialPageParam: undefined,
-    
+
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
   });
 };

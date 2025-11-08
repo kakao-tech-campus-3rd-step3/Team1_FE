@@ -9,7 +9,7 @@ export const useEnableServiceAlarmMutation = () => {
     onSuccess: () => {
       toast.success('이제 웹푸시를 받아볼 수 있습니다.');
     },
-    
+
     onError: () => {
       toast.error('설정 페이지에서 웹푸시 알림을 켤 수 있습니다.');
     },
