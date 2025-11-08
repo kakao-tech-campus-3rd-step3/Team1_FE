@@ -22,13 +22,13 @@ import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 interface MemberColumnProps {
   projectId: string;
   member: MemberWithBoosting;
+  isAllScoreZero: boolean;
 }
 
-const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
+const MemberColumn = ({ projectId, member, isAllScoreZero }: MemberColumnProps) => {
   const [isProfileCollapsible, setIsProfileCollapsible] = useState(false);
   const [isMouseInside, setIsMouseInside] = useState(false);
   const currentUser = useAuthStore((state) => state.user);
-
   const { selectedTags } = useTagFilterStore();
 
   const { data: memberTaskCountMap } = useProjectTaskCountByMemberQuery(projectId);
@@ -96,7 +96,7 @@ const MemberColumn = ({ projectId, member }: MemberColumnProps) => {
           }}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {member.rank === 1 && (
+          {member.rank === 1 && !isAllScoreZero && (
             <motion.img
               src={Crown}
               alt="1st"
