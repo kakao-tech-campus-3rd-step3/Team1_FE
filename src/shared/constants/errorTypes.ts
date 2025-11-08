@@ -3,7 +3,7 @@ export const ERROR = {
   TASK: {
     RE_REVIEW_COOLDOWN: {
       type: 'urn:problem:task_re_review_cooldown',
-      code: 400,
+      status: 400,
       detail: '재검토 요청은 10분 간격으로만 가능합니다.',
     },
   },
@@ -12,7 +12,7 @@ export const ERROR = {
   MEMBER: {
     ALREADY_JOINED: {
       type: 'urn:problem:member_already_joined',
-      code: 409,
+      status: 409,
       detail: '이미 참여한 멤버입니다.',
     },
   },
@@ -21,12 +21,12 @@ export const ERROR = {
   JOIN_CODE: {
     NOT_FOUND: {
       type: 'urn:problem:join_code_not_found',
-      code: 404,
+      status: 404,
       detail: '참가 코드를 찾을 수 없습니다.',
     },
     EXPIRED: {
       type: 'urn:problem:join_code_expired', // 확인 필요
-      code: 400,
+      status: 400,
       detail: '만료된 참가 코드입니다.',
     },
   },
@@ -35,8 +35,17 @@ export const ERROR = {
   USER: {
     HAS_OWNED_PROJECTS: {
       type: 'urn:problem:member_has_owned_projects',
-      code: 409,
+      status: 409,
       detail: '소유한 프로젝트가 있어 탈퇴할 수 없습니다. 프로젝트를 먼저 삭제해주세요.',
+    },
+  },
+
+  // AI 관련
+  AI: {
+    SERVICE_ERROR: {
+      type: 'urn:problem:ai_service_error',
+      status: 500,
+      detail: 'AI 서비스 처리 중 오류가 발생했습니다.',
     },
   },
 } as const;

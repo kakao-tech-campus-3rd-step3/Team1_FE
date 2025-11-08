@@ -32,6 +32,7 @@ const TagInput = ({
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -40,7 +41,7 @@ const TagInput = ({
   const filteredTags = allTags.filter((t) => t.name.toLowerCase().includes(normalizedInput));
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && normalizedInput) {
+    if (e.key === 'Enter' && normalizedInput && !isComposing) {
       e.preventDefault();
       const existing = allTags.find((t) => t.name.toLowerCase() === normalizedInput);
 
@@ -106,6 +107,8 @@ const TagInput = ({
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
           onFocus={() => setIsFocused(true)}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={handleKeyDown}
           placeholder={tags.length === 0 ? '태그 입력 후 Enter' : ''}
           disabled={disabled}

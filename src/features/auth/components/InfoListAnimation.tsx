@@ -11,7 +11,7 @@ const boostInfo = [
 
 const InfoListAnimation = () => {
   return (
-    <div className="flex flex-col space-y-3 mt-8 w-full max-w-sm mx-auto pl-12">
+    <div className="flex flex-col space-y-3 mt-8 w-full max-w-sm mx-auto pl-12 ml-8 md:ml-2">
       {boostInfo.map((info, index) => (
         <motion.div
           key={info.title}

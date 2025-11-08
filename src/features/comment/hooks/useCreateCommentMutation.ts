@@ -5,10 +5,11 @@ import type { CommentType } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 import toast from 'react-hot-toast';
+
 // 댓글 생성
 export const useCreateCommentMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const queryKey = COMMENT_QUERY_KEYS.list(projectId, taskId);
 
   return useMutation<
@@ -37,7 +38,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
         updatedAt: now,
       };
 
-      queryClient.setQueryData<CommentType[]>(queryKey, [tempComment, ...previous]);
+      queryClient.setQueryData<CommentType[]>(queryKey, [...previous, tempComment]);
       return { previous, queryKey: [...queryKey], tempId };
     },
 

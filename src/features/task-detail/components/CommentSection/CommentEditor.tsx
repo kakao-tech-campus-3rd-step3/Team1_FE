@@ -20,6 +20,7 @@ interface CommentEditorProps {
 
 const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   const [input, setInput] = useState('');
+  const [isComposing, setIsComposing] = useState(false);
   const {
     isAnonymous,
     setIsAnonymous,
@@ -47,6 +48,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
 
   const setOriginalText = useAiTransformStore((state) => state.setOriginalText);
   const selectedText = useAiTransformStore((state) => state.selectedText);
+  const resetAiComment = useAiTransformStore((state) => state.reset);
 
   useEffect(() => {
     if (selectedText) setInput(selectedText);
@@ -79,6 +81,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
 
     setInput('');
     setCurrentPin(null);
+    resetAiComment();
   };
 
   const handleCancelEdit = () => {
@@ -118,8 +121,10 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
           placeholder={editingComment ? '댓글 수정중..' : '댓글을 입력해주세요'}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
               e.preventDefault();
               handleSubmit();
             }

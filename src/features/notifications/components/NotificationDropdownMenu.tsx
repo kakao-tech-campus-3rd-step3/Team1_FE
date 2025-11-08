@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/utils';
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 interface NotificationDropdownMenuProps {
   notifications: NotificationItem[];
@@ -141,7 +142,7 @@ const NotificationDropdownMenu = ({
                   onClick={fetchNextPage}
                   disabled={isFetchingNextPage}
                 >
-                  {isFetchingNextPage ? '불러오는 중...' : '더 보기'}
+                  {isFetchingNextPage ? <InlineLoader size={4} /> : '더 보기'}
                 </Button>
               </div>
             )}

@@ -16,8 +16,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-gradient-to-br from-boost-blue/10 via-boost-blue/5 to-white">
-      <div className="flex overflow-hidden w-full max-w-5xl h-[580px] bg-white rounded-3xl shadow-[0_3px_20px_rgb(0,0,0,0.1)]">
+    <div className="flex flex-col md:flex-row min-h-screen items-center justify-center p-4 bg-gradient-to-br from-boost-blue/10 via-boost-blue/5 to-white">
+      <div className="flex flex-col md:flex-row overflow-hidden w-full max-w-5xl h-auto md:h-[580px] bg-white rounded-3xl shadow-[0_3px_20px_rgb(0,0,0,0.1)]">
         <LeftInfoSection />
         <RightLoginSection onClick={handleKakaoLogin} />
       </div>

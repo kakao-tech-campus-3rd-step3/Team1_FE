@@ -4,7 +4,7 @@ import MemoListHeader from '@/features/memo/components/MemoList/MemoListHeader';
 import MemoTable from '@/features/memo/components/MemoList/MemoTable';
 import { useNavigate } from 'react-router-dom';
 import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
-import { Loader2 } from 'lucide-react';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 interface MemoListProps {
   projectId: string;
@@ -65,11 +65,7 @@ const MemoList = ({ projectId, onSelectMemo }: MemoListProps) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+    return <FullPageLoader text="메모 목록 불러오는 중.." />;
   }
 
   return (
