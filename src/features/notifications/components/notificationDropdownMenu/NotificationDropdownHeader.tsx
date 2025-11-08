@@ -16,8 +16,10 @@ const NotificationDropdownHeader = ({
 
       {unreadCount ? (
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500">안읽음 {unreadCount}</span>
-          <Button onClick={onMarkAll}>모두 읽음</Button>
+          <span className="label2-regular text-gray-500">안읽음 {unreadCount}</span>
+          <Button variant="defaultBoost" onClick={onMarkAll} className="label2-regular px-3 py-0">
+            모두 읽음
+          </Button>
         </div>
       ) : null}
     </DropdownMenuLabel>
