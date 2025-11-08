@@ -17,31 +17,31 @@ interface OverlayProps {
 const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
   const { pins, currentPin, selectedFile, setSelectedCommentId } = useTaskDetailStore();
   const pinList = pins as PinWithAuthor[];
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>
       {pinList
-        .filter((m) => m.fileId === selectedFile?.fileId && m.filePage === pageNumber)
-        .map((m) => {
-          const left = (m.fileX ? m.fileX / pageSize.width : 0) * 100;
-          const top = 100 - (m.fileY ? m.fileY / pageSize.height : 0) * 100;
-          const isAnonymous = m.isAnonymous;
+        .filter((pin) => pin.fileId === selectedFile?.fileId && pin.filePage === pageNumber)
+        .map((pin) => {
+          const left = (pin.fileX ? pin.fileX / pageSize.width : 0) * 100;
+          const top = 100 - (pin.fileY ? pin.fileY / pageSize.height : 0) * 100;
+          const isAnonymous = pin.isAnonymous;
 
           return (
             <div
               key={uuidv4()}
               onClick={(e) => {
                 e.stopPropagation();
-                if (m.commentId) setSelectedCommentId(m.commentId);
+                if (pin.commentId) setSelectedCommentId(pin.commentId);
               }}
               className={cn(
                 'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200',
                 isAnonymous ? 'bg-gray-500 border-gray-500' : '',
               )}
               style={{
-                backgroundColor: !isAnonymous ? m.author?.backgroundColor : undefined,
-                borderColor: !isAnonymous ? m.author?.backgroundColor : undefined,
+                backgroundColor: !isAnonymous ? pin.author?.backgroundColor : undefined,
+                borderColor: !isAnonymous ? pin.author?.backgroundColor : undefined,
                 left: `${left}%`,
                 top: `${top}%`,
                 transform: `translate(50%, -120%) scale(${zoom})`,
@@ -51,21 +51,23 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
                 <User className="text-white w-3.5 h-3.5 rotate-[45deg]" />
               ) : (
                 <img
-                  src={getAvatarSrc({ avatar: m.author?.avatar })}
-                  style={{ backgroundColor: m.author?.backgroundColor }}
-                  alt={m.author?.name ?? 'avatar'}
+                  src={getAvatarSrc({ avatar: pin.author?.avatar })}
+                  style={{ backgroundColor: pin.author?.backgroundColor }}
+                  alt={pin.author?.name ?? 'avatar'}
                   className="w-6 h-6 object-cover rotate-[45deg]"
                 />
               )}
             </div>
           );
         })}
+
       {currentPin &&
         currentPin.filePage === pageNumber &&
         (() => {
           const left = (currentPin.fileX ? currentPin.fileX / pageSize.width : 0) * 100;
           const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
           const isAnonymous = user?.isAnonymous;
+
           return (
             <div
               className={cn(
