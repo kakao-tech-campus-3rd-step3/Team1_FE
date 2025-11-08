@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Loader2, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useProjectFilesQuery } from '@/features/file/hooks/useProjectFilesQuery';
 import { Button } from '@/shared/components/shadcn/button';
 import { Table } from '@/shared/components/shadcn/table';
@@ -7,18 +7,15 @@ import FileTableInfo from '@/features/file/components/FileTableInfo';
 import FileTableHeader from '@/features/file/components/FileTableHeader';
 import FileTableBody from '@/features/file/components/FileTableBody';
 import FileTableEmpty from '@/features/file/components/FileTableEmpty';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
     useProjectFilesQuery(projectId!);
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+  if (isLoading) return <FullPageLoader />;
 
   if (error) return <p className="text-red-500 text-center">파일을 불러오지 못했습니다.</p>;
 
@@ -44,14 +41,7 @@ const FileSection = () => {
         </div>
       </div>
 
-      {isFetchingNextPage && (
-        <div className="flex justify-center py-4">
-          <div className="flex items-center gap-2 text-gray-600 bg-white px-6 py-2.5 rounded-full shadow-sm">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-sm font-medium">불러오는 중...</span>
-          </div>
-        </div>
-      )}
+      {isFetchingNextPage && <InlineLoader size={5} />}
 
       {hasNextPage && !isFetchingNextPage && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2">

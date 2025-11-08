@@ -4,8 +4,8 @@ import ProjectHeader from '@/features/project/components/ProjectPageComponents/P
 import ProjectTopTab from '@/features/project/components/ProjectPageComponents/ProjectTopTab';
 import { Separator } from '@/shared/components/shadcn/separator';
 import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
-import { Loader2 } from 'lucide-react';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 const ProjectPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -16,12 +16,7 @@ const ProjectPage = () => {
     if (project) setProjectData(project);
   }, [project, setProjectData]);
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
-      </div>
-    );
+  if (isLoading) return <FullPageLoader text="프로젝트 불러오는 중.." />;
 
   if (isError || !project)
     return (

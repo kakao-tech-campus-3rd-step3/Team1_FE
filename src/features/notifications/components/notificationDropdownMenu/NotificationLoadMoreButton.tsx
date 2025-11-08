@@ -1,4 +1,5 @@
 import { Button } from '@/shared/components/shadcn/button';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 export interface NotificationLoadMoreButtonProps {
   isFetching: boolean;
@@ -14,7 +15,7 @@ const NotificationLoadMoreButton = ({ isFetching, onClick }: NotificationLoadMor
         onClick={onClick}
         disabled={isFetching}
       >
-        {isFetching ? '불러오는 중...' : '더 보기'}
+        {isFetching ? <InlineLoader size={4}/> : '더 보기'}
       </Button>
     </div>
   );

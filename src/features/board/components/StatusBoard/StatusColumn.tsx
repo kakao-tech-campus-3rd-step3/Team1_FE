@@ -7,6 +7,7 @@ import { type TaskQuery } from '@/features/task/types/taskTypes';
 import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 import { useStatusTaskCountQueries } from '@/features/board/hooks/useStatusTaskCountQueries';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 interface StatusColumnProps {
   column: Column;
@@ -79,9 +80,7 @@ const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
               />
             );
           })}
-          {isFetchingNextPage && (
-            <div className="text-center text-sm text-gray-500 py-2">Loading...</div>
-          )}
+          {isFetchingNextPage && <InlineLoader size={5} />}
         </SortableContext>
       </div>
     </div>
