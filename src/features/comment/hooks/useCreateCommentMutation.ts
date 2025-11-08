@@ -36,6 +36,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
         createdAt: now,
         updatedAt: now,
         isAnonymous: commentData.isAnonymous,
+        persona: commentData.persona,
       };
 
       queryClient.setQueryData<CommentType[]>(queryKey, [...previous, tempComment]);
