@@ -27,7 +27,7 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
 
   const { data: task } = useTaskDetailQuery(projectId, taskId);
-  const { pins, clearCurrentPin, currentPin } = useTaskDetailStore();
+  const { pins, clearCurrentPin, currentPin, persona } = useTaskDetailStore();
   const { commentSelect } = useCommentSelect();
 
   /** 핀 클릭 시 PDF 위치 이동 */
@@ -59,10 +59,9 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
     const newComment = {
       content: data.content,
       isAnonymous: data.isAnonymous,
-      persona: 'BOO' as const,
+      persona: persona,
       ...(resolvedFileInfo ? { fileInfo: resolvedFileInfo } : {}),
     };
-
     createComment({ commentData: newComment });
     clearCurrentPin();
   };
