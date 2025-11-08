@@ -1,5 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import { cn } from '@/shared/lib/utils';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
@@ -9,13 +8,13 @@ import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
 import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import BackButton from '@/shared/components/ui/BackButton';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
 }
 
 const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
-  const navigate = useNavigate();
   const { resetAll } = useTaskDetailStore();
   const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
@@ -40,21 +39,16 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
     initialApprovedByMe: task.approvedByMe,
   });
 
-  const handleBackClick = () => {
-    resetAll();
-    resetAiComment();
-    navigate(-1);
-  };
-
   return (
     <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
       <div className="flex items-center gap-3 font-semibold text-lg">
-        <ChevronLeft
-          size={30}
-          strokeWidth={1}
-          className="cursor-pointer p-1 "
-          onClick={() => handleBackClick()}
+        <BackButton
+          onBack={() => {
+            resetAll();
+            resetAiComment();
+          }}
         />
+
         {task.title}
       </div>
 

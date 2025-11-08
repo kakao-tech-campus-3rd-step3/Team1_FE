@@ -2,7 +2,6 @@
   <img src="https://github.com/daaoooy/boost-assets/blob/main/assets/thumbnail/default-thumbnail.png" alt="썸네일" width="100%" style="max-width: 1200px; margin-bottom: 30px;"/>
 </div>
 
-
 <br/>
 <br/>
 <br/>
@@ -22,23 +21,22 @@
 
   <div>
 
-  | 💡 **B**etter | 💬 **O**pinion | 📂 **O**rganize | ✨ **S**imple | 🤝 **T**ogether |
-  |-----------|------------|-------------|-----------|------------|
-  | 더 나은 성장과 개선 | 솔직한 의견 공유 | 체계적 관리와 정리 | 누구나 쉽게 사용 가능 | 함께 만드는 협업 경험 |
+| 💡 **B**etter       | 💬 **O**pinion   | 📂 **O**rganize    | ✨ **S**imple         | 🤝 **T**ogether       |
+| ------------------- | ---------------- | ------------------ | --------------------- | --------------------- |
+| 더 나은 성장과 개선 | 솔직한 의견 공유 | 체계적 관리와 정리 | 누구나 쉽게 사용 가능 | 함께 만드는 협업 경험 |
 
   <p>BOOST는 대학생 팀 프로젝트에서 더 나은 성장을 돕고, 솔직한 의견을 자유롭게 나누며, <br/> 체계적인 관리와 누구나 쉽게 접근 가능한 환경 속에서 팀원 모두가 함께 협업할 수 있게 만들어주는 협업 툴입니다.</p>
   </div>
 </div>
 
-
 <br/>
 <br/>
 <br/>
 <br/>
-
 
 
 ## 🚀 프로젝트 소개
+
 - 대학생 팀 프로젝트를 보다 효율적이고 체계적으로 관리할 수 있도록 돕는 협업 툴입니다.
 - 칸반(Kanban) 보드 형태의 직관적인 인터페이스를 제공하여, 팀원들은 할 일을 쉽게 테스크(Task)로 만들고 담당자를 지정할 수 있습니다.
 - 작업물이 업로드되면 팀원들이 확인하고 승인할 수 있으며, 원하는 부분에 마커를 달아 구체적인 피드백을 남길 수도 있습니다.
@@ -47,13 +45,14 @@
 <br/>
 
 ## 🗓️ 개발 기간
+
 2025/09 ~ 2025/11 (약 3개월)
 
 <br/>
 
-##  🔗 배포 주소
+## 🔗 배포 주소
+
 > **BOOST** https://boost.ai.kr/
-> 
 
 <br/>
 <br/>
@@ -73,6 +72,7 @@
 <br/>
 
 ## 📍 시작하기 (Start Guide)
+
 ```
 git clone https://github.com/kakao-tech-campus-3rd-step3/Team1_FE.git
 cd Team1_FE
@@ -83,85 +83,92 @@ pnpm run dev
 <br/>
 <br/>
 
-
 ## 🛠️ 채택한 개발 기술 (Technology Stack)
+
 > [기술 스택 선정 과정 (Notion)](https://teamsparta.notion.site/25f2dc3ef514806089c5f86a8d583bda?source=copy_link)
 
 이번 프로젝트에서는 다음 기술들을 선택했습니다.
-                                                                                                                                                                                          |
+|
 
-| 구분 | 기술 / 사용 도구 |
-|------|----------------|
-| **개발 언어** | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) |
-| **UI 라이브러리** | ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white) |
-| **스타일링** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)<br>![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logoColor=white) |
-| **클라이언트 상태 관리** | ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logoColor=white) |
-| **서버 상태 관리** | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white) |
-| **라우팅** | ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) |
-| **애니메이션 라이브러리** | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white) |
+| 구분                      | 기술 / 사용 도구                                                                                                                                                                                                                                                                                                           |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **개발 언어**             | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)                                                                                                                                                                                                          |
+| **UI 라이브러리**         | ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)                                                                                                                                                                                                                         |
+| **스타일링**              | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)<br>![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logoColor=white)                                                                                                 |
+| **클라이언트 상태 관리**  | ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logoColor=white)                                                                                                                                                                                                                                |
+| **서버 상태 관리**        | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)                                                                                                                                                                                                       |
+| **라우팅**                | ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)                                                                                                                                                                                                    |
+| **애니메이션 라이브러리** | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)                                                                                                                                                                                                        |
 | **개발 환경 / 버전 관리** | ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)<br>![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)<br>![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
-| **협업 도구** | ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)<br>![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white) |
-| **패키지 / 빌드** | ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)<br>![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=yellow) |
-| **배포** | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white) |
-| **CI/CD** | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github&logoColor=white) |
-
-
+| **협업 도구**             | ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)<br>![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)                                                                                                                |
+| **패키지 / 빌드**         | ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)<br>![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=yellow)                                                                                                                        |
+| **배포**                  | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)                                                                                                                                                                                                                      |
+| **CI/CD**                 | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github&logoColor=white)                                                                                                                                                                                                      |
 
 <br/>
 
 ### **React & TypeScript**
+
 - 컴포넌트 기반 설계로 재사용성이 높고, 협업 시 타입 안정성을 확보할 수 있기 때문에 선정하게 되었습니다.
 - 타입 오류 덕분에 버그를 초기에 발견할 수 있었고, 코드 이해도가 높아져서 팀원 간 협업이 수월했습니다. TypeScript는 초반 러닝커브가 존재해서 조금 힘들었지만, 사용에 익숙해지면서 유지보수와 확장성이 크게 개선됨을 느꼈습니다.
 
 <br/>
 
 ### **Vite**
+
 - 빠른 빌드와 안정적인 HMR 제공하며 Create React App 대비 빌드 속도가 빠르다고 하여 선정하게 되었습니다. 기존에 늘 사용했던 빌드 툴이라 선정하게 되었습니다.
 
 <br/>
 
 ### **TailwindCSS & shadcn UI**
-- TailwindCSS의 유틸리티 기반 클래스는 빠른 스타일링과 디자인 일관성을 제공하며, shadcn UI의 컴포넌트를 적극 활용하면 UI 구현 속도를 극대화할 수 있을 것 같아 선정했습니다. 
-- 유틸리티 클래스와 미리 정의된 UI 컴포넌트 덕분에 페이지 개발 시간을 매우 단축할 수 있었고, 디자인 일관성도 유지할 수 있었습니다. 
+
+- TailwindCSS의 유틸리티 기반 클래스는 빠른 스타일링과 디자인 일관성을 제공하며, shadcn UI의 컴포넌트를 적극 활용하면 UI 구현 속도를 극대화할 수 있을 것 같아 선정했습니다.
+- 유틸리티 클래스와 미리 정의된 UI 컴포넌트 덕분에 페이지 개발 시간을 매우 단축할 수 있었고, 디자인 일관성도 유지할 수 있었습니다.
 
 <br/>
 
 ### **Zustand**
-- 간단한 전역 상태 관리에 최적화 되어 있어서 UI 상태 관리를 편하게 할 수 있을 것 같아 선정했습니다. 또한 직관적인 느낌이라 러닝커브 낮을 것 같아 고르게 되었습니다.  
+
+- 간단한 전역 상태 관리에 최적화 되어 있어서 UI 상태 관리를 편하게 할 수 있을 것 같아 선정했습니다. 또한 직관적인 느낌이라 러닝커브 낮을 것 같아 고르게 되었습니다.
 - 전역 상태 관리가 간단하고, 프로젝트 규모가 커져도 구조가 깨지지 않아 편리했습니다. 하지만 전역 상태를 과도하게 사용하면 상태 추적 및 디버깅이 어려워진다는 것을 직접.. 느꼈습니다.
 
 <br/>
 
 ### **TanStack Query**
+
 - 서버 데이터 캐싱과 상태 관리가 간편하기 때문에 선정했습니다. 또한 zustand와 함께 사용하여 프론트 상태와 서버 상태를 명확히 분라하면서도 복잡한 API 통신과 상태 동기화 문제를 해결해보고자 선정하게 되었습니다.
 - API 요청 최적화, 로딩/에러 상태 처리 간편했고 비동기 코드 작성 시 실수를 줄일 수 있었습니다. 캐싱 및 로딩/에러 처리도 쉽게 구현할 수 있었습니다. 하지만, 상태 구조가 점점 커지면서 상태 설계 및 패턴을 잘 잡아야 함을 느꼈습니다.
 
 <br/>
 
 ### **Framer Motion**
+
 - UI/UX 품질 향상을 위해서 애니메이션과 인터랙션이 필요했는데, Framer Motion이 간단하게 이를 해결할 수 있을 것 같아 선정하게 되었습니다.
-- 화면 전환, 버튼 인터랙션 등 애니메이션 구현이 어렵지 않아 만족도가 높았습니다.  
+- 화면 전환, 버튼 인터랙션 등 애니메이션 구현이 어렵지 않아 만족도가 높았습니다.
 
 <br/>
 
 ### **dnd-kit**
+
 - 다양한 드래그 앤 드랍 라이브러리 중 가장 공식 문서가 잘 나와있는 느낌을 받았습니다. 처음 구현해보는 기능이었어서 사용이 직관적이고 자료가 많은 라이브러리를 선택하게 되었습니다.
 - 사용 방법이 직관적이서 어렵지 않았고, 인지도도 어느정도 있는 라이브러리라 자료들도 많아서 좋았습니다.
 
 <br/>
 
 ### **pnpm**
-- 초기에 npm으로 선정하였다가 pnpm이 빠른 설치, 경량화된 의존성 관리를 지원한다고 하여 선정하게 되었습니다.  
-- npm이나 yarn에 비해 덜 대중적이라 그런지 비교적 자료가 적었지만 빠른 설치가 장점이었습니다.
 
+- 초기에 npm으로 선정하였다가 pnpm이 빠른 설치, 경량화된 의존성 관리를 지원한다고 하여 선정하게 되었습니다.
+- npm이나 yarn에 비해 덜 대중적이라 그런지 비교적 자료가 적었지만 빠른 설치가 장점이었습니다.
 
 <br/>
 <br/>
 
 ## 🔃 협업 룰, 컨벤션, 브랜치 전략 (Rule, Convention, Git Branch Strategy)
+
 > [작업 분배 진행 과정 - ISSUE List (Notion)](https://teamsparta.notion.site/Issue-List-2732dc3ef514805dac50ede33a6f55a2?source=copy_link)
 
 ### 협업 룰
+
 - PR 제목은 **커밋 컨벤션 + 간단 설명** 형식
 - 코드 리뷰 시 **Approve / Request Changes**로 피드백
 - 기능 구현 시 **작은 단위로 commit & PR**
@@ -171,9 +178,10 @@ pnpm run dev
 <br/>
 
 ### 리뷰 규칙
+
 ```
 ### 😊 리뷰 규칙을 지킵시다
-코드 리뷰는 `Pn`룰에 따라 작성하기.   
+코드 리뷰는 `Pn`룰에 따라 작성하기.
 Reviewer가 피드백을 남길 때 Assignee에게 얼마나 해당 피드백에 대해 강조하고 싶은 지 표현하기 위한 규칙입니다.
 - `P1` : 꼭 반영해 주세요 (Request Changes) - 이슈가 발생하거나 취약점이 발견되는 케이스 등
 - `P2` : 반영을 적극적으로 고려해 주시면 좋을 것 같아요 (Comment)
@@ -183,6 +191,7 @@ Reviewer가 피드백을 남길 때 Assignee에게 얼마나 해당 피드백에
 <br/>
 
 ### 커밋 컨벤션
+
 > [Gitmoji](https://gitmoji.dev/)
 
 ```
@@ -191,30 +200,30 @@ Reviewer가 피드백을 남길 때 Assignee에게 얼마나 해당 피드백에
 <상세 설명>
 ```
 
-
-| 이모지 | 의미 | 예시 |
-|--------|------|------|
-| 🎨 | UI / 디자인 개선 | `🎨 버튼 색상 변경` |
-| ✨ | 새로운 기능 추가 | `✨ 팀원 보드 추가` |
-| 🐛 | 버그 수정 | `🐛 알람 버그 수정` |
-| 🔥 | 코드 제거 | `🔥 불필요한 콘솔 로그 제거` |
-| ♻️ | 리팩토링 | `♻️ 칸반 컴포넌트 구조 변경` |
-| ✅ | 테스트 추가 | `✅ TaskDetail 테스트 추가` |
-| 📦 | 패키지 / 의존성 변경 | `📦 pnpm 패키지 업데이트` |
+| 이모지 | 의미                 | 예시                         |
+| ------ | -------------------- | ---------------------------- |
+| 🎨     | UI / 디자인 개선     | `🎨 버튼 색상 변경`          |
+| ✨     | 새로운 기능 추가     | `✨ 팀원 보드 추가`          |
+| 🐛     | 버그 수정            | `🐛 알람 버그 수정`          |
+| 🔥     | 코드 제거            | `🔥 불필요한 콘솔 로그 제거` |
+| ♻️     | 리팩토링             | `♻️ 칸반 컴포넌트 구조 변경` |
+| ✅     | 테스트 추가          | `✅ TaskDetail 테스트 추가`  |
+| 📦     | 패키지 / 의존성 변경 | `📦 pnpm 패키지 업데이트`    |
 
 <br/>
 
 ### **브랜치 전략**
-| 브랜치 | 용도 | 설명 |
-|--------|------|------|
-| `main` | 배포용 | 항상 안정된 버전 유지 |
-| `develop` | 개발 통합 | 기능 완료 후 merge |
-| `feature/#이슈-<이름>` | 기능 개발 | 새로운 기능 개발 시 사용 |
-| `refactor/#이슈-<이름>` | 코드 리팩토링 | 코드 리팩토링 시 사용 |
-| `fix/#이슈-<이름>` | 버그 수정 | 버그 발생 해결 시 사용 |
-| `style/#이슈-<이름>` | 코드 포맷 / 스타일 | 스타일 수정 및 코드 포맷시 사용 |
-| `test/#이슈-<이름>` | 테스트 코드 | 테스트 코드 작성 시 사용 |
-| `deploy/#이슈-<이름>` | 배포 관련 | 배포 관련 작업 시 사용 |
+
+| 브랜치                  | 용도               | 설명                            |
+| ----------------------- | ------------------ | ------------------------------- |
+| `main`                  | 배포용             | 항상 안정된 버전 유지           |
+| `develop`               | 개발 통합          | 기능 완료 후 merge              |
+| `feature/#이슈-<이름>`  | 기능 개발          | 새로운 기능 개발 시 사용        |
+| `refactor/#이슈-<이름>` | 코드 리팩토링      | 코드 리팩토링 시 사용           |
+| `fix/#이슈-<이름>`      | 버그 수정          | 버그 발생 해결 시 사용          |
+| `style/#이슈-<이름>`    | 코드 포맷 / 스타일 | 스타일 수정 및 코드 포맷시 사용 |
+| `test/#이슈-<이름>`     | 테스트 코드        | 테스트 코드 작성 시 사용        |
+| `deploy/#이슈-<이름>`   | 배포 관련          | 배포 관련 작업 시 사용          |
 
 > 💡 PR은 반드시 리뷰 후 merge 진행
 
@@ -248,6 +257,7 @@ BOOST 프로젝트의 특성과 팀 협업 방식을 고려하여 약간 변형�
 <br/>
 
 **👀 폴더 구조 한눈에 보기**
+
 ```
 public/
 src/
@@ -309,7 +319,6 @@ src/
 
 <br/>
 <br/>
-
 
 ## ✨ 주요 기능 (Key features)
 
@@ -423,9 +432,6 @@ src/
 <br/>
 <br/>
 
-
-
-
 ## 🎨 브랜딩 및 디자인 (Branding & Design)
 
 <img width="1732" height="921" alt="디자인 시스템" src="https://github.com/daaoooy/boost-assets/blob/main/assets/design-system/design-system.png" />
@@ -457,7 +463,8 @@ src/
 
 <br/>
 
-### 캐릭터 (Charactor) 
+### 캐릭터 (Charactor)
+
 > **Name**: Boo (부)
 
 | <img width="740" height="740" alt="boo-front" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-front.png" /> | <img width="740" height="740" alt="boo-left" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-left.png" /> | <img width="740" height="740" alt="boo-back" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-back.png" /> | <img width="740" height="740" alt="boo-right" src="https://github.com/daaoooy/boost-assets/blob/main/assets/charactor/boo-right.png" /> |
@@ -473,6 +480,7 @@ src/
 <br/>
 
 ## 🔍 라이선스
+
 본 서비스는 다음 오픈소스 라이선스를 포함합니다
 Avatars by Stefanie – Licensed underCC BY 4.0
 

@@ -28,6 +28,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     setEditingComment,
     currentPin,
     setCurrentPin,
+    setPersona,
   } = useTaskDetailStore();
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     setInput('');
     setCurrentPin(null);
     resetAiComment();
+    setPersona(null);
   };
 
   const handleCancelEdit = () => {

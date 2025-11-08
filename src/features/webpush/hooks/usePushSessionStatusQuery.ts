@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { webPushApi } from '@/features/notifications/api/webPushApi';
+import { webPushApi } from '@/features/webpush/api/webPushApi';
 
 export const usePushSessionStatusQuery = (token?: string) => {
   return useQuery({

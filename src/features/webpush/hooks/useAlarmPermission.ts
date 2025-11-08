@@ -1,10 +1,7 @@
 import toast from 'react-hot-toast';
-import { webPushApi } from '@/features/notifications/api/webPushApi';
+import { webPushApi } from '@/features/webpush/api/webPushApi';
 import { normalizeSubscription } from '@/features/notifications/utils/normalizeSubscription';
-import {
-  WebPushStatus,
-  type PushSubscriptionRequest,
-} from '@/features/notifications/types/pushApiTypes';
+import { WebPushStatus, type PushSubscriptionRequest } from '@/features/webpush/types/pushApiTypes';
 
 const urlBase64ToUint8Array = (base64String: string) => {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
