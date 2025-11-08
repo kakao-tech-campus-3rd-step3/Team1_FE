@@ -14,6 +14,7 @@ import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessi
 import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
 import { Button } from '@/shared/components/shadcn/button';
+import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 const INTERVAL_MS = 30 * 10000;
 
@@ -80,14 +81,6 @@ const AlarmSetupPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isPending && !data) {
-    return (
-      <div className="flex items-center justify-center h-screen text-gray-600 text-xl font-medium">
-        QR 코드 생성 중...
-      </div>
-    );
-  }
-
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
 
@@ -139,10 +132,16 @@ const AlarmSetupPage = () => {
 
         {/* QR 코드 */}
         <div className="p-4 shadow-md rounded-md bg-white mt-[-20px]">
-          {qrData ? (
+          {isPending && !data ? (
+            <p className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
+              <InlineLoader size={6} text="QR 코드 생성 중.." />
+            </p>
+          ) : qrData ? (
             <QRCodeSVG value={qrData} className="w-40 h-40" />
           ) : (
-            <p>QR 데이터를 불러오는 중입니다..</p>
+            <p className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
+              <InlineLoader size={6} text="QR 데이터 불러오는 중.." />
+            </p>
           )}
         </div>
 
