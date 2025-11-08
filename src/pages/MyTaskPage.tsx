@@ -45,12 +45,12 @@ const MyTaskPage = () => {
         buttons: [
           {
             text: '프로젝트 생성',
-            styleClass: 'bg-boost-orange hover:bg-boost-orange-hover duration-300 subtitle2-bold',
+            variant: 'secondaryBoost',
             onClick: showCreateProjectModal,
           },
           {
             text: '프로젝트 참여',
-            styleClass: 'bg-boost-blue hover:bg-boost-blue-hover duration-300 subtitle2-bold',
+            variant: 'defaultBoost',
             onClick: showJoinProjectModal,
           },
         ],

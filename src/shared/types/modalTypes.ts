@@ -3,7 +3,17 @@ import type { ReactNode } from 'react';
 export type ModalButton = {
   text: string;
   onClick: () => void | Promise<void>;
-  variant?: 'default' | 'outline' | 'primary' | 'destructive';
+  variant?:
+    | 'link'
+    | 'default'
+    | 'defaultBoost'
+    | 'secondaryBoost'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | null
+    | undefined;
   disabled?: boolean;
   styleClass?: string;
 };
