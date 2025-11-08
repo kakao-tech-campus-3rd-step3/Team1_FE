@@ -7,7 +7,7 @@ import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll'
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';

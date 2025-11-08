@@ -1,6 +1,6 @@
 import axios, { type AxiosRequestConfig } from 'axios';
 import { handleUnauthorized } from '@/shared/api/errorHandler';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { apiPublic } from '@/shared/api/axiosInstance';
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;

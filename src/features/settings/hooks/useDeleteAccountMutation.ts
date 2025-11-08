@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { settingsApi } from '@/features/settings/api/settingsApi';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import toast from 'react-hot-toast';
 
 export const useDeleteAccountMutation = () => {

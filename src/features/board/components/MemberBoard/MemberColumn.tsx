@@ -14,7 +14,7 @@ import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import Crown from '@/shared/assets/images/boost/crown.png';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';

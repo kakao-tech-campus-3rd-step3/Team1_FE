@@ -15,7 +15,7 @@ import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
 import toast from 'react-hot-toast';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import tinycolor from 'tinycolor2';
 import { Button } from '@/shared/components/shadcn/button';
 

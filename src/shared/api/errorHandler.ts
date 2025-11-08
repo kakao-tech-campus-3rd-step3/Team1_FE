@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { AxiosError } from 'axios';
 
 export class ApiError extends Error {

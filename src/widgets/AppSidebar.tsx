@@ -13,7 +13,7 @@ import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
 import AppSidebarAlarmMenuItem from '@/features/notifications/components/AppSidebarNotificationMenuItem';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { Avatar } from '@/shared/components/shadcn/avatar';
 

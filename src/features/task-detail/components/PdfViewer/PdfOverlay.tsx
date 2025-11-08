@@ -1,6 +1,6 @@
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { User } from 'lucide-react';

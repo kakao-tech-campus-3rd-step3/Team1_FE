@@ -4,9 +4,9 @@ import { cn } from '@/shared/lib/utils';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
-import BOO from '@/shared/assets/images/boost/boo.png'
+import BOO from '@/shared/assets/images/boost/boo.png';
 interface CommentItemProps {
   comment: CommentUIType;
   onEdit?: (comment: CommentUIType) => void;
