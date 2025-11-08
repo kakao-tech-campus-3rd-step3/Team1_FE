@@ -14,10 +14,10 @@ import type { User } from '@/features/user/types/userTypes';
 const AvatarSettingsPage = () => {
   const { selectedAvatarId, selectedBgColor } = useAvatarStore();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const { mutate: saveAvatar } = useUpdateAvatarMutation();
+  const { mutateAsync: updateAvatar } = useUpdateAvatarMutation();
   const navigate = useNavigate();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!selectedBgColor) {
       toast.error('배경색을 선택해주세요!');
       return;
@@ -31,13 +31,15 @@ const AvatarSettingsPage = () => {
       backgroundColor: selectedBgColor,
     };
 
-    saveAvatar(avatarInfo, {
-      onSuccess: () => {
-        const updatedUser: User = { ...authUser, ...avatarInfo };
-        setAuth({ user: updatedUser });
-        navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
-      },
-    });
+    try {
+      await updateAvatar(avatarInfo);
+      const updatedUser: User = { ...authUser, ...avatarInfo };
+      setAuth({ user: updatedUser });
+      navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
+    } catch (error) {
+      console.log('아바타 업데이트 실패', error);
+      toast.error('아바타 업데이트에 실패했습니다 😢');
+    }
   };
 
   return (

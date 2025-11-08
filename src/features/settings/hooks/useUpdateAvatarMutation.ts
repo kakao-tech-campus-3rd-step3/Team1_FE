@@ -41,8 +41,6 @@ export const useUpdateAvatarMutation = () => {
     },
 
     onSuccess: (updated) => {
-      toast.success('아바타가 변경되었습니다!');
-
       if (user) {
         setAuth({
           user: {
