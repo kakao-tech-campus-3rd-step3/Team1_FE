@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import SplashScreen from '@/pages/SplashScreen';
 import type { User } from '@/features/user/types/userTypes';
@@ -30,7 +30,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
     const init = async () => {
       try {
         const { accessToken } = await fetchRefreshToken();
-        setAuth({ token: accessToken });
+        setAuth({ accessToken: accessToken });
 
         const userResponse = await refetchUser();
 

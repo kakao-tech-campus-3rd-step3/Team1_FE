@@ -6,9 +6,10 @@ import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
 import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
 import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
+import type { User } from '@/features/user/types/userTypes';
 
 const AvatarSettingsPage = () => {
   const { selectedAvatarId, selectedBgColor } = useAvatarStore();
@@ -22,6 +23,9 @@ const AvatarSettingsPage = () => {
       return;
     }
 
+    const authUser = useAuthStore.getState().user;
+    if (!authUser) return;
+
     const avatarInfo = {
       avatar: selectedAvatarId,
       backgroundColor: selectedBgColor,
@@ -29,8 +33,9 @@ const AvatarSettingsPage = () => {
 
     saveAvatar(avatarInfo, {
       onSuccess: () => {
+        const updatedUser: User = { ...authUser, ...avatarInfo };
+        setAuth({ user: updatedUser });
         navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
-        setAuth({ user: avatarInfo });
       },
     });
   };
