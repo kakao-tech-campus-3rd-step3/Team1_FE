@@ -14,10 +14,15 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 const PDFViewer = () => {
   const { pageNumber, zoom, position, isDragging, pdfDocument, pageSize } = usePdfStore();
-  const { onMouseDown, onMouseMove, onMouseUp } = usePdfDrag();
+  const { onMouseDown, onMouseMove, onMouseUp, mouseMoved } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
   const { clearFileState, selectedFile } = useTaskDetailStore();
+
+  const handleOverlayClickWithDragCheck = (e: React.MouseEvent) => {
+    if (mouseMoved.current) return;
+    handleOverlayClick(e);
+  };
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
@@ -57,7 +62,7 @@ const PDFViewer = () => {
             pageNumber={pageNumber}
             zoom={zoom}
             pageSize={pageSize}
-            onClick={handleOverlayClick}
+            onClick={handleOverlayClickWithDragCheck}
           />
         </div>
       </div>
