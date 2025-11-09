@@ -20,7 +20,7 @@ export const useUpdateTaskForm = (
     return zodResolver(
       updateTaskSchema.superRefine((data, ctx) => {
         const numAssignees = data.assignees?.length || 0;
-        const maxReviewers = projectMembers.length - numAssignees;
+        const maxReviewers = Math.max(projectMembers.length - numAssignees, 0);
 
         if (numAssignees === 0) {
           ctx.addIssue({
@@ -28,7 +28,7 @@ export const useUpdateTaskForm = (
             message: '담당자를 먼저 지정해주세요.',
             path: ['requiredReviewerCount'],
           });
-        } else if (maxReviewers <= 0) {
+        } else if (maxReviewers <= 0 && data.requiredReviewerCount! > 0) {
           ctx.addIssue({
             code: 'custom',
             message: '담당자로 모두 지정되어 검토 수를 지정할 수 없습니다. 0으로 설정해주세요.',
