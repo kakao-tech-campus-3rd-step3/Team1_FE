@@ -38,7 +38,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
               'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200',
 
               isEditing && 'bg-boost-blue/5 border-boost-blue/40',
-
+              comment.fileInfo && 'cursor-pointer',
               isSelected && 'border border-boost-blue/60 bg-boost-blue/10',
 
               isPinHighlighted &&
