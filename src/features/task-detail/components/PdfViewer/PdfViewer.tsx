@@ -9,6 +9,7 @@ import { usePdfDrag } from '@/features/task-detail/hooks/usePdfDrag';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { usePdfPinInteraction } from '@/features/task-detail/hooks/usePdfPinInteraction';
 import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
+import PdfHeaderBar from '@/features/task-detail/components/PdfViewer/PdfHeaderBar';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -17,19 +18,11 @@ const PDFViewer = () => {
   const { onMouseDown, onMouseMove, onMouseUp } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
-  const { clearFileState, selectedFile } = useTaskDetailStore();
+  const { selectedFile } = useTaskDetailStore();
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
-      <div className="w-full h-12 flex items-center justify-between te bg-white border-b-gray-400 xt-white px-4">
-        <span className="text-sm">{selectedFile?.fileName}</span>
-        <button
-          onClick={() => clearFileState()}
-          className="text-sm bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded-md transition"
-        >
-          ← 뒤로가기
-        </button>
-      </div>
+      <PdfHeaderBar/>
       <div className="flex-1 flex justify-center items-center overflow-hidden">
         <div
           className={cn('relative bg-white', isDragging ? 'cursor-grabbing' : 'cursor-grab')}
