@@ -22,7 +22,6 @@ export const AuthorAvatar = ({
   const isBooPersona = persona === 'BOO';
   const effectiveAnonymous = isBooPersona ? true : isAnonymous;
 
-  // ✅ BOO 페르소나 (CommentItem 기준 스타일 그대로)
   if (isBooPersona) {
     return (
       <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-boost-yellow">
@@ -32,7 +31,6 @@ export const AuthorAvatar = ({
     );
   }
 
-  // ✅ 완전 익명
   if (effectiveAnonymous) {
     return (
       <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-gray-500">
@@ -41,7 +39,6 @@ export const AuthorAvatar = ({
     );
   }
 
-  // ✅ 일반 사용자
   return (
     <Avatar
       className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs text-white text-xs"

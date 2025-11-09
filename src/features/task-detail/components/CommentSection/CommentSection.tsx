@@ -29,7 +29,6 @@ const CommentSection = ({ projectId, taskId, onCommentsFetched }: CommentSection
   const { data: task } = useTaskDetailQuery(projectId, taskId);
   const { pins, clearCurrentPin, currentPin, persona } = useTaskDetailStore();
   const { commentSelect } = useCommentSelect();
-
   /** 핀 클릭 시 PDF 위치 이동 */
   const handlePinClick = (fileInfo: FileInfo | null) => {
     if (!fileInfo || !task?.files) return;
