@@ -5,13 +5,16 @@ import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
 import { AuthorAvatar } from '@/features/task-detail/components/CommentSection/AuthorAvatar';
+
 interface CommentItemProps {
   comment: CommentUIType;
   onEdit?: (comment: CommentUIType) => void;
   onDelete?: (commentId: string) => void;
   onSelectPin?: (fileInfo: FileInfo | null) => void;
+
   isEditing?: boolean;
-  isHighlighted?: boolean;
+  isSelected?: boolean;
+  isPinHighlighted?: boolean;
 }
 
 const CommentItem = ({
@@ -20,7 +23,8 @@ const CommentItem = ({
   onDelete,
   onSelectPin,
   isEditing,
-  isHighlighted,
+  isSelected,
+  isPinHighlighted,
 }: CommentItemProps) => {
   const isAnonymous = comment.isAnonymous;
   const { user } = useAuthStore();
@@ -33,8 +37,12 @@ const CommentItem = ({
           onClick={() => onSelectPin?.(comment.fileInfo ?? null)}
           className={cn(
             'rounded-xl px-4 py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200',
+
             isEditing && 'bg-boost-blue/5 border-boost-blue/40',
-            isHighlighted && 'border-2 border-boost-blue bg-boost-blue/10',
+
+            isSelected && 'border border-boost-blue/60 bg-boost-blue/10',
+
+            isPinHighlighted && 'border-1 border-boost-yellow bg-boost-yellow/10',
           )}
         >
           <div className="flex items-center justify-between">

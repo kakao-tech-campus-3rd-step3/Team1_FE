@@ -10,7 +10,8 @@ interface OverlayProps {
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
-  const { pins, currentPin, selectedFile, persona, setSelectedCommentId } = useTaskDetailStore();
+  const { pins, currentPin, setActivePinCommentId, selectedFile, persona, editingComment } =
+    useTaskDetailStore();
   const pinList = pins as PinWithAuthor[];
   const user = useAuthStore((state) => state.user);
 
@@ -33,7 +34,10 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
               left={left}
               top={top}
               onClick={() => {
-                if (pin.commentId) setSelectedCommentId(pin.commentId);
+                if (pin.commentId) {
+                  if (editingComment) return;
+                  setActivePinCommentId(pin.commentId);
+                }
               }}
             />
           );

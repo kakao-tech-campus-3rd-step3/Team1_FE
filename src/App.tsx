@@ -7,11 +7,6 @@ import { Toaster } from 'react-hot-toast';
 import AppInitializer from '@/app/AppInitializer';
 
 const queryClient = new QueryClient();
-// 아래는 에러바운더리 테스트용 코드입니다.
-// const BuggyComponent = () => {
-//   throw new Error('😱 일부러 발생시킨 에러!');
-//   return <div>안보일거야</div>;
-// };
 
 function App() {
   return (
