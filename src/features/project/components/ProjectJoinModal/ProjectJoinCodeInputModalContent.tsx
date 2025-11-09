@@ -33,13 +33,13 @@ const ProjectJoinCodeInputModalContent = ({
 
         switch (type) {
           case ERROR.JOIN_CODE.NOT_FOUND.type:
-            toast.error('잘못된 참여 코드입니다.');
+            toast.error('참여 코드를 찾을 수 없습니다.');
             break;
           case ERROR.MEMBER.ALREADY_JOINED.type:
             toast.error('이미 참여하고 있는 프로젝트입니다.');
             break;
           default:
-            toast.error('프로젝트 참여에 실패했습니다.');
+            toast.error('잘못된 참여 코드입니다.');
         }
       } else {
         toast.error('알 수 없는 오류가 발생했습니다.');

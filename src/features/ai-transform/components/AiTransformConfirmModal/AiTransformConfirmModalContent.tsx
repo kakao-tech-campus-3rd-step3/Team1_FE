@@ -6,6 +6,7 @@ import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useAiTransformMutation } from '@/features/ai-transform/hooks/useAiTransformMutation';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
+import { isAxiosError } from 'axios';
 
 const AiTransformConfirmModalContent = () => {
   const originalText = useAiTransformStore((state) => state.originalText);
@@ -19,13 +20,26 @@ const AiTransformConfirmModalContent = () => {
     showAiTransformLoadingModal();
 
     try {
-      const data = await Promise.all([minDelay, aiTransformMutateAsync({ text: originalText })]);
-      resetModal();
-      setTransformedText(data[1].transformedText);
+      const firstAttempt = await Promise.all([
+        minDelay,
+        aiTransformMutateAsync({ text: originalText }),
+      ]);
+      setTransformedText(firstAttempt[1].transformedText);
       showAiTransformSelectModal();
     } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 500) {
+        try {
+          const retryData = await aiTransformMutateAsync({ text: originalText });
+          resetModal();
+          setTransformedText(retryData.transformedText);
+          showAiTransformSelectModal();
+        } catch (retryError) {
+          console.log(retryError);
+        }
+      } else {
+        console.log(error);
+      }
       resetModal();
-      console.log(error);
       toast.error('댓글 변환을 실패했어요.');
     }
   };

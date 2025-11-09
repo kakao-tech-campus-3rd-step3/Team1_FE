@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { commentApi, type CreateCommentRequest } from '@/features/comment/api/commentApi';
 import { v4 as uuidv4 } from 'uuid';
 import type { CommentType } from '@/features/comment/types/commentTypes';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
 import toast from 'react-hot-toast';
 

@@ -13,7 +13,7 @@ import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem
 import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
 import AppSidebarAlarmMenuItem from '@/features/notifications/components/AppSidebarNotificationMenuItem';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { Avatar } from '@/shared/components/shadcn/avatar';
 
@@ -27,10 +27,10 @@ const AppSidebar = () => {
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
-      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer">
+      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
         <Avatar
           style={{ backgroundColor: user?.backgroundColor }}
-          className="flex justify-center items-center w-11 h-11"
+          className="flex justify-center items-center w-11 h-11 shadow-sm"
         >
           {user ? (
             <img

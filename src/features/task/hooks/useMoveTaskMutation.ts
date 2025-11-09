@@ -26,117 +26,140 @@ const updateTaskStatus = (task: TaskListItem, toStatus: string): TaskListItem =>
   status: toStatus,
 });
 
+const getQueryKey = (status: string, variables: MoveTaskParams) => {
+  const searchMap = useBoardSearchStore.getState().searchMap;
+  const search =
+    variables.queryIdentifier === 'me'
+      ? searchMap[BOARD_KEYS.MY_TASKS]
+      : searchMap[BOARD_KEYS.PROJECT_STATUS];
+
+  return variables.queryIdentifier === 'me'
+    ? TASK_QUERY_KEYS.meStatus(status, variables.sortBy, variables.direction, search)
+    : TASK_QUERY_KEYS.project(
+        variables.projectId,
+        status,
+        variables.sortBy,
+        variables.direction,
+        search,
+      );
+};
+
+export const optimisticallyMoveTask = (
+  queryClient: ReturnType<typeof useQueryClient>,
+  variables: MoveTaskParams,
+) => {
+  const searchMap = useBoardSearchStore.getState().searchMap;
+
+  const {
+    activeTaskId,
+    fromStatus,
+    toStatus,
+    overId,
+    queryIdentifier,
+    projectId,
+    sortBy,
+    direction,
+    activeTask,
+  } = variables;
+
+  const search =
+    queryIdentifier === 'me'
+      ? searchMap[BOARD_KEYS.MY_TASKS]
+      : searchMap[BOARD_KEYS.PROJECT_STATUS];
+
+  const getQueryKeyLocal = (status: string) =>
+    queryIdentifier === 'me'
+      ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
+      : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
+
+  const fromKey = getQueryKeyLocal(fromStatus);
+  const toKey = getQueryKeyLocal(toStatus);
+
+  const previousFrom = queryClient.getQueryData<InfiniteData<TaskListResponse>>(fromKey);
+  const previousTo = queryClient.getQueryData<InfiniteData<TaskListResponse>>(toKey);
+
+  if (fromStatus === toStatus && previousFrom) {
+    queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
+      if (!old) return old;
+      const pages = old.pages.map((page) => {
+        const tasks = page.tasks.slice();
+        if (overId) {
+          const activeIndex = tasks.findIndex((t) => t.taskId === activeTaskId);
+          const overIndex = tasks.findIndex((t) => t.taskId === overId);
+          return { ...page, tasks: arrayMove(tasks, activeIndex, overIndex) };
+        }
+        return page;
+      });
+      return { ...old, pages };
+    });
+  }
+
+  if (fromStatus !== toStatus) {
+    if (previousFrom) {
+      queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
+        if (!old) return old;
+        const pages = old.pages.map((page) => ({
+          ...page,
+          tasks: page.tasks.filter((t) => t.taskId !== activeTaskId),
+        }));
+        return { ...old, pages };
+      });
+    }
+
+    const movedTask = updateTaskStatus(activeTask, toStatus);
+    queryClient.setQueryData<InfiniteData<TaskListResponse>>(toKey, (old) => {
+      if (!old) {
+        return {
+          pageParams: [undefined],
+          pages: [{ tasks: [movedTask], count: 1, nextCursor: undefined, hasNext: false }],
+        };
+      }
+      const pages = old.pages.map((page, index) =>
+        index === 0 ? { ...page, tasks: [movedTask, ...page.tasks] } : page,
+      );
+      return { ...old, pages };
+    });
+  }
+
+  const taskDetailKey = TASK_QUERY_KEYS.detail(projectId, activeTaskId);
+  queryClient.setQueryData<TaskDetail>(taskDetailKey, (old) => {
+    if (!old) return old;
+    return { ...old, status: toStatus };
+  });
+
+  return {
+    previousFrom,
+    previousTo,
+    previousTaskDetail: queryClient.getQueryData<TaskDetail>(taskDetailKey),
+  };
+};
+
 export const useMoveTaskMutation = () => {
   const queryClient = useQueryClient();
-  const searchMap = useBoardSearchStore((state) => state.searchMap);
 
   return useMutation({
     mutationFn: ({ projectId, activeTaskId, toStatus }: MoveTaskParams) =>
       taskApi.updateTaskStatus(projectId, activeTaskId, toStatus),
 
     onMutate: async (variables) => {
-      const {
-        activeTaskId,
-        fromStatus,
-        toStatus,
-        overId,
-        queryIdentifier,
-        projectId,
-        sortBy,
-        direction,
-        activeTask,
-      } = variables;
-
-      const search =
-        queryIdentifier === 'me'
-          ? searchMap[BOARD_KEYS.MY_TASKS]
-          : searchMap[BOARD_KEYS.PROJECT_STATUS];
-
-      const getQueryKey = (status: string) =>
-        queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
-
-      const fromKey = getQueryKey(fromStatus);
-      const toKey = getQueryKey(toStatus);
+      const fromKey = getQueryKey(variables.fromStatus, variables);
+      const toKey = getQueryKey(variables.toStatus, variables);
 
       await queryClient.cancelQueries({ queryKey: fromKey });
       await queryClient.cancelQueries({ queryKey: toKey });
 
-      const previousFrom = queryClient.getQueryData<InfiniteData<TaskListResponse>>(fromKey);
-      const previousTo = queryClient.getQueryData<InfiniteData<TaskListResponse>>(toKey);
-
-      if (fromStatus === toStatus && previousFrom) {
-        queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
-          if (!old) return old;
-          const pages = old.pages.map((page) => {
-            const tasks = page.tasks.slice();
-            if (overId) {
-              const activeIndex = tasks.findIndex((t) => t.taskId === activeTaskId);
-              const overIndex = tasks.findIndex((t) => t.taskId === overId);
-              return { ...page, tasks: arrayMove(tasks, activeIndex, overIndex) };
-            }
-            return page;
-          });
-          return { ...old, pages };
-        });
-      }
-
-      if (fromStatus !== toStatus) {
-        if (previousFrom) {
-          queryClient.setQueryData<InfiniteData<TaskListResponse>>(fromKey, (old) => {
-            if (!old) return old;
-            const pages = old.pages.map((page) => ({
-              ...page,
-              tasks: page.tasks.filter((t) => t.taskId !== activeTaskId),
-            }));
-            return { ...old, pages };
-          });
-        }
-
-        const movedTask = updateTaskStatus(activeTask, toStatus);
-
-        queryClient.setQueryData<InfiniteData<TaskListResponse>>(toKey, (old) => {
-          if (!old) {
-            return {
-              pageParams: [undefined],
-              pages: [{ tasks: [movedTask], count: 1, nextCursor: undefined, hasNext: false }],
-            };
-          }
-          const pages = old.pages.map((page, index) =>
-            index === 0 ? { ...page, tasks: [movedTask, ...page.tasks] } : page,
-          );
-          return { ...old, pages };
-        });
-      }
-
-      const taskDetailKey = TASK_QUERY_KEYS.detail(projectId, activeTaskId);
-      const previousTaskDetail = queryClient.getQueryData<TaskDetail>(taskDetailKey);
-      queryClient.setQueryData<TaskDetail>(taskDetailKey, (old) => {
-        if (!old) return old;
-        return { ...old, status: toStatus };
-      });
-
-      return { previousFrom, previousTo, previousTaskDetail };
+      return optimisticallyMoveTask(queryClient, variables);
     },
 
     onError: (error, variables, context) => {
-      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction, activeTaskId } =
-        variables;
+      const { fromStatus, toStatus, projectId, activeTaskId } = variables;
 
-      const search =
-        queryIdentifier === 'me'
-          ? searchMap[BOARD_KEYS.MY_TASKS]
-          : searchMap[BOARD_KEYS.PROJECT_STATUS];
-
-      const getQueryKey = (status: string) =>
-        queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
+      const getQueryKeyLocal = (status: string) => getQueryKey(status, variables);
 
       if (context?.previousFrom)
-        queryClient.setQueryData(getQueryKey(fromStatus), context.previousFrom);
-      if (context?.previousTo) queryClient.setQueryData(getQueryKey(toStatus), context.previousTo);
+        queryClient.setQueryData(getQueryKeyLocal(fromStatus), context.previousFrom);
+      if (context?.previousTo)
+        queryClient.setQueryData(getQueryKeyLocal(toStatus), context.previousTo);
 
       if (context?.previousTaskDetail)
         queryClient.setQueryData(
@@ -158,25 +181,19 @@ export const useMoveTaskMutation = () => {
     },
 
     onSettled: (_data, _error, variables) => {
-      const { fromStatus, toStatus, queryIdentifier, projectId, sortBy, direction } = variables;
+      const getQueryKeyLocal = (status: string) => getQueryKey(status, variables);
 
-      const search =
-        queryIdentifier === 'me'
-          ? searchMap[BOARD_KEYS.MY_TASKS]
-          : searchMap[BOARD_KEYS.PROJECT_STATUS];
-
-      const getQueryKey = (status: string) =>
-        queryIdentifier === 'me'
-          ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
-          : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
-
-      queryClient.invalidateQueries({ queryKey: getQueryKey(fromStatus) });
-      queryClient.invalidateQueries({ queryKey: getQueryKey(toStatus) });
+      queryClient.invalidateQueries({ queryKey: getQueryKeyLocal(variables.fromStatus) });
+      queryClient.invalidateQueries({ queryKey: getQueryKeyLocal(variables.toStatus) });
       queryClient.invalidateQueries({
-        queryKey: TASK_QUERY_KEYS.detail(projectId, variables.activeTaskId),
+        queryKey: TASK_QUERY_KEYS.detail(variables.projectId, variables.activeTaskId),
       });
-      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
-      queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.projectCountStatus(variables.projectId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: TASK_QUERY_KEYS.projectCountMember(variables.projectId),
+      });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.meCountStatus() });
     },
   });

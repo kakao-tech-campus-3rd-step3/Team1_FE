@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { cn } from '@/shared/lib/utils';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
 import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';

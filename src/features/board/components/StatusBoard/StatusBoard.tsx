@@ -9,9 +9,14 @@ import {
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
-import { useMoveTaskMutation } from '@/features/task/hooks/useMoveTaskMutation';
+import {
+  useMoveTaskMutation,
+  optimisticallyMoveTask,
+  type MoveTaskParams,
+} from '@/features/task/hooks/useMoveTaskMutation';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
@@ -23,6 +28,7 @@ interface StatusBoardProps {
 }
 
 const StatusBoard = ({ projectId }: StatusBoardProps) => {
+  const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
   const moveTaskMutation = useMoveTaskMutation();
@@ -35,27 +41,62 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
     sortStateRef.current = { sortBy, direction };
   }, [sortBy, direction]);
 
-  const lastMoveRef = useRef<{ activeId: string; toStatus: string } | null>(null);
+  const dropTargetRef = useRef<{ activeId: string; toStatus: string; overId?: string } | null>(
+    null,
+  );
 
   const onDragStart = (event: DragStartEvent) => {
     const activeData = event.active.data.current;
     if (activeData?.type === 'Task') {
-      setActiveTask(activeData.task);
+      const task = activeData.task as TaskListItem;
+      setActiveTask(task);
+      dropTargetRef.current = {
+        activeId: task.taskId,
+        toStatus: task.status,
+      };
     }
   };
 
   const onDragEnd = () => {
+    if (activeTask && dropTargetRef.current) {
+      const { toStatus, overId } = dropTargetRef.current;
+
+      const isStatusChanged = activeTask.status !== toStatus;
+      const isOrderChanged = !!overId;
+
+      if (isStatusChanged || isOrderChanged) {
+        const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
+
+        const params: MoveTaskParams = {
+          projectId: activeTask.projectId,
+          activeTaskId: activeTask.taskId,
+          fromStatus: activeTask.status,
+          toStatus,
+          overId,
+          queryIdentifier: projectId || 'me',
+          sortBy: currentSortBy,
+          direction: currentDirection,
+          activeTask: activeTask,
+        };
+
+        moveTaskMutation.mutate(params);
+      }
+    }
+
     setActiveTask(null);
-    lastMoveRef.current = null;
+    dropTargetRef.current = null;
   };
 
   const onDragOver = ({ active, over }: DragOverEvent) => {
     if (!over) return;
+
     const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
 
     const activeTask = active.data.current?.task as TaskListItem | undefined;
     const overData = over.data.current;
-    if (!activeTask || active.id === over.id) return;
+    const activeId = active.id as string;
+
+    if (!activeTask || activeId === over.id) return;
 
     const toStatus =
       overData?.type === 'Task'
@@ -65,29 +106,31 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
           : undefined;
     if (!toStatus) return;
 
+    const overId = overData?.type === 'Task' ? (over.id as string) : undefined;
+
     if (
-      lastMoveRef.current &&
-      lastMoveRef.current.activeId === active.id &&
-      lastMoveRef.current.toStatus === toStatus
+      dropTargetRef.current?.activeId === activeId &&
+      dropTargetRef.current?.toStatus === toStatus &&
+      dropTargetRef.current?.overId === overId
     ) {
       return;
     }
 
-    if (activeTask.status === toStatus) return;
+    dropTargetRef.current = { activeId, toStatus, overId };
 
-    lastMoveRef.current = { activeId: active.id as string, toStatus };
-
-    moveTaskMutation.mutate({
+    const params: MoveTaskParams = {
       projectId: activeTask.projectId,
-      activeTaskId: active.id as string,
+      activeTaskId: activeId,
       fromStatus: activeTask.status,
       toStatus,
-      overId: overData?.type === 'Task' ? (over.id as string) : undefined,
+      overId,
       queryIdentifier: projectId || 'me',
       sortBy: currentSortBy,
       direction: currentDirection,
       activeTask: activeTask,
-    });
+    };
+
+    optimisticallyMoveTask(queryClient, params);
   };
 
   return (

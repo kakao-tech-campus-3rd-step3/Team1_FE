@@ -3,7 +3,7 @@ import { Pin } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
 import { AuthorAvatar } from './AuthorAvatar';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';

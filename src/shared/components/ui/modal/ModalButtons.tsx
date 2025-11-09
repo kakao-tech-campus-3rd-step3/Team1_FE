@@ -31,6 +31,7 @@ export function ModalButtons({ buttons }: ModalButtonsProps) {
           onClick={() => handleClick(btn.onClick)}
           disabled={btn.disabled || isLoading}
           className={cn('flex-1', btn.styleClass)}
+          variant={btn.variant}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {btn.text}

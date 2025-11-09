@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { settingsApi } from '@/features/settings/api/settingsApi';
 import toast from 'react-hot-toast';
 import type { MyInfoResponse } from '@/features/settings/types/settingsTypes';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { AvatarInfo } from '@/features/user/types/userTypes';
 
 interface UpdateAvatarPayload {
@@ -41,8 +41,6 @@ export const useUpdateAvatarMutation = () => {
     },
 
     onSuccess: (updated) => {
-      toast.success('아바타가 변경되었습니다!');
-
       if (user) {
         setAuth({
           user: {

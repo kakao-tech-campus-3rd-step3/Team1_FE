@@ -19,7 +19,7 @@ export const useInfiniteMyTasksByStatusQuery = (
       taskApi.fetchMyTasksByStatus(
         typeof pageParam === 'string' ? pageParam : undefined,
         status,
-        10,
+        6,
         sortBy,
         direction,
         search,
