@@ -11,7 +11,7 @@ export const handleUnauthorizedRequest = async (originalRequest: AxiosRequestCon
     const { data } = await apiPublic.post(`/auth/reissue`, {}, { withCredentials: true });
 
     const newAccessToken = data.accessToken;
-    useAuthStore.getState().setAuth({ token: newAccessToken });
+    useAuthStore.getState().setAuth({ accessToken: newAccessToken });
 
     if (!originalRequest.headers) originalRequest.headers = {};
     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

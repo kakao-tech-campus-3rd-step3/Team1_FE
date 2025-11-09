@@ -1,5 +1,5 @@
 import { PinAvatar } from './PinAvatar';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';

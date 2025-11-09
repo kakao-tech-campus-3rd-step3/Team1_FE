@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { Copy, RefreshCw } from 'lucide-react';
 import { useJoinCode } from '@/features/project/hooks/useJoinCode';
 import { formatSecondsToHHMMSS, getRemainingSeconds } from '@/shared/utils/dateUtils';
-import { useCreateJoinCodeMutation } from '@/features/project/hooks/useCreateJoincodeMutation';
+import { useCreateJoinCodeMutation } from '@/features/project/hooks/useCreateJoinCodeMutation';
 
 interface ProjectJoinCodeViewModalContentProps {
   projectId: string;
