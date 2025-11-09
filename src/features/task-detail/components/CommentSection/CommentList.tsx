@@ -12,7 +12,6 @@ interface CommentListProps {
 
 const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const pinnedRef = useRef<HTMLDivElement | null>(null);
 
   const { activePinCommentId, selectedCommentId, editingComment, setEditingComment } =
@@ -29,6 +28,12 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
     }
   }, [activePinCommentId]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [comments]);
+  
   return (
     <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-35">
       {comments.map((comment) => (
