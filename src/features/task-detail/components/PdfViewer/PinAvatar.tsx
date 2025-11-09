@@ -13,8 +13,8 @@ interface PinAvatarProps {
   name?: string | null;
 
   zoom: number;
-  left: number; 
-  top: number; 
+  left: number;
+  top: number;
 
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -60,7 +60,7 @@ export const PinAvatar = ({
       <div className="flex items-center justify-center w-full h-full rotate-[45deg]">
         {isBoo ? (
           <img src={BOO} alt="BOO" className="w-5 h-5 object-contain" />
-        ) : !isBoo&&isAnonymous ? (
+        ) : !isBoo && isAnonymous ? (
           <User className="text-white w-4 h-4" />
         ) : (
           <Avatar className="bg-transparent w-full h-full flex items-center justify-center">

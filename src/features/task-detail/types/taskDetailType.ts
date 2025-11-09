@@ -19,6 +19,6 @@ export interface PinWithAuthor {
   author?: AuthorInfo;
   commentId?: string;
   isAnonymous?: boolean;
-  persona:PersonaType;
+  persona: PersonaType;
 }
 export type FileStatus = 'uploading' | 'success';

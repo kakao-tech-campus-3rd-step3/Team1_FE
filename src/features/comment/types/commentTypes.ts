@@ -25,5 +25,5 @@ export interface CommentUIType extends CommentType {
   isPinned?: boolean;
   commentId: string;
   persona: string | null;
-  isAnonymous:boolean
+  isAnonymous: boolean;
 }
