@@ -6,7 +6,6 @@ export interface User {
   notificationEnabled?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  isAnonymous?: boolean;
 }
 
 export interface Member {

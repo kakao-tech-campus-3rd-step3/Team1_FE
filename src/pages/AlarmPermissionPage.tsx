@@ -75,7 +75,6 @@ const AlarmPermissionPage = () => {
     }
 
     if (isIOS && !isStandalone()) {
-      console.log('iOS Safari → connectPushSession 실행 안 함');
       return;
     }
 

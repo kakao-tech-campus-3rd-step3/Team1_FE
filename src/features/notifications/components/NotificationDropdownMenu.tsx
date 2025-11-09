@@ -1,10 +1,10 @@
 import { DropdownMenuContent } from '@/shared/components/shadcn/dropdown-menu';
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
-import { useMarkAllNotificationAsRead } from '@/features/notifications/hooks/useMarkAllNotificationAsRead';
 import NotificationDropdownHeader from '@/features/notifications/components/notificationDropdownMenu/NotificationDropdownHeader';
 import NotificationList from '@/features/notifications/components/notificationDropdownMenu/NotificationList';
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
+import { useMarkAllNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkAllNotificationAsReadMutation';
 
 export interface NotificationDropdownMenuProps {
   notifications: NotificationItem[];
@@ -21,7 +21,7 @@ const NotificationDropdownMenu = ({
 }: NotificationDropdownMenuProps) => {
   const { data: notificationCountData } = useNotificationCountsQuery();
   const { mutate: markAsRead } = useMarkNotificationAsReadMutation();
-  const { mutate: markAllAsRead } = useMarkAllNotificationAsRead();
+  const { mutate: markAllAsRead } = useMarkAllNotificationAsReadMutation();
 
   return (
     <DropdownMenuContent
