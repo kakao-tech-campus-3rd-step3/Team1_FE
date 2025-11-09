@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { User } from 'lucide-react';
 import BOO from '@/shared/assets/images/boost/boo.png';
-import type { PersonaType } from '@/features/comment/constants/personaConstants';
+import { PERSONA, type PersonaType } from '@/features/comment/constants/personaConstants';
 import { cn } from '@/shared/lib/utils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
@@ -34,7 +34,7 @@ export const PinAvatar = ({
   isHighlighted,
   onClick,
 }: PinAvatarProps) => {
-  const isBoo = persona === 'BOO';
+  const isBoo = persona === PERSONA.BOO
   return (
     <div
       onClick={(e) => {
