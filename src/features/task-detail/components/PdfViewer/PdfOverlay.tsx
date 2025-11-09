@@ -1,21 +1,17 @@
-import type { PageSize } from '@/features/task-detail/types/pdfTypes';
-import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
+import { PinAvatar } from './PinAvatar';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import { User } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
-import { cn } from '@/shared/lib/utils';
-
+import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 interface OverlayProps {
   pageNumber: number;
   zoom: number;
   pageSize: PageSize;
-  onClick: (e: React.MouseEvent) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
-
 const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
-  const { pins, currentPin, selectedFile, setSelectedCommentId } = useTaskDetailStore();
+  const { pins, currentPin, selectedFile, persona, setSelectedCommentId } = useTaskDetailStore();
   const pinList = pins as PinWithAuthor[];
   const user = useAuthStore((state) => state.user);
 
@@ -24,75 +20,45 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
       {pinList
         .filter((pin) => pin.fileId === selectedFile?.fileId && pin.filePage === pageNumber)
         .map((pin) => {
-          const left = (pin.fileX ? pin.fileX / pageSize.width : 0) * 100;
-          const top = 100 - (pin.fileY ? pin.fileY / pageSize.height : 0) * 100;
-          const isAnonymous = pin.isAnonymous;
-
+          const left = ((pin.fileX ?? 0) / pageSize.width) * 100;
+          const top = 100 - ((pin.fileY ?? 0) / pageSize.height) * 100;
           return (
-            <div
+            <PinAvatar
               key={uuidv4()}
-              onClick={(e) => {
-                e.stopPropagation();
+              persona={pin.persona}
+              isAnonymous={!!pin.isAnonymous}
+              avatar={pin.author?.avatar}
+              backgroundColor={pin.author?.backgroundColor}
+              name={pin.author?.name}
+              zoom={zoom}
+              left={left}
+              top={top}
+              onClick={() => {
                 if (pin.commentId) setSelectedCommentId(pin.commentId);
               }}
-              className={cn(
-                'flex items-center justify-center absolute w-7 h-7 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200',
-                isAnonymous ? 'bg-gray-500 border-gray-500' : '',
-              )}
-              style={{
-                backgroundColor: !isAnonymous ? pin.author?.backgroundColor : undefined,
-                borderColor: !isAnonymous ? pin.author?.backgroundColor : undefined,
-                left: `${left}%`,
-                top: `${top}%`,
-                transform: `translate(50%, -120%) scale(${zoom})`,
-              }}
-            >
-              {isAnonymous ? (
-                <User className="text-white w-3.5 h-3.5 rotate-[45deg]" />
-              ) : (
-                <img
-                  src={getAvatarSrc({ avatar: pin.author?.avatar })}
-                  style={{ backgroundColor: pin.author?.backgroundColor }}
-                  alt={pin.author?.name ?? 'avatar'}
-                  className="w-6 h-6 object-cover rotate-[45deg]"
-                />
-              )}
-            </div>
+            />
           );
         })}
 
-      {currentPin &&
-        currentPin.filePage === pageNumber &&
+      {/* currentPin */}
+      {currentPin?.filePage === pageNumber &&
         (() => {
-          const left = (currentPin.fileX ? currentPin.fileX / pageSize.width : 0) * 100;
-          const top = 100 - (currentPin.fileY ? currentPin.fileY / pageSize.height : 0) * 100;
-          const isAnonymous = user?.isAnonymous;
+          if (!currentPin) return null;
+
+          const left = ((currentPin.fileX ?? 0) / pageSize.width) * 100;
+          const top = 100 - ((currentPin.fileY ?? 0) / pageSize.height) * 100;
 
           return (
-            <div
-              className={cn(
-                'absolute flex items-center justify-center w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer transition-all duration-300 ease-in-out ',
-                isAnonymous ? 'bg-gray-500 border-gray-500' : '',
-              )}
-              style={{
-                backgroundColor: !isAnonymous ? user?.backgroundColor : undefined,
-                borderColor: !isAnonymous ? user?.backgroundColor : undefined,
-                left: `${left}%`,
-                top: `${top}%`,
-                transform: `translate(50%, -120%) scale(${zoom})`,
-              }}
-            >
-              {isAnonymous ? (
-                <User className="text-white w-4 h-4 rotate-[45deg]" />
-              ) : (
-                <img
-                  src={getAvatarSrc({ avatar: user?.avatar })}
-                  alt="current pin"
-                  className="w-6 h-6 object-cover rotate-[45deg]"
-                  style={{ backgroundColor: user?.backgroundColor }}
-                />
-              )}
-            </div>
+            <PinAvatar
+              persona={persona}
+              isAnonymous={user?.isAnonymous ?? false}
+              avatar={user?.avatar}
+              backgroundColor={user?.backgroundColor}
+              name={user?.name}
+              zoom={zoom}
+              left={left}
+              top={top}
+            />
           );
         })()}
     </div>

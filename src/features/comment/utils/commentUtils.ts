@@ -6,16 +6,18 @@ export const extractPinsFromComments = (comments: CommentUIType[]): PinWithAutho
     .filter((c) => c.fileInfo)
     .map((c) => ({
       ...(c.fileInfo as FileInfo),
+
+      isAnonymous: c.isAnonymous,
+      persona: c.persona,
       author: {
         memberId: c.authorInfo.memberId,
         name: c.authorInfo.name,
         avatar: c.authorInfo.avatar,
         backgroundColor: c.authorInfo.backgroundColor,
-        isAnonymous: c.isAnonymous,
-        commentId: c.commentId,
       },
-    persona:c.persona
-      })) as PinWithAuthor[];
+      commentId: c.commentId,
+    })) as PinWithAuthor[];
+
 // 날짜 문자열을 '방금 전 / N분 전 / N시간 전 / N일 전' 형식으로 변환하는 유틸 함수
 export const formatTimeAgo = (createdAt: string) => {
   const safeDate = new Date(createdAt.split('.')[0]);
