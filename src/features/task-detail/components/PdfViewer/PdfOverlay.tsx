@@ -1,7 +1,6 @@
 import { PinAvatar } from './PinAvatar';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import { v4 as uuidv4 } from 'uuid';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 interface OverlayProps {
@@ -24,7 +23,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
           const top = 100 - ((pin.fileY ?? 0) / pageSize.height) * 100;
           return (
             <PinAvatar
-              key={uuidv4()}
+              key={pin.commentId}
               persona={pin.persona}
               isAnonymous={!!pin.isAnonymous}
               avatar={pin.author?.avatar}

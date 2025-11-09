@@ -1,4 +1,3 @@
-// PinAvatar.tsx
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { User } from 'lucide-react';
 import BOO from '@/shared/assets/images/boost/boo.png';
@@ -14,8 +13,8 @@ interface PinAvatarProps {
   name?: string | null;
 
   zoom: number;
-  left: number; // % 위치
-  top: number; // % 위치
+  left: number; 
+  top: number; 
 
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -41,10 +40,8 @@ export const PinAvatar = ({
         onClick?.(e);
       }}
       className={cn(
-        'absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200',
-        // BOO → 디자인 토큰
+        'absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200 z-50',
         isBoo && 'bg-boost-yellow border-boost-yellow',
-        // 익명 → 회색
         !isBoo && isAnonymous && 'bg-gray-500 border-gray-500',
         className,
       )}
@@ -60,7 +57,6 @@ export const PinAvatar = ({
         transform: `translate(50%, -120%) scale(${zoom})`,
       }}
     >
-      {/* 내부 컨테이너: 회전 되돌리기 */}
       <div className="flex items-center justify-center w-full h-full rotate-[45deg]">
         {isBoo ? (
           <img src={BOO} alt="BOO" className="w-5 h-5 object-contain" />
