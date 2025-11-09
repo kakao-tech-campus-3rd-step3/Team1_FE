@@ -3,7 +3,7 @@ import { NOTIFICATION_QUERY_KEYS } from '@/features/notifications/constants/noti
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-export const useMarkAllNotificationAsRead = () => {
+export const useMarkAllNotificationAsReadMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
