@@ -15,6 +15,7 @@ interface PinAvatarProps {
   zoom: number;
   left: number;
   top: number;
+  isHighlighted?: boolean;
 
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -30,6 +31,7 @@ export const PinAvatar = ({
   left,
   top,
   className,
+  isHighlighted,
   onClick,
 }: PinAvatarProps) => {
   const isBoo = persona === 'BOO';
@@ -43,6 +45,8 @@ export const PinAvatar = ({
         'absolute w-8 h-8 rounded-[50%_50%_50%_0] -rotate-45 border-2 shadow-md overflow-hidden cursor-pointer select-none transition-all duration-200 z-50',
         isBoo && 'bg-boost-yellow border-boost-yellow',
         !isBoo && isAnonymous && 'bg-gray-500 border-gray-500',
+
+        isHighlighted && ' shadow-[0_0_15px_rgba(255,193,7,0.9)] scale-[1.18]',
         className,
       )}
       style={{
