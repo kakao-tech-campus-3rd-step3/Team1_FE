@@ -15,32 +15,22 @@ const NotificationListItem = ({ notification, onMarkAsRead }: NotificationListIt
   return (
     <DropdownMenuItem
       className={cn(
-        'group relative px-4 py-3 transition-colors',
+        'group relative p-3 transition-colors m-1 rounded-xl',
         'hover:bg-transparent focus:bg-transparent',
         !n.read && 'bg-blue-50 hover:bg-blue-50 focus:bg-blue-50',
       )}
     >
-      <div className="flex gap-3 w-full pr-4">
-        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-blue-100">
-          <Bell className="w-5 h-5 text-blue-600" />
+      <div className="flex gap-3 w-full">
+        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 mr-1">
+          <Bell className="w-5 h-5 text-boost-blue" />
         </div>
 
         <div className="flex-1 min-w-0">
-          <p
-            className={cn(
-              'text-sm font-medium truncate',
-              n.read ? 'text-gray-500/70' : 'text-gray-800',
-            )}
-          >
+          <p className={cn('body2-bold', n.read ? 'text-gray-500/70' : 'text-gray-800')}>
             {n.title}
           </p>
 
-          <p
-            className={cn(
-              'text-xs line-clamp-2 mb-1',
-              n.read ? 'text-gray-500/70' : 'text-gray-700',
-            )}
-          >
+          <p className={cn('text-xs mb-1', n.read ? 'text-gray-500/70' : 'text-gray-700')}>
             {n.message}
           </p>
 
@@ -65,7 +55,7 @@ const NotificationListItem = ({ notification, onMarkAsRead }: NotificationListIt
             onMarkAsRead(n.id);
           }}
         >
-          <Check className="h-4 w-4 text-blue-700" />
+          <Check className="h-4 w-4 text-boost-blue" />
         </Button>
       )}
     </DropdownMenuItem>

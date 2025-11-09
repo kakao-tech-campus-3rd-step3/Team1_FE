@@ -2,12 +2,12 @@ import { useRef } from 'react';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes'; // width, height 타입
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 
 export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => {
   const mouseMoved = useRef(false);
   const { user } = useAuthStore();
-  const { clearCurrentPin, currentPin, setCurrentPin, selectedFile, isAnonymous } =
+  const { clearCurrentPin, persona, currentPin, setCurrentPin, selectedFile, isAnonymous } =
     useTaskDetailStore();
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -43,6 +43,7 @@ export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => 
         backgroundColor: user?.backgroundColor ?? '#CCCCCC',
       },
       isAnonymous: isAnonymous,
+      persona: persona,
     };
 
     setCurrentPin(newPin);

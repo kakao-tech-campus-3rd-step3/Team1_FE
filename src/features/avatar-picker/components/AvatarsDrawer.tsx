@@ -15,7 +15,7 @@ import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
 import toast from 'react-hot-toast';
 import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import tinycolor from 'tinycolor2';
 import { Button } from '@/shared/components/shadcn/button';
 
@@ -50,20 +50,20 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawerOpen, user?.avatar, user?.backgroundColor]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!selectedAvatarId || !selectedBgColor) {
       toast.error('아바타와 배경색을 모두 선택해주세요!');
       return;
     }
 
-    updateAvatar(
-      { avatar: selectedAvatarId, backgroundColor: selectedBgColor },
-      {
-        onSuccess: () => {
-          closeDrawer();
-        },
-      },
-    );
+    try {
+      await updateAvatar({ avatar: selectedAvatarId, backgroundColor: selectedBgColor });
+      closeDrawer();
+      toast.success('아바타가 성공적으로 업데이트되었습니다!');
+    } catch (error) {
+      console.log('아바타 업데이트 실패', error);
+      toast.error('아바타 업데이트에 실패했습니다 😢');
+    }
   };
 
   return (

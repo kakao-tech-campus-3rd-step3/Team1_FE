@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { cn } from '@/shared/lib/utils';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
 import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
@@ -9,6 +9,7 @@ import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
+import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -19,7 +20,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
   const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
   const resetAiComment = useAiTransformStore((state) => state.reset);
-
+const {resetPdf} = usePdfStore()
   const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
   const assigneeTask = useAssigneeTask({
@@ -46,6 +47,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
           onBack={() => {
             resetAll();
             resetAiComment();
+            resetPdf()
           }}
         />
 

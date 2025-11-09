@@ -12,22 +12,38 @@ interface CommentListProps {
 
 const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { setEditingComment, editingComment, selectedCommentId } = useTaskDetailStore();
+  const pinnedRef = useRef<HTMLDivElement | null>(null);
+
+  const { activePinCommentId, selectedCommentId, editingComment, setEditingComment } =
+    useTaskDetailStore();
+
+  useEffect(() => {
+    if (!activePinCommentId) return;
+
+    if (pinnedRef.current) {
+      pinnedRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [activePinCommentId]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [comments]);
-
+  
   return (
     <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-35">
       {comments.map((comment) => (
         <CommentItem
           key={comment.commentId}
+          ref={comment.commentId === activePinCommentId ? pinnedRef : null}
           comment={comment}
           isEditing={editingComment?.id === comment.commentId}
-          isHighlighted={comment.commentId === selectedCommentId} // ✅ 강조 상태 전달
+          isSelected={comment.commentId === selectedCommentId}
+          isPinHighlighted={comment.commentId === activePinCommentId && !editingComment}
           onEdit={() =>
             setEditingComment({
               id: comment.commentId,

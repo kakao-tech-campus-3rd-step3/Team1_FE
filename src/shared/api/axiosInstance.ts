@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import axios from 'axios';
 import { handleGeneralApiError } from '@/shared/api/errorHandler';
 import { handleUnauthorizedRequest } from '@/shared/api/authIntercepter';

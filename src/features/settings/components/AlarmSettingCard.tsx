@@ -38,7 +38,6 @@ const AlarmSettingCard = () => {
 
     const initialState: Record<string, boolean> = {};
     projectsData.forEach((project) => {
-      console.log(project);
       initialState[project.id] = project.isNotificationEnabled ?? false;
     });
 
@@ -62,7 +61,7 @@ const AlarmSettingCard = () => {
       <div className="px-1 mb-4">
         <Button
           className="w-50 h-10 text-white bg-boost-blue/90 hover:bg-boost-blue cursor-pointer disabled:opacity-50"
-          onClick={() => navigate(ROUTE_PATH.ALARM_SETUP)}
+          onClick={() => navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.SETTINGS } })}
         >
           새로운 기기 등록하기
         </Button>

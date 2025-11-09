@@ -7,7 +7,7 @@ import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { ROLES } from '@/features/project/constants/projectConstants';
 import { useModal } from '@/shared/hooks/useModal';
 import ProjectKickMemberModalContent from '@/features/project/components/ProjectManageModal/ProjectKickMemberModalContent';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 
 interface ProjectMemberItemProps {
   member: MemberWithBoosting;

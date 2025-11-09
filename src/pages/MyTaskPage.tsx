@@ -1,6 +1,6 @@
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
 import { useModal } from '@/shared/hooks/useModal';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useProjectsStore } from '@/features/project/store/useProjectsStore';
 import { useProjectModals } from '@/features/project/hooks/useProjectModals';
 import { useEffect, useRef } from 'react';
@@ -45,12 +45,12 @@ const MyTaskPage = () => {
         buttons: [
           {
             text: '프로젝트 생성',
-            styleClass: 'bg-boost-orange hover:bg-boost-orange-hover duration-300 subtitle2-bold',
+            variant: 'secondaryBoost',
             onClick: showCreateProjectModal,
           },
           {
             text: '프로젝트 참여',
-            styleClass: 'bg-boost-blue hover:bg-boost-blue-hover duration-300 subtitle2-bold',
+            variant: 'defaultBoost',
             onClick: showJoinProjectModal,
           },
         ],
