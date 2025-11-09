@@ -27,10 +27,10 @@ const AppSidebar = () => {
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
-      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white cursor-pointer">
+      <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
         <Avatar
           style={{ backgroundColor: user?.backgroundColor }}
-          className="flex justify-center items-center w-11 h-11"
+          className="flex justify-center items-center w-11 h-11 shadow-sm"
         >
           {user ? (
             <img
