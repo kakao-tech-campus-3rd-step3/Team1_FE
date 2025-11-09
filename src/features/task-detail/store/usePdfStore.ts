@@ -30,8 +30,19 @@ interface PdfState {
   setPageSize: (size: PageSize) => void;
   updatePageSize: (pageNumber: number) => Promise<void>;
   setPageNumber: (page: number) => void;
+  resetPdf: () => void;
 }
-
+const initialState = {
+  numPages: 0,
+  pageNumber: 1,
+  zoom: 1,
+  position: { x: 0, y: 0 },
+  isDragging: false,
+  start: { x: 0, y: 0 },
+  markers: [],
+  pdfDocument: null,
+  pageSize: { width: A4.WIDTH, height: A4.HEIGHT },
+};
 export const usePdfStore = create<PdfState>((set, get) => ({
   numPages: 0,
   pageNumber: 1,
@@ -70,5 +81,6 @@ export const usePdfStore = create<PdfState>((set, get) => ({
         console.error('에러 : 페이지 크기 가져오기 실패', error);
       }
     }
-  },
+  },  resetPdf: () => set(initialState),
+
 }));

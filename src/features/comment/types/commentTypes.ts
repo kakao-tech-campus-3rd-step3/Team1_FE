@@ -1,3 +1,4 @@
+import type { PersonaType } from '@/features/comment/constants/personaConstants';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
 /* TODO: 댓글 목록 조회 응답 필드 확인 필요 */
@@ -11,7 +12,7 @@ export interface AuthorInfo {
 export interface CommentType {
   commentId: string;
   content: string;
-  persona: string | null;
+  persona: PersonaType;
   isAnonymous: boolean;
   fileInfo?: FileInfo | null;
   authorInfo: AuthorInfo;
@@ -24,5 +25,6 @@ export interface CommentUIType extends CommentType {
   timeAgo: string;
   isPinned?: boolean;
   commentId: string;
-  persona: string | null;
+  persona: PersonaType;
+  isAnonymous: boolean;
 }

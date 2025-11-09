@@ -38,7 +38,6 @@ const AlarmSettingCard = () => {
 
     const initialState: Record<string, boolean> = {};
     projectsData.forEach((project) => {
-      console.log(project);
       initialState[project.id] = project.isNotificationEnabled ?? false;
     });
 
