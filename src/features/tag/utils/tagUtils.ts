@@ -51,9 +51,15 @@ export function getColorStyleForTag(tag: Tag | string, withBorder = false): TagC
 
 export function generateTags(task: TaskDetail | TaskListItem): TagList {
   const tags: TagList = [];
+  const hasReviewers = task.requiredReviewerCount && task.requiredReviewerCount > 0;
 
-  if (task.requiredReviewerCount && task.requiredReviewerCount > 0)
-    tags.push({ tagId: 'system-review', name: '검토필요' });
+  if ('status' in task && hasReviewers) {
+    if (task.status === 'DONE') {
+      tags.push({ tagId: 'system-review-done', name: '검토완료' });
+    } else {
+      tags.push({ tagId: 'system-review', name: '검토필요' });
+    }
+  }
 
   if (task.tags) tags.push(...task.tags);
 
