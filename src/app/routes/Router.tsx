@@ -17,6 +17,7 @@ import FileSection from '@/features/file/components/FileSection';
 import MemoEditor from '@/features/memo/components/MemoEditor/MemoEditor';
 import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
 import SettingsPage from '@/pages/SettingsPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute>{route.element}</ProtectedRoute>,
       })),
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ]);
 
